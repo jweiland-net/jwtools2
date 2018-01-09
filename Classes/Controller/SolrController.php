@@ -17,7 +17,7 @@ namespace JWeiland\Jwtools2\Controller;
 use ApacheSolrForTypo3\Solr\System\Configuration\ConfigurationPageResolver;
 use ApacheSolrForTypo3\Solr\System\Configuration\ExtensionConfiguration;
 use ApacheSolrForTypo3\Solr\Util;
-use JWeiland\Jwtools2\Backend\DocHeader;
+use JWeiland\Jwtools2\Backend\SolrDocHeader;
 use JWeiland\Jwtools2\Domain\Repository\SchedulerRepository;
 use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use JWeiland\Jwtools2\Service\SolrService;
@@ -100,6 +100,11 @@ class SolrController extends AbstractController
     public function initializeView(ViewInterface $view)
     {
         parent::initializeView($view);
+
+        /** @var SolrDocHeader $docHeader */
+        $docHeader = $this->objectManager->get(SolrDocHeader::class, $this->request, $view);
+        $docHeader->renderDocHeader();
+
         if (!$this->schedulerRepository->findSolrSchedulerTask()) {
             $this->addFlashMessage('No or wrong scheduler task UID configured in ExtensionManager Configuration of jwtools2', 'Missing or wrong configuration', FlashMessage::WARNING);
         }

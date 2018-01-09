@@ -13,6 +13,7 @@ namespace JWeiland\Jwtools2\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -27,7 +28,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /**
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class DocHeader
+abstract class AbstractDocHeader
 {
     /**
      * @var UriBuilder
@@ -52,6 +53,18 @@ class DocHeader
     protected $request;
 
     /**
+     * AbstractDocHeader constructor.
+     *
+     * @param Request $request
+     * @param ViewInterface $view
+     */
+    public function __construct(Request $request, ViewInterface $view)
+    {
+        $this->request = $request;
+        $this->view = $view;
+    }
+
+    /**
      * inject uriBuilder
      *
      * @param UriBuilder $uriBuilder
@@ -73,23 +86,6 @@ class DocHeader
     public function injectIconFactory(IconFactory $iconFactory)
     {
         $this->iconFactory = $iconFactory;
-    }
-
-    /**
-     * Render DocHeader for View
-     *
-     * @return void
-     */
-    public function renderDocHeader()
-    {
-        // initialize UriBuilder
-        $this->uriBuilder->setRequest($this->getRequest());
-
-        // Render Buttons
-        $this->addHelpButton();
-        $this->addShortcutButton();
-        $this->addCloseButton();
-        $this->addModuleSelector();
     }
 
     /**
@@ -146,7 +142,7 @@ class DocHeader
 
         $uri = $this->uriBuilder
             ->reset()
-            ->uriFor('show');
+            ->uriFor('overview', [], 'Tools');
 
         $closeButton = $buttonBar
             ->makeLinkButton()
@@ -158,41 +154,15 @@ class DocHeader
     }
 
     /**
-     * Add module selector
+     * Get Link to create new configuration records of defined type
      *
-     * @return void
+     * @param string $url
+     *
+     * @return string
      */
-    protected function addModuleSelector()
+    protected function getLinkForUrl($url)
     {
-        $buttonBar = $this->view
-            ->getModuleTemplate()
-            ->getDocHeaderComponent()
-            ->getButtonBar();
-
-        $splitButtonBar = $buttonBar
-            ->makeSplitButton();
-
-        $newButton = $buttonBar
-            ->makeInputButton()
-            ->setName('module')
-            ->setValue('solr')
-            ->setOnClick($this->uriBuilder->reset()->uriFor('show'))
-            ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
-            ->setTitle('Solr')
-            ->setShowLabelText(true);
-        $splitButtonBar->addItem($newButton, true);
-
-        $newButton = $buttonBar
-            ->makeInputButton()
-            ->setName('module')
-            ->setValue('whatever')
-            ->setOnClick($this->uriBuilder->reset()->uriFor('show'))
-            ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
-            ->setTitle('What ever')
-            ->setShowLabelText(true);
-        $splitButtonBar->addItem($newButton, false);
-
-        $buttonBar->addButton($splitButtonBar);
+        return 'window.location.href=' . GeneralUtility::quoteJSvalue($url) . '; return false;';
     }
 
     /**
@@ -203,51 +173,5 @@ class DocHeader
     protected function getDatabaseConnection()
     {
         return $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
-     * Returns the view
-     *
-     * @return ViewInterface $view
-     */
-    public function getView()
-    {
-        return $this->view;
-    }
-
-    /**
-     * Sets the view
-     *
-     * @param ViewInterface $view
-     *
-     * @return DocHeader
-     */
-    public function setView($view)
-    {
-        $this->view = $view;
-        return $this;
-    }
-
-    /**
-     * Returns the request
-     *
-     * @return Request $request
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    /**
-     * Sets the request
-     *
-     * @param Request $request
-     *
-     * @return DocHeader
-     */
-    public function setRequest(Request $request)
-    {
-        $this->request = $request;
-        return $this;
     }
 }
