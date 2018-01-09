@@ -1,0 +1,89 @@
+{namespace t=JWeiland\Jwtools2\ViewHelpers}
+
+<f:layout name="Default" />
+
+<f:section name="main">
+  <f:if condition="{memoryPeakUsage}">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">Memory Peak Usage</h3>
+      </div>
+      <div class="panel-body">
+        {memoryPeakUsage->f:format.bytes()}
+      </div>
+    </div>
+  </f:if>
+
+  <f:if condition="{currentRootPageUid}">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">Current RootPage UID</h3>
+      </div>
+      <div class="panel-body">
+        {currentRootPageUid}<br>
+        This page will be highlighted in full list, if you search for empty string
+      </div>
+    </div>
+  </f:if>
+
+  <f:link.action action="createIndexQueueForAllSites">Create index queue for all sites</f:link.action>
+
+  <h2>Search for root pages</h2>
+
+  <f:form action="list" method="POST">
+    <div class="form-group">
+      <label for="rootPageUid">RootPage UID</label>
+      <f:form.textfield name="rootPageUid" class="form-control" id="rootPageUid" placeholder="Page UID" />
+    </div>
+    <f:comment>
+      <div class="form-group">
+        <label for="languageUid">Language UID</label>
+        <f:form.textfield name="languageUid" class="form-control" id="languageUid" placeholder="Language UID" />
+      </div>
+    </f:comment>
+    <f:form.submit value="Search" class="btn btn-default" />
+  </f:form>
+
+  <h2>Results</h2>
+
+  <f:if condition="{sites}">
+    <f:then>
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>UID</th>
+          <th>Title</th>
+          <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <f:for each="{sites}" as="site">
+          <tr class="{f:if(condition: '{site.rootPage.uid}=={currentRootPageUid}', then: 'bg-info')}">
+            <td>{site.rootPage.uid}</td>
+            <td>
+              <f:link.action action="show" arguments="{rootPageUid: site.rootPage.uid}">
+                {site.rootPage.title}
+                {f:if(condition: '{site.rootPage.uid}=={currentRootPageUid}', then: '<span class="badge">Indexing...</span>')}
+              </f:link.action>
+            </td>
+            <td>
+              <f:alias map="{progress: '{t:solr.indexStatus(site: site)}'}">
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="{progress}" aria-valuemin="0" aria-valuemax="100" style="width: {progress}%;">
+                    <span>{progress}% Complete</span>
+                  </div>
+                </div>
+              </f:alias>
+            </td>
+          </tr>
+        </f:for>
+        </tbody>
+      </table>
+    </f:then>
+    <f:else>
+      <div class="alert alert-info" role="alert">
+        No search results found. Please try another rootPage UID. Or leave empty to find all available sites.
+      </div>
+    </f:else>
+  </f:if>
+</f:section>

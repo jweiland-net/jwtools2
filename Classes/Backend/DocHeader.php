@@ -2,7 +2,7 @@
 namespace JWeiland\Jwtools2\Backend;
 
 /*
- * This file is part of the TYPO3 CMS project.
+ * This file is part of the jwtools2 project.
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -32,29 +32,30 @@ class DocHeader
     /**
      * @var UriBuilder
      */
-    protected $uriBuilder = null;
+    protected $uriBuilder;
 
     /**
      * @var IconFactory
      */
-    protected $iconFactory = null;
+    protected $iconFactory;
 
     /**
      * @var BackendTemplateView
      */
-    protected $view = null;
+    protected $view;
 
     /**
      * The current request.
      *
      * @var Request
      */
-    protected $request = null;
+    protected $request;
 
     /**
      * inject uriBuilder
      *
      * @param UriBuilder $uriBuilder
+     *
      * @return void
      */
     public function injectUriBuilder(UriBuilder $uriBuilder)
@@ -66,6 +67,7 @@ class DocHeader
      * inject iconFactory
      *
      * @param IconFactory $iconFactory
+     *
      * @return void
      */
     public function injectIconFactory(IconFactory $iconFactory)

@@ -2,31 +2,62 @@
 namespace JWeiland\Jwtools2\Service;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
+* This file is part of the jwtools2 project.
+*
+* It is free software; you can redistribute it and/or modify it under
+* the terms of the GNU General Public License, either version 2
+* of the License, or any later version.
+*
+* For the full copyright and license information, please read the
+* LICENSE.txt file that was distributed with this source code.
+*
+* The TYPO3 project - inspiring people to share!
+*/
 
 use ApacheSolrForTypo3\Solr\ConnectionManager;
+use ApacheSolrForTypo3\Solr\Domain\Index\Queue\Statistic\QueueStatistic;
 use ApacheSolrForTypo3\Solr\Domain\Site\SiteRepository;
 use ApacheSolrForTypo3\Solr\IndexQueue\Queue;
 use ApacheSolrForTypo3\Solr\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class SolrService
- *
- * @package JWeiland\Jwtools2\Service
+ * @package JWeiland\Drs\Service
  */
 class SolrService
 {
+    /**
+     * Instead of the Solr Statistic, this Statistic will return
+     * a statistic over all sites
+     *
+     * @return QueueStatistic
+     */
+    public function getStatistic()
+    {
+        $indexQueueStats = $this->getDatabaseConnection()->exec_SELECTgetRows(
+            'indexed < changed as pending,'
+            . '(errors not like "") as failed,'
+            . 'COUNT(*) as count',
+            'tx_solr_indexqueue_item',
+            '',
+            'pending, failed'
+        );
+        /** @var $statistic QueueStatistic */
+        $statistic = GeneralUtility::makeInstance(QueueStatistic::class);
+
+        foreach ($indexQueueStats as $row) {
+            if ($row['failed'] == 1) {
+                $statistic->setFailedCount((int) $row['count']);
+            } elseif ($row['pending'] == 1) {
+                $statistic->setPendingCount((int) $row['count']);
+            } else {
+                $statistic->setSuccessCount((int) $row['count']);
+            }
+        }
+
+        return $statistic;
+    }
+
     /**
      * Creates index queue entries for all given sites
      * If no site is given, all available sites are used
@@ -80,6 +111,7 @@ class SolrService
      *
      * @param Site $site
      * @param string[] $indexingConfigurationsToReIndex
+     *
      * @return bool TRUE if clean up was successful, FALSE on error
      */
     protected function cleanUpIndex($site, $indexingConfigurationsToReIndex)
@@ -113,5 +145,15 @@ class SolrService
         }
 
         return $cleanUpResult;
+    }
+
+    /**
+     * Get TYPO3s Database Connection
+     *
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 }

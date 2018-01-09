@@ -1,0 +1,4 @@
+# cat=solr; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:solrEnable
+solrEnable = 0
+# cat=solr; type=int+; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:solrSchedulerTaskUid
+solrSchedulerTaskUid = 0

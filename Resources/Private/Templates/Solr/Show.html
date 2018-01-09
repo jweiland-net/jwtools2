@@ -1,2 +1,25 @@
-<h1>Solr</h1>
-<f:link.action action="createIndexQueueForAllSites">Create index queue for all sites</f:link.action>
+{namespace t=JWeiland\Jwtools2\ViewHelpers}
+
+<f:layout name="Default" />
+
+<f:section name="main">
+  <h1>{site.label}</h1>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Next Run</h3>
+    </div>
+    <div class="panel-body">
+      in {t:solr.nextRun(site: site)} seconds
+    </div>
+  </div>
+
+  <f:if condition="{site.solrConfiguration.enabledIndexQueueConfigurationNames}">
+    <h2>IndexQueue Configurations</h2>
+    <ul class="list-group">
+      <f:for each="{site.solrConfiguration.enabledIndexQueueConfigurationNames}" as="configurationName">
+        <li class="list-group-item">{configurationName}</li>
+      </f:for>
+    </ul>
+  </f:if>
+</f:section>

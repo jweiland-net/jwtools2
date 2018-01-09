@@ -1,0 +1,11 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+  <h1>Enabled Modules <small>Please check Extension Configuration of jwtools2, if you miss some modules here</small></h1>
+
+  <div class="list-group">
+    <f:if condition="{extConf.solrEnable}">
+      <f:link.action action="list" controller="Solr" class="list-group-item">Solr</f:link.action>
+    </f:if>
+  </div>
+</f:section>

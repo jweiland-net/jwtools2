@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
+    <header/>
+    <body>
+      <trans-unit id="solrEnable">
+        <source>Enable Solr features</source>
+      </trans-unit>
+      <trans-unit id="solrSchedulerTaskUid">
+        <source>Solr scheduler task UID: After activating Solr features, you have to create the new Solr task of this extension in scheduler and insert the UID of this task here.</source>
+     </trans-unit>
+    </body>
+  </file>
+</xliff>
