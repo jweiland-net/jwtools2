@@ -3,30 +3,17 @@
 <f:layout name="Default" />
 
 <f:section name="main">
-  <f:if condition="{memoryPeakUsage}">
-    <div class="panel panel-info">
-      <div class="panel-heading">
-        <h3 class="panel-title">Memory Peak Usage</h3>
-      </div>
-      <div class="panel-body">
-        {memoryPeakUsage->f:format.bytes()}
+  <h1>Solr features Overview</h1>
+
+  <h2>Memory Usage of running Solr Scheduler Task</h2>
+
+  <f:alias map="{progress: '{t:solr.memoryStatus()}'}">
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="{progress}" aria-valuemin="0" aria-valuemax="100" style="width: {progress}%;">
+        <span>{progress} %</span>
       </div>
     </div>
-  </f:if>
-
-  <f:if condition="{currentRootPageUid}">
-    <div class="panel panel-info">
-      <div class="panel-heading">
-        <h3 class="panel-title">Current RootPage UID</h3>
-      </div>
-      <div class="panel-body">
-        {currentRootPageUid}<br>
-        This page will be highlighted in full list, if you search for empty string
-      </div>
-    </div>
-  </f:if>
-
-  <f:link.action action="createIndexQueueForAllSites">Create index queue for all sites</f:link.action>
+  </f:alias>
 
   <h2>Search for root pages</h2>
 

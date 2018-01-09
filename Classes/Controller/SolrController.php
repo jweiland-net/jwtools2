@@ -129,7 +129,6 @@ class SolrController extends AbstractController
         } catch (\Exception $e) {
             $this->addFlashMessage($e->getMessage(), 'Error', FlashMessage::WARNING);
         }
-        $this->view->assign('memoryPeakUsage', $this->registry->get('jwtools2-solr', 'memoryPeakUsage', 0));
         $this->view->assign('currentRootPageUid', $this->registry->get('jwtools2-solr', 'rootPageId', 0));
     }
 
