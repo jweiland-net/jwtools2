@@ -28,6 +28,12 @@ call_user_func(
             );
         }
 
+        if ($jwToolsConfiguration['typo3EnableUidInPageTree']) {
+            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig(
+                'options.pageTree.showPageIdWithTitle = 1'
+            );
+        }
+
         // retrieve stdWrap current value into sub cObj. CONTENT
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'][] = \JWeiland\Jwtools2\Hooks\InitializeStdWrap::class;
     },

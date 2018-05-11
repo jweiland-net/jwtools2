@@ -3,6 +3,9 @@
 	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
 		<header/>
 		<body>
+			<trans-unit id="typo3EnableUidInPageTree">
+				<source>Enable UID in pagetree: Enable this option to show the page UID in front of the title in pagetree. So no need to hover over the page icon anymore.</source>
+			</trans-unit>
 			<trans-unit id="typo3TransferTypoScriptCurrent">
 				<source>Transfer TypoScript current: For each record, found by CONTENT, a new instance of ContentObjectRenderer will be created by renderObj. The data property will be filled with the values of the record. The TypoScript current value will be resetted. Activate this option if you want to transfer the parent current value into the sub-property of renderObj.</source>
 			</trans-unit>

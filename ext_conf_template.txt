@@ -1,3 +1,5 @@
+# cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3EnableUidInPageTree
+typo3EnableUidInPageTree = 0
 # cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3TransferTypoScriptCurrent
 typo3TransferTypoScriptCurrent = 0
 
