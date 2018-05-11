@@ -81,6 +81,7 @@ class SolrService
 
             $this->cleanUpIndex($site, $indexingConfigurationsToReIndex);
 
+            /** @var Queue $indexQueue */
             $indexQueue = GeneralUtility::makeInstance(Queue::class);
 
             foreach ($indexingConfigurationsToReIndex as $indexingConfigurationName) {

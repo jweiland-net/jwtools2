@@ -154,6 +154,7 @@ class SolrController extends AbstractController
      */
     public function createIndexQueueForAllSitesAction()
     {
+        /** @var SolrService $solrService */
         $solrService = GeneralUtility::makeInstance(SolrService::class);
         $result = $solrService->createIndexQueueForSites();
 
