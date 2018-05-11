@@ -22,6 +22,13 @@ use TYPO3\CMS\Core\SingletonInterface;
 class ExtConf implements SingletonInterface
 {
     /**
+     * Enable transfer of TypoScript property current
+     *
+     * @var bool
+     */
+    protected $typo3TransferTypoScriptCurrent = false;
+
+    /**
      * Enable Solr features
      *
      * @var bool
@@ -52,6 +59,28 @@ class ExtConf implements SingletonInterface
                 }
             }
         }
+    }
+
+    /**
+     * Returns the typo3TransferTypoScriptCurrent
+     *
+     * @return bool $typo3TransferTypoScriptCurrent
+     */
+    public function getTypo3TransferTypoScriptCurrent()
+    {
+        return $this->typo3TransferTypoScriptCurrent;
+    }
+
+    /**
+     * Sets the typo3TransferTypoScriptCurrent
+     *
+     * @param bool $typo3TransferTypoScriptCurrent
+     *
+     * @return void
+     */
+    public function setTypo3TransferTypoScriptCurrent($typo3TransferTypoScriptCurrent)
+    {
+        $this->typo3TransferTypoScriptCurrent = (bool)$typo3TransferTypoScriptCurrent;
     }
 
     /**

@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xliff version="1.0">
-  <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
-    <header/>
-    <body>
-      <trans-unit id="indexqueueworker_title" xml:space="preserve" approved="yes">
-        <source>Index Queue Worker</source>
-        <target>Index Queue Worker</target>
-      </trans-unit>
-      <trans-unit id="indexqueueworker_description" xml:space="preserve" approved="yes">
-        <source>Processes the items in the Index Queue and sends them to Solr.</source>
-        <target>Verarbeitet einen Item in der Index Queue und sendet ihn an den Solr Server.</target>
-      </trans-unit>
-      <trans-unit id="indexqueueworker_field_documentsToIndexLimit" xml:space="preserve" approved="yes">
-        <source>Number of documents to index</source>
-        <target>Anzahl der zu indexierenden Dokumente</target>
-      </trans-unit>
-      <trans-unit id="indexqueueworker_field_maxSitesPerRun" xml:space="preserve" approved="yes">
-        <source>Max sites per run</source>
-        <target>Maximale Anzahl der zu indexierenden Seiten pro Durchlauf</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
+		<header/>
+		<body>
+			<trans-unit id="indexqueueworker_title" xml:space="preserve" approved="yes">
+				<source>Index Queue Worker</source>
+				<target>Index Queue Worker</target>
+			</trans-unit>
+			<trans-unit id="indexqueueworker_description" xml:space="preserve" approved="yes">
+				<source>Processes the items in the Index Queue and sends them to Solr.</source>
+				<target>Verarbeitet einen Item in der Index Queue und sendet ihn an den Solr Server.</target>
+			</trans-unit>
+			<trans-unit id="indexqueueworker_field_documentsToIndexLimit" xml:space="preserve" approved="yes">
+				<source>Number of documents to index</source>
+				<target>Anzahl der zu indexierenden Dokumente</target>
+			</trans-unit>
+			<trans-unit id="indexqueueworker_field_maxSitesPerRun" xml:space="preserve" approved="yes">
+				<source>Max sites per run</source>
+				<target>Maximale Anzahl der zu indexierenden Seiten pro Durchlauf</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>
