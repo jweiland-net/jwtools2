@@ -34,6 +34,7 @@ class InitializeStdWrap implements ContentObjectPostInitHookInterface
         /** @var ExtConf $extConf */
         $extConf = GeneralUtility::makeInstance(ExtConf::class);
         if ($extConf->getTypo3TransferTypoScriptCurrent()) {
+            // parentRecord is filled in CONTENT and RECORD context only. So no further checks needed
             if (is_array($parentObject->parentRecord) && !empty($parentObject->parentRecord)) {
                 // set current to value of parent current
                 $parentObject->data[$parentObject->currentValKey] = $parentObject->parentRecord['data'][$parentObject->currentValKey];
