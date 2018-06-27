@@ -1,5 +1,4 @@
 <?php
-
 namespace JWeiland\Jwtools2\Configuration;
 
 /*
@@ -41,6 +40,13 @@ class ExtConf implements SingletonInterface
      * @var int
      */
     protected $solrSchedulerTaskUid = 0;
+
+    /**
+     * Tables to add keyword boosting
+     *
+     * @var array
+     */
+    protected $tablesToAddKeywordBoosting = [];
 
     /**
      * constructor of this class
@@ -125,5 +131,28 @@ class ExtConf implements SingletonInterface
     public function setSolrSchedulerTaskUid($solrSchedulerTaskUid)
     {
         $this->solrSchedulerTaskUid = (int)$solrSchedulerTaskUid;
+    }
+
+    /**
+     * Gets TablesToAddKeywordBoosting
+     *
+     * @return array
+     */
+    public function getTablesToAddKeywordBoosting()
+    {
+        return $this->tablesToAddKeywordBoosting;
+    }
+
+    /**
+     * Sets TablesToAddKeywordBoosting
+     *
+     * @param string $tablesToAddKeywordBoosting
+     * @return void
+     */
+    public function setTablesToAddKeywordBoosting($tablesToAddKeywordBoosting)
+    {
+        // Remove whitespaces from user input to prevent trailing spaces
+        $tablesToAddKeywordBoosting = str_replace(' ', '', $tablesToAddKeywordBoosting);
+        $this->tablesToAddKeywordBoosting = explode(',', $tablesToAddKeywordBoosting);
     }
 }

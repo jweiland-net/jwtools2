@@ -36,6 +36,30 @@ call_user_func(
 
         // retrieve stdWrap current value into sub cObj. CONTENT
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'][] = \JWeiland\Jwtools2\Hooks\InitializeStdWrap::class;
+
+        // Solr Tools
+        $signalSlotDispatcher->connect(
+            \TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class,
+            'tablesDefinitionIsBeingBuilt',
+            \JWeiland\Jwtools2\Tca\SolrBoostingKeywordRegistry::class,
+            'addBoostingKeywordFieldToAffectedTables'
+        );
+
+        $signalSlotDispatcher->connect(
+            \TYPO3\CMS\Extensionmanager\Controller\ConfigurationController::class,
+            'afterExtensionConfigurationWrite',
+            \JWeiland\Jwtools2\Slot\ExtensionConfigurationSlot::class,
+            'updateDatabase'
+        );
+
+        if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
+            $signalSlotDispatcher->connect(
+                \TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
+                'tablesDefinitionIsBeingBuilt',
+                \JWeiland\Jwtools2\Tca\SolrBoostingKeywordRegistry::class,
+                'addBoostingKeywordFieldToAffectedTables'
+            );
+        }
     },
     'jwtools2'
 );

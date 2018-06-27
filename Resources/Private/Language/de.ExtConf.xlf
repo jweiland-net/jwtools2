@@ -19,6 +19,10 @@
 				<source>Solr scheduler task UID: After activating Solr features, you have to create the new Solr task of this extension in scheduler and insert the UID of this task here.</source>
 				<target>Solr scheduler task UID: Nach Aktivierung der Solr Features müssen Sie die neue Solr Aufgabe dieser Extension im Planer anlegen und die UID dieser Aufgabe dann hier eintragen.</target>
 			</trans-unit>
+			<trans-unit id="solrTablesToAddKeywordBoosting">
+				<source>Add keyword boosting for following tables: Comma separated list of tables (pages,tt_content)</source>
+				<target>Erweiter folgende Tabellen um die Boosting Funktion: Komma separierte liste aller tabellen (pages,tt_content)</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

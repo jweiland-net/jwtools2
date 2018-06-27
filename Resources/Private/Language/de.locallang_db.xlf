@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
+		<header/>
+		<body>
+			<trans-unit id="tx_jwtools2_boosting_keywords">
+				<source>Boosting Keywords</source>
+				<target>Boosting Wörter</target>
+			</trans-unit>
+			<trans-unit id="tx_jwtools2_boosting_keywords.placeholder">
+				<source>Keyword1,Keyword2,Keyword3,..</source>
+				<target>Wort1,Wort2,Wort3,..</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

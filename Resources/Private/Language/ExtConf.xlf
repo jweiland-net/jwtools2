@@ -14,7 +14,10 @@
 			</trans-unit>
 			<trans-unit id="solrSchedulerTaskUid">
 				<source>Solr scheduler task UID: After activating Solr features, you have to create the new Solr task of this extension in scheduler and insert the UID of this task here.</source>
-		 </trans-unit>
+		 	</trans-unit>
+			<trans-unit id="solrTablesToAddKeywordBoosting">
+				<source>Add keyword boosting for following tables: Comma separated list of tables (pages,tt_content)</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -7,3 +7,5 @@ typo3TransferTypoScriptCurrent = 0
 solrEnable = 0
 # cat=solr; type=int+; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:solrSchedulerTaskUid
 solrSchedulerTaskUid = 0
+# cat=solr; type=user[JWeiland\Jwtools2\ConfigurationType\TablesField->render]; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:solrTablesToAddKeywordBoosting
+solrTablesToAddKeywordBoosting =
