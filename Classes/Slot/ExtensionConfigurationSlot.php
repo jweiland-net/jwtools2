@@ -17,7 +17,9 @@ namespace JWeiland\Jwtools2\Slot;
 use JWeiland\Jwtools2\Utility\SQLStatementUtility;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Controller\ConfigurationController;
+use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
  * Class ExtensionConfigurationSlot
@@ -37,15 +39,20 @@ class ExtensionConfigurationSlot
         array $newConfiguration,
         ConfigurationController $configurationController
     ) {
-        /** @var SchemaMigrator $schemaMigrator */
-        $schemaMigrator = GeneralUtility::makeInstance(SchemaMigrator::class);
-
         $tablesToChange = GeneralUtility::trimExplode(
             ',',
             $newConfiguration['solrTablesToAddKeywordBoosting']['value']
         );
 
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $installUtility = $objectManager->get(InstallUtility::class);
+
         $sqlStatement = SQLStatementUtility::prepareCreateTableQueryWithBoostingField($tablesToChange);
-        $schemaMigrator->install($sqlStatement);
+
+        if ($sqlStatement) {
+            $sqlStatementString = implode("\n", $sqlStatement);
+            $installUtility->updateDbWithExtTablesSql($sqlStatementString);
+            $installUtility->reloadCaches();
+        }
     }
 }

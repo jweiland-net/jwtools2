@@ -1,5 +1,4 @@
 <?php
-declare(strict_types = 1);
 namespace JWeiland\Jwtools2\Tca;
 
 /*
@@ -43,29 +42,38 @@ class SolrBoostingKeywordRegistry
      * Adds "jwtools2_boosting_keywords" to affected tables
      * This method is called as tablesDefinitionIsBeingBuilt slot
      *
-     * @param $sqlString array
+     * @param array $sqlString
+     * @param string $extKey
      * @return array
      */
-    public function addBoostingKeywordFieldToAffectedTables(array $sqlString): array
+    public function addBoostingKeywordFieldToAffectedTables(array $sqlString, $extKey = '')
     {
-        $sqlString = $this->generateSQLStringForAffectedTables($sqlString);
+        $result = [];
 
-        return ['sqlString' => $sqlString];
+        $result[] = $this->generateSQLStringForAffectedTables($sqlString);
+
+        if ($extKey) {
+            $result[] = $extKey;
+        }
+
+        return $result;
     }
 
     /**
      * Generates SQL String for adding columns to affected tables
      *
-     * @param $sqlString array
+     * @param array $sqlString
      * @return array
      */
-    private function generateSQLStringForAffectedTables(array $sqlString): array
+    private function generateSQLStringForAffectedTables(array $sqlString)
     {
         $createTableSqlString = SQLStatementUtility::prepareCreateTableQueryWithBoostingField(
-            $this->extConf->getTablesToAddKeywordBoosting()
+            $this->extConf->getSolrTablesToAddKeywordBoosting()
         );
 
-        array_push($sqlString, ...$createTableSqlString);
+        if ($createTableSqlString) {
+            array_push($sqlString, ...$createTableSqlString);
+        }
 
         return $sqlString;
     }

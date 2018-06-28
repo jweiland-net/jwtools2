@@ -32,8 +32,12 @@ class SQLStatementUtility
         $result = [];
 
         foreach ($tables as $table) {
-            $result[] = ' CREATE TABLE ' . $table
-                . ' ( ' . Settings::SOLR_BOOSTING_KEYWORDS_FIELD_NAME . ' varchar(255) DEFAULT \'\' NOT NULL );';
+            if ($table) {
+                $result[] = 'CREATE TABLE ' . $table
+                    . ' ( '
+                    . Settings::SOLR_BOOSTING_KEYWORDS_FIELD_NAME
+                    . ' varchar(255) DEFAULT \'\' NOT NULL );';
+            }
         }
 
         return $result;

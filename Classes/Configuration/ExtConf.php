@@ -46,7 +46,7 @@ class ExtConf implements SingletonInterface
      *
      * @var array
      */
-    protected $tablesToAddKeywordBoosting = [];
+    protected $solrTablesToAddKeywordBoosting = [];
 
     /**
      * constructor of this class
@@ -138,21 +138,21 @@ class ExtConf implements SingletonInterface
      *
      * @return array
      */
-    public function getTablesToAddKeywordBoosting()
+    public function getSolrTablesToAddKeywordBoosting()
     {
-        return $this->tablesToAddKeywordBoosting;
+        return $this->solrTablesToAddKeywordBoosting;
     }
 
     /**
      * Sets TablesToAddKeywordBoosting
      *
-     * @param string $tablesToAddKeywordBoosting
+     * @param string $solrTablesToAddKeywordBoosting
      * @return void
      */
-    public function setTablesToAddKeywordBoosting($tablesToAddKeywordBoosting)
+    public function setSolrTablesToAddKeywordBoosting($solrTablesToAddKeywordBoosting)
     {
         // Remove whitespaces from user input to prevent trailing spaces
-        $tablesToAddKeywordBoosting = str_replace(' ', '', $tablesToAddKeywordBoosting);
-        $this->tablesToAddKeywordBoosting = explode(',', $tablesToAddKeywordBoosting);
+        $solrTablesToAddKeywordBoosting = str_replace(' ', '', (string)$solrTablesToAddKeywordBoosting);
+        $this->solrTablesToAddKeywordBoosting = explode(',', $solrTablesToAddKeywordBoosting);
     }
 }

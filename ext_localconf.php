@@ -39,17 +39,17 @@ call_user_func(
 
         // Solr Tools
         $signalSlotDispatcher->connect(
-            \TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class,
-            'tablesDefinitionIsBeingBuilt',
-            \JWeiland\Jwtools2\Tca\SolrBoostingKeywordRegistry::class,
-            'addBoostingKeywordFieldToAffectedTables'
-        );
-
-        $signalSlotDispatcher->connect(
             \TYPO3\CMS\Extensionmanager\Controller\ConfigurationController::class,
             'afterExtensionConfigurationWrite',
             \JWeiland\Jwtools2\Slot\ExtensionConfigurationSlot::class,
             'updateDatabase'
+        );
+
+        $signalSlotDispatcher->connect(
+            \TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class,
+            'tablesDefinitionIsBeingBuilt',
+            \JWeiland\Jwtools2\Tca\SolrBoostingKeywordRegistry::class,
+            'addBoostingKeywordFieldToAffectedTables'
         );
 
         if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {

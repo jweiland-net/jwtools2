@@ -1,9 +1,14 @@
 <?php
+if (!defined('TYPO3_MODE')) {
+    die('Access denied.');
+}
 
 /** @var \JWeiland\Jwtools2\Configuration\ExtConf $extConf */
-$extConf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\JWeiland\Jwtools2\Configuration\ExtConf::class);
+$extConf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+    \JWeiland\Jwtools2\Configuration\ExtConf::class
+);
 
-foreach ($extConf->getTablesToAddKeywordBoosting() as $table) {
+foreach ($extConf->getSolrTablesToAddKeywordBoosting() as $table) {
     $tempColumn = [
         \JWeiland\Jwtools2\Configuration\Settings::SOLR_BOOSTING_KEYWORDS_FIELD_NAME => [
             'exclude' => 1,
@@ -22,6 +27,6 @@ foreach ($extConf->getTablesToAddKeywordBoosting() as $table) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns($table, $tempColumn);
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
         $table,
-        \JWeiland\Jwtools2\Configuration\Settings::SOLR_BOOSTING_KEYWORDS_FIELD_NAME
+        '--div--;Solr,' . \JWeiland\Jwtools2\Configuration\Settings::SOLR_BOOSTING_KEYWORDS_FIELD_NAME
     );
 }
