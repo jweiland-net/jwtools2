@@ -169,7 +169,7 @@ class SolrController extends AbstractController
      * locally and external
      *
      * @param string $rootPageUid
-     * @param string $type
+     * @param string $type TableName of the configuration
      * @param bool $cleanUpItem
      * @param bool $cleanUpFile
      * @param bool $cleanUpSolr

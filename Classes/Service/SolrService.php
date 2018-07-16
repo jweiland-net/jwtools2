@@ -154,7 +154,7 @@ class SolrService
      * Be careful: If type is empty, it will delete EVERYTHING from given $site
      *
      * @param Site $site
-     * @param string $type
+     * @param string $type TableName of the configuration
      * @param bool $cleanUpItem
      * @param bool $cleanUpFile
      * @param bool $cleanUpSolr
@@ -202,7 +202,8 @@ class SolrService
             $solrServers = GeneralUtility::makeInstance(ConnectionManager::class)
                 ->getConnectionsBySite($site);
             foreach ($solrServers as $solrServer) {
-                $solrServer->deleteByType($type);
+                $solrServer->deleteByType($type); // Document
+                $solrServer->deleteByQuery('fileReferenceType:' . $type); // tx_solr_file
             }
         }
     }
