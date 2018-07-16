@@ -73,6 +73,16 @@ class SolrDocHeader extends AbstractDocHeader
             ->setShowLabelText(true);
         $splitButtonBar->addItem($newButton, false);
 
+        $newButton = $buttonBar
+            ->makeInputButton()
+            ->setName('module')
+            ->setValue('cleanUp')
+            ->setOnClick($this->getLinkForUrl($this->uriBuilder->reset()->uriFor('cleanUpSolrIndex', [], 'Solr')))
+            ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
+            ->setTitle('CleanUp Solr Index')
+            ->setShowLabelText(true);
+        $splitButtonBar->addItem($newButton, false);
+
         $buttonBar->addButton($splitButtonBar);
     }
 }

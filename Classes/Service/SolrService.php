@@ -19,6 +19,7 @@ use ApacheSolrForTypo3\Solr\Domain\Index\Queue\Statistic\QueueStatistic;
 use ApacheSolrForTypo3\Solr\Domain\Site\SiteRepository;
 use ApacheSolrForTypo3\Solr\IndexQueue\Queue;
 use ApacheSolrForTypo3\Solr\Site;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -146,6 +147,64 @@ class SolrService
         }
 
         return $cleanUpResult;
+    }
+
+    /**
+     * Delete records locally and external by type
+     * Be careful: If type is empty, it will delete EVERYTHING from given $site
+     *
+     * @param Site $site
+     * @param string $type
+     * @param bool $cleanUpItem
+     * @param bool $cleanUpFile
+     * @param bool $cleanUpSolr
+     * @return void
+     */
+    public function deleteByType(Site $site, $type = '', $cleanUpItem = false, $cleanUpFile = false, $cleanUpSolr = false)
+    {
+        // delete from local tx_solr_indexqueue_item table
+        if ($cleanUpItem) {
+            $where = [];
+            $where[] = sprintf('root=%d', (int)$site->getRootPageId());
+            if ($type) {
+                $where[] = sprintf(
+                    'indexing_configuration=%s',
+                    $this->getDatabaseConnection()->fullQuoteStr($type, 'tx_solr_indexqueue_item')
+                );
+            }
+            $this->getDatabaseConnection()->exec_DELETEquery(
+                'tx_solr_indexqueue_item',
+                implode(' AND ', $where)
+            );
+        }
+
+        if ($cleanUpFile) {
+            // delete from local tx_solr_indexqueue_file table
+            if (ExtensionManagementUtility::isLoaded('solrfal')) {
+                $where = [];
+                $where[] = sprintf('context_site=%d', (int)$site->getRootPageId());
+                if ($type) {
+                    $where[] = sprintf(
+                        'context_record_indexing_configuration=%s',
+                        $this->getDatabaseConnection()->fullQuoteStr($type, 'tx_solr_indexqueue_file')
+                    );
+                }
+                $this->getDatabaseConnection()->exec_DELETEquery(
+                    'tx_solr_indexqueue_file',
+                    implode(' AND ', $where)
+                );
+            }
+        }
+
+        if ($cleanUpSolr) {
+            // delete from external Solr Server
+            /** @var \ApacheSolrForTypo3\Solr\SolrService[] $solrServers */
+            $solrServers = GeneralUtility::makeInstance(ConnectionManager::class)
+                ->getConnectionsBySite($site);
+            foreach ($solrServers as $solrServer) {
+                $solrServer->deleteByType($type);
+            }
+        }
     }
 
     /**

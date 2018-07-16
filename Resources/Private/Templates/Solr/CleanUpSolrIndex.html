@@ -1,0 +1,49 @@
+<f:flashMessages />
+
+<h1>CleanUp Solr Index</h1>
+
+<f:if condition="{showConfirmation}">
+	<f:then>
+		<f:form action="cleanUpSolrIndex" class="form">
+			<f:form.hidden name="rootPageUid" value="{rootPageUid}" />
+			<f:form.hidden name="type" value="{type}" />
+			<div class="form-group">
+				<f:form.checkbox name="cleanUpItem" value="1" />
+				<label>CleanUp local Solr table: tx_solr_indexqueue_item</label>
+			</div>
+			<div class="form-group">
+				<f:form.checkbox name="cleanUpFile" value="1" />
+				<label>CleanUp local Solr table: tx_solr_indexqueue_file</label>
+			</div>
+			<div class="form-group">
+				<f:form.checkbox name="cleanUpSolr" value="1" />
+				<label>CleanUp external Solr Index</label>
+			</div>
+			<div class="form-group">
+				<f:form.checkbox name="confirmed" value="1" />
+				<label>Yes, I know what I'm doing</label>
+			</div>
+			<f:form.submit value="Delete selected areas" />
+		</f:form>
+	</f:then>
+	<f:else>
+		<f:form action="cleanUpSolrIndex" class="form">
+			<div class="form-group">
+				<f:form.select
+					name="rootPageUid"
+					size="1"
+					options="{sites}"
+					optionLabelField="rootPage.title"
+					optionValueField="rootPage.uid"
+					prependOptionLabel="All"
+					prependOptionValue="all"
+				/>
+			</div>
+			<div class="form-group">
+				<f:form.textfield name="type" size="50" placeholder="Solr index queue configuration name" />
+			</div>
+			<f:form.submit value="CleanUp" />
+		</f:form>
+	</f:else>
+</f:if>
+

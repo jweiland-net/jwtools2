@@ -14,6 +14,8 @@ namespace JWeiland\Jwtools2\Controller;
 * The TYPO3 project - inspiring people to share!
 */
 
+use ApacheSolrForTypo3\Solr\ConnectionManager;
+use ApacheSolrForTypo3\Solr\Site;
 use ApacheSolrForTypo3\Solr\System\Configuration\ConfigurationPageResolver;
 use ApacheSolrForTypo3\Solr\System\Configuration\ExtensionConfiguration;
 use ApacheSolrForTypo3\Solr\Util;
@@ -160,5 +162,57 @@ class SolrController extends AbstractController
 
         $this->view->assign('errors', $result['errors']);
         $this->view->assign('totalItemsAddedToIndexQueue', $result['totalItemsAddedToIndexQueue']);
+    }
+
+    /**
+     * CleanUp Solr Index
+     * locally and external
+     *
+     * @param string $rootPageUid
+     * @param string $type
+     * @param bool $cleanUpItem
+     * @param bool $cleanUpFile
+     * @param bool $cleanUpSolr
+     * @param bool $confirmed
+     * @return void
+     */
+    public function cleanUpSolrIndexAction($rootPageUid = '', $type = '', $cleanUpItem = false, $cleanUpFile = false, $cleanUpSolr = false, $confirmed = false)
+    {
+        $sites = $this->solrRepository->findAllAvailableSites(true);
+        $showConfirmation = false;
+
+        if ($rootPageUid) {
+            if ($confirmed) {
+                /** @var SolrService $solrService */
+                $solrService = GeneralUtility::makeInstance(SolrService::class);
+                if (MathUtility::canBeInterpretedAsInteger($rootPageUid)) {
+                    $site = $this->solrRepository->findByRootPage((int)$rootPageUid);
+                    if ($site instanceof Site) {
+                        $solrService->deleteByType($site, $type, $cleanUpItem, $cleanUpFile, $cleanUpSolr);
+                        $this->addFlashMessage(
+                            'Given type was successfully removed from "' . $site->getTitle() . '"',
+                            'Delete successful',
+                            FlashMessage::INFO
+                        );
+                    }
+                } elseif ($rootPageUid === 'all') {
+                    foreach ($sites as $site) {
+                        $solrService->deleteByType($site, $type, $cleanUpItem, $cleanUpFile, $cleanUpSolr);
+                    }
+                    $this->addFlashMessage(
+                        'Given type was successfully removed from ' . count($sites) . ' Sites',
+                        'Delete successful',
+                        FlashMessage::INFO
+                    );
+                }
+            } else {
+                $showConfirmation = true;
+            }
+        }
+
+        $this->view->assign('sites', $sites);
+        $this->view->assign('rootPageUid', $rootPageUid);
+        $this->view->assign('type', $type);
+        $this->view->assign('showConfirmation', $showConfirmation);
     }
 }
