@@ -1,4 +1,5 @@
 {namespace t=JWeiland\Jwtools2\ViewHelpers}
+{namespace c=TYPO3\CMS\Core\ViewHelpers}
 
 <f:layout name="Default" />
 
@@ -15,23 +16,7 @@
     </div>
   </f:alias>
 
-  <h2>Search for root pages</h2>
-
-  <f:form action="list" method="POST">
-    <div class="form-group">
-      <label for="rootPageUid">RootPage UID</label>
-      <f:form.textfield name="rootPageUid" class="form-control" id="rootPageUid" placeholder="Page UID" />
-    </div>
-    <f:comment>
-      <div class="form-group">
-        <label for="languageUid">Language UID</label>
-        <f:form.textfield name="languageUid" class="form-control" id="languageUid" placeholder="Language UID" />
-      </div>
-    </f:comment>
-    <f:form.submit value="Search" class="btn btn-default" />
-  </f:form>
-
-  <h2>Results</h2>
+  <h2>Configured Root Pages</h2>
 
   <f:if condition="{sites}">
     <f:then>
@@ -39,20 +24,30 @@
         <thead>
         <tr>
           <th>UID</th>
-          <th>Title</th>
+					<th>Title</th>
+					<th>Actions</th>
           <th>Status</th>
         </tr>
         </thead>
         <tbody>
         <f:for each="{sites}" as="site">
           <tr class="{f:if(condition: '{site.rootPage.uid}=={currentRootPageUid}', then: 'bg-info')}">
-            <td>{site.rootPage.uid}</td>
+            <td>
+							<f:link.action action="show" arguments="{rootPageUid: site.rootPage.uid}">
+								{site.rootPage.uid}
+							</f:link.action>
+						</td>
             <td>
               <f:link.action action="show" arguments="{rootPageUid: site.rootPage.uid}">
                 {site.rootPage.title}
                 {f:if(condition: '{site.rootPage.uid}=={currentRootPageUid}', then: '<span class="badge">Indexing...</span>')}
               </f:link.action>
             </td>
+						<td>
+							<f:link.action action="showClearIndexForm" arguments="{rootPageUid: site.rootPage.uid}">
+								<c:icon identifier="actions-selection-delete" /> Clear Index...
+							</f:link.action>
+						</td>
             <td>
               <f:alias map="{progress: '{t:solr.indexStatus(site: site)}'}">
                 <div class="progress">
@@ -69,7 +64,7 @@
     </f:then>
     <f:else>
       <div class="alert alert-info" role="alert">
-        No search results found. Please try another rootPage UID. Or leave empty to find all available sites.
+        There are currently no Solr Root Pages configured
       </div>
     </f:else>
   </f:if>

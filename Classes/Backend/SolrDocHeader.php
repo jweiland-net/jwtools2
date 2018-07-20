@@ -77,9 +77,9 @@ class SolrDocHeader extends AbstractDocHeader
             ->makeInputButton()
             ->setName('module')
             ->setValue('cleanUp')
-            ->setOnClick($this->getLinkForUrl($this->uriBuilder->reset()->uriFor('cleanUpSolrIndex', [], 'Solr')))
+            ->setOnClick($this->getLinkForUrl($this->uriBuilder->reset()->uriFor('showClearFullIndexForm', [], 'Solr')))
             ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
-            ->setTitle('CleanUp Solr Index')
+            ->setTitle('Clear full index...')
             ->setShowLabelText(true);
         $splitButtonBar->addItem($newButton, false);
 

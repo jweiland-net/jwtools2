@@ -15,7 +15,7 @@
   </div>
 
   <f:if condition="{site.solrConfiguration.enabledIndexQueueConfigurationNames}">
-    <h2>IndexQueue Configurations</h2>
+    <h2>Enabled IndexQueue Configuration names</h2>
     <ul class="list-group">
       <f:for each="{site.solrConfiguration.enabledIndexQueueConfigurationNames}" as="configurationName">
         <li class="list-group-item">{configurationName}</li>

@@ -12,7 +12,7 @@ if (TYPO3_MODE === 'BE') {
         '',
         [
             'Tools' => 'overview',
-            'Solr' => 'list, show, createIndexQueueForAllSites, cleanUpSolrIndex'
+            'Solr' => 'list, show, createIndexQueueForAllSites, showClearFullIndexForm, showClearIndexForm, clearIndex'
         ],
         [
             'access' => 'user,group',

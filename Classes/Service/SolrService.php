@@ -150,61 +150,98 @@ class SolrService
     }
 
     /**
-     * Delete records locally and external by type
+     * Clear various indexes by type
      * Be careful: If type is empty, it will delete EVERYTHING from given $site
      *
      * @param Site $site
      * @param string $type TableName of the configuration
-     * @param bool $cleanUpItem
-     * @param bool $cleanUpFile
-     * @param bool $cleanUpSolr
+     * @param bool $clear
      * @return void
      */
-    public function deleteByType(Site $site, $type = '', $cleanUpItem = false, $cleanUpFile = false, $cleanUpSolr = false)
+    public function clearIndexByType(Site $site, $type = '', array $clear)
     {
-        // delete from local tx_solr_indexqueue_item table
-        if ($cleanUpItem) {
+        // clear local tx_solr_indexqueue_item table
+        if (in_array('clearItem', $clear)) {
+            $this->clearItemTableByType($site, $type);
+        }
+
+        // clear local tx_solr_indexqueue_file table
+        if (in_array('clearFile', $clear)) {
+            $this->clearItemTableByType($site, $type);
+        }
+
+        // clear external Solr Server
+        if (in_array('clearSolr', $clear)) {
+            $this->clearSolrIndexByType($site, $type);
+        }
+    }
+
+    /**
+     * Clear item table by type
+     * Be careful: If type is empty, it will delete EVERYTHING from given $site
+     *
+     * @param Site $site
+     * @param string $type TableName of the configuration
+     * @return void
+     */
+    public function clearItemTableByType(Site $site, $type = '')
+    {
+        $where = [];
+        $where[] = sprintf('root=%d', (int)$site->getRootPageId());
+        if ($type) {
+            $where[] = sprintf(
+                'indexing_configuration=%s',
+                $this->getDatabaseConnection()->fullQuoteStr($type, 'tx_solr_indexqueue_item')
+            );
+        }
+        $this->getDatabaseConnection()->exec_DELETEquery(
+            'tx_solr_indexqueue_item',
+            implode(' AND ', $where)
+        );
+    }
+
+    /**
+     * Clear file table by type
+     * Be careful: If type is empty, it will delete EVERYTHING from given $site
+     *
+     * @param Site $site
+     * @param string $type TableName of the configuration
+     * @return void
+     */
+    public function clearFileTableByType(Site $site, $type = '')
+    {
+        if (ExtensionManagementUtility::isLoaded('solrfal')) {
             $where = [];
-            $where[] = sprintf('root=%d', (int)$site->getRootPageId());
+            $where[] = sprintf('context_site=%d', (int)$site->getRootPageId());
             if ($type) {
                 $where[] = sprintf(
-                    'indexing_configuration=%s',
-                    $this->getDatabaseConnection()->fullQuoteStr($type, 'tx_solr_indexqueue_item')
+                    'context_record_indexing_configuration=%s',
+                    $this->getDatabaseConnection()->fullQuoteStr($type, 'tx_solr_indexqueue_file')
                 );
             }
             $this->getDatabaseConnection()->exec_DELETEquery(
-                'tx_solr_indexqueue_item',
+                'tx_solr_indexqueue_file',
                 implode(' AND ', $where)
             );
         }
+    }
 
-        if ($cleanUpFile) {
-            // delete from local tx_solr_indexqueue_file table
-            if (ExtensionManagementUtility::isLoaded('solrfal')) {
-                $where = [];
-                $where[] = sprintf('context_site=%d', (int)$site->getRootPageId());
-                if ($type) {
-                    $where[] = sprintf(
-                        'context_record_indexing_configuration=%s',
-                        $this->getDatabaseConnection()->fullQuoteStr($type, 'tx_solr_indexqueue_file')
-                    );
-                }
-                $this->getDatabaseConnection()->exec_DELETEquery(
-                    'tx_solr_indexqueue_file',
-                    implode(' AND ', $where)
-                );
-            }
-        }
-
-        if ($cleanUpSolr) {
-            // delete from external Solr Server
-            /** @var \ApacheSolrForTypo3\Solr\SolrService[] $solrServers */
-            $solrServers = GeneralUtility::makeInstance(ConnectionManager::class)
-                ->getConnectionsBySite($site);
-            foreach ($solrServers as $solrServer) {
-                $solrServer->deleteByType($type); // Document
-                $solrServer->deleteByQuery('fileReferenceType:' . $type); // tx_solr_file
-            }
+    /**
+     * Clear Solr Index by type
+     * Be careful: If type is empty, it will delete EVERYTHING from given $site
+     *
+     * @param Site $site
+     * @param string $type TableName of the configuration
+     * @return void
+     */
+    public function clearSolrIndexByType(Site $site, $type = '')
+    {
+        /** @var \ApacheSolrForTypo3\Solr\SolrService[] $solrServers */
+        $solrServers = GeneralUtility::makeInstance(ConnectionManager::class)
+            ->getConnectionsBySite($site);
+        foreach ($solrServers as $solrServer) {
+            $solrServer->deleteByType($type); // Document
+            $solrServer->deleteByQuery('fileReferenceType:' . $type); // tx_solr_file
         }
     }
 
