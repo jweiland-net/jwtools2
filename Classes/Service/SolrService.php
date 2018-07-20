@@ -236,12 +236,13 @@ class SolrService
      */
     public function clearSolrIndexByType(Site $site, $type = '')
     {
+        $tableName = $site->getSolrConfiguration()->getIndexQueueTableNameOrFallbackToConfigurationName($type);
         /** @var \ApacheSolrForTypo3\Solr\SolrService[] $solrServers */
         $solrServers = GeneralUtility::makeInstance(ConnectionManager::class)
             ->getConnectionsBySite($site);
         foreach ($solrServers as $solrServer) {
-            $solrServer->deleteByType($type); // Document
-            $solrServer->deleteByQuery('fileReferenceType:' . $type); // tx_solr_file
+            $solrServer->deleteByType($tableName); // Document
+            $solrServer->deleteByQuery('fileReferenceType:' . $tableName); // tx_solr_file
         }
     }
 
