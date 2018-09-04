@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace JWeiland\Jwtools2\Core\Database;
+namespace JWeiland\Jwtools2\Database;
 
 /*
  * This file is part of the jwtools2 project.
