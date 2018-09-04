@@ -115,7 +115,9 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
             return $message;
         }
 
-        $site = GeneralUtility::makeInstance('ApacheSolrForTypo3\\Solr\\Site', $rootPageId);
+        /** @var SiteRepository $siteRepository */
+        $siteRepository = GeneralUtility::makeInstance(SiteRepository::class);
+        $site = $siteRepository->getSiteByRootPageId($rootPageId);
 
         if ($site instanceof Site) {
             $message = 'Site: ' . $site->getLabel();
