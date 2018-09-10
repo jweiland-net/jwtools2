@@ -120,6 +120,7 @@ class SolrService
     {
         $cleanUpResult = true;
         $solrConfiguration = $site->getSolrConfiguration();
+        /** @var \ApacheSolrForTypo3\Solr\System\Solr\SolrConnection[] $solrServers */
         $solrServers = GeneralUtility::makeInstance(ConnectionManager::class)->getConnectionsBySite($site);
         $typesToCleanUp = [];
         $enableCommitsSetting = $solrConfiguration->getEnableCommits();
@@ -132,7 +133,7 @@ class SolrService
         foreach ($solrServers as $solrServer) {
             $deleteQuery = 'type:(' . implode(' OR ', $typesToCleanUp) . ')'
                 . ' AND siteHash:' . $site->getSiteHash();
-            $solrServer->deleteByQuery($deleteQuery);
+            $solrServer->getWriteService()->deleteByQuery($deleteQuery);
 
             if (!$enableCommitsSetting) {
                 # Do not commit
@@ -237,12 +238,12 @@ class SolrService
     public function clearSolrIndexByType(Site $site, $type = '')
     {
         $tableName = $site->getSolrConfiguration()->getIndexQueueTableNameOrFallbackToConfigurationName($type);
-        /** @var \ApacheSolrForTypo3\Solr\SolrService[] $solrServers */
+        /** @var \ApacheSolrForTypo3\Solr\System\Solr\SolrConnection[] $solrServers */
         $solrServers = GeneralUtility::makeInstance(ConnectionManager::class)
             ->getConnectionsBySite($site);
         foreach ($solrServers as $solrServer) {
-            $solrServer->deleteByType($tableName); // Document
-            $solrServer->deleteByQuery('fileReferenceType:' . $tableName); // tx_solr_file
+            $solrServer->getWriteService()->deleteByType($tableName); // Document
+            $solrServer->getWriteService()->deleteByQuery('fileReferenceType:' . $tableName); // tx_solr_file
         }
     }
 
