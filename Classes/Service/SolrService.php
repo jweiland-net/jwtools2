@@ -64,30 +64,29 @@ class SolrService
      * If no site is given, all available sites are used
      *
      * @param Site[] $sites
-     * @param bool $flushIndexQueue
      * @return array
      */
-    public function createIndexQueueForSites($sites = [], $flushIndexQueue = false)
+    public function createIndexQueueForSites($sites = [])
     {
         if (empty($sites)) {
             $sites = $this->getAvailableSites();
         }
 
         $result = [];
-        $result['sitesToIndex'] = $sites;
+
+        /** @var Queue $indexQueue */
+        $indexQueue = GeneralUtility::makeInstance(Queue::class);
 
         foreach ($sites as $site)
         {
             $indexingConfigurationsToReIndex = $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames();
 
-            if ($flushIndexQueue) {
-                $this->cleanUpIndex($site, $indexingConfigurationsToReIndex);
+            $result[$site->getRootPageId()]['site'] = $site;
+            foreach ($indexingConfigurationsToReIndex as $indexingConfigurationName) {
+                $status = $indexQueue->initialize($site, $indexingConfigurationName);
+
+                $result[$site->getRootPageId()]['status'][] = $status;
             }
-
-            /** @var Queue $indexQueue */
-            $indexQueue = GeneralUtility::makeInstance(Queue::class);
-
-            $result['indexQueue'] = $indexQueue;
         }
 
         return $result;

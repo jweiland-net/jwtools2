@@ -14,7 +14,6 @@ namespace JWeiland\Jwtools2\Command;
  * The TYPO3 project - inspiring people to share!
  */
 
-use ApacheSolrForTypo3\Solr\IndexQueue\Queue;
 use ApacheSolrForTypo3\Solr\Site;
 use JWeiland\Jwtools2\Configuration\ExtConf;
 use JWeiland\Jwtools2\Service\SolrService;
@@ -80,25 +79,30 @@ class SolrCommandController extends CommandController
     /**
      * Creates index for all sites
      *
-     * TODO: Rework this to support list of sites and all if none are given
-     *
-     * @param bool $flushIndexQueue
      * @return void
      */
-    public function createIndexQueueForAllSitesCommand($flushIndexQueue = false)
+    public function createIndexQueueForAllSitesCommand()
     {
-        $result = $this->solrService->createIndexQueueForSites($flushIndexQueue);
-        /** @var Queue $indexQueue */
-        $indexQueue = $result['indexQueue'];
+        $result = $this->solrService->createIndexQueueForSites();
 
-        $this->outputLine('Affected sites: ');
+        foreach ($result as $siteResult) {
+            /** @var Site $site */
+            $site = $siteResult['site'];
+            $statusByQueue = $siteResult['status'];
 
-        /** @var Site $site */
-        foreach ($result['sitesToIndex'] as $site) {
             $this->outputLine($site->getDomain());
-        }
 
-        $this->outputLine();
-        $this->outputLine('Added ' . $indexQueue->getAllItemsCount() . ' items in total to index queue');
+            foreach ($statusByQueue as $status) {
+                foreach ($status as $queue => $success) {
+                    if ($success) {
+                        $this->outputFormatted($queue . ': ' . 'success');
+                    } else {
+                        $this->outputFormatted($queue . ': ' . 'failed');
+                    }
+                }
+            }
+
+            $this->outputLine('');
+        }
     }
 }
