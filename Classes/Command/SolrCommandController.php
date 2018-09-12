@@ -87,7 +87,7 @@ class SolrCommandController extends CommandController
      */
     public function createIndexQueueForAllSitesCommand($flushIndexQueue = false)
     {
-        $result = $this->solrService->createIndexQueueForSites();
+        $result = $this->solrService->createIndexQueueForSites($flushIndexQueue);
         /** @var Queue $indexQueue */
         $indexQueue = $result['indexQueue'];
 
