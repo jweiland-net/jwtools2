@@ -73,8 +73,7 @@ class SolrService
         }
 
         $result = [];
-        $result['errors'] = [];
-        $result['totalItemsAddedToIndexQueue'] = 0;
+        $result['sitesToIndex'] = $sites;
 
         foreach ($sites as $site)
         {
@@ -85,10 +84,7 @@ class SolrService
             /** @var Queue $indexQueue */
             $indexQueue = GeneralUtility::makeInstance(Queue::class);
 
-            foreach ($indexingConfigurationsToReIndex as $indexingConfigurationName) {
-                $result['errors'][$site->getRootPageId()] = $indexQueue->initialize($site, $indexingConfigurationName);
-                $result['totalItemsAddedToIndexQueue'] += $indexQueue->getAllItemsCount();
-            }
+            $result['indexQueue'] = $indexQueue;
         }
 
         return $result;
@@ -140,8 +136,8 @@ class SolrService
                 continue;
             }
 
-            $response = $solrServer->commit(false, false, false);
-            if ($response->getHttpStatus() != 200) {
+            $response = $solrServer->getWriteService()->commit(false, false, false);
+            if ($response->getHttpStatus() !== 200) {
                 $cleanUpResult = false;
                 break;
             }
