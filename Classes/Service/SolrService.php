@@ -83,7 +83,10 @@ class SolrService
 
             $result[$site->getRootPageId()]['site'] = $site;
             foreach ($indexingConfigurationsToReIndex as $indexingConfigurationName) {
-                $status = $indexQueue->initialize($site, $indexingConfigurationName);
+                $status = $indexQueue->getInitializationService()->initializeBySiteAndIndexConfiguration(
+                    $site,
+                    $indexingConfigurationName
+                );
 
                 $result[$site->getRootPageId()]['status'][] = $status;
             }
