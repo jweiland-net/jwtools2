@@ -82,9 +82,10 @@ class SolrCommandController extends CommandController
      *
      * TODO: Rework this to support list of sites and all if none are given
      *
+     * @param bool $flushIndexQueue
      * @return void
      */
-    public function createIndexQueueForAllSitesCommand()
+    public function createIndexQueueForAllSitesCommand($flushIndexQueue = false)
     {
         $result = $this->solrService->createIndexQueueForSites();
         /** @var Queue $indexQueue */
