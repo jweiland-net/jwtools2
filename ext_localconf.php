@@ -34,6 +34,16 @@ call_user_func(
             );
         }
 
+        if ($jwToolsConfiguration['reduceCategoriesToPageTree']) {
+            // Reduce categories to PIDs of current page tree
+            $signalSlotDispatcher->connect(
+                \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::class,
+                \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::SIGNAL_PostProcessTreeData,
+                \JWeiland\Jwtools2\Tca\ReduceCategoryTreeToPageTree::class,
+                'reduceCategoriesToPageTree'
+            );
+        }
+
         // retrieve stdWrap current value into sub cObj. CONTENT
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'][] = \JWeiland\Jwtools2\Hooks\InitializeStdWrap::class;
 

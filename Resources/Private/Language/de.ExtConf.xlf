@@ -11,6 +11,10 @@
 				<source>Transfer TypoScript current: For each record, found by CONTENT, a new instance of ContentObjectRenderer will be created by renderObj. The data property will be filled with the values of the record. The TypoScript current value will be resetted. Activate this option if you want to transfer the parent current value into the sub-property of renderObj.</source>
 				<target>Übertrage TypoScript current: Für jeden Datensatz, der durch CONTENT gefunden wurde, wird bei der Verarbeitung durch renderObj immer eine neue Instanz vom ContentObjectRenderer erzeugt. Die data-Eigenschaft wird mit den Werten des Datensatzes gefüllt während die current-Eigenschaft geleert wird. Nach Aktivierung dieser Option wird der Wert der Eltern current-Eigenschaft mit in die Kind-Eigenschaft (renderObj) übertragen.</target>
 			</trans-unit>
+			<trans-unit id="reduceCategoriesToPageTree">
+				<source>Reduce categories to page tree: In case of a multi-domain TYPO3 instances it makes sense to reduce categories in category-tree to PIDs of current page-tree. So, after activating this checkbox you will not see any categories of foreign page-trees anymore. Admin user will still see everything.</source>
+				<target>Reduziere Kategorien auf Seitenbaum: Bei Multi-Domain Instanzen macht es evtl. Sinn die Kategorien innerhalb des Kategorie-Baumes auf die Kategorien des aktuellen Seitenbaumes zu reduzieren. Nach Aktivierung seht Ihr die Kategorien von den anderen Seitenbäumen nicht mehr. Der Admin jedoch sieht immer alles.</target>
+			</trans-unit>
 			<trans-unit id="solrEnable">
 				<source>Enable Solr features</source>
 				<target>Activiere Solr Features</target>
