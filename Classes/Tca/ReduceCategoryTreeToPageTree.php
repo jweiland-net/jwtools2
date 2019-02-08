@@ -16,6 +16,7 @@ namespace JWeiland\Jwtools2\Tca;
  */
 
 use TYPO3\CMS\Backend\Tree\TreeNode;
+use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
@@ -76,7 +77,10 @@ class ReduceCategoryTreeToPageTree
      */
     protected function removePageTreeForeignCategories(TreeNode $treeNode)
     {
-        if ($treeNode->getChildNodes()->count()) {
+        if (
+            $treeNode->getChildNodes() instanceof TreeNodeCollection
+            && $treeNode->getChildNodes()->count()
+        ) {
             $backupChildNodes = clone $treeNode->getChildNodes();
 
             /** @var TreeNode $childNode */
@@ -87,7 +91,10 @@ class ReduceCategoryTreeToPageTree
                 )) {
                     unset($treeNode->getChildNodes()[$key]);
                 } else {
-                    if ($childNode->getChildNodes()->count()) {
+                    if (
+                        $childNode->getChildNodes() instanceof TreeNodeCollection
+                        && $childNode->getChildNodes()->count()
+                    ) {
                         $this->removePageTreeForeignCategories($treeNode->getChildNodes()[$key]);
                     }
                 }
