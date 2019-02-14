@@ -44,6 +44,8 @@ call_user_func(
             );
         }
 
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['decodeSpURL_preProc'][] = \JWeiland\Jwtools2\RealUrl\ConvertTableAliasToId::class . '->convert';
+
         // retrieve stdWrap current value into sub cObj. CONTENT
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'][] = \JWeiland\Jwtools2\Hooks\InitializeStdWrap::class;
 
