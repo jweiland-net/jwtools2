@@ -16,6 +16,7 @@ namespace JWeiland\Jwtools2\RealUrl;
  */
 
 use DmitryDulepov\Realurl\Decoder\UrlDecoder;
+use DmitryDulepov\Realurl\EncodeDecoderBase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -35,12 +36,12 @@ class ConvertTableAliasToId
      * Convert origValue to UID value
      *
      * @param array $parameters
-     * @param UrlDecoder $parentObject
+     * @param EncodeDecoderBase $parentObject
      * @return int|null
      */
-    public function convert(array $parameters, UrlDecoder $parentObject)
+    public function convert(array $parameters, EncodeDecoderBase $parentObject)
     {
-        if ($this->checkParameters($parameters)) {
+        if ($parentObject instanceof UrlDecoder && $this->checkParameters($parameters)) {
             $id = $this->getIdFromOrigValue($parameters);
             if (!empty($id)) {
                 return $id;
