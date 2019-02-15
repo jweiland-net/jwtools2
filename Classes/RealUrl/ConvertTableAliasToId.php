@@ -20,7 +20,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Convert RealUrl alias of type lookUpTable to ID
+ * If there is a change in a record which results into a new URI, realurl still keeps the old
+ * URI and can resolve the correct page. But, if you clear the realurl cache the old information is gone
+ * and page can not be resolved. In that state realurl tries to do a decoding. If you make use of lookUpTable
+ * configuration with an individual alias_field like CONCAT(title, '-', uid) this process will break decoding and
+ * you will get the useless page part (f.e. my-first-birthday-2) in GETVar which will than break extbase
+ * processing which expects an UID in showAction.
+ * Use this class as postVarSets userFunc in your realurl configuration. If you have UID in front or back of your
+ * URI part there is a chance to resolve URI correctly.
  */
 class ConvertTableAliasToId
 {
