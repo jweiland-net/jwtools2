@@ -34,15 +34,16 @@ class RealurlUtility extends Utility
      *
      * @return string
      */
-    public function getCurrentHost() {
+    public function getCurrentHost()
+    {
         $currentHost = (string)GeneralUtility::getIndpEnv('HTTP_HOST');
         if ($this->currentHttpHost !== $currentHost) {
             // Call user hooks
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['getHost'])) {
-                foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['getHost'] as $userFunc) {
-                    $hookParams = array(
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['getHost'] as $userFunc) {
+                    $hookParams = [
                         'host' => $currentHost,
-                    );
+                    ];
                     $newHost = GeneralUtility::callUserFunction($userFunc, $hookParams, $this);
                     if (!empty($newHost) && is_string($newHost)) {
                         $currentHost = $newHost;

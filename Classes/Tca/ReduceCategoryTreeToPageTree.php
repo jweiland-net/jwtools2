@@ -64,7 +64,8 @@ class ReduceCategoryTreeToPageTree
      * @param DatabaseTreeDataProvider $dataProvider
      * @param TreeNode $treeData
      */
-    public function reduceCategoriesToPageTree(DatabaseTreeDataProvider $dataProvider, $treeData) {
+    public function reduceCategoriesToPageTree(DatabaseTreeDataProvider $dataProvider, $treeData)
+    {
         if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !$this->backendUserAuthentication->isAdmin() && $dataProvider->getTableName() === $this->categoryTableName) {
             $this->removePageTreeForeignCategories($treeData);
         }
@@ -233,6 +234,5 @@ class ReduceCategoryTreeToPageTree
     {
         return GeneralUtility::makeInstance(ConnectionPool::class);
     }
-
-
 }
+s

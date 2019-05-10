@@ -14,11 +14,7 @@ namespace JWeiland\Jwtools2\Controller;
 * The TYPO3 project - inspiring people to share!
 */
 
-use ApacheSolrForTypo3\Solr\ConnectionManager;
 use ApacheSolrForTypo3\Solr\Site;
-use ApacheSolrForTypo3\Solr\System\Configuration\ConfigurationPageResolver;
-use ApacheSolrForTypo3\Solr\System\Configuration\ExtensionConfiguration;
-use ApacheSolrForTypo3\Solr\Util;
 use JWeiland\Jwtools2\Backend\SolrDocHeader;
 use JWeiland\Jwtools2\Domain\Repository\SchedulerRepository;
 use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
@@ -160,7 +156,8 @@ class SolrController extends AbstractController
             $this->addFlashMessage(
                 $rootPageUid . ' is no valid RootPage UID',
                 'Invalid RootPage UID',
-                AbstractMessage::WARNING);
+                AbstractMessage::WARNING
+            );
             $this->redirect('list');
         }
     }
