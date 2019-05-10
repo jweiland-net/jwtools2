@@ -17,9 +17,8 @@ namespace JWeiland\Jwtools2\ViewHelpers\Solr;
 
 use ApacheSolrForTypo3\Solr\Domain\Index\IndexService;
 use ApacheSolrForTypo3\Solr\Site;
-use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class IndexStatusViewHelper
@@ -32,7 +31,6 @@ class IndexStatusViewHelper extends AbstractViewHelper
      * Show index status
      *
      * @param Site $site
-     *
      * @return float
      */
     public function render(Site $site)

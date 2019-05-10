@@ -22,13 +22,11 @@ use JWeiland\Jwtools2\Domain\Repository\SchedulerRepository;
 use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class NextRunViewHelper
- *
- * @package JWeiland\Jwtools2\ViewHelpers\Solr
  */
 class NextRunViewHelper extends AbstractViewHelper
 {

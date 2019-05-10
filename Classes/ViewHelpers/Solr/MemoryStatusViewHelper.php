@@ -16,12 +16,10 @@ namespace JWeiland\Jwtools2\ViewHelpers\Solr;
  */
 
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class MemoryStatusViewHelper
- *
- * @package JWeiland\Jwtools2\ViewHelpers\Solr
  */
 class MemoryStatusViewHelper extends AbstractViewHelper
 {
