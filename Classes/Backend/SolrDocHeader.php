@@ -17,7 +17,7 @@ namespace JWeiland\Jwtools2\Backend;
 use TYPO3\CMS\Core\Imaging\Icon;
 
 /**
- * DocHeader for our own Solr Module
+ * DocHeader for our Solr Module
  */
 class SolrDocHeader extends AbstractDocHeader
 {
