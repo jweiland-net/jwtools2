@@ -17,7 +17,7 @@ namespace JWeiland\Jwtools2\Backend;
 use TYPO3\CMS\Core\Imaging\Icon;
 
 /**
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ * DocHeader for our own Solr Module
  */
 class SolrDocHeader extends AbstractDocHeader
 {

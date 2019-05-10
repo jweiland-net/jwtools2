@@ -17,7 +17,7 @@ namespace JWeiland\Jwtools2\Configuration;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ * Store Extension Configuration
  */
 class ExtConf implements SingletonInterface
 {

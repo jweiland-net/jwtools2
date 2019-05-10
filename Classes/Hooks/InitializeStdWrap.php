@@ -20,7 +20,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectPostInitHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ * Hook to initialize stdWrap
  */
 class InitializeStdWrap implements ContentObjectPostInitHookInterface
 {
