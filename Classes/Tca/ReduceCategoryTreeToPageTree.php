@@ -235,4 +235,3 @@ class ReduceCategoryTreeToPageTree
         return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }
-s

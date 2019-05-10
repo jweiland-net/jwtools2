@@ -126,7 +126,6 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
 
             $message .= ' / Index queue UID: ' . $registry->get('jwtools2-solr', 'indexQueueUid');
             $message .= ' / Memory Peak: ' . (float)$registry->get('jwtools2-solr', 'memoryPeakUsage');
-
         }
         return $message;
     }
