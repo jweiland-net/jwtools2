@@ -40,8 +40,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class SolrController
- *
- * @package JWeiland\Jwtools2\Controller
  */
 class SolrController extends AbstractController
 {

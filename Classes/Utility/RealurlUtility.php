@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Class RealurlUtility
  * Remove the static cache from RealurlUtility as our solr scheduler task loops over each root page
  * and needs the CURRENT domain name
- *
- * @package JWeiland\Drs\Utility
  */
 class RealurlUtility extends Utility
 {

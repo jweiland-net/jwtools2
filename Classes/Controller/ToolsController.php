@@ -28,8 +28,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class ToolsController
- *
- * @package JWeiland\Jwtools2\Controller
  */
 class ToolsController extends AbstractController
 {

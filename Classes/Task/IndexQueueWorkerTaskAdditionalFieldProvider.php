@@ -21,10 +21,6 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * Additional field provider for the index queue worker task
- *
- * @author Stefan Froemken <projects@jweiland.net>
- * @package JWeiland
- * @subpackage jwtools2
  */
 class IndexQueueWorkerTaskAdditionalFieldProvider implements AdditionalFieldProviderInterface
 {

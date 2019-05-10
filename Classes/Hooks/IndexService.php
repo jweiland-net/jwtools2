@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class IndexService
- *
- * @package JWeiland\Jwtools2\Hooks
  */
 class IndexService
 {

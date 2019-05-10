@@ -28,10 +28,6 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * A worker indexing the items in the index queue.
- *
- * @author Stefan Froemken <projects@jweiland.net>
- * @package JWeiland
- * @subpackage jwtools2
  */
 class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInterface
 {

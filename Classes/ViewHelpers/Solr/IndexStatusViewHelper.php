@@ -22,8 +22,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class IndexStatusViewHelper
- *
- * @package JWeiland\Jwtools2\ViewHelpers\Solr
  */
 class IndexStatusViewHelper extends AbstractViewHelper
 {

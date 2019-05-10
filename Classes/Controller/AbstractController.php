@@ -29,8 +29,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class AbstractController
- *
- * @package JWeiland\Jwtools2\Controller
  */
 abstract class AbstractController extends ActionController
 {

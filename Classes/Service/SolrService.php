@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * @package JWeiland\Drs\Service
+ * This is our own SolrService, so we can merge all Solr-Tasks into ONE task.
  */
 class SolrService
 {

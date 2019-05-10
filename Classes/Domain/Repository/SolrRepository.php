@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class SolrRepository
- *
- * @package JWeiland\Jwtools2\Domain\Repository
  */
 class SolrRepository
 {

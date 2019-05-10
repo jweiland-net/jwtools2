@@ -19,8 +19,6 @@ use JWeiland\Jwtools2\Task\IndexQueueWorkerTask;
 
 /**
  * Class SchedulerRepository
- *
- * @package JWeiland\Jwtools2\Domain\Repository
  */
 class SchedulerRepository
 {
