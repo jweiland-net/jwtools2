@@ -1,42 +1,44 @@
-<f:flashMessages />
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+	<f:flashMessages />
 
-<h1>Clear Index</h1>
+	<h1>Clear Index</h1>
 
-<f:form action="clearIndex" class="form">
-	<f:form.hidden name="rootPageUid" value="{site.rootPage.uid}" />
-	<h2>Enabled configuration names for Site: {site.rootPage.title} ({site.rootPage.uid})</h2>
-	<f:render section="validationResults" arguments="{field: 'configurationNames'}" />
-	<f:for each="{enabledConfigurationNames}" as="enabledConfigurationName">
+	<f:form action="clearIndex" class="form">
+		<f:form.hidden name="rootPageUid" value="{site.rootPage.uid}" />
+		<h2>Enabled configuration names for Site: {site.rootPage.title} ({site.rootPage.uid})</h2>
+		<f:render section="validationResults" arguments="{field: 'configurationNames'}" />
+		<f:for each="{enabledConfigurationNames}" as="enabledConfigurationName">
+			<div class="form-group">
+				<f:form.checkbox id="configurationName-{enabledConfigurationName}" name="configurationNames" multiple="1" value="{enabledConfigurationName}" />
+				<label for="configurationName-{enabledConfigurationName}">{enabledConfigurationName}</label>
+			</div>
+		</f:for>
+
+		<h2>Choose which index should be cleared</h2>
+		<f:render section="validationResults" arguments="{field: 'clear'}" />
 		<div class="form-group">
-			<f:form.checkbox id="configurationName-{enabledConfigurationName}" name="configurationNames" multiple="1" value="{enabledConfigurationName}" />
-			<label for="configurationName-{enabledConfigurationName}">{enabledConfigurationName}</label>
+			<f:form.checkbox id="clearItem" name="clear" multiple="1" value="clearItem" />
+			<label for="clearItem">Clear local Solr table: tx_solr_indexqueue_item</label>
 		</div>
-	</f:for>
+		<div class="form-group">
+			<f:form.checkbox id="clearFile" name="clear" multiple="1" value="clearFile" />
+			<label for="clearFile">Clear local Solr table: tx_solr_indexqueue_file</label>
+		</div>
+		<div class="form-group">
+			<f:form.checkbox id="clearSolr" name="clear" multiple="1" value="clearSolr" />
+			<label for="clearSolr">Clear Solr Index</label>
+		</div>
 
-	<h2>Choose which index should be cleared</h2>
-	<f:render section="validationResults" arguments="{field: 'clear'}" />
-	<div class="form-group">
-		<f:form.checkbox id="clearItem" name="clear" multiple="1" value="clearItem" />
-		<label for="clearItem">Clear local Solr table: tx_solr_indexqueue_item</label>
-	</div>
-	<div class="form-group">
-		<f:form.checkbox id="clearFile" name="clear" multiple="1" value="clearFile" />
-		<label for="clearFile">Clear local Solr table: tx_solr_indexqueue_file</label>
-	</div>
-	<div class="form-group">
-		<f:form.checkbox id="clearSolr" name="clear" multiple="1" value="clearSolr" />
-		<label for="clearSolr">Clear Solr Index</label>
-	</div>
+		<f:form.submit value="Clear" />
+	</f:form>
 
-	<f:form.submit value="Clear" />
-</f:form>
-
-<f:section name="validationResults">
-	<f:form.validationResults for="{field}">
-		<f:if condition="{validationResults.flattenedErrors}">
-			<f:for each="{validationResults.errors}" as="error">
-				<f:be.infobox title="Error" message="{error.message}" state="2" disableIcon="0" />
-			</f:for>
-		</f:if>
-	</f:form.validationResults>
-</f:section>
+	<f:section name="validationResults">
+		<f:form.validationResults for="{field}">
+			<f:if condition="{validationResults.flattenedErrors}">
+				<f:for each="{validationResults.errors}" as="error">
+					<f:be.infobox title="Error" message="{error.message}" state="2" disableIcon="0" />
+				</f:for>
+			</f:if>
+		</f:form.validationResults>
+	</f:section>
+</html>

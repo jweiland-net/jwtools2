@@ -1,25 +1,27 @@
-<h1>Result</h1>
-<span>Indexed Items: {totalItemsAddedToIndexQueue}</span>
-<f:for each="{errors}" key="site" as="siteErrors">
-	<f:for each="{siteErrors}" key="queueName" as="wasSucessfull">
-		<ul>
-			<li>Root Site: {site}</li>
-			<li>Results:</li>
-			<li>
-				<ul>
-					<li>IndexQueue: {queueName}</li>
-					<li>Status:
-						<f:if condition="{wasSucessfull}">
-							<f:then>
-								FINE
-							</f:then>
-							<f:else>
-								ERROR
-							</f:else>
-						</f:if>
-					</li>
-				</ul>
-			</li>
-		</ul>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+	<h1>Result</h1>
+	<span>Indexed Items: {totalItemsAddedToIndexQueue}</span>
+	<f:for each="{errors}" key="site" as="siteErrors">
+		<f:for each="{siteErrors}" key="queueName" as="wasSucessfull">
+			<ul>
+				<li>Root Site: {site}</li>
+				<li>Results:</li>
+				<li>
+					<ul>
+						<li>IndexQueue: {queueName}</li>
+						<li>Status:
+							<f:if condition="{wasSucessfull}">
+								<f:then>
+									FINE
+								</f:then>
+								<f:else>
+									ERROR
+								</f:else>
+							</f:if>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</f:for>
 	</f:for>
-</f:for>
+</html>

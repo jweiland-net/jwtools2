@@ -1,71 +1,75 @@
-{namespace t=JWeiland\Jwtools2\ViewHelpers}
-{namespace c=TYPO3\CMS\Core\ViewHelpers}
+<html
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:t="http://typo3.org/ns/JWeiland\Jwtools2\ViewHelpers"
+	xmlns:c="http://typo3.org/ns/TYPO3\CMS\Core\ViewHelpers"
+	data-namespace-typo3-fluid="true"
+>
+	<f:layout name="Default" />
 
-<f:layout name="Default" />
+	<f:section name="main">
+		<h1>Solr features Overview</h1>
 
-<f:section name="main">
-  <h1>Solr features Overview</h1>
+		<h2>Memory Usage of running Solr Scheduler Task</h2>
 
-  <h2>Memory Usage of running Solr Scheduler Task</h2>
+		<f:alias map="{progress: '{t:solr.memoryStatus()}'}">
+			<div class="progress">
+				<div class="progress-bar" role="progressbar" aria-valuenow="{progress}" aria-valuemin="0" aria-valuemax="100" style="width: {progress}%;">
+					<span>{progress} %</span>
+				</div>
+			</div>
+		</f:alias>
 
-  <f:alias map="{progress: '{t:solr.memoryStatus()}'}">
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" aria-valuenow="{progress}" aria-valuemin="0" aria-valuemax="100" style="width: {progress}%;">
-        <span>{progress} %</span>
-      </div>
-    </div>
-  </f:alias>
+		<h2>Configured Root Pages</h2>
 
-  <h2>Configured Root Pages</h2>
-
-  <f:if condition="{sites}">
-    <f:then>
-      <table class="table table-bordered">
-        <thead>
-        <tr>
-          <th>UID</th>
-					<th>Title</th>
-					<th>Actions</th>
-          <th>Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        <f:for each="{sites}" as="site">
-          <tr class="{f:if(condition: '{site.rootPage.uid}=={currentRootPageUid}', then: 'bg-info')}">
-            <td>
-							<f:link.action action="show" arguments="{rootPageUid: site.rootPage.uid}">
-								{site.rootPage.uid}
-							</f:link.action>
-						</td>
-            <td>
-              <f:link.action action="show" arguments="{rootPageUid: site.rootPage.uid}">
-                {site.rootPage.title}
-                {f:if(condition: '{site.rootPage.uid}=={currentRootPageUid}', then: '<span class="badge">Indexing...</span>')}
-              </f:link.action>
-            </td>
-						<td>
-							<f:link.action action="showClearIndexForm" arguments="{rootPageUid: site.rootPage.uid}">
-								<c:icon identifier="actions-selection-delete" /> Clear Index...
-							</f:link.action>
-						</td>
-            <td>
-              <f:alias map="{progress: '{t:solr.indexStatus(site: site)}'}">
-                <div class="progress">
-                  <div class="progress-bar" role="progressbar" aria-valuenow="{progress}" aria-valuemin="0" aria-valuemax="100" style="width: {progress}%;">
-                    <span>{progress}% Complete</span>
-                  </div>
-                </div>
-              </f:alias>
-            </td>
-          </tr>
-        </f:for>
-        </tbody>
-      </table>
-    </f:then>
-    <f:else>
-      <div class="alert alert-info" role="alert">
-        There are currently no Solr Root Pages configured
-      </div>
-    </f:else>
-  </f:if>
-</f:section>
+		<f:if condition="{sites}">
+			<f:then>
+				<table class="table table-bordered">
+					<thead>
+					<tr>
+						<th>UID</th>
+						<th>Title</th>
+						<th>Actions</th>
+						<th>Status</th>
+					</tr>
+					</thead>
+					<tbody>
+					<f:for each="{sites}" as="site">
+						<tr class="{f:if(condition: '{site.rootPage.uid}=={currentRootPageUid}', then: 'bg-info')}">
+							<td>
+								<f:link.action action="show" arguments="{rootPageUid: site.rootPage.uid}">
+									{site.rootPage.uid}
+								</f:link.action>
+							</td>
+							<td>
+								<f:link.action action="show" arguments="{rootPageUid: site.rootPage.uid}">
+									{site.rootPage.title}
+									{f:if(condition: '{site.rootPage.uid}=={currentRootPageUid}', then: '<span class="badge">Indexing...</span>')}
+								</f:link.action>
+							</td>
+							<td>
+								<f:link.action action="showClearIndexForm" arguments="{rootPageUid: site.rootPage.uid}">
+									<c:icon identifier="actions-selection-delete" /> Clear Index...
+								</f:link.action>
+							</td>
+							<td>
+								<f:alias map="{progress: '{t:solr.indexStatus(site: site)}'}">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="{progress}" aria-valuemin="0" aria-valuemax="100" style="width: {progress}%;">
+											<span>{progress}% Complete</span>
+										</div>
+									</div>
+								</f:alias>
+							</td>
+						</tr>
+					</f:for>
+					</tbody>
+				</table>
+			</f:then>
+			<f:else>
+				<div class="alert alert-info" role="alert">
+					There are currently no Solr Root Pages configured
+				</div>
+			</f:else>
+		</f:if>
+	</f:section>
+</html>
