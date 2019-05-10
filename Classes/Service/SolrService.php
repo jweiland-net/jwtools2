@@ -157,7 +157,7 @@ class SolrService
      *
      * @param Site $site
      * @param string $type TableName of the configuration
-     * @param bool $clear
+     * @param array $clear
      * @return void
      */
     public function clearIndexByType(Site $site, $type = '', array $clear)
