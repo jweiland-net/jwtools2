@@ -1,47 +1,48 @@
 {
-  "name": "jweiland/jwtools2",
-  "type": "typo3-cms-extension",
-  "description": "Various tools/hooks to extend/modify TYPO3",
-  "license": "GPL-2.0-or-later",
-  "keywords": ["typo3", "TYPO3 CMS", "tools", "hooks"],
-  "homepage": "http://www.jweiland.net",
-  "authors": [
-    {
-      "name": "Stefan Froemken",
-      "email": "sfroemken@jweiland.net",
-      "role": "Lead Developer"
-    }
-  ],
-  "support": {
-    "email": "projects@jweiland.net",
-    "issues": "https://github.com/jweiland-net/jwtools2/issues",
-    "source": "https://github.com/jweiland-net/jwtools2"
-  },
-  "require": {
-    "typo3/cms-core": "^8.7 || ^9.5"
-  },
-  "require-dev": {
-    "friendsofphp/php-cs-fixer": "^2.0",
+	"name": "jweiland/jwtools2",
+	"type": "typo3-cms-extension",
+	"description": "Various tools/hooks to extend/modify TYPO3",
+	"license": "GPL-2.0-or-later",
+	"keywords": ["typo3", "TYPO3 CMS", "tools", "hooks"],
+	"homepage": "http://www.jweiland.net",
+	"authors": [
+		{
+			"name": "Stefan Froemken",
+			"email": "sfroemken@jweiland.net",
+			"role": "Lead Developer"
+		}
+	],
+	"support": {
+		"email": "projects@jweiland.net",
+		"issues": "https://github.com/jweiland-net/jwtools2/issues",
+		"source": "https://github.com/jweiland-net/jwtools2"
+	},
+	"require": {
+		"typo3/cms-core": "^8.7 || ^9.5",
+		"typo3/cms-scheduler": "^8.7 || ^9.5"
+	},
+	"require-dev": {
+		"friendsofphp/php-cs-fixer": "^2.0",
 		"nimut/testing-framework": "^4.1"
-  },
-  "autoload": {
-    "psr-4": {
-      "JWeiland\\Jwtools2\\": "Classes"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "JWeiland\\Jwtools2\\Tests\\": "Tests"
-    }
-  },
-  "config": {
-    "vendor-dir": ".Build/vendor",
-    "bin-dir": ".Build/bin"
-  },
-  "extra": {
-    "typo3/cms": {
-      "cms-package-dir": "{$vendor-dir}/typo3/cms",
-      "web-dir": ".Build/public"
-    }
-  }
+	},
+	"autoload": {
+		"psr-4": {
+			"JWeiland\\Jwtools2\\": "Classes"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"JWeiland\\Jwtools2\\Tests\\": "Tests"
+		}
+	},
+	"config": {
+		"vendor-dir": ".Build/vendor",
+		"bin-dir": ".Build/bin"
+	},
+	"extra": {
+		"typo3/cms": {
+			"cms-package-dir": "{$vendor-dir}/typo3/cms",
+			"web-dir": ".Build/public"
+		}
+	}
 }
