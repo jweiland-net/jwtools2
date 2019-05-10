@@ -27,7 +27,6 @@ class SolrRepository
      * Gets all available TYPO3 sites with Solr configured.
      *
      * @param bool $stopOnInvalidSite
-     *
      * @return Site[] An array of available sites
      */
     public function findAllAvailableSites($stopOnInvalidSite = false)
@@ -42,7 +41,6 @@ class SolrRepository
      * Get site by root page
      *
      * @param int $rootPage
-     *
      * @return Site
      */
     public function findByRootPage($rootPage)
@@ -53,6 +51,3 @@ class SolrRepository
         return $siteRepository->getSiteByRootPageId((int)$rootPage);
     }
 }
-
-
-

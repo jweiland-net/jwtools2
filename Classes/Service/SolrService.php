@@ -77,8 +77,7 @@ class SolrService
         /** @var Queue $indexQueue */
         $indexQueue = GeneralUtility::makeInstance(Queue::class);
 
-        foreach ($sites as $site)
-        {
+        foreach ($sites as $site) {
             $indexingConfigurationsToReIndex = $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames();
 
             $result[$site->getRootPageId()]['site'] = $site;
@@ -137,7 +136,7 @@ class SolrService
             $solrServer->getWriteService()->deleteByQuery($deleteQuery);
 
             if (!$enableCommitsSetting) {
-                # Do not commit
+                // Do not commit
                 continue;
             }
 

@@ -36,7 +36,8 @@ class ExecuteQueryTaskAdditionalFieldProvider implements AdditionalFieldProvider
      *                    The array is multidimensional, keyed to the task class name and each field's id
      *                    For each field it provides an associative sub-array with the following:
      */
-    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule) {
+    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
+    {
         /** @var \JWeiland\Jwtools2\Task\ExecuteQueryTask $task */
         $additionalFields = [];
 
@@ -67,7 +68,8 @@ class ExecuteQueryTaskAdditionalFieldProvider implements AdditionalFieldProvider
      * @param SchedulerModuleController $schedulerModule reference to the calling object (Scheduler's BE module)
      * @return bool True if validation was ok (or selected class is not relevant), FALSE otherwise
      */
-    public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule) {
+    public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule)
+    {
         $submittedData['sqlQuery'] = (string)$submittedData['sqlQuery'];
 
         return true;
@@ -80,7 +82,8 @@ class ExecuteQueryTaskAdditionalFieldProvider implements AdditionalFieldProvider
      * @param array $submittedData array containing the data submitted by the user
      * @param AbstractTask $task reference to the current task object
      */
-    public function saveAdditionalFields(array $submittedData, AbstractTask $task) {
+    public function saveAdditionalFields(array $submittedData, AbstractTask $task)
+    {
         /** @var \JWeiland\Jwtools2\Task\ExecuteQueryTask $task */
         $task->setSqlQuery($submittedData['sqlQuery']);
     }

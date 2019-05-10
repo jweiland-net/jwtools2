@@ -67,8 +67,10 @@ class MemoryStatusViewHelper extends AbstractViewHelper
             // The 'G' modifier is available since PHP 5.1.0
             case 'g':
                 $bytes *= 1024;
+                // no break
             case 'm':
                 $bytes *= 1024;
+                // no break
             case 'k':
                 $bytes *= 1024;
         }
