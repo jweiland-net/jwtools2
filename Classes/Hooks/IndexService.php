@@ -17,7 +17,6 @@ namespace JWeiland\Jwtools2\Hooks;
 
 use ApacheSolrForTypo3\Solr\IndexQueue\Item;
 use ApacheSolrForTypo3\Solr\Task\IndexQueueWorkerTask;
-use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

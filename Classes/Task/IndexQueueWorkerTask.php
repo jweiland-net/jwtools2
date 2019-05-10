@@ -20,7 +20,6 @@ use ApacheSolrForTypo3\Solr\Site;
 use ApacheSolrForTypo3\Solr\System\Environment\CliEnvironment;
 use DmitryDulepov\Realurl\Utility;
 use JWeiland\Jwtools2\Service\SolrService;
-use JWeiland\Jwtools2\Utility\RealurlUtility;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\ProgressProviderInterface;

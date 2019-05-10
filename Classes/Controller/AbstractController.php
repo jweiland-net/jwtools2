@@ -17,15 +17,10 @@ namespace JWeiland\Jwtools2\Controller;
 use ApacheSolrForTypo3\Solr\System\Configuration\ConfigurationPageResolver;
 use ApacheSolrForTypo3\Solr\System\Configuration\ExtensionConfiguration;
 use ApacheSolrForTypo3\Solr\Util;
-use JWeiland\Jwtools2\Backend\SolrDocHeader;
 use JWeiland\Jwtools2\Configuration\ExtConf;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
-use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
-use TYPO3\CMS\Core\Utility\DebugUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class AbstractController

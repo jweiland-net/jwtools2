@@ -17,12 +17,9 @@ namespace JWeiland\Jwtools2\ViewHelpers\Solr;
 
 use ApacheSolrForTypo3\Solr\Domain\Index\IndexService;
 use ApacheSolrForTypo3\Solr\Site;
-use JWeiland\Jwtools2\Configuration\ExtConf;
 use JWeiland\Jwtools2\Domain\Repository\SchedulerRepository;
 use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
