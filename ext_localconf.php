@@ -28,6 +28,16 @@ call_user_func(
             );
         }
 
+        if ($jwToolsConfiguration['enableSqlQueryTask']) {
+            // Add scheduler task to execute SQL-Queries
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JWeiland\\Jwtools2\\Task\\ExecuteQueryTask'] = [
+                'extension' => $extensionKey,
+                'title' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:executeQueryTask.title',
+                'description' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:executeQueryTask.description',
+                'additionalFields' => 'JWeiland\\Jwtools2\\Task\\ExecuteQueryTaskAdditionalFieldProvider'
+            ];
+        }
+
         if ($jwToolsConfiguration['typo3EnableUidInPageTree']) {
             \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig(
                 'options.pageTree.showPageIdWithTitle = 1'

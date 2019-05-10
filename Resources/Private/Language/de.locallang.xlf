@@ -19,6 +19,18 @@
 				<source>Max sites per run</source>
 				<target>Maximale Anzahl der zu indexierenden Seiten pro Durchlauf</target>
 			</trans-unit>
+			<trans-unit id="executeQueryTask.title" xml:space="preserve" approved="yes">
+				<source>Execute SQL Query</source>
+				<target>SQL Abfrage ausführen</target>
+			</trans-unit>
+			<trans-unit id="executeQueryTask.description" xml:space="preserve" approved="yes">
+				<source>With this task you can write your own SQL-Statement which will be executed with each scheduler run</source>
+				<target>Mit diesem Task kannst Du eine beliebige SQL-Abfrage wiederkehrend ausführen lassen.</target>
+			</trans-unit>
+			<trans-unit id="executeQueryTask.field.sqlQuery" xml:space="preserve" approved="yes">
+				<source>SQL Query</source>
+				<target>SQL Abfrage</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

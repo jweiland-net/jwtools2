@@ -43,7 +43,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
     /**
      * Works through the indexing queue and indexes the queued items into Solr.
      *
-     * @return boolean Returns TRUE on success, FALSE if no items were indexed or none were found.
+     * @return bool Returns TRUE on success, FALSE if no items were indexed or none were found.
      */
     public function execute()
     {

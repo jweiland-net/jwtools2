@@ -15,6 +15,15 @@
 			<trans-unit id="indexqueueworker_field_maxSitesPerRun" xml:space="preserve" approved="yes">
 				<source>Max sites per run</source>
 			</trans-unit>
+			<trans-unit id="executeQueryTask.title" xml:space="preserve" approved="yes">
+				<source>Execute SQL Query</source>
+			</trans-unit>
+			<trans-unit id="executeQueryTask.description" xml:space="preserve" approved="yes">
+				<source>With this task you can write your own SQL-Statement which will be executed with each scheduler run</source>
+			</trans-unit>
+			<trans-unit id="executeQueryTask.field.sqlQuery" xml:space="preserve" approved="yes">
+				<source>SQL Query</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

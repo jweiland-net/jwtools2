@@ -23,6 +23,10 @@
 				<source>Solr scheduler task UID: After activating Solr features, you have to create the new Solr task of this extension in scheduler and insert the UID of this task here.</source>
 				<target>Solr scheduler task UID: Nach Aktivierung der Solr Features müssen Sie die neue Solr Aufgabe dieser Extension im Planer anlegen und die UID dieser Aufgabe dann hier eintragen.</target>
 			</trans-unit>
+			<trans-unit id="enableExecuteQueryTask">
+				<source>Enable SQL-Query Task: With this task you can realize your own recurring SQL-Queries.</source>
+				<target>SQL-Abfrage-Task aktivieren: Mit diesem scheduler Task könnt Ihr Eure eigenen SQL-Abfragen wiederkehrend einrichten.</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
