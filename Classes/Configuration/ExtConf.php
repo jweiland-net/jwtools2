@@ -75,7 +75,6 @@ class ExtConf implements SingletonInterface
      * Sets the typo3TransferTypoScriptCurrent
      *
      * @param bool $typo3TransferTypoScriptCurrent
-     *
      * @return void
      */
     public function setTypo3TransferTypoScriptCurrent($typo3TransferTypoScriptCurrent)
@@ -97,7 +96,6 @@ class ExtConf implements SingletonInterface
      * Sets the solrEnable
      *
      * @param bool $solrEnable
-     *
      * @return void
      */
     public function setSolrEnable($solrEnable)
@@ -119,7 +117,6 @@ class ExtConf implements SingletonInterface
      * Sets the solrSchedulerTaskUid
      *
      * @param int $solrSchedulerTaskUid
-     *
      * @return void
      */
     public function setSolrSchedulerTaskUid($solrSchedulerTaskUid)

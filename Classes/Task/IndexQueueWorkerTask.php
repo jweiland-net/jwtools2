@@ -146,7 +146,6 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
      * Gets all available TYPO3 sites with Solr configured.
      *
      * @param bool $stopOnInvalidSite
-     *
      * @return Site[] An array of available sites
      */
     public function getAvailableSites($stopOnInvalidSite = false)
@@ -161,7 +160,6 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
      * Returns the initialize IndexService instance.
      *
      * @param Site $site
-     *
      * @return IndexService
      */
     protected function getInitializedIndexServiceForSite(Site $site)
@@ -183,7 +181,6 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
 
     /**
      * @param int $limit
-     *
      * @return void
      */
     public function setDocumentsToIndexLimit($limit)
@@ -201,7 +198,6 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
 
     /**
      * @param int $maxSitesPerRun
-     *
      * @return void
      */
     public function setMaxSitesPerRun($maxSitesPerRun)

@@ -113,7 +113,6 @@ class SolrService
      *
      * @param Site $site
      * @param string[] $indexingConfigurationsToReIndex
-     *
      * @return bool TRUE if clean up was successful, FALSE on error
      */
     protected function cleanUpIndex($site, $indexingConfigurationsToReIndex)

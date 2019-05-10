@@ -31,7 +31,6 @@ class IndexQueueWorkerTaskAdditionalFieldProvider implements AdditionalFieldProv
      * @param array $taskInfo reference to the array containing the info used in the add/edit form
      * @param AbstractTask $task when editing, reference to the current task object. Null when adding.
      * @param SchedulerModuleController $schedulerModule : reference to the calling object (Scheduler's BE module)
-     *
      * @return array Array containing all the information pertaining to the additional fields
      *                    The array is multidimensional, keyed to the task class name and each field's id
      *                    For each field it provides an associative sub-array with the following:
@@ -82,7 +81,6 @@ class IndexQueueWorkerTaskAdditionalFieldProvider implements AdditionalFieldProv
      *
      * @param array $submittedData reference to the array containing the data submitted by the user
      * @param SchedulerModuleController $schedulerModule reference to the calling object (Scheduler's BE module)
-     *
      * @return bool True if validation was ok (or selected class is not relevant), FALSE otherwise
      */
     public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule)
@@ -100,7 +98,6 @@ class IndexQueueWorkerTaskAdditionalFieldProvider implements AdditionalFieldProv
      *
      * @param array $submittedData array containing the data submitted by the user
      * @param AbstractTask $task reference to the current task object
-     *
      * @return void
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)

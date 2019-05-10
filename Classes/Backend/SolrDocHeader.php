@@ -23,8 +23,6 @@ class SolrDocHeader extends AbstractDocHeader
 {
     /**
      * Render DocHeader for View
-     *
-     * @return void
      */
     public function renderDocHeader()
     {
@@ -40,8 +38,6 @@ class SolrDocHeader extends AbstractDocHeader
 
     /**
      * Add module selector
-     *
-     * @return void
      */
     protected function addModuleSelector()
     {

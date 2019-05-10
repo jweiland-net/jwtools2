@@ -41,7 +41,6 @@ abstract class AbstractController extends ActionController
      * inject extConf
      *
      * @param ExtConf $extConf
-     *
      * @return void
      */
     public function injectExtConf(ExtConf $extConf)
@@ -56,7 +55,6 @@ abstract class AbstractController extends ActionController
      * or prepare the view in another way before the action is called.
      *
      * @param ViewInterface $view The view to be initialized
-     *
      * @return void
      */
     protected function initializeView(ViewInterface $view)
