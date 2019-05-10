@@ -31,8 +31,6 @@ class IndexService
      * @param Item $item
      * @param IndexQueueWorkerTask|null $task
      * @param string $uniqueId
-     *
-     * @return void
      */
     public function beforeIndexItem(Item $item, $task, $uniqueId = '')
     {

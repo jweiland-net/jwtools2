@@ -32,7 +32,6 @@ class MemoryStatusViewHelper extends AbstractViewHelper
      * inject registry
      *
      * @param Registry $registry
-     *
      * @return void
      */
     public function injectRegistry(Registry $registry)

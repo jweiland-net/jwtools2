@@ -15,7 +15,6 @@ namespace JWeiland\Jwtools2\Backend;
  */
 
 use TYPO3\CMS\Backend\View\BackendTemplateView;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -66,8 +65,6 @@ abstract class AbstractDocHeader
      * inject uriBuilder
      *
      * @param UriBuilder $uriBuilder
-     *
-     * @return void
      */
     public function injectUriBuilder(UriBuilder $uriBuilder)
     {
@@ -78,8 +75,6 @@ abstract class AbstractDocHeader
      * inject iconFactory
      *
      * @param IconFactory $iconFactory
-     *
-     * @return void
      */
     public function injectIconFactory(IconFactory $iconFactory)
     {
@@ -88,8 +83,6 @@ abstract class AbstractDocHeader
 
     /**
      * Add Help CSH Button
-     *
-     * @return void
      */
     protected function addHelpButton()
     {
@@ -107,8 +100,6 @@ abstract class AbstractDocHeader
 
     /**
      * Add Shortcut Button
-     *
-     * @return void
      */
     protected function addShortcutButton()
     {
@@ -128,8 +119,6 @@ abstract class AbstractDocHeader
 
     /**
      * Add "Close" button to DocHeader
-     *
-     * @return void
      */
     protected function addCloseButton()
     {
@@ -155,21 +144,10 @@ abstract class AbstractDocHeader
      * Get Link to create new configuration records of defined type
      *
      * @param string $url
-     *
      * @return string
      */
     protected function getLinkForUrl($url)
     {
         return 'window.location.href=' . GeneralUtility::quoteJSvalue($url) . '; return false;';
-    }
-
-    /**
-     * Get TYPO3s Database Connection
-     *
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

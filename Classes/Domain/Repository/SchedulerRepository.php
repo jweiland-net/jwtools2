@@ -31,7 +31,6 @@ class SchedulerRepository
      * inject extConf
      *
      * @param ExtConf $extConf
-     *
      * @return void
      */
     public function injectExtConf(ExtConf $extConf)

@@ -45,7 +45,6 @@ class NextRunViewHelper extends AbstractViewHelper
      * inject solrRepository
      *
      * @param SolrRepository $solrRepository
-     *
      * @return void
      */
     public function injectSolrRepository(SolrRepository $solrRepository)
@@ -57,7 +56,6 @@ class NextRunViewHelper extends AbstractViewHelper
      * inject schedulerRepository
      *
      * @param SchedulerRepository $schedulerRepository
-     *
      * @return void
      */
     public function injectSchedulerRepository(SchedulerRepository $schedulerRepository)
@@ -69,7 +67,6 @@ class NextRunViewHelper extends AbstractViewHelper
      * inject registry
      *
      * @param Registry $registry
-     *
      * @return void
      */
     public function injectRegistry(Registry $registry)
@@ -81,7 +78,6 @@ class NextRunViewHelper extends AbstractViewHelper
      * Calculate next run for given site
      *
      * @param Site $site
-     *
      * @return int
      */
     public function render(Site $site)
@@ -121,7 +117,6 @@ class NextRunViewHelper extends AbstractViewHelper
      * Return array key of matching site
      *
      * @param Site $site
-     *
      * @return int
      */
     protected function getKeyOfAllAvailableSites(Site $site)

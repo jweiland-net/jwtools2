@@ -31,7 +31,6 @@ class ExecuteQueryTaskAdditionalFieldProvider implements AdditionalFieldProvider
      * @param array $taskInfo reference to the array containing the info used in the add/edit form
      * @param AbstractTask $task when editing, reference to the current task object. Null when adding.
      * @param SchedulerModuleController $schedulerModule : reference to the calling object (Scheduler's BE module)
-     *
      * @return array Array containing all the information pertaining to the additional fields
      *                    The array is multidimensional, keyed to the task class name and each field's id
      *                    For each field it provides an associative sub-array with the following:
