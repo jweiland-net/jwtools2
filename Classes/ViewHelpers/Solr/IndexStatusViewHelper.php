@@ -26,15 +26,30 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 class IndexStatusViewHelper extends AbstractViewHelper
 {
     /**
+     * Initialize all arguments.
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument(
+            'site',
+            Site::class,
+            'The site class to retrieve the status from',
+            true
+        );
+    }
+
+    /**
      * Show index status
      *
-     * @param Site $site
      * @return float
      */
-    public function render(Site $site)
+    public function render()
     {
         /** @var IndexService $indexService */
-        $indexService = GeneralUtility::makeInstance(IndexService::class, $site);
+        $indexService = GeneralUtility::makeInstance(
+            IndexService::class,
+            $this->arguments['site']
+        );
         $indexService->setContextTask(null);
 
         return $indexService->getProgress();

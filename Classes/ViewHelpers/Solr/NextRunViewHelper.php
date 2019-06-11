@@ -75,12 +75,24 @@ class NextRunViewHelper extends AbstractViewHelper
     }
 
     /**
+     * Initialize all arguments.
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument(
+            'site',
+            Site::class,
+            'The site class to retrieve information about run from',
+            true
+        );
+    }
+
+    /**
      * Calculate next run for given site
      *
-     * @param Site $site
      * @return int
      */
-    public function render(Site $site)
+    public function render()
     {
         $task = $this->schedulerRepository->findSolrSchedulerTask();
         if (!$task || empty($task->getExecution()->getInterval())) {
@@ -98,7 +110,7 @@ class NextRunViewHelper extends AbstractViewHelper
             return 0;
         }
 
-        $requestedKey = $this->getKeyOfAllAvailableSites($site);
+        $requestedKey = $this->getKeyOfAllAvailableSites($this->arguments['site']);
         $currentKey = $this->getKeyOfAllAvailableSites($currentSite);
 
         if ($currentKey <= $requestedKey) {
