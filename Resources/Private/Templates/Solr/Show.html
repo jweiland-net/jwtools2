@@ -21,7 +21,11 @@
 			<h2>Enabled IndexQueue Configuration names</h2>
 			<ul class="list-group">
 				<f:for each="{site.solrConfiguration.enabledIndexQueueConfigurationNames}" as="configurationName">
-					<li class="list-group-item">{configurationName}</li>
+					<li class="list-group-item">
+						<f:link.action action="showIndexQueue" arguments="{rootPageUid: site.rootPageId, configurationName: configurationName}">
+							{configurationName}
+						</f:link.action>
+					</li>
 				</f:for>
 			</ul>
 		</f:if>

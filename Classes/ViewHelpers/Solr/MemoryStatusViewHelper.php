@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types = 1);
 namespace JWeiland\Jwtools2\ViewHelpers\Solr;
 
 /*
@@ -32,7 +32,6 @@ class MemoryStatusViewHelper extends AbstractViewHelper
      * inject registry
      *
      * @param Registry $registry
-     * @return void
      */
     public function injectRegistry(Registry $registry)
     {
@@ -44,7 +43,7 @@ class MemoryStatusViewHelper extends AbstractViewHelper
      *
      * @return float
      */
-    public function render()
+    public function render(): float
     {
         $memoryPeakUsage = $this->registry->get('jwtools2-solr', 'memoryPeakUsage', 0);
         $memoryLimit = $this->returnBytes(ini_get('memory_limit'));
@@ -58,7 +57,7 @@ class MemoryStatusViewHelper extends AbstractViewHelper
      * @param string $bytes
      * @return int
      */
-    protected function returnBytes($bytes)
+    protected function returnBytes(string $bytes): int
     {
         $bytes = trim($bytes);
         $last = strtolower($bytes[strlen($bytes) - 1]);

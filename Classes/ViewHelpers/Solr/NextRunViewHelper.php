@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types = 1);
 namespace JWeiland\Jwtools2\ViewHelpers\Solr;
 
 /*
@@ -45,7 +45,6 @@ class NextRunViewHelper extends AbstractViewHelper
      * inject solrRepository
      *
      * @param SolrRepository $solrRepository
-     * @return void
      */
     public function injectSolrRepository(SolrRepository $solrRepository)
     {
@@ -56,7 +55,6 @@ class NextRunViewHelper extends AbstractViewHelper
      * inject schedulerRepository
      *
      * @param SchedulerRepository $schedulerRepository
-     * @return void
      */
     public function injectSchedulerRepository(SchedulerRepository $schedulerRepository)
     {
@@ -67,7 +65,6 @@ class NextRunViewHelper extends AbstractViewHelper
      * inject registry
      *
      * @param Registry $registry
-     * @return void
      */
     public function injectRegistry(Registry $registry)
     {
@@ -82,7 +79,7 @@ class NextRunViewHelper extends AbstractViewHelper
         $this->registerArgument(
             'site',
             Site::class,
-            'The site class to retrieve information about run from',
+            'Solr Site object to get the next run from',
             true
         );
     }
@@ -90,9 +87,9 @@ class NextRunViewHelper extends AbstractViewHelper
     /**
      * Calculate next run for given site
      *
-     * @return int
+     * @return float
      */
-    public function render()
+    public function render(): float
     {
         $task = $this->schedulerRepository->findSolrSchedulerTask();
         if (!$task || empty($task->getExecution()->getInterval())) {
@@ -131,7 +128,7 @@ class NextRunViewHelper extends AbstractViewHelper
      * @param Site $site
      * @return int
      */
-    protected function getKeyOfAllAvailableSites(Site $site)
+    protected function getKeyOfAllAvailableSites(Site $site): int
     {
         /** @var Site[] $sites */
         $sites = array_values($this->solrRepository->findAllAvailableSites());

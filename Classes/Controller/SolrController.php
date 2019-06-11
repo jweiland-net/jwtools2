@@ -14,11 +14,17 @@ namespace JWeiland\Jwtools2\Controller;
 * The TYPO3 project - inspiring people to share!
 */
 
+use ApacheSolrForTypo3\Solr\IndexQueue\Indexer;
+use ApacheSolrForTypo3\Solr\IndexQueue\Item;
+use ApacheSolrForTypo3\Solr\IndexQueue\Queue;
 use ApacheSolrForTypo3\Solr\Site;
+use ApacheSolrForTypo3\Solr\System\Configuration\TypoScriptConfiguration;
 use JWeiland\Jwtools2\Backend\SolrDocHeader;
 use JWeiland\Jwtools2\Domain\Repository\SchedulerRepository;
 use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use JWeiland\Jwtools2\Service\SolrService;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -52,7 +58,6 @@ class SolrController extends AbstractController
      * inject solrRepository
      *
      * @param SolrRepository $solrRepository
-     * @return void
      */
     public function injectSolrRepository(SolrRepository $solrRepository)
     {
@@ -63,7 +68,6 @@ class SolrController extends AbstractController
      * inject schedulerRepository
      *
      * @param SchedulerRepository $schedulerRepository
-     * @return void
      */
     public function injectSchedulerRepository(SchedulerRepository $schedulerRepository)
     {
@@ -74,7 +78,6 @@ class SolrController extends AbstractController
      * inject registry
      *
      * @param Registry $registry
-     * @return void
      */
     public function injectRegistry(Registry $registry)
     {
@@ -85,7 +88,6 @@ class SolrController extends AbstractController
      * Pre-Execute some scripts
      *
      * @param ViewInterface $view
-     * @return void
      */
     public function initializeView(ViewInterface $view)
     {
@@ -104,8 +106,6 @@ class SolrController extends AbstractController
 
     /**
      * List action
-     *
-     * @return void
      */
     public function listAction()
     {
@@ -118,7 +118,6 @@ class SolrController extends AbstractController
      *
      * @param int $rootPageUid
      * @param int $languageUid
-     * @return void
      */
     public function showAction($rootPageUid, $languageUid = 0)
     {
@@ -128,9 +127,51 @@ class SolrController extends AbstractController
     }
 
     /**
-     * Creates index queue for all sites
+     * Show index queue configuration action
      *
-     * @return void
+     * @param int $rootPageUid
+     * @param string $configurationName
+     * @param int $languageUid
+     */
+    public function showIndexQueueAction(int $rootPageUid, string $configurationName, int $languageUid = 0)
+    {
+        $site = $this->solrRepository->findByRootPage((int)$rootPageUid);
+        $solrConfiguration = $site->getSolrConfiguration()->getIndexQueueConfigurationByName($configurationName);
+        $this->view->assign('site', $site);
+        $this->view->assign('solrConfiguration', $solrConfiguration);
+        $this->view->assign('configurationName', $configurationName);
+    }
+
+    /**
+     * Index one special record by configuration name and site
+     *
+     * @param int $rootPageUid
+     * @param string $configurationName
+     * @param int $recordUid
+     * @param int $languageUid
+     */
+    public function indexOneRecordAction(int $rootPageUid, string $configurationName, int $recordUid, int $languageUid = 0)
+    {
+        $site = $this->solrRepository->findByRootPage((int)$rootPageUid);
+        $item = $this->getIndexQueueItem($rootPageUid, $configurationName, $recordUid);
+        if ($item instanceof Item) {
+            $this->indexItem($item, $site->getSolrConfiguration());
+        }
+
+        $this->redirect(
+            'showIndexQueue',
+            'Solr',
+            'jwtools2',
+            [
+                'rootPageUid' => $rootPageUid,
+                'configurationName' => $configurationName,
+                'languageUid' => $languageUid
+            ]
+        );
+    }
+
+    /**
+     * Creates index queue for all sites
      */
     public function createIndexQueueForAllSitesAction()
     {
@@ -144,7 +185,6 @@ class SolrController extends AbstractController
 
     /**
      * @param int $rootPageUid
-     * @return void
      */
     public function showClearIndexFormAction($rootPageUid)
     {
@@ -168,7 +208,6 @@ class SolrController extends AbstractController
      * @param array $clear
      * @validate $configurationNames NotEmpty
      * @validate $clear NotEmpty
-     * @return void
      */
     public function clearIndexAction($rootPageUid, $configurationNames, array $clear)
     {
@@ -195,7 +234,7 @@ class SolrController extends AbstractController
     }
 
     /**
-     * @return void
+     * Show a form to clear full index
      */
     public function showClearFullIndexFormAction()
     {
@@ -213,5 +252,159 @@ class SolrController extends AbstractController
         }
         $this->view->assign('sites', $sites);
         $this->view->assign('configurationNamesOfAllSites', $configurationNamesOfAllSites);
+    }
+
+    /**
+     * @param int $rootPageUid
+     * @param string $configurationName
+     * @param int $recordUid
+     * @return Item|object|null
+     */
+    protected function getIndexQueueItem(int $rootPageUid, string $configurationName, int $recordUid)
+    {
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_solr_indexqueue_item');
+        $indexQueueItem = $queryBuilder
+            ->select('*')
+            ->from('tx_solr_indexqueue_item')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'root',
+                    $queryBuilder->createNamedParameter($rootPageUid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'indexing_configuration',
+                    $queryBuilder->createNamedParameter($configurationName, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'item_uid',
+                    $queryBuilder->createNamedParameter($recordUid, \PDO::PARAM_INT)
+                )
+            )
+            ->execute()
+            ->fetch();
+
+        if ($indexQueueItem === false) {
+            return null;
+        }
+
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable($indexQueueItem['item_type']);
+        $tableRecord = $queryBuilder
+            ->select('*')
+            ->from($indexQueueItem['item_type'])
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($recordUid, \PDO::PARAM_INT)
+                )
+            )
+            ->execute()
+            ->fetch();
+
+        if ($tableRecord === false) {
+            return null;
+        }
+
+        return GeneralUtility::makeInstance(
+            Item::class,
+            $indexQueueItem,
+            $tableRecord
+        );
+    }
+
+    /**
+     * Indexes an item from the Index Queue.
+     *
+     * @param Item $item An index queue item to index
+     * @param TypoScriptConfiguration $configuration
+     * @return bool TRUE if the item was successfully indexed, FALSE otherwise
+     */
+    protected function indexItem(Item $item, TypoScriptConfiguration $configuration)
+    {
+        $indexer = $this->getIndexerByItem($item->getIndexingConfigurationName(), $configuration);
+
+        // Remember original http host value
+        $originalHttpHost = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null;
+
+        $this->initializeHttpServerEnvironment($item);
+        $itemIndexed = $indexer->index($item);
+
+        // update IQ item so that the IQ can determine what's been indexed already
+        if ($itemIndexed) {
+            $indexQueue = GeneralUtility::makeInstance(Queue::class);
+            $indexQueue->updateIndexTimeByItem($item);
+        }
+
+        if (!is_null($originalHttpHost)) {
+            $_SERVER['HTTP_HOST'] = $originalHttpHost;
+        } else {
+            unset($_SERVER['HTTP_HOST']);
+        }
+
+        // needed since TYPO3 7.5
+        GeneralUtility::flushInternalRuntimeCaches();
+
+        return $itemIndexed;
+    }
+
+    /**
+     * A factory method to get an indexer depending on an item's configuration.
+     *
+     * By default all items are indexed using the default indexer
+     * (ApacheSolrForTypo3\Solr\IndexQueue\Indexer) coming with EXT:solr. Pages by default are
+     * configured to be indexed through a dedicated indexer
+     * (ApacheSolrForTypo3\Solr\IndexQueue\PageIndexer). In all other cases a dedicated indexer
+     * can be specified through TypoScript if needed.
+     *
+     * @param string $indexingConfigurationName Indexing configuration name.
+     * @param TypoScriptConfiguration $configuration
+     * @return Indexer
+     */
+    protected function getIndexerByItem($indexingConfigurationName, TypoScriptConfiguration $configuration)
+    {
+        $indexerClass = $configuration->getIndexQueueIndexerByConfigurationName($indexingConfigurationName);
+        $indexerConfiguration = $configuration->getIndexQueueIndexerConfigurationByConfigurationName($indexingConfigurationName);
+
+        $indexer = GeneralUtility::makeInstance($indexerClass, $indexerConfiguration);
+        if (!($indexer instanceof Indexer)) {
+            throw new \RuntimeException(
+                'The indexer class "' . $indexerClass . '" for indexing configuration "' . $indexingConfigurationName . '" is not a valid indexer. Must be a subclass of ApacheSolrForTypo3\Solr\IndexQueue\Indexer.',
+                1260463206
+            );
+        }
+
+        return $indexer;
+    }
+
+    /**
+     * Initializes the $_SERVER['HTTP_HOST'] environment variable in CLI
+     * environments dependent on the Index Queue item's root page.
+     *
+     * When the Index Queue Worker task is executed by a cron job there is no
+     * HTTP_HOST since we are in a CLI environment. RealURL needs the host
+     * information to generate a proper URL though. Using the Index Queue item's
+     * root page information we can determine the correct host although being
+     * in a CLI environment.
+     *
+     * @param Item $item Index Queue item to use to determine the host.
+     * @param
+     */
+    protected function initializeHttpServerEnvironment(Item $item)
+    {
+        static $hosts = [];
+        $rootpageId = $item->getRootPageUid();
+        $hostFound = !empty($hosts[$rootpageId]);
+
+        if (!$hostFound) {
+            $rootline = BackendUtility::BEgetRootLine($rootpageId);
+            $host = BackendUtility::firstDomainRecord($rootline);
+            $hosts[$rootpageId] = $host;
+        }
+
+        $_SERVER['HTTP_HOST'] = $hosts[$rootpageId];
+
+        // needed since TYPO3 7.5
+        GeneralUtility::flushInternalRuntimeCaches();
     }
 }

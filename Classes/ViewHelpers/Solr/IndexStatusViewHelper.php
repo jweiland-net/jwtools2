@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types = 1);
 namespace JWeiland\Jwtools2\ViewHelpers\Solr;
 
 /*
@@ -16,7 +16,7 @@ namespace JWeiland\Jwtools2\ViewHelpers\Solr;
  */
 
 use ApacheSolrForTypo3\Solr\Domain\Index\IndexService;
-use ApacheSolrForTypo3\Solr\Site;
+use ApacheSolrForTypo3\Solr\Domain\Site\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -33,7 +33,7 @@ class IndexStatusViewHelper extends AbstractViewHelper
         $this->registerArgument(
             'site',
             Site::class,
-            'The site class to retrieve the status from',
+            'Solr Site object to get the index status from',
             true
         );
     }
@@ -43,7 +43,7 @@ class IndexStatusViewHelper extends AbstractViewHelper
      *
      * @return float
      */
-    public function render()
+    public function render(): float
     {
         /** @var IndexService $indexService */
         $indexService = GeneralUtility::makeInstance(
