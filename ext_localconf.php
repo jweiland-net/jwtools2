@@ -26,6 +26,10 @@ call_user_func(
                 \JWeiland\Jwtools2\Hooks\IndexService::class,
                 'beforeIndexItem'
             );
+            if ($jwToolsConfiguration['solrApplyPatches']) {
+                $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\ApacheSolrForTypo3\Solr\Util::class]['className'] = \JWeiland\Jwtools2\XClasses\Util::class;
+                $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\ApacheSolrForTypo3\Solr\IndexQueue\Indexer::class]['className'] = \JWeiland\Jwtools2\XClasses\Indexer::class;
+            }
         }
 
         if ($jwToolsConfiguration['enableSqlQueryTask']) {

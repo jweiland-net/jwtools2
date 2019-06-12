@@ -23,6 +23,10 @@
 				<source>Solr scheduler task UID: After activating Solr features, you have to create the new Solr task of this extension in scheduler and insert the UID of this task here.</source>
 				<target>Solr scheduler task UID: Nach Aktivierung der Solr Features müssen Sie die neue Solr Aufgabe dieser Extension im Planer anlegen und die UID dieser Aufgabe dann hier eintragen.</target>
 			</trans-unit>
+			<trans-unit id="solrApplyPatches">
+				<source>Solr apply patches: There are some bugs in Solr which we have solved. Activate this checkbox to apply these patches: https://github.com/TYPO3-Solr/ext-solr/pull/2324/ and https://github.com/TYPO3-Solr/ext-solr/pull/2323</source>
+				<target>Solr Patches einbinden: Wir haben ein paar Fehler in solr gefunden. Nach Aktivierung dieser Checkbox werden diese Patches eingebaut: https://github.com/TYPO3-Solr/ext-solr/pull/2324/ und https://github.com/TYPO3-Solr/ext-solr/pull/2323</target>
+			</trans-unit>
 			<trans-unit id="enableExecuteQueryTask">
 				<source>Enable SQL-Query Task: With this task you can realize your own recurring SQL-Queries.</source>
 				<target>SQL-Abfrage-Task aktivieren: Mit diesem scheduler Task könnt Ihr Eure eigenen SQL-Abfragen wiederkehrend einrichten.</target>
