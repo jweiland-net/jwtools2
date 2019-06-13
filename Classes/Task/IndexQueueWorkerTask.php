@@ -116,7 +116,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
         if ($site instanceof Site) {
             $message = 'Site: ' . $site->getLabel();
 
-            /** @var $indexService \ApacheSolrForTypo3\Solr\Domain\Index\IndexService */
+            /** @var $indexService IndexService */
             $indexService = $this->getInitializedIndexServiceForSite($site);
             $failedItemsCount = $indexService->getFailCount();
 

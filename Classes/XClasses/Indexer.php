@@ -56,6 +56,7 @@ class Indexer extends \ApacheSolrForTypo3\Solr\IndexQueue\Indexer
      * In case of additionalStoragePid config recordPageId can be outsite of siteroot.
      * In that case we should not read TS config of foreign siteroot.
      *
+     * @param Item $item
      * @return bool
      */
     protected function isRootPageIdPartOfRootLine(Item $item)
