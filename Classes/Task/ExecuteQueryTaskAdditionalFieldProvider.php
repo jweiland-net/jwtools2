@@ -37,7 +37,7 @@ class ExecuteQueryTaskAdditionalFieldProvider implements AdditionalFieldProvider
      */
     public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
-        /** @var \JWeiland\Jwtools2\Task\ExecuteQueryTask $task */
+        /** @var ExecuteQueryTask $task */
         $additionalFields = [];
 
         // Documents to index
@@ -67,7 +67,7 @@ class ExecuteQueryTaskAdditionalFieldProvider implements AdditionalFieldProvider
      * @param SchedulerModuleController $schedulerModule reference to the calling object (Scheduler's BE module)
      * @return bool True if validation was ok (or selected class is not relevant), FALSE otherwise
      */
-    public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule)
+    public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
         $submittedData['sqlQuery'] = (string)$submittedData['sqlQuery'];
 
@@ -83,7 +83,7 @@ class ExecuteQueryTaskAdditionalFieldProvider implements AdditionalFieldProvider
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
-        /** @var \JWeiland\Jwtools2\Task\ExecuteQueryTask $task */
+        /** @var ExecuteQueryTask $task */
         $task->setSqlQuery($submittedData['sqlQuery']);
     }
 }

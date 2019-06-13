@@ -35,7 +35,7 @@ class SolrService
      *
      * @return QueueStatistic
      */
-    public function getStatistic()
+    public function getStatistic(): QueueStatistic
     {
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_solr_indexqueue_item');
         $indexQueueStats = $queryBuilder
@@ -88,11 +88,16 @@ class SolrService
 
             $result[$site->getRootPageId()]['site'] = $site;
             foreach ($indexingConfigurationsToReIndex as $indexingConfigurationName) {
-                $status = $indexQueue->getInitializationService()->initializeBySiteAndIndexConfiguration(
-                    $site,
-                    $indexingConfigurationName
-                );
-
+                if (method_exists($indexQueue, 'initialize')) {
+                    // until EXT:solr 8.0
+                    $status = $indexQueue->initialize($site, $indexingConfigurationName);
+                } else {
+                    // since EXT:solr 8.1
+                    $status = $indexQueue->getInitializationService()->initializeBySiteAndIndexConfiguration(
+                        $site,
+                        $indexingConfigurationName
+                    );
+                }
                 $result[$site->getRootPageId()]['status'][] = $status;
             }
         }
@@ -138,14 +143,26 @@ class SolrService
         foreach ($solrServers as $solrServer) {
             $deleteQuery = 'type:(' . implode(' OR ', $typesToCleanUp) . ')'
                 . ' AND siteHash:' . $site->getSiteHash();
-            $solrServer->getWriteService()->deleteByQuery($deleteQuery);
+            if (method_exists($solrServer, 'getWriteService')) {
+                // since EXT:solr 8.0
+                $solrServer->getWriteService()->deleteByQuery($deleteQuery);
+            } else {
+                // until EXT:solr 7.5
+                $solrServer->deleteByQuery($deleteQuery);
+            }
 
             if (!$enableCommitsSetting) {
                 // Do not commit
                 continue;
             }
 
-            $response = $solrServer->getWriteService()->commit(false, false, false);
+            if (method_exists($solrServer, 'getWriteService')) {
+                // since EXT:solr 8.0
+                $response = $solrServer->getWriteService()->commit(false, false, false);
+            } else {
+                // until EXT:solr 7.5
+                $response = $solrServer->commit(false, false, false);
+            }
             if ($response->getHttpStatus() !== 200) {
                 $cleanUpResult = false;
                 break;
@@ -160,11 +177,10 @@ class SolrService
      * Be careful: If type is empty, it will delete EVERYTHING from given $site
      *
      * @param Site $site
-     * @param string $type TableName of the configuration
      * @param array $clear
-     * @return void
+     * @param string $type TableName of the configuration
      */
-    public function clearIndexByType(Site $site, $type = '', array $clear)
+    public function clearIndexByType(Site $site, array $clear, string $type = '')
     {
         // clear local tx_solr_indexqueue_item table
         if (in_array('clearItem', $clear)) {
@@ -244,8 +260,15 @@ class SolrService
         $solrServers = GeneralUtility::makeInstance(ConnectionManager::class)
             ->getConnectionsBySite($site);
         foreach ($solrServers as $solrServer) {
-            $solrServer->getWriteService()->deleteByType($tableName); // Document
-            $solrServer->getWriteService()->deleteByQuery('fileReferenceType:' . $tableName); // tx_solr_file
+            if (method_exists($solrServer, 'getWriteService')) {
+                // since EXT:solr 8.0
+                $solrServer->getWriteService()->deleteByType($tableName); // Document
+                $solrServer->getWriteService()->deleteByQuery('fileReferenceType:' . $tableName); // tx_solr_file
+            } else {
+                // until EXT:solr 7.5
+                $solrServer->deleteByType($tableName); // Document
+                $solrServer->deleteByQuery('fileReferenceType:' . $tableName); // tx_solr_file
+            }
         }
     }
 

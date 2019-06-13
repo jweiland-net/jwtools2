@@ -37,7 +37,7 @@ class IndexQueueWorkerTaskAdditionalFieldProvider implements AdditionalFieldProv
      */
     public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
-        /** @var \JWeiland\Jwtools2\Task\IndexQueueWorkerTask $task */
+        /** @var IndexQueueWorkerTask $task */
         $additionalFields = [];
 
         // Documents to index
@@ -83,7 +83,7 @@ class IndexQueueWorkerTaskAdditionalFieldProvider implements AdditionalFieldProv
      * @param SchedulerModuleController $schedulerModule reference to the calling object (Scheduler's BE module)
      * @return bool True if validation was ok (or selected class is not relevant), FALSE otherwise
      */
-    public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule)
+    public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
         // escape limit
         $submittedData['documentsToIndexLimit'] = (int)$submittedData['documentsToIndexLimit'];
@@ -102,7 +102,7 @@ class IndexQueueWorkerTaskAdditionalFieldProvider implements AdditionalFieldProv
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
-        /** @var \JWeiland\Jwtools2\Task\IndexQueueWorkerTask $task */
+        /** @var IndexQueueWorkerTask $task */
         $task->setDocumentsToIndexLimit($submittedData['documentsToIndexLimit']);
         $task->setMaxSitesPerRun($submittedData['maxSitesPerRun']);
     }

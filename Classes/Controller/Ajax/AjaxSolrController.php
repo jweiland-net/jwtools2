@@ -64,7 +64,7 @@ class AjaxSolrController
 
             if ($site instanceof Site) {
                 foreach ($configurationNames as $configurationName) {
-                    $solrService->clearIndexByType($site, $configurationName, $clear);
+                    $solrService->clearIndexByType($site, $clear, $configurationName);
                 }
                 $response->getBody()->write(json_encode([
                     'success' => 1

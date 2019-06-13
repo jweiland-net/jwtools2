@@ -216,7 +216,7 @@ class SolrController extends AbstractController
         $site = $this->solrRepository->findByRootPage((int)$rootPageUid);
         if ($site instanceof Site) {
             foreach ($configurationNames as $configurationName) {
-                $solrService->clearIndexByType($site, $configurationName, $clear);
+                $solrService->clearIndexByType($site, $clear, $configurationName);
             }
             $this->addFlashMessage(
                 'We successfully have cleared the index of Site: "' . $site->getTitle() . '"',
