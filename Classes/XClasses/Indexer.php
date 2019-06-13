@@ -68,7 +68,7 @@ class Indexer extends \ApacheSolrForTypo3\Solr\IndexQueue\Indexer
         $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $buildRootlineWithPid);
         $rootline = $rootlineUtility->get();
 
-        $pageInRootline = array_filter($rootline, function($page) use ($rootPageId) {
+        $pageInRootline = array_filter($rootline, function ($page) use ($rootPageId) {
             return (int)$page['uid'] === $rootPageId;
         });
         return !empty($pageInRootline);
