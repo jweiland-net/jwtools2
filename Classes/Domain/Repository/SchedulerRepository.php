@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace JWeiland\Jwtools2\Domain\Repository;
 
 /*
@@ -16,6 +17,8 @@ namespace JWeiland\Jwtools2\Domain\Repository;
 
 use JWeiland\Jwtools2\Configuration\ExtConf;
 use JWeiland\Jwtools2\Task\IndexQueueWorkerTask;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class SchedulerRepository
@@ -31,7 +34,6 @@ class SchedulerRepository
      * inject extConf
      *
      * @param ExtConf $extConf
-     * @return void
      */
     public function injectExtConf(ExtConf $extConf)
     {
@@ -41,16 +43,27 @@ class SchedulerRepository
     /**
      * Get Solr Scheduler Task of this extension
      *
-     * @return IndexQueueWorkerTask
+     * @return IndexQueueWorkerTask|null
      */
     public function findSolrSchedulerTask()
     {
-        $taskRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            '*',
-            'tx_scheduler_task',
-            sprintf('uid=%d AND disable=0', $this->extConf->getSolrSchedulerTaskUid())
-        );
-        if (empty($taskRecord)) {
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_scheduler_task');
+        $taskRecord = $queryBuilder
+            ->select('*')
+            ->from('tx_scheduler_task')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($this->extConf->getSolrSchedulerTaskUid(), \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'disable',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
+            )
+            ->execute()
+            ->fetch();
+        if (!$taskRecord) {
             return null;
         }
 
@@ -64,12 +77,12 @@ class SchedulerRepository
     }
 
     /**
-     * Get TYPO3s Database Connection
+     * Get TYPO3s Connection Pool
      *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     * @return ConnectionPool
      */
-    protected function getDatabaseConnection()
+    protected function getConnectionPool(): ConnectionPool
     {
-        return $GLOBALS['TYPO3_DB'];
+        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }

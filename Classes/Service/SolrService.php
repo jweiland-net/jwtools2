@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace JWeiland\Jwtools2\Service;
 
 /*
@@ -19,6 +20,7 @@ use ApacheSolrForTypo3\Solr\Domain\Index\Queue\Statistic\QueueStatistic;
 use ApacheSolrForTypo3\Solr\Domain\Site\SiteRepository;
 use ApacheSolrForTypo3\Solr\IndexQueue\Queue;
 use ApacheSolrForTypo3\Solr\Site;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -35,14 +37,18 @@ class SolrService
      */
     public function getStatistic()
     {
-        $indexQueueStats = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'indexed < changed as pending,'
-            . '(errors not like "") as failed,'
-            . 'COUNT(*) as count',
-            'tx_solr_indexqueue_item',
-            '',
-            'pending, failed'
-        );
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_solr_indexqueue_item');
+        $indexQueueStats = $queryBuilder
+            ->selectLiteral('indexed < changed as pending, (errors not like "") as failed, COUNT(*) as count')
+            ->from('tx_solr_indexqueue_item')
+            ->groupBy('pending')
+            ->addGroupBy('failed')
+            ->execute()
+            ->fetchAll();
+        if (!$indexQueueStats) {
+            $indexQueueStats = [];
+        }
+
         /** @var $statistic QueueStatistic */
         $statistic = GeneralUtility::makeInstance(QueueStatistic::class);
 
@@ -182,21 +188,19 @@ class SolrService
      *
      * @param Site $site
      * @param string $type TableName of the configuration
-     * @return void
      */
-    public function clearItemTableByType(Site $site, $type = '')
+    public function clearItemTableByType(Site $site, string $type = '')
     {
-        $where = [];
-        $where[] = sprintf('root=%d', (int)$site->getRootPageId());
+        $identifier = [
+            'root' => (int)$site->getRootPageId()
+        ];
         if ($type) {
-            $where[] = sprintf(
-                'indexing_configuration=%s',
-                $this->getDatabaseConnection()->fullQuoteStr($type, 'tx_solr_indexqueue_item')
-            );
+            $identifier['indexing_configuration'] = $type;
         }
-        $this->getDatabaseConnection()->exec_DELETEquery(
+        $connection = $this->getConnectionPool()->getConnectionForTable('tx_solr_indexqueue_item');
+        $connection->delete(
             'tx_solr_indexqueue_item',
-            implode(' AND ', $where)
+            $identifier
         );
     }
 
@@ -206,22 +210,21 @@ class SolrService
      *
      * @param Site $site
      * @param string $type TableName of the configuration
-     * @return void
      */
-    public function clearFileTableByType(Site $site, $type = '')
+    public function clearFileTableByType(Site $site, string $type = '')
     {
         if (ExtensionManagementUtility::isLoaded('solrfal')) {
-            $where = [];
-            $where[] = sprintf('context_site=%d', (int)$site->getRootPageId());
+            $identifier = [
+                'context_site' => (int)$site->getRootPageId()
+            ];
             if ($type) {
-                $where[] = sprintf(
-                    'context_record_indexing_configuration=%s',
-                    $this->getDatabaseConnection()->fullQuoteStr($type, 'tx_solr_indexqueue_file')
-                );
+                $identifier['context_record_indexing_configuration'] = $type;
             }
-            $this->getDatabaseConnection()->exec_DELETEquery(
+
+            $connection = $this->getConnectionPool()->getConnectionForTable('tx_solr_indexqueue_file');
+            $connection->delete(
                 'tx_solr_indexqueue_file',
-                implode(' AND ', $where)
+                $identifier
             );
         }
     }
@@ -247,12 +250,12 @@ class SolrService
     }
 
     /**
-     * Get TYPO3s Database Connection
+     * Get TYPO3s Connection Pool
      *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     * @return ConnectionPool
      */
-    protected function getDatabaseConnection()
+    protected function getConnectionPool(): ConnectionPool
     {
-        return $GLOBALS['TYPO3_DB'];
+        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }
