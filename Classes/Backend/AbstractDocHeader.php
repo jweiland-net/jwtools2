@@ -134,7 +134,7 @@ abstract class AbstractDocHeader
         $closeButton = $buttonBar
             ->makeLinkButton()
             ->setHref($uri)
-            ->setIcon($this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL))
             ->setTitle('Close');
 
         $buttonBar->addButton($closeButton);
