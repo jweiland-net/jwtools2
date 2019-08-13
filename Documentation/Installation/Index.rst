@@ -1,7 +1,5 @@
 .. include:: ../Includes.txt
 
-
-
 .. _installation:
 
 ============
@@ -19,7 +17,6 @@ The extension needs to be installed like any other extension of TYPO3 CMS:
 #. Search for `jwtools2`
 
 #. Install extension
-
 
 Next step
 =========
