@@ -1,6 +1,5 @@
 .. include:: ../Includes.txt
 
-
 .. _configuration:
 
 =============
@@ -11,7 +10,6 @@ Target group: **Developers, Integrators**
 
 jwtools2 initially does nothing after installation. Each feature has to be activated manually with
 Extensionmanager configuration (TYPO3 8.7) or with module Settings since TYPO3 9.5.
-
 
 Extension configuration
 =======================
@@ -98,7 +96,6 @@ If you activate ``typo3TransferTypoScriptCurrent`` we make use of a hook in TYPO
 ``current`` into child ContentObjects.
 
 This option will only work for cObj types CONTENT and RECORD.
-
 
 
 .. _reduceCategoriesToPageTree:

@@ -1,11 +1,14 @@
 .. include:: ../Includes.txt
 
-
 .. _changelog:
 
 =========
 ChangeLog
 =========
+
+**Version 3.2.0**
+
+- Added SplitFileRef ViewHelper to split file paths into pieces
 
 **Version 3.1.1**
 
