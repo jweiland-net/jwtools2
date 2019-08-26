@@ -14,8 +14,8 @@ namespace JWeiland\Jwtools2\Domain\Repository;
 * The TYPO3 project - inspiring people to share!
 */
 
+use ApacheSolrForTypo3\Solr\Domain\Site\Site;
 use ApacheSolrForTypo3\Solr\Domain\Site\SiteRepository;
-use ApacheSolrForTypo3\Solr\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

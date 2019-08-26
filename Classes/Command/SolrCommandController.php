@@ -14,7 +14,7 @@ namespace JWeiland\Jwtools2\Command;
  * The TYPO3 project - inspiring people to share!
  */
 
-use ApacheSolrForTypo3\Solr\Site;
+use ApacheSolrForTypo3\Solr\Domain\Site\Site;
 use JWeiland\Jwtools2\Configuration\ExtConf;
 use JWeiland\Jwtools2\Service\SolrService;
 use TYPO3\CMS\Core\Exception;

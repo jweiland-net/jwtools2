@@ -14,10 +14,10 @@ namespace JWeiland\Jwtools2\Controller;
 * The TYPO3 project - inspiring people to share!
 */
 
+use ApacheSolrForTypo3\Solr\Domain\Site\Site;
 use ApacheSolrForTypo3\Solr\IndexQueue\Indexer;
 use ApacheSolrForTypo3\Solr\IndexQueue\Item;
 use ApacheSolrForTypo3\Solr\IndexQueue\Queue;
-use ApacheSolrForTypo3\Solr\Site;
 use ApacheSolrForTypo3\Solr\System\Configuration\TypoScriptConfiguration;
 use JWeiland\Jwtools2\Backend\SolrDocHeader;
 use JWeiland\Jwtools2\Domain\Repository\SchedulerRepository;
