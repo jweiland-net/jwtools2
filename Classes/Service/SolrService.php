@@ -18,8 +18,7 @@ namespace JWeiland\Jwtools2\Service;
 use ApacheSolrForTypo3\Solr\ConnectionManager;
 use ApacheSolrForTypo3\Solr\Domain\Index\Queue\Statistic\QueueStatistic;
 use ApacheSolrForTypo3\Solr\Domain\Site\Site;
-use ApacheSolrForTypo3\Solr\Domain\Site\SiteRepository;
-use ApacheSolrForTypo3\Solr\IndexQueue\Queue;
+use ApacheSolrForTypo3\Solr\System\Solr\SolrConnection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -66,60 +65,6 @@ class SolrService
     }
 
     /**
-     * !!! Copied and adjusted from ApacheSolrForTypo3\Solr\Task\ReIndexTask
-     * Removes documents of the selected types from the index.
-     *
-     * @param Site $site
-     * @param string[] $indexingConfigurationsToReIndex
-     * @return bool TRUE if clean up was successful, FALSE on error
-     */
-    protected function cleanUpIndex($site, $indexingConfigurationsToReIndex)
-    {
-        $cleanUpResult = true;
-        $solrConfiguration = $site->getSolrConfiguration();
-        /** @var \ApacheSolrForTypo3\Solr\System\Solr\SolrConnection[] $solrServers */
-        $solrServers = GeneralUtility::makeInstance(ConnectionManager::class)->getConnectionsBySite($site);
-        $typesToCleanUp = [];
-        $enableCommitsSetting = $solrConfiguration->getEnableCommits();
-
-        foreach ($indexingConfigurationsToReIndex as $indexingConfigurationName) {
-            $type = $solrConfiguration->getIndexQueueTableNameOrFallbackToConfigurationName($indexingConfigurationName);
-            $typesToCleanUp[] = $type;
-        }
-
-        foreach ($solrServers as $solrServer) {
-            $deleteQuery = 'type:(' . implode(' OR ', $typesToCleanUp) . ')'
-                . ' AND siteHash:' . $site->getSiteHash();
-            if (method_exists($solrServer, 'getWriteService')) {
-                // since EXT:solr 8.0
-                $solrServer->getWriteService()->deleteByQuery($deleteQuery);
-            } else {
-                // until EXT:solr 7.5
-                $solrServer->deleteByQuery($deleteQuery);
-            }
-
-            if (!$enableCommitsSetting) {
-                // Do not commit
-                continue;
-            }
-
-            if (method_exists($solrServer, 'getWriteService')) {
-                // since EXT:solr 8.0
-                $response = $solrServer->getWriteService()->commit(false, false, false);
-            } else {
-                // until EXT:solr 7.5
-                $response = $solrServer->commit(false, false, false);
-            }
-            if ($response->getHttpStatus() !== 200) {
-                $cleanUpResult = false;
-                break;
-            }
-        }
-
-        return $cleanUpResult;
-    }
-
-    /**
      * Clear various indexes by type
      * Be careful: If type is empty, it will delete EVERYTHING from given $site
      *
@@ -136,7 +81,7 @@ class SolrService
 
         // clear local tx_solr_indexqueue_file table
         if (in_array('clearFile', $clear)) {
-            $this->clearItemTableByType($site, $type);
+            $this->clearFileTableByType($site, $type);
         }
 
         // clear external Solr Server
@@ -203,19 +148,12 @@ class SolrService
     public function clearSolrIndexByType(Site $site, $type = '')
     {
         $tableName = $site->getSolrConfiguration()->getIndexQueueTableNameOrFallbackToConfigurationName($type);
-        /** @var \ApacheSolrForTypo3\Solr\System\Solr\SolrConnection[] $solrServers */
+        /** @var SolrConnection[] $solrServers */
         $solrServers = GeneralUtility::makeInstance(ConnectionManager::class)
             ->getConnectionsBySite($site);
         foreach ($solrServers as $solrServer) {
-            if (method_exists($solrServer, 'getWriteService')) {
-                // since EXT:solr 8.0
-                $solrServer->getWriteService()->deleteByType($tableName); // Document
-                $solrServer->getWriteService()->deleteByQuery('fileReferenceType:' . $tableName); // tx_solr_file
-            } else {
-                // until EXT:solr 7.5
-                $solrServer->deleteByType($tableName); // Document
-                $solrServer->deleteByQuery('fileReferenceType:' . $tableName); // tx_solr_file
-            }
+            $solrServer->getWriteService()->deleteByType($tableName); // Document
+            $solrServer->getWriteService()->deleteByQuery('fileReferenceType:' . $tableName); // tx_solr_file
         }
     }
 
