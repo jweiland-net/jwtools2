@@ -98,7 +98,6 @@ class AjaxSolrController
         return $response;
     }
 
-
     /**
      * @param ServerRequest $request
      * @param Response $response
