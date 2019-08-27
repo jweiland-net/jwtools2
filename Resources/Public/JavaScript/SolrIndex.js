@@ -33,7 +33,7 @@ define(['jquery',
                     if (status === 'success') {
                         $row.find(".status").html("" +
                             "<div class=\"progress\">" +
-                            "<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"" + response.progress + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: {progress}%;\">" +
+                            "<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"" + response.progress + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + response.progress + "%;\">" +
                             "<span>" + response.progress + "% Complete</span>" +
                             "</div>" +
                             "</div>"
