@@ -13,4 +13,12 @@ return [
         'path' => '/jwtools2/clearIndex',
         'target' => Controller\Ajax\AjaxSolrController::class . '::clearIndexAction'
     ],
+    'jwtools2_createSolrIndexQueue' => [
+        'path' => '/jwtools2/createSolrIndexQueue',
+        'target' => Controller\Ajax\AjaxSolrController::class . '::createIndexQueueAction'
+    ],
+    'jwtools2_getSolrProgress' => [
+        'path' => '/jwtools2/getSolrProgress',
+        'target' => Controller\Ajax\AjaxSolrController::class . '::getProgressAction'
+    ],
 ];

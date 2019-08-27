@@ -94,6 +94,10 @@ class SolrController extends AbstractController
         if (!$view instanceof NotFoundView) {
             parent::initializeView($view);
 
+            /** @var PageRenderer $pageRenderer */
+            $pageRenderer = $this->objectManager->get(PageRenderer::class);
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Jwtools2/SolrIndex');
+
             /** @var SolrDocHeader $docHeader */
             $docHeader = $this->objectManager->get(SolrDocHeader::class, $this->request, $view);
             $docHeader->renderDocHeader();
@@ -168,19 +172,6 @@ class SolrController extends AbstractController
                 'languageUid' => $languageUid
             ]
         );
-    }
-
-    /**
-     * Creates index queue for all sites
-     */
-    public function createIndexQueueForAllSitesAction()
-    {
-        /** @var SolrService $solrService */
-        $solrService = GeneralUtility::makeInstance(SolrService::class);
-        $result = $solrService->createIndexQueueForSites();
-
-        $this->view->assign('errors', $result['errors']);
-        $this->view->assign('totalItemsAddedToIndexQueue', $result['totalItemsAddedToIndexQueue']);
     }
 
     /**

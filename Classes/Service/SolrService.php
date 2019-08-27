@@ -66,59 +66,6 @@ class SolrService
     }
 
     /**
-     * Creates index queue entries for all given sites
-     * If no site is given, all available sites are used
-     *
-     * @param Site[] $sites
-     * @return array
-     */
-    public function createIndexQueueForSites($sites = [])
-    {
-        if (empty($sites)) {
-            $sites = $this->getAvailableSites();
-        }
-
-        $result = [];
-
-        /** @var Queue $indexQueue */
-        $indexQueue = GeneralUtility::makeInstance(Queue::class);
-
-        foreach ($sites as $site) {
-            $indexingConfigurationsToReIndex = $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames();
-
-            $result[$site->getRootPageId()]['site'] = $site;
-            foreach ($indexingConfigurationsToReIndex as $indexingConfigurationName) {
-                if (method_exists($indexQueue, 'initialize')) {
-                    // until EXT:solr 8.0
-                    $status = $indexQueue->initialize($site, $indexingConfigurationName);
-                } else {
-                    // since EXT:solr 8.1
-                    $status = $indexQueue->getInitializationService()->initializeBySiteAndIndexConfiguration(
-                        $site,
-                        $indexingConfigurationName
-                    );
-                }
-                $result[$site->getRootPageId()]['status'][] = $status;
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Gets all available TYPO3 sites with Solr configured.
-     *
-     * @param bool $stopOnInvalidSite
-     * @return Site[] An array of available sites
-     */
-    protected function getAvailableSites($stopOnInvalidSite = false)
-    {
-        /** @var SiteRepository $siteRepository */
-        $siteRepository = GeneralUtility::makeInstance(SiteRepository::class);
-        return $siteRepository->getAvailableSites($stopOnInvalidSite);
-    }
-
-    /**
      * !!! Copied and adjusted from ApacheSolrForTypo3\Solr\Task\ReIndexTask
      * Removes documents of the selected types from the index.
      *

@@ -46,11 +46,6 @@ method ``JWeiland\Jwtools2\Database::getQueryBuilderForTable()``
 ViewHelpers
 -----------
 
-Solr.IndexStatusViewHelper
-**************************
-
-With this ViewHelper you will get the Progress Status of a Solr Site in percent.
-
 Solr.MemoryStatusViewHelper
 ***************************
 

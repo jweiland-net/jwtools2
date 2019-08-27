@@ -6,6 +6,16 @@
 ChangeLog
 =========
 
+**Version 4.0.0**
+
+With this Update we do not support EXT:solr versions less than 9.0.0 anymore.
+
+- Use of new Site domain model.
+- Removed Solr.IndexStatusViewHelper as this Feature is completely realized with JavaScript now.
+- Removed module "Clear full Index Queue" as there is a JS-Button for that in overview now.
+- Performance: Overview starts much faster now.
+- Add Button to retrieve Solr Progress for all Solr Sites
+
 **Version 3.2.0**
 
 - Added SplitFileRef ViewHelper to split file paths into pieces

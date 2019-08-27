@@ -24,6 +24,15 @@
 			<trans-unit id="executeQueryTask.field.sqlQuery" xml:space="preserve" approved="yes">
 				<source>SQL Query</source>
 			</trans-unit>
+			<trans-unit id="mod.solr.solrFeaturesOverview" xml:space="preserve" approved="yes">
+				<source>Module: Solr Overview</source>
+			</trans-unit>
+			<trans-unit id="mod.solr.memoryUsageSchedulerTask" xml:space="preserve" approved="yes">
+				<source>Current Memory Usage of running jwtools2 Solr Scheduler Task</source>
+			</trans-unit>
+			<trans-unit id="mod.solr.configuredRootPages" xml:space="preserve" approved="yes">
+				<source>Root Pages with Solr configuration</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
