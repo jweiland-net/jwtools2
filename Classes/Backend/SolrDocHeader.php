@@ -62,16 +62,6 @@ class SolrDocHeader extends AbstractDocHeader
         $newButton = $buttonBar
             ->makeInputButton()
             ->setName('module')
-            ->setValue('whatever')
-            ->setOnClick($this->getLinkForUrl($this->uriBuilder->reset()->uriFor('createIndexQueueForAllSites', [], 'Solr')))
-            ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
-            ->setTitle('Create index queue entries for all sites')
-            ->setShowLabelText(true);
-        $splitButtonBar->addItem($newButton, false);
-
-        $newButton = $buttonBar
-            ->makeInputButton()
-            ->setName('module')
             ->setValue('cleanUp')
             ->setOnClick($this->getLinkForUrl($this->uriBuilder->reset()->uriFor('showClearFullIndexForm', [], 'Solr')))
             ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))

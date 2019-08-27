@@ -31,6 +31,18 @@
 				<source>SQL Query</source>
 				<target>SQL Abfrage</target>
 			</trans-unit>
+			<trans-unit id="mod.solr.solrFeaturesOverview" xml:space="preserve" approved="yes">
+				<source>Module: Solr Overview</source>
+				<target>Modul: Solr Übersicht</target>
+			</trans-unit>
+			<trans-unit id="mod.solr.memoryUsageSchedulerTask" xml:space="preserve" approved="yes">
+				<source>Current Memory Usage of running jwtools2 Solr Scheduler Task</source>
+				<target>Aktueller RAM-Verbrauch des Solr Scheduler Tasks der jwtools2</target>
+			</trans-unit>
+			<trans-unit id="mod.solr.configuredRootPages" xml:space="preserve" approved="yes">
+				<source>Root Pages with Solr configuration</source>
+				<target>Root-Seiten mit Solr-Konfiguration</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
