@@ -61,7 +61,8 @@ class Indexer extends \ApacheSolrForTypo3\Solr\IndexQueue\Indexer
      */
     protected function isRootPageIdPartOfRootLine(Item $item)
     {
-        $rootPageId = $item->getRootPageUid();
+        // Solr is not casting the property root to int in their constructor this is why we cast it here
+        $rootPageId = (int)$item->getRootPageUid();
         $buildRootlineWithPid = $item->getRecordPageId();
         if ($item->getType() === 'pages') {
             $buildRootlineWithPid = $item->getRecordUid();
