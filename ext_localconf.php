@@ -48,6 +48,15 @@ call_user_func(
             );
         }
 
+        if ($jwToolsConfiguration['typo3MoveUploadFieldsToTop']) {
+            // for LinkHandler
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\LinkHandler\FileLinkHandler::class]['className'] = \JWeiland\Jwtools2\XClasses\LinkHandler\FileLinkHandler::class;
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHandler::class]['className'] = \JWeiland\Jwtools2\XClasses\LinkHandler\FolderLinkHandler::class;
+
+            // for ElementBrowser
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\Browser\FileBrowser::class]['className'] = \JWeiland\Jwtools2\XClasses\Browser\FileBrowser::class;
+        }
+
         if ($jwToolsConfiguration['reduceCategoriesToPageTree']) {
             // Reduce categories to PIDs of current page tree
             $signalSlotDispatcher->connect(

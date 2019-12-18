@@ -2,6 +2,8 @@
 typo3EnableUidInPageTree = 0
 # cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3TransferTypoScriptCurrent
 typo3TransferTypoScriptCurrent = 0
+# cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3MoveUploadFieldsToTop
+typo3MoveUploadFieldsToTop = 0
 # cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:reduceCategoriesToPageTree
 reduceCategoriesToPageTree = 0
 # cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:enableExecuteQueryTask
