@@ -48,7 +48,7 @@ call_user_func(
             );
         }
 
-        if ($jwToolsConfiguration['typo3MoveUploadFieldsToTop']) {
+        if ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB']) {
             // for LinkHandler
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\LinkHandler\FileLinkHandler::class]['className'] = \JWeiland\Jwtools2\XClasses\LinkHandler\FileLinkHandler::class;
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHandler::class]['className'] = \JWeiland\Jwtools2\XClasses\LinkHandler\FolderLinkHandler::class;

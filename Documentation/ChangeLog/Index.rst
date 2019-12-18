@@ -6,6 +6,15 @@
 ChangeLog
 =========
 
+**Version 4.1.0**
+
+- New option to show upload fields in top of LinkHandler and ElementBrowser
+
+**Version 4.0.1**
+
+- CleanUp
+- Use progress from response in Solr Progressbar
+
 **Version 4.0.0**
 
 With this Update we do not support EXT:solr versions less than 9.0.0 anymore.

@@ -9,8 +9,8 @@
 			<trans-unit id="typo3TransferTypoScriptCurrent">
 				<source>Transfer TypoScript current: For each record, found by CONTENT, a new instance of ContentObjectRenderer will be created by renderObj. The data property will be filled with the values of the record. The TypoScript current value will be resetted. Activate this option if you want to transfer the parent current value into the sub-property of renderObj.</source>
 			</trans-unit>
-			<trans-unit id="typo3MoveUploadFieldsToTop">
-				<source>Upload Fields on top in EB: Since TYPO3 8 it is not possible anymore to move the upload fields to top in ElementBrowser. Enable this option to activate a hook moving these field to top again.</source>
+			<trans-unit id="typo3UploadFieldsInTopOfEB">
+				<source>Upload Fields in top of EB: The UserTSconfig option uploadFieldsInTopOfEB was removed with TYPO3 8.7.0. Activate this Option to show upload fields in top of ElementBrowser and LinkHandler again.</source>
 			</trans-unit>
 			<trans-unit id="reduceCategoriesToPageTree">
 				<source>Reduce categories to page tree: In case of a multi-domain TYPO3 instances it makes sense to reduce categories in category-tree to PIDs of current page-tree. So, after activating this checkbox you will not see any categories of foreign page-trees anymore. Admin user will still see everything.</source>
