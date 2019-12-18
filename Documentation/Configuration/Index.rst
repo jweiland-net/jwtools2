@@ -21,6 +21,7 @@ Extension configuration
    ================================ =========
    typo3EnableUidInPageTree_        0
    typo3TransferTypoScriptCurrent_  0
+   typo3UploadFieldsInTopOfEB_      0
    reduceCategoriesToPageTree_      0
    enableSqlQueryTask_              0
    solrEnable_                      0
@@ -96,6 +97,21 @@ If you activate ``typo3TransferTypoScriptCurrent`` we make use of a hook in TYPO
 ``current`` into child ContentObjects.
 
 This option will only work for cObj types CONTENT and RECORD.
+
+
+.. _typo3UploadFieldsInTopOfEB:
+
+typo3UploadFieldsInTopOfEB
+--------------------------
+
+With TYPO3 8.7.0 following UserTSconfig was removed:
+
+options.uploadFieldsInTopOfEB = 1
+
+https://review.typo3.org/c/Packages/TYPO3.CMS/+/52170
+
+After activating this Option we XClasses 3 files to show
+Upload Fields in top of ElementBrowser and LinkHandler again.
 
 
 .. _reduceCategoriesToPageTree:
