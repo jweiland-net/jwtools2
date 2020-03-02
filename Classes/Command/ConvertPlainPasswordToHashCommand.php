@@ -95,7 +95,9 @@ class ConvertPlainPasswordToHashCommand extends Command
         $connection = $this->getConnectionPool()->getConnectionForTable($this->modeMapping[$mode]['table']);
         $statement = $this->getStatementForUsers($this->modeMapping[$mode]['table']);
         while ($user = $statement->fetch()) {
-            if (empty($user['password'])) continue;
+            if (empty($user['password'])) {
+                continue;
+            }
             try {
                 $this->passwordHashFactory->get($user['password'], $mode);
                 if ($this->output->getVerbosity() === 32) {
