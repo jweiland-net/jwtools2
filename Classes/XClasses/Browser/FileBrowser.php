@@ -77,7 +77,7 @@ class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
         // Or get the user's default upload folder
         if (!$this->selectedFolder) {
             try {
-                [, $pid, $table,, $field] = explode('-', explode('|', $this->bparams)[4]);
+                [, $pid, $table, , $field] = explode('-', explode('|', $this->bparams)[4]);
                 $this->selectedFolder = $backendUser->getDefaultUploadFolder($pid, $table, $field);
             } catch (\Exception $e) {
                 // The configured default user folder does not exist
