@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 4.2.0**
+
+- Add new Symfony Command to convert plain user passwords to salted hashes
+
 **Version 4.1.0**
 
 - New option to show upload fields in top of LinkHandler and ElementBrowser

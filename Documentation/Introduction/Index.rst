@@ -33,8 +33,20 @@ an example: One click to show page UID in PageTree.
 Commands
 --------
 
-We have created a command to execute the update script of extensions via ``class.ext_update.php``. It only starts the
+jwtools2:executeExtensionUpdate
+###############################
+
+With this command you can execute the update script of extensions via ``class.ext_update.php``. It only starts the
 update, but if you have something special or a wizard in this file this command will not help.
+
+jwtools2:convertpasswords
+#########################
+
+Use this command to update plain passwords of be_users or fe_users to hashed password using
+the currently configured hashing method.
+Be careful: This command does not know, if password in DB is a plain password or a md5 password. The Command loops
+over all configured Hash Methods of TYPO3. If no Hash Method was found for current password in database, the
+password will be updated.
 
 Database
 --------
