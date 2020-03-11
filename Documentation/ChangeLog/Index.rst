@@ -6,6 +6,11 @@
 ChangeLog
 =========
 
+**Version 4.2.1**
+
+- Implement new Extension Icon
+- Security: Do not show complete hashed password in debug output
+
 **Version 4.2.0**
 
 - Add new Symfony Command to convert plain user passwords to salted hashes
