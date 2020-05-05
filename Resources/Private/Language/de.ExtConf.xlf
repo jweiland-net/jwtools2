@@ -15,13 +15,17 @@
 				<source>Upload Fields in top of EB: The UserTSconfig option uploadFieldsInTopOfEB was removed with TYPO3 8.7.0. Activate this Option to show upload fields in top of ElementBrowser and LinkHandler again.</source>
 				<target>Uploadfelder oberhalb EB anzeigen: Die UserTSconfig Option uploadFieldsInTopOfEB wurde mit TYPO3 8.7.0 entfernt. Aktivieren Sie diese Option, um die Uploadfelder wieder oberhalb des ElementBrowser und des LinkHandlers anzeigen zu lassen.</target>
 			</trans-unit>
+			<trans-unit id="typo3ExcludeVideoFilesFromFalFilter">
+				<source>Exclude hidden video files: If you work with video files, TYPO3 creates .youtube and/or .vimeo files. If a title could not be fetched a file like ".youtube" will be created which is handled as hidden file. Instead of showing all hidden files you can activate this option, to only show these two hidden video types in filelist.</source>
+				<target>Versteckte Video Dateien ausschließen: TYPO3 erstellt für externe Videos Dateien mit der Endung .youtube und/oder .vimeo. Wenn der Videotitel jedoch nicht generiert werden konnte, dann wird eine Datei wie ".vimeo" angelegt, die im Dateisystem als versteckt markiert werden. Anstatt den Redakteuren alle versteckten Datensätze anzeigen zu lassen, kann diese Option aktiviert werden, die nur diese 2 Videotypen in der Filelist anzeigen lässt.</target>
+			</trans-unit>
 			<trans-unit id="reduceCategoriesToPageTree">
 				<source>Reduce categories to page tree: In case of a multi-domain TYPO3 instances it makes sense to reduce categories in category-tree to PIDs of current page-tree. So, after activating this checkbox you will not see any categories of foreign page-trees anymore. Admin user will still see everything.</source>
 				<target>Reduziere Kategorien auf Seitenbaum: Bei Multi-Domain Instanzen macht es evtl. Sinn die Kategorien innerhalb des Kategorie-Baumes auf die Kategorien des aktuellen Seitenbaumes zu reduzieren. Nach Aktivierung seht Ihr die Kategorien von den anderen Seitenbäumen nicht mehr. Der Admin jedoch sieht immer alles.</target>
 			</trans-unit>
 			<trans-unit id="solrEnable">
 				<source>Enable Solr features</source>
-				<target>Activiere Solr Features</target>
+				<target>Aktiviere Solr Features</target>
 			</trans-unit>
 			<trans-unit id="solrSchedulerTaskUid">
 				<source>Solr scheduler task UID: After activating Solr features, you have to create the new Solr task of this extension in scheduler and insert the UID of this task here.</source>
