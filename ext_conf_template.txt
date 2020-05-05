@@ -4,6 +4,8 @@ typo3EnableUidInPageTree = 0
 typo3TransferTypoScriptCurrent = 0
 # cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3UploadFieldsInTopOfEB
 typo3UploadFieldsInTopOfEB = 0
+# cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3ExcludeVideoFilesFromFalFilter
+typo3ExcludeVideoFilesFromFalFilter = 0
 # cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:reduceCategoriesToPageTree
 reduceCategoriesToPageTree = 0
 # cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:enableExecuteQueryTask
