@@ -6,6 +6,14 @@
 ChangeLog
 =========
 
+**Version 4.3.0**
+
+- Add new option "typo3ExcludeVideoFilesFromFalFilter"
+
+**Version 4.2.2**
+
+- Implement better icons
+
 **Version 4.2.1**
 
 - Implement new Extension Icon

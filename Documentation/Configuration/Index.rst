@@ -16,18 +16,19 @@ Extension configuration
 
 .. container:: ts-properties
 
-   ================================ =========
-   Property                         Default
-   ================================ =========
-   typo3EnableUidInPageTree_        0
-   typo3TransferTypoScriptCurrent_  0
-   typo3UploadFieldsInTopOfEB_      0
-   reduceCategoriesToPageTree_      0
-   enableSqlQueryTask_              0
-   solrEnable_                      0
-   solrSchedulerTaskUid_            0
-   solrApplyPatches_                false
-   ================================ =========
+   ===================================== =========
+   Property                              Default
+   ===================================== =========
+   typo3EnableUidInPageTree_             0
+   typo3TransferTypoScriptCurrent_       0
+   typo3UploadFieldsInTopOfEB_           0
+   typo3ExcludeVideoFilesFromFalFilter_  0
+   reduceCategoriesToPageTree_           0
+   enableSqlQueryTask_                   0
+   solrEnable_                           0
+   solrSchedulerTaskUid_                 0
+   solrApplyPatches_                     false
+   ===================================== =========
 
 
 Property details
@@ -112,6 +113,21 @@ https://review.typo3.org/c/Packages/TYPO3.CMS/+/52170
 
 After activating this Option we XClasses 3 files to show
 Upload Fields in top of ElementBrowser and LinkHandler again.
+
+
+.. _typo3ExcludeVideoFilesFromFalFilter:
+
+typo3ExcludeVideoFilesFromFalFilter
+-----------------------------------
+
+Hidden files are normally hidden in filelist module of TYPO3. Ok, you can activate hidden files in filelist
+in your User settings, but may be this Checkbox was hidden by an Integrator or Administrator. Or maybe showing all
+these system files like .htaccess, .htpasswd, .DS_Store is a little bit too much.
+If your editor creates a new external video TYPO3 stored this video information in a .youtube and/or .vimeo file.
+If a title could not be created the files name is still ".youtube". On Mac and Linux Operating Systems files starting
+with a dot are handled as hidden files. So it is not possible for an editor to rename, edit or show this file.
+Activating this option will still not show hidden files in general, except files with .youtube and .vimeo
+file ending.
 
 
 .. _reduceCategoriesToPageTree:
