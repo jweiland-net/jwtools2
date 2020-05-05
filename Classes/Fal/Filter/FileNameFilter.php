@@ -54,10 +54,8 @@ class FileNameFilter
         if (
             self::$showHiddenFilesAndFolders === false
             && strpos($itemIdentifier, '/.') !== false
-            && (
-                strpos($itemIdentifier, '/.youtube') === false
-                || strpos($itemIdentifier, '/.vimeo') === false
-            )
+            && strpos($itemIdentifier, '/.youtube') === false
+            && strpos($itemIdentifier, '/.vimeo') === false
         ) {
             return -1;
         }
