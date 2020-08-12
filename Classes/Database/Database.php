@@ -1,19 +1,14 @@
 <?php
-declare(strict_types = 1);
-namespace JWeiland\Jwtools2\Database;
+
+declare(strict_types=1);
 
 /*
- * This file is part of the jwtools2 project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
+ * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\Jwtools2\Database;
 
 use JWeiland\Jwtools2\Database\Query\Restriction\BackendRestrictionContainer;
 use TYPO3\CMS\Core\Database\Connection;
@@ -60,9 +55,8 @@ class Database
                 $restrictionContainer
             );
             return $queryBuilder;
-        } else {
-            return self::getConnectionPool()->getQueryBuilderForTable($tableName);
         }
+        return self::getConnectionPool()->getQueryBuilderForTable($tableName);
     }
 
     /**

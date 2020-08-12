@@ -1,62 +1,34 @@
 <?php
-namespace JWeiland\Jwtools2\Command;
 
 /*
- * This file is part of the jwtools2 project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
+ * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
 
+namespace JWeiland\Jwtools2\Command;
+
 use ApacheSolrForTypo3\Solr\Domain\Site\Site;
-use JWeiland\Jwtools2\Configuration\ExtConf;
 use JWeiland\Jwtools2\Service\SolrService;
+use Symfony\Component\Console\Command\Command;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Exception;
-use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class SolrCommandController
  */
-class SolrCommandController extends CommandController
+class SolrCommandController extends Command
 {
     /**
-     * Ext conf
-     *
-     * @var ExtConf
-     */
-    protected $extConf;
-
-    /**
-     * Solr service
-     *
      * @var SolrService
      */
     protected $solrService;
 
     /**
-     * injects extConf
-     *
-     * @param ExtConf $extConf
-     * @return void
-     */
-    public function injectExtConf(ExtConf $extConf)
-    {
-        $this->extConf = $extConf;
-    }
-
-    /**
-     * injects solrService
-     *
      * @param SolrService $solrService
-     * @return void
      */
-    public function injectSolrService(SolrService $solrService)
+    public function injectSolrService(SolrService $solrService): void
     {
         $this->solrService = $solrService;
     }
@@ -67,9 +39,9 @@ class SolrCommandController extends CommandController
      * @return string
      * @throws Exception
      */
-    protected function resolveCommandMethodName()
+    protected function resolveCommandMethodName(): string
     {
-        if (!$this->extConf->getSolrEnable()) {
+        if (GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jwtools2', 'solrEnable')) {
             throw new Exception('Solr not enabled in jwtools2 extension configuration', 1536740638);
         }
 
@@ -78,10 +50,8 @@ class SolrCommandController extends CommandController
 
     /**
      * Creates index for all sites
-     *
-     * @return void
      */
-    public function createIndexQueueForAllSitesCommand()
+    public function createIndexQueueForAllSitesCommand(): void
     {
         $result = $this->solrService->createIndexQueueForSites();
 

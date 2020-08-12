@@ -5,10 +5,7 @@ if (!defined('TYPO3_MODE')) {
 
 call_user_func(static function ($extensionKey) {
     $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-    $jwToolsConfiguration = unserialize(
-        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey],
-        ['allowed_classes' => false]
-    );
+    $jwToolsConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('jwtools2');
 
     if ($jwToolsConfiguration['solrEnable']) {
         // Add scheduler task to index all Solr Sites

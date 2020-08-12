@@ -25,7 +25,7 @@
 				<source>Solr scheduler task UID: After activating Solr features, you have to create the new Solr task of this extension in scheduler and insert the UID of this task here.</source>
 		 </trans-unit>
 			<trans-unit id="solrApplyPatches">
-				<source>Solr apply patches: There are some bugs in Solr which we have solved. Activate this checkbox to apply these patches: https://github.com/TYPO3-Solr/ext-solr/pull/2324/ and https://github.com/TYPO3-Solr/ext-solr/pull/2323</source>
+				<source>Solr apply patches: There are some bugs in Solr which we have solved. NOTE: These patches are needed for ext solr 9, later version already contain this patch. Activate this checkbox to apply these patches: https://github.com/TYPO3-Solr/ext-solr/pull/2324/ and https://github.com/TYPO3-Solr/ext-solr/pull/2323</source>
 			</trans-unit>
 			<trans-unit id="enableExecuteQueryTask">
 				<source>Enable SQL-Query Task: With this task you can realize your own recurring SQL-Queries.</source>

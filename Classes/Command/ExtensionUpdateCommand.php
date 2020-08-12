@@ -1,4 +1,11 @@
 <?php
+
+/*
+ * This file is part of the package jweiland/jwtools2.
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace JWeiland\Jwtools2\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -50,7 +57,7 @@ class ExtensionUpdateCommand extends Command
      *
      * @param InputInterface  $input  An InputInterface instance
      * @param OutputInterface $output An OutputInterface instance
-     * @return null|int null or 0 if everything went fine, or an error code
+     * @return int|null null or 0 if everything went fine, or an error code
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -64,7 +71,8 @@ class ExtensionUpdateCommand extends Command
             $table->render();
 
             return 0;
-        } elseif ($input->getArgument('ext_key')) {
+        }
+        if ($input->getArgument('ext_key')) {
             if (!array_key_exists($input->getArgument('ext_key'), $packages)) {
                 $output->writeln('Given ext_key does not exist in possible extension list');
                 return 1;
@@ -87,9 +95,8 @@ class ExtensionUpdateCommand extends Command
                     ));
                     if ($input->getOption('force')) {
                         continue;
-                    } else {
-                        return 2;
                     }
+                    return 2;
                 }
             }
         }

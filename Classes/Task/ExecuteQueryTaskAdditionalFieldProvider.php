@@ -1,18 +1,14 @@
 <?php
-namespace JWeiland\Jwtools2\Task;
+
+declare(strict_types=1);
 
 /*
- * This file is part of the jwtools2 project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
+ * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\Jwtools2\Task;
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
@@ -35,17 +31,17 @@ class ExecuteQueryTaskAdditionalFieldProvider implements AdditionalFieldProvider
      *                    The array is multidimensional, keyed to the task class name and each field's id
      *                    For each field it provides an associative sub-array with the following:
      */
-    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
+    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule): array
     {
         /** @var ExecuteQueryTask $task */
         $additionalFields = [];
 
         // Documents to index
-        if ($schedulerModule->CMD == 'add') {
+        if ($schedulerModule->CMD === 'add') {
             $taskInfo['sqlQuery'] = 'UPDATE ...';
         }
 
-        if ($schedulerModule->CMD == 'edit') {
+        if ($schedulerModule->CMD === 'edit') {
             $taskInfo['sqlQuery'] = $task->getSqlQuery();
         }
 
@@ -67,7 +63,7 @@ class ExecuteQueryTaskAdditionalFieldProvider implements AdditionalFieldProvider
      * @param SchedulerModuleController $schedulerModule reference to the calling object (Scheduler's BE module)
      * @return bool True if validation was ok (or selected class is not relevant), FALSE otherwise
      */
-    public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
+    public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule): bool
     {
         $submittedData['sqlQuery'] = (string)$submittedData['sqlQuery'];
 
@@ -81,7 +77,7 @@ class ExecuteQueryTaskAdditionalFieldProvider implements AdditionalFieldProvider
      * @param array $submittedData array containing the data submitted by the user
      * @param AbstractTask $task reference to the current task object
      */
-    public function saveAdditionalFields(array $submittedData, AbstractTask $task)
+    public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
         /** @var ExecuteQueryTask $task */
         $task->setSqlQuery($submittedData['sqlQuery']);

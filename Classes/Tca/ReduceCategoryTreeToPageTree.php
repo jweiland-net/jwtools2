@@ -1,19 +1,14 @@
 <?php
+
 declare(strict_types=1);
-namespace JWeiland\Jwtools2\Tca;
 
 /*
- * This file is part of the jwtools2 project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
+ * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\Jwtools2\Tca;
 
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
@@ -64,7 +59,7 @@ class ReduceCategoryTreeToPageTree
      * @param DatabaseTreeDataProvider $dataProvider
      * @param TreeNode $treeData
      */
-    public function reduceCategoriesToPageTree(DatabaseTreeDataProvider $dataProvider, $treeData)
+    public function reduceCategoriesToPageTree(DatabaseTreeDataProvider $dataProvider, $treeData): void
     {
         if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !$this->backendUserAuthentication->isAdmin() && $dataProvider->getTableName() === $this->categoryTableName) {
             $this->removePageTreeForeignCategories($treeData);
@@ -76,7 +71,7 @@ class ReduceCategoryTreeToPageTree
      *
      * @param TreeNode $treeNode
      */
-    protected function removePageTreeForeignCategories(TreeNode $treeNode)
+    protected function removePageTreeForeignCategories(TreeNode $treeNode): void
     {
         if (
             $treeNode->getChildNodes() instanceof TreeNodeCollection

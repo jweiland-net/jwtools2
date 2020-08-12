@@ -1,20 +1,16 @@
 <?php
 
-namespace JWeiland\Jwtools2\Hooks;
+declare(strict_types=1);
 
 /*
- * This file is part of the jwtools2 project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
+ * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
-use JWeiland\Jwtools2\Configuration\ExtConf;
+
+namespace JWeiland\Jwtools2\Hooks;
+
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectPostInitHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -29,11 +25,10 @@ class InitializeStdWrap implements ContentObjectPostInitHookInterface
      *
      * @param ContentObjectRenderer $parentObject Parent content object
      */
-    public function postProcessContentObjectInitialization(ContentObjectRenderer &$parentObject)
+    public function postProcessContentObjectInitialization(ContentObjectRenderer &$parentObject): void
     {
-        /** @var ExtConf $extConf */
-        $extConf = GeneralUtility::makeInstance(ExtConf::class);
-        if ($extConf->getTypo3TransferTypoScriptCurrent()) {
+        $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jwtools2');
+        if ($extConf['typo3TransferTypoScriptCurrent']) {
             // parentRecord is filled in CONTENT and RECORD context only. So no further checks needed
             if (is_array($parentObject->parentRecord) && !empty($parentObject->parentRecord)) {
                 // set current to value of parent current

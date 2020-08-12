@@ -1,22 +1,17 @@
 <?php
-declare(strict_types = 1);
-namespace JWeiland\Jwtools2\Domain\Repository;
+
+declare(strict_types=1);
 
 /*
-* This file is part of the jwtools2 project.
-*
-* It is free software; you can redistribute it and/or modify it under
-* the terms of the GNU General Public License, either version 2
-* of the License, or any later version.
-*
-* For the full copyright and license information, please read the
-* LICENSE.txt file that was distributed with this source code.
-*
-* The TYPO3 project - inspiring people to share!
-*/
+ * This file is part of the package jweiland/jwtools2.
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
 
-use JWeiland\Jwtools2\Configuration\ExtConf;
+namespace JWeiland\Jwtools2\Domain\Repository;
+
 use JWeiland\Jwtools2\Task\IndexQueueWorkerTask;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -25,21 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SchedulerRepository
 {
-    /**
-     * @var ExtConf
-     */
-    protected $extConf;
-
-    /**
-     * inject extConf
-     *
-     * @param ExtConf $extConf
-     */
-    public function injectExtConf(ExtConf $extConf)
-    {
-        $this->extConf = $extConf;
-    }
-
     /**
      * Get Solr Scheduler Task of this extension
      *
@@ -54,7 +34,7 @@ class SchedulerRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($this->extConf->getSolrSchedulerTaskUid(), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->getExtensionConfiguration('solrSchedulerTaskUid'), \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'disable',
@@ -68,12 +48,17 @@ class SchedulerRepository
         }
 
         /** @var IndexQueueWorkerTask $task */
-        $task = unserialize($taskRecord['serialized_task_object']);
+        $task = unserialize($taskRecord['serialized_task_object'], ['allowed_classes' => false]);
         if (!$task instanceof IndexQueueWorkerTask) {
             return null;
         }
 
         return $task;
+    }
+
+    protected function getExtensionConfiguration(string $path)
+    {
+        return GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jwtools2', $path);
     }
 
     /**

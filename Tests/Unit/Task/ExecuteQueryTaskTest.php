@@ -1,19 +1,12 @@
 <?php
 
-namespace JWeiland\Jwtools2\Tests\Unit\Task;
-
 /*
- * This file is part of the jwtools2 project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
+ * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\Jwtools2\Tests\Unit\Task;
 
 use Doctrine\DBAL\Driver\Statement;
 use JWeiland\Jwtools2\Task\ExecuteQueryTask;
@@ -83,7 +76,7 @@ class AjaxTest extends UnitTestCase
             ->willReturn($connectionProphecy->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
 
-        $this->assertFalse(
+        self::assertFalse(
             $this->subject->execute()
         );
     }
@@ -115,7 +108,7 @@ class AjaxTest extends UnitTestCase
             ->willReturn($connectionProphecy->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
 
-        $this->assertTrue(
+        self::assertTrue(
             $this->subject->execute()
         );
     }
@@ -149,7 +142,7 @@ class AjaxTest extends UnitTestCase
             ->willReturn($connectionProphecy->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
 
-        $this->assertTrue(
+        self::assertTrue(
             $this->subject->execute()
         );
     }

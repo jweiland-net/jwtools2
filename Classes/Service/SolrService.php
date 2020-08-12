@@ -1,19 +1,14 @@
 <?php
-declare(strict_types = 1);
-namespace JWeiland\Jwtools2\Service;
+
+declare(strict_types=1);
 
 /*
-* This file is part of the jwtools2 project.
-*
-* It is free software; you can redistribute it and/or modify it under
-* the terms of the GNU General Public License, either version 2
-* of the License, or any later version.
-*
-* For the full copyright and license information, please read the
-* LICENSE.txt file that was distributed with this source code.
-*
-* The TYPO3 project - inspiring people to share!
-*/
+ * This file is part of the package jweiland/jwtools2.
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
+namespace JWeiland\Jwtools2\Service;
 
 use ApacheSolrForTypo3\Solr\ConnectionManager;
 use ApacheSolrForTypo3\Solr\Domain\Index\Queue\Statistic\QueueStatistic;
@@ -53,11 +48,11 @@ class SolrService
 
         foreach ($indexQueueStats as $row) {
             if ($row['failed'] == 1) {
-                $statistic->setFailedCount((int) $row['count']);
+                $statistic->setFailedCount((int)$row['count']);
             } elseif ($row['pending'] == 1) {
-                $statistic->setPendingCount((int) $row['count']);
+                $statistic->setPendingCount((int)$row['count']);
             } else {
-                $statistic->setSuccessCount((int) $row['count']);
+                $statistic->setSuccessCount((int)$row['count']);
             }
         }
 
@@ -143,7 +138,6 @@ class SolrService
      *
      * @param Site $site
      * @param string $type TableName of the configuration
-     * @return void
      */
     public function clearSolrIndexByType(Site $site, $type = '')
     {
