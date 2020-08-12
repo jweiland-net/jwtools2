@@ -191,8 +191,8 @@ class SolrController extends AbstractController
      * @param int $rootPageUid
      * @param array $configurationNames
      * @param array $clear
-     * @Extbase\Validate(NotEmpty, param="configurationNames")
-     * @Extbase\Validate(NotEmpty, param="clear")
+     * @Extbase\Validate("NotEmpty", param="configurationNames")
+     * @Extbase\Validate("NotEmpty", param="clear")
      */
     public function clearIndexAction(int $rootPageUid, array $configurationNames, array $clear): void
     {
