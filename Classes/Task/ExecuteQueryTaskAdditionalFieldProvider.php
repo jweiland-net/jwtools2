@@ -14,6 +14,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
 /**
  * Additional field provider for the execute query task
@@ -36,12 +37,13 @@ class ExecuteQueryTaskAdditionalFieldProvider implements AdditionalFieldProvider
         /** @var ExecuteQueryTask $task */
         $additionalFields = [];
 
+        $currentAction = $schedulerModule->getCurrentAction();
         // Documents to index
-        if ($schedulerModule->CMD === 'add') {
+        if ($currentAction->equals(Action::ADD)) {
             $taskInfo['sqlQuery'] = 'UPDATE ...';
         }
 
-        if ($schedulerModule->CMD === 'edit') {
+        if ($currentAction->equals(Action::EDIT)) {
             $taskInfo['sqlQuery'] = $task->getSqlQuery();
         }
 

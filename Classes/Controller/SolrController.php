@@ -17,7 +17,6 @@ use JWeiland\Jwtools2\Backend\SolrDocHeader;
 use JWeiland\Jwtools2\Domain\Repository\SchedulerRepository;
 use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use JWeiland\Jwtools2\Service\SolrService;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
