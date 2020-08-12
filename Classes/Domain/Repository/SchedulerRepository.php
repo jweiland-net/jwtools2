@@ -14,6 +14,7 @@ use JWeiland\Jwtools2\Task\IndexQueueWorkerTask;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class SchedulerRepository
@@ -25,7 +26,7 @@ class SchedulerRepository
      *
      * @return IndexQueueWorkerTask|null
      */
-    public function findSolrSchedulerTask()
+    public function findSolrSchedulerTask(): ?IndexQueueWorkerTask
     {
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_scheduler_task');
         $taskRecord = $queryBuilder
@@ -48,7 +49,7 @@ class SchedulerRepository
         }
 
         /** @var IndexQueueWorkerTask $task */
-        $task = unserialize($taskRecord['serialized_task_object'], ['allowed_classes' => false]);
+        $task = unserialize($taskRecord['serialized_task_object'], ['allowed_classes' => [IndexQueueWorkerTask::class]]);
         if (!$task instanceof IndexQueueWorkerTask) {
             return null;
         }
