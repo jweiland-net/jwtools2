@@ -77,6 +77,4 @@ call_user_func(static function ($extensionKey) {
 
     // retrieve stdWrap current value into sub cObj. CONTENT
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'][] = \JWeiland\Jwtools2\Hooks\InitializeStdWrap::class;
-
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['Jwtools2-SolrCommandController'] = \JWeiland\Jwtools2\Command\SolrCommandController::class;
 }, 'jwtools2');
