@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -15,6 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility;
 
@@ -26,7 +29,7 @@ class ExtensionUpdateCommand extends Command
     /**
      * Configure the command by defining the name, options and arguments
      */
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setDescription('Check and execute all extension updates (class.ext_update.php)')
@@ -59,7 +62,7 @@ class ExtensionUpdateCommand extends Command
      * @param OutputInterface $output An OutputInterface instance
      * @return int|null null or 0 if everything went fine, or an error code
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $packages = $this->getUpdatePossibleActivePackages();
 
@@ -129,9 +132,12 @@ class ExtensionUpdateCommand extends Command
      *
      * @return array
      */
-    protected function getUpdatePossibleActivePackages()
+    protected function getUpdatePossibleActivePackages(): array
     {
-        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        $packageManager = GeneralUtility::makeInstance(
+            PackageManager::class,
+            GeneralUtility::makeInstance(DependencyOrderingService::class)
+        );
         $activePackages = $packageManager->getActivePackages();
         $updateScriptUtility = GeneralUtility::makeInstance(UpdateScriptUtility::class);
 
