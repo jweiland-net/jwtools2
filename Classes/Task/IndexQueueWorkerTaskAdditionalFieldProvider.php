@@ -12,6 +12,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
 /**
  * Additional field provider for the index queue worker task
@@ -34,13 +35,17 @@ class IndexQueueWorkerTaskAdditionalFieldProvider implements AdditionalFieldProv
         /** @var IndexQueueWorkerTask $task */
         $additionalFields = [];
 
+        $currentAction = $schedulerModule->getCurrentAction();
+
         // Documents to index
-        if ($schedulerModule->CMD == 'add') {
+        if ($currentAction->equals(Action::ADD)) {
             $taskInfo['documentsToIndexLimit'] = 50;
+            $taskInfo['maxSitesPerRun'] = 10;
         }
 
-        if ($schedulerModule->CMD == 'edit') {
+        if ($currentAction->equals(Action::EDIT)) {
             $taskInfo['documentsToIndexLimit'] = $task->getDocumentsToIndexLimit();
+            $taskInfo['maxSitesPerRun'] = $task->getMaxSitesPerRun();
         }
 
         $additionalFields['documentsToIndexLimit'] = [
@@ -49,15 +54,6 @@ class IndexQueueWorkerTaskAdditionalFieldProvider implements AdditionalFieldProv
             'cshKey' => '',
             'cshLabel' => ''
         ];
-
-        // Max sites per run
-        if ($schedulerModule->CMD == 'add') {
-            $taskInfo['maxSitesPerRun'] = 10;
-        }
-
-        if ($schedulerModule->CMD == 'edit') {
-            $taskInfo['maxSitesPerRun'] = $task->getMaxSitesPerRun();
-        }
 
         $additionalFields['maxSitesPerRun'] = [
             'code' => '<input type="text" name="tx_scheduler[maxSitesPerRun]" value="' . htmlspecialchars($taskInfo['maxSitesPerRun']) . '" />',
