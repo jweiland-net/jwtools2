@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /**
  * Class SolrController
@@ -83,7 +84,7 @@ class SolrController extends AbstractController
      *
      * @param ViewInterface $view
      */
-    public function initializeView(ViewInterface $view)
+    public function initializeView(ViewInterface $view): void
     {
         if (!$view instanceof NotFoundView) {
             parent::initializeView($view);
@@ -191,10 +192,10 @@ class SolrController extends AbstractController
      * @param int $rootPageUid
      * @param array $configurationNames
      * @param array $clear
-     * @validate $configurationNames NotEmpty
-     * @validate $clear NotEmpty
+     * @Extbase\Validate(NotEmpty, param="configurationNames")
+     * @Extbase\Validate(NotEmpty, param="clear")
      */
-    public function clearIndexAction($rootPageUid, $configurationNames, array $clear)
+    public function clearIndexAction(int $rootPageUid, array $configurationNames, array $clear): void
     {
         /** @var SolrService $solrService */
         $solrService = GeneralUtility::makeInstance(SolrService::class);
@@ -221,7 +222,7 @@ class SolrController extends AbstractController
     /**
      * Show a form to clear full index
      */
-    public function showClearFullIndexFormAction()
+    public function showClearFullIndexFormAction(): void
     {
         /** @var PageRenderer $pageRenderer */
         $pageRenderer = $this->objectManager->get(PageRenderer::class);
@@ -245,7 +246,7 @@ class SolrController extends AbstractController
      * @param int $recordUid
      * @return Item|object|null
      */
-    protected function getIndexQueueItem(int $rootPageUid, string $configurationName, int $recordUid)
+    protected function getIndexQueueItem(int $rootPageUid, string $configurationName, int $recordUid): ?Item
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_solr_indexqueue_item');
@@ -305,12 +306,12 @@ class SolrController extends AbstractController
      * @param TypoScriptConfiguration $configuration
      * @return bool TRUE if the item was successfully indexed, FALSE otherwise
      */
-    protected function indexItem(Item $item, TypoScriptConfiguration $configuration)
+    protected function indexItem(Item $item, TypoScriptConfiguration $configuration): bool
     {
         $indexer = $this->getIndexerByItem($item->getIndexingConfigurationName(), $configuration);
 
         // Remember original http host value
-        $originalHttpHost = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null;
+        $originalHttpHost = $_SERVER['HTTP_HOST'] ?? null;
 
         $this->initializeHttpServerEnvironment($item);
         $itemIndexed = $indexer->index($item);
@@ -346,7 +347,7 @@ class SolrController extends AbstractController
      * @param TypoScriptConfiguration $configuration
      * @return Indexer
      */
-    protected function getIndexerByItem($indexingConfigurationName, TypoScriptConfiguration $configuration)
+    protected function getIndexerByItem($indexingConfigurationName, TypoScriptConfiguration $configuration): Indexer
     {
         $indexerClass = $configuration->getIndexQueueIndexerByConfigurationName($indexingConfigurationName);
         $indexerConfiguration = $configuration->getIndexQueueIndexerConfigurationByConfigurationName($indexingConfigurationName);
@@ -375,16 +376,14 @@ class SolrController extends AbstractController
      * @param Item $item Index Queue item to use to determine the host.
      * @param
      */
-    protected function initializeHttpServerEnvironment(Item $item)
+    protected function initializeHttpServerEnvironment(Item $item): void
     {
         static $hosts = [];
         $rootpageId = $item->getRootPageUid();
         $hostFound = !empty($hosts[$rootpageId]);
 
         if (!$hostFound) {
-            $rootline = BackendUtility::BEgetRootLine($rootpageId);
-            $host = BackendUtility::firstDomainRecord($rootline);
-            $hosts[$rootpageId] = $host;
+            $hosts[$rootpageId] = $item->getSite()->getDomain();
         }
 
         $_SERVER['HTTP_HOST'] = $hosts[$rootpageId];
