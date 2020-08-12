@@ -13,6 +13,7 @@ use ApacheSolrForTypo3\Solr\Domain\Site\Site;
 use ApacheSolrForTypo3\Solr\Domain\Site\SiteRepository;
 use ApacheSolrForTypo3\Solr\System\Environment\CliEnvironment;
 use JWeiland\Jwtools2\Service\SolrService;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\ProgressProviderInterface;
@@ -53,7 +54,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
         if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
             $cliEnvironment = GeneralUtility::makeInstance(CliEnvironment::class);
             $cliEnvironment->backup();
-            $cliEnvironment->initialize(PATH_site);
+            $cliEnvironment->initialize(Environment::getPublicPath() . '/');
         }
 
         $counter = 0;
