@@ -14,6 +14,7 @@ use ApacheSolrForTypo3\Solr\Domain\Site\Site;
 use JWeiland\Jwtools2\Domain\Repository\SchedulerRepository;
 use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -37,8 +38,6 @@ class NextRunViewHelper extends AbstractViewHelper
     protected $registry;
 
     /**
-     * inject solrRepository
-     *
      * @param SolrRepository $solrRepository
      */
     public function injectSolrRepository(SolrRepository $solrRepository)
@@ -47,8 +46,6 @@ class NextRunViewHelper extends AbstractViewHelper
     }
 
     /**
-     * inject schedulerRepository
-     *
      * @param SchedulerRepository $schedulerRepository
      */
     public function injectSchedulerRepository(SchedulerRepository $schedulerRepository)
@@ -57,8 +54,6 @@ class NextRunViewHelper extends AbstractViewHelper
     }
 
     /**
-     * inject registry
-     *
      * @param Registry $registry
      */
     public function injectRegistry(Registry $registry)
@@ -69,7 +64,7 @@ class NextRunViewHelper extends AbstractViewHelper
     /**
      * Initialize all arguments.
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'site',
@@ -87,6 +82,7 @@ class NextRunViewHelper extends AbstractViewHelper
     public function render(): float
     {
         $task = $this->schedulerRepository->findSolrSchedulerTask();
+
         if (!$task || empty($task->getExecution()->getInterval())) {
             return 0;
         }
