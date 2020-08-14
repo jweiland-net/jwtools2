@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -7,16 +9,6 @@
  */
 
 namespace JWeiland\Jwtools2\XClasses\Browser;
-
-use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Resource\Exception;
-use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
-use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
 
 /**
  * JW/SF: move $uploadFiles before $filelist
@@ -27,6 +19,7 @@ use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
 class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
 {
     /**
+     * TODO: Solve this via $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']
      * @return string HTML content
      */
     public function render(): string

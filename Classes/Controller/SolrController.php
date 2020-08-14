@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class SolrController
@@ -198,7 +199,7 @@ class SolrController extends AbstractController
     {
         /** @var SolrService $solrService */
         $solrService = GeneralUtility::makeInstance(SolrService::class);
-        $site = $this->solrRepository->findByRootPage((int)$rootPageUid);
+        $site = $this->solrRepository->findByRootPage($rootPageUid);
         if ($site instanceof Site) {
             foreach ($configurationNames as $configurationName) {
                 $solrService->clearIndexByType($site, $clear, $configurationName);

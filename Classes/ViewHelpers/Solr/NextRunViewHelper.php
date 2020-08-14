@@ -14,7 +14,6 @@ use ApacheSolrForTypo3\Solr\Domain\Site\Site;
 use JWeiland\Jwtools2\Domain\Repository\SchedulerRepository;
 use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -83,7 +82,8 @@ class NextRunViewHelper extends AbstractViewHelper
     {
         $task = $this->schedulerRepository->findSolrSchedulerTask();
 
-        if (!$task || empty($task->getExecution()->getInterval())) {
+        // getExecution() returns a incomplete class it the task was never executed so we check for it.
+        if (!$task || $task->getExecution() instanceof \__PHP_Incomplete_Class || empty($task->getExecution()->getInterval())) {
             return 0;
         }
 

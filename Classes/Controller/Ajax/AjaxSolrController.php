@@ -25,11 +25,11 @@ class AjaxSolrController
 {
     /**
      * @param ServerRequest $request
-     * @param Response $response
      * @return Response
      */
-    public function clearIndexAction(ServerRequest $request, Response $response)
+    public function clearIndexAction(ServerRequest $request)
     {
+        $response = new Response();
         $postData = $request->getParsedBody();
         $moduleData = $postData['tx_jwtools2'];
 
@@ -68,11 +68,11 @@ class AjaxSolrController
      * Create index queue entries for given site.
      *
      * @param ServerRequest $request
-     * @param Response $response
      * @return Response
      */
-    public function createIndexQueueAction(ServerRequest $request, Response $response)
+    public function createIndexQueueAction(ServerRequest $request)
     {
+        $response = new Response();
         $site = $this->getSolrSiteFromRequest($request);
 
         /** @var Queue $indexQueue */
@@ -94,12 +94,13 @@ class AjaxSolrController
 
     /**
      * @param ServerRequest $request
-     * @param Response $response
      * @return Response
      */
-    public function getProgressAction(ServerRequest $request, Response $response)
+    public function getProgressAction(ServerRequest $request)
     {
+        $response = new Response();
         $site = $this->getSolrSiteFromRequest($request);
+
         if ($site instanceof Site) {
             /** @var IndexService $indexService */
             $indexService = GeneralUtility::makeInstance(
