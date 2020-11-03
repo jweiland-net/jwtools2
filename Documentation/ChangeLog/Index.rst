@@ -6,6 +6,12 @@
 ChangeLog
 =========
 
+**Version 5.0.0**
+
+- Add TYPO3 10.4 compatibility
+- Remove TYPO3 8.7 compatibility
+- Add HtmlViewHelper with additional record attribute
+
 **Version 4.3.0**
 
 - Add new option "typo3ExcludeVideoFilesFromFalFilter"

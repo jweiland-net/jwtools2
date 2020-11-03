@@ -1,11 +1,10 @@
 # Adapted from https://github.com/TYPO3GmbH/blog/blob/master/.github/workflows/ci.yml
 name: CI
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   build:
-
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -19,7 +18,6 @@ jobs:
             php: '7.1'
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -42,3 +40,13 @@ jobs:
 
       - name: Unit Tests
         run: composer ci:tests:unit
+
+      - name: Functional Tests
+        env:
+          typo3DatabaseName: test
+          typo3DatabaseUsername: root
+          typo3DatabasePassword: root
+          typo3DatabaseHost: 127.0.0.1
+        run: |
+          sudo systemctl start mysql.service
+          composer ci:tests:functional
