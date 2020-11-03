@@ -27,7 +27,7 @@ Extension Name
       tools,solr,sql,task,settings
 
    :Copyright:
-      2013-2019
+      2013-2020
 
    :Author:
       Stefan Froemken

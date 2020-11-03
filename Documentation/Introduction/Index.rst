@@ -58,6 +58,13 @@ method ``JWeiland\Jwtools2\Database::getQueryBuilderForTable()``
 ViewHelpers
 -----------
 
+Format.HtmlViewHelper
+*********************
+
+This VH is a modified version of the original Fluid f:format.html VH. We have added a record-attribute where
+you can assign the data which should be used while processing lib.parseFunc. You should use this VH, if you have
+added if-conditions or CASE on property `field` or `dataWrap` to lib.parseFunc.
+
 Solr.MemoryStatusViewHelper
 ***************************
 
