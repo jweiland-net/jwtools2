@@ -208,10 +208,17 @@ class HtmlViewHelperTest extends FunctionalTestCase
             return 'I am a <a href="https://typo3.org">Link</a>';
         });
 
-        parent::assertSame(
-            'I am a <a href="https://typo3.org" target="_blank" rel="noreferrer" style="color: blue;">Link</a>',
-            $this->subject->initializeArgumentsAndRender()
-        );
+        if (version_compare(TYPO3_branch, '10.4', '>=')) {
+            parent::assertSame(
+                'I am a <a href="https://typo3.org" target="_blank" rel="noreferrer" style="color: blue;">Link</a>',
+                $this->subject->initializeArgumentsAndRender()
+            );
+        } else {
+            parent::assertSame(
+                'I am a <a href="https://typo3.org" target="_blank" style="color: blue;">Link</a>',
+                $this->subject->initializeArgumentsAndRender()
+            );
+        }
     }
 
     /**
@@ -230,9 +237,16 @@ class HtmlViewHelperTest extends FunctionalTestCase
             return 'I am a <a href="https://typo3.org">Link</a>';
         });
 
-        parent::assertSame(
-            'I am a <a href="https://typo3.org" target="_blank" rel="noreferrer" style="color: red;">Link</a>',
-            $this->subject->initializeArgumentsAndRender()
-        );
+        if (version_compare(TYPO3_branch, '10.4', '>=')) {
+            parent::assertSame(
+                'I am a <a href="https://typo3.org" target="_blank" rel="noreferrer" style="color: red;">Link</a>',
+                $this->subject->initializeArgumentsAndRender()
+            );
+        } else {
+            parent::assertSame(
+                'I am a <a href="https://typo3.org" target="_blank" style="color: red;">Link</a>',
+                $this->subject->initializeArgumentsAndRender()
+            );
+        }
     }
 }
