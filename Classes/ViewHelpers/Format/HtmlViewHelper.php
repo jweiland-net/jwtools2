@@ -21,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * You can either specify a path to the TypoScript setting or set the `parseFunc`_ options directly.
  * By default :ts:`lib.parseFunc_RTE` is used to parse the string.
  *
- * SF: This VH is a modified version of the original HtmlViewHelper of EXT:fluid. We have added the record-Attribute
+ * SF: This VH is a modified version of the original HtmlViewHelper of EXT:fluid. We have added the data-Attribute
  * to get TS if-conditions in lib.parseFunc work again. We will remove that VH, if this patch will be merged:
  * https://review.typo3.org/c/Packages/TYPO3.CMS/+/66374
  *
@@ -56,14 +56,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
  *
- * Individual record attribute
- * ---------------------------
+ * Individual data attribute
+ * -------------------------
  *
  * If you work with TS:field property in lib.parseFunc you should add current record to Html VH.
  *
  * ::
  *
- *    <jw:format.html parseFuncTSPath="lib.parseFunc" record="{data}">
+ *    <jw:format.html parseFuncTSPath="lib.parseFunc" data="{data}">
  *        foo <b>bar</b>. Some <a href="t3://page?uid=1">Link</a>.
  *    </jw:format.html>
  *
@@ -115,7 +115,7 @@ class HtmlViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('parseFuncTSPath', 'string', 'Path to TypoScript parseFunc setup.', false, 'lib.parseFunc_RTE');
-        $this->registerArgument('record', 'array', 'Initialize ContentObjectRenderer with this set of data.', false, []);
+        $this->registerArgument('data', 'array', 'Initialize ContentObjectRenderer with this set of data.', false, []);
     }
 
     /**
@@ -133,7 +133,7 @@ class HtmlViewHelper extends AbstractViewHelper
         }
         $value = $renderChildrenClosure();
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $contentObject->start($arguments['record'] ?? []);
+        $contentObject->start($arguments['data'] ?? []);
         $content = $contentObject->parseFunc($value, [], '< ' . $parseFuncTSPath);
         if (TYPO3_MODE === 'BE') {
             self::resetFrontendEnvironment();
