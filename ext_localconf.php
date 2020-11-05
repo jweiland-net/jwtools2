@@ -3,14 +3,14 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-call_user_func(static function ($extensionKey) {
+call_user_func(static function () {
     $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
     $jwToolsConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('jwtools2');
 
     if ($jwToolsConfiguration['solrEnable']) {
         // Add scheduler task to index all Solr Sites
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\JWeiland\Jwtools2\Task\IndexQueueWorkerTask::class] = [
-            'extension' => $extensionKey,
+            'extension' => 'jwtools2',
             'title' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:indexqueueworker_title',
             'description' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:indexqueueworker_description',
             'additionalFields' => \JWeiland\Jwtools2\Task\IndexQueueWorkerTaskAdditionalFieldProvider::class
@@ -33,7 +33,7 @@ call_user_func(static function ($extensionKey) {
     if ($jwToolsConfiguration['enableSqlQueryTask']) {
         // Add scheduler task to execute SQL-Queries
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\JWeiland\Jwtools2\Task\ExecuteQueryTask::class] = [
-            'extension' => $extensionKey,
+            'extension' => 'jwtools2',
             'title' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:executeQueryTask.title',
             'description' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:executeQueryTask.description',
             'additionalFields' => \JWeiland\Jwtools2\Task\ExecuteQueryTaskAdditionalFieldProvider::class
@@ -77,4 +77,7 @@ call_user_func(static function ($extensionKey) {
 
     // retrieve stdWrap current value into sub cObj. CONTENT
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'][] = \JWeiland\Jwtools2\Hooks\InitializeStdWrap::class;
-}, 'jwtools2');
+
+    // Register an Aspect to store source/target-mapping. Will be activated, if used in SiteConfiguration only.
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects']['PersistedTableMapper'] = \JWeiland\Jwtools2\Routing\Aspect\PersistedTableMapper::class;
+});

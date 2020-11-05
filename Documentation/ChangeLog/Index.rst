@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 5.1.0**
+
+- Add PersistedTableMapper Abstract to store static values without cHash
+
 **Version 5.0.0**
 
 - Add TYPO3 10.4 compatibility
