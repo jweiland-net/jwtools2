@@ -228,7 +228,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
     {
         $this->subject->setArguments([
             'parseFuncTSPath' => 'lib.parseFunc_RTE',
-            'record' => [
+            'data' => [
                 'colPos' => '2'
             ]
         ]);
