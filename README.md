@@ -16,6 +16,7 @@ features in Extension Settings.
 * Html VH with record-attribute which should be used while processing lib.parseFunc
 * VH which brings you GeneralUtility::splitFileRef functionality into FE.
 * Solr-Features: Use task to index all of your PageTrees in ONE task.
+* Aspect for RouteEnhancer to persist static values
 
 Stay tuned, we will fill up this extension with even more feature in future.
 
