@@ -9,6 +9,7 @@ ChangeLog
 **Version 5.1.0**
 
 - Add PersistedTableMapper Abstract to store static values without cHash
+- Change record-Attribute to data in HtmlFormat VH
 
 **Version 5.0.0**
 

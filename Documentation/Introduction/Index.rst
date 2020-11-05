@@ -34,13 +34,13 @@ Commands
 --------
 
 jwtools2:executeExtensionUpdate
-###############################
+*******************************
 
 With this command you can execute the update script of extensions via ``class.ext_update.php``. It only starts the
 update, but if you have something special or a wizard in this file this command will not help.
 
 jwtools2:convertpasswords
-#########################
+*************************
 
 Use this command to update plain passwords of be_users or fe_users to hashed password using
 the currently configured hashing method.
@@ -61,7 +61,7 @@ ViewHelpers
 Format.HtmlViewHelper
 *********************
 
-This VH is a modified version of the original Fluid f:format.html VH. We have added a record-attribute where
+This VH is a modified version of the original Fluid f:format.html VH. We have added a data-attribute where
 you can assign the data which should be used while processing lib.parseFunc. You should use this VH, if you have
 added if-conditions or CASE on property `field` or `dataWrap` to lib.parseFunc.
 
@@ -82,3 +82,25 @@ With version 3.2.0 we have ported functionality of method GeneralUtility::split_
 ViewHelper. This is very useful, if you want your own preview image for videos for example. See an example here:
 `Add Preview image to your videos
 <https://jweiland.net/typo3/beispiele-anleitungen-faq/allgemeines/vorschaubild-fuer-videos-einbinden.html>`__
+
+RouteEnhancer
+-------------
+
+PersistedTableMapper
+********************
+
+If you do not have values in URL which have a relation to a table like results from an API call you do not
+have any storage to store the mapping from "Möller Industries" to "moeller-industries" like in realurl times.
+
+This Abstract comes with its own table, where these static values are stored. Further it implements the
+static mapper interfaces to prevent generation of cHash in URL.
+
+See header of Classes/Routing/Aspect/PersistedTableMapper for a full example.
+
+.. code-block:: yaml
+
+   aspects:
+     uid:
+       type: PersistedTableMapper
+     title:
+       type: PersistedTableMapper
