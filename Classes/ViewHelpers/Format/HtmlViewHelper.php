@@ -8,10 +8,13 @@
 
 namespace JWeiland\Jwtools2\ViewHelpers\Format;
 
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -147,13 +150,19 @@ class HtmlViewHelper extends AbstractViewHelper
      */
     protected static function simulateFrontendEnvironment()
     {
-        self::$tsfeBackup = $GLOBALS['TSFE'] ?? null;
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->cObjectDepthCounter = 50;
-        $GLOBALS['TSFE']->tmpl = new \stdClass();
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
-        $GLOBALS['TSFE']->tmpl->setup = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        if (
+            !$GLOBALS['TSFE'] instanceof TypoScriptFrontendController
+            || !$GLOBALS['TSFE']->tmpl instanceof TemplateService
+            || !$GLOBALS['TSFE']->sys_page instanceof PageRepository
+        ) {
+            self::$tsfeBackup = $GLOBALS['TSFE'] ?? null;
+            $GLOBALS['TSFE'] = new \stdClass();
+            $GLOBALS['TSFE']->cObjectDepthCounter = 50;
+            $GLOBALS['TSFE']->tmpl = new \stdClass();
+            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
+            $GLOBALS['TSFE']->tmpl->setup = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        }
     }
 
     /**
@@ -163,6 +172,8 @@ class HtmlViewHelper extends AbstractViewHelper
      */
     protected static function resetFrontendEnvironment()
     {
-        $GLOBALS['TSFE'] = self::$tsfeBackup;
+        if ($GLOBALS['TSFE'] instanceof \stdClass) {
+            $GLOBALS['TSFE'] = self::$tsfeBackup;
+        }
     }
 }
