@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 4.4.0**
+
+- Allow execution of multiple SQL queries in task
+
 **Version 4.3.0**
 
 - Add new option "typo3ExcludeVideoFilesFromFalFilter"
