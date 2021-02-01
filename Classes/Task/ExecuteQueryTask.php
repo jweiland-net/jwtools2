@@ -31,11 +31,19 @@ class ExecuteQueryTask extends AbstractTask
         try {
             $connection = $this->getConnectionPool()->getConnectionByName('Default');
             $sqlQueries = preg_split('/;\v+/', $this->sqlQuery);
+            if ($sqlQueries === false) {
+                $this->addMessage('PCRE error occurred while parsing the query string');
+            }
+
+            $sqlQueries = array_filter($sqlQueries);
+
+            if (empty($sqlQueries)) {
+                $this->addMessage('No queries for execution found');
+                return false;
+            }
+
             foreach ($sqlQueries as $sqlQuery) {
-                $sqlQuery = trim($sqlQuery);
-                if ($sqlQuery) {
-                    $connection->query($sqlQuery)->execute();
-                }
+                $connection->query($sqlQuery)->execute();
             }
 
             $this->addMessage(

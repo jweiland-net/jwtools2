@@ -20,7 +20,7 @@ use TYPO3\CMS\Scheduler\Scheduler;
 /**
  * Test case.
  */
-class AjaxTest extends UnitTestCase
+class ExecuteQueryTaskTest extends UnitTestCase
 {
     /**
      * @var ExecuteQueryTask
@@ -52,30 +52,8 @@ class AjaxTest extends UnitTestCase
     /**
      * @test
      */
-    public function executeWithErrorWillReturnFalse()
+    public function executeWithEmptyQueryWillReturnFalse()
     {
-        /** @var Statement|ObjectProphecy $statementProphecy */
-        $statementProphecy = $this->prophesize(Statement::class);
-        $statementProphecy
-            ->execute()
-            ->shouldBeCalled()
-            ->willReturn(false);
-
-        /** @var Connection|ObjectProphecy $connectionProphecy */
-        $connectionProphecy = $this->prophesize(Connection::class);
-        $connectionProphecy
-            ->query('')
-            ->shouldBeCalled()
-            ->willReturn($statementProphecy->reveal());
-
-        /** @var ConnectionPool|ObjectProphecy $connectionPoolProphecy */
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphecy
-            ->getConnectionByName('Default')
-            ->shouldBeCalled()
-            ->willReturn($connectionProphecy->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-
         self::assertFalse(
             $this->subject->execute()
         );
@@ -84,8 +62,10 @@ class AjaxTest extends UnitTestCase
     /**
      * @test
      */
-    public function executeWithoutErrorWillReturnTrue()
+    public function executeWithSingleQueryWillReturnTrue()
     {
+        $this->subject->setSqlQuery('UPDATE what_ever;');
+
         /** @var Statement|ObjectProphecy $statementProphecy */
         $statementProphecy = $this->prophesize(Statement::class);
         $statementProphecy
@@ -96,7 +76,7 @@ class AjaxTest extends UnitTestCase
         /** @var Connection|ObjectProphecy $connectionProphecy */
         $connectionProphecy = $this->prophesize(Connection::class);
         $connectionProphecy
-            ->query('')
+            ->query('UPDATE what_ever;')
             ->shouldBeCalled()
             ->willReturn($statementProphecy->reveal());
 
@@ -116,9 +96,9 @@ class AjaxTest extends UnitTestCase
     /**
      * @test
      */
-    public function executeWithQueryWillReturnTrue()
+    public function executeWithMultipleQueriesWillReturnTrue()
     {
-        $this->subject->setSqlQuery('UPDATE what_ever;');
+        $this->subject->setSqlQuery("UPDATE this;\nUPDATE that;\nUPDATE else;");
 
         /** @var Statement|ObjectProphecy $statementProphecy */
         $statementProphecy = $this->prophesize(Statement::class);
@@ -130,7 +110,15 @@ class AjaxTest extends UnitTestCase
         /** @var Connection|ObjectProphecy $connectionProphecy */
         $connectionProphecy = $this->prophesize(Connection::class);
         $connectionProphecy
-            ->query('UPDATE what_ever;')
+            ->query('UPDATE this')
+            ->shouldBeCalled()
+            ->willReturn($statementProphecy->reveal());
+        $connectionProphecy
+            ->query('UPDATE that')
+            ->shouldBeCalled()
+            ->willReturn($statementProphecy->reveal());
+        $connectionProphecy
+            ->query('UPDATE else;')
             ->shouldBeCalled()
             ->willReturn($statementProphecy->reveal());
 
