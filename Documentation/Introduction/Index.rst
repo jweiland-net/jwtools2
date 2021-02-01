@@ -22,7 +22,8 @@ In our jwtools2 backend module you have the possibility to clear individual solr
 Tasks
 -----
 
-Since version 3.0.0 we have a new task to execute your individual SQL-Query.
+Since version 3.0.0 we have a new task to execute your individual SQL-Query. You can insert multiple queries as
+long as you divide them by `;` + Return.
 
 TYPO3 Settings
 --------------

@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 5.2.0**
+
+- Allow execution of multiple SQL queries in task
+
 **Version 5.1.0**
 
 - Add PersistedTableMapper Abstract to store static values without cHash
