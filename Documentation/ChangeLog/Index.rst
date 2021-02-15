@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 5.2.1**
+
+- Remove "exclude" from sys_language_uid of stored_routes table
+
 **Version 5.2.0**
 
 - Allow execution of multiple SQL queries in task
