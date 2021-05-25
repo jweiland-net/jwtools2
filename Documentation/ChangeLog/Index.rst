@@ -6,6 +6,11 @@
 ChangeLog
 =========
 
+**Version 5.2.2**
+
+- EXT:solr in version 11.0.4 has added some more strict types. To be compatible with new version
+  we have added these strict types in our XClasses, too. But that way we need EXT:solr at least in version 11.0.4.
+
 **Version 5.2.1**
 
 - Remove "exclude" from sys_language_uid of stored_routes table
