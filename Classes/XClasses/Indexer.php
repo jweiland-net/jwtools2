@@ -30,7 +30,7 @@ class Indexer extends \ApacheSolrForTypo3\Solr\IndexQueue\Indexer
      * @throws \RuntimeException
      * @return array Configuration array from TypoScript
      */
-    protected function getItemTypeConfiguration(Item $item, $language = 0)
+    protected function getItemTypeConfiguration(Item $item, int $language = 0): array
     {
         $indexConfigurationName = $item->getIndexingConfigurationName();
         $fields = $this->getFieldConfigurationFromItemRecordPage($item, $language, $indexConfigurationName);
@@ -54,7 +54,7 @@ class Indexer extends \ApacheSolrForTypo3\Solr\IndexQueue\Indexer
      * @param Item $item
      * @return bool
      */
-    protected function isRootPageIdPartOfRootLine(Item $item)
+    protected function isRootPageIdPartOfRootLine(Item $item): bool
     {
         $rootPageId = $item->getRootPageUid();
         $buildRootlineWithPid = $item->getRecordPageId();
