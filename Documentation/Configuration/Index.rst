@@ -158,9 +158,13 @@ enableContextMenuToUpdateFileMetadata
 -------------------------------------
 
 Adds a new entry ``Create/Update file metadata`` into context menu of filelist module to create a missing file
-metadata record or to update the metadata record (sys_file_metadata).
+metadata record or to update the existing metadata record (sys_file_metadata).
 
-This entry will also update image width/height and deleted old related processed files.
+This entry will read original width/height from file and uses them to create a NEW file (imagemagick) with same
+dimension, 100% quality and colorspace RGB to update width/height also in EXIF metadata. That's needed for the
+registered file extractors like OnlineHelper and EXT:tika which may read width/heigth from EXIF instead, which could
+be wrong in some cases. Because of different image tools (Photoshop, Paint, Gimp) the original file may result in a
+different image size after process with imagemagick/graphicsmagick.
 
 
 .. _solrEnable:
