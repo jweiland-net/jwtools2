@@ -9,6 +9,10 @@ use JWeiland\Jwtools2\Controller;
  * but will be extended further.
  */
 return [
+    'jwtools2_updateFileMetadata' => [
+        'path' => '/jwtools2/updateFileMetadata',
+        'target' => Controller\Ajax\SysFileController::class . '::updateFileMetadataAction'
+    ],
     'jwtools2_clearIndex' => [
         'path' => '/jwtools2/clearIndex',
         'target' => Controller\Ajax\AjaxSolrController::class . '::clearIndexAction'
