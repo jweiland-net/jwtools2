@@ -9,17 +9,11 @@
 namespace JWeiland\Jwtools2\Controller\Ajax;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
-use TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException;
-use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
-use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\Processing\FileDeletionAspect;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
