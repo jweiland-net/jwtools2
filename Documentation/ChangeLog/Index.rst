@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 5.3.1**
+
+- Update width/height in EXIF before starting TYPO3s extractor service
+
 **Version 5.3.0**
 
 - Add new context menu item to create/update file metadata incl. width/height

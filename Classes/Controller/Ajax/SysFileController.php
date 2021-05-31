@@ -10,6 +10,7 @@ namespace JWeiland\Jwtools2\Controller\Ajax;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -17,7 +18,10 @@ use TYPO3\CMS\Core\Resource\Index\Indexer;
 use TYPO3\CMS\Core\Resource\Processing\FileDeletionAspect;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
+use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Ajax controller to create/update sys_file_metadata records
@@ -29,9 +33,17 @@ class SysFileController
      */
     protected $resourceFactory;
 
-    public function __construct(ResourceFactory $resourceFactory = null)
-    {
+    /**
+     * @var GraphicalFunctions
+     */
+    protected $graphicalFunctions;
+
+    public function __construct(
+        ResourceFactory $resourceFactory = null,
+        GraphicalFunctions $graphicalFunctions = null
+    ) {
         $this->resourceFactory = $resourceFactory ?? GeneralUtility::makeInstance(ResourceFactory::class);
+        $this->graphicalFunctions = $graphicalFunctions ?? GeneralUtility::makeInstance(GraphicalFunctions::class);
     }
 
     public function updateFileMetadataAction(ServerRequestInterface $request): JsonResponse
@@ -40,6 +52,7 @@ class SysFileController
             $fileObject = $this->resourceFactory->getFileObjectFromCombinedIdentifier($combinedIdentifier);
             if ($fileObject instanceof FileInterface && $fileObject->exists()) {
                 $this->cleanupProcessedFilesForFile($fileObject);
+                $this->updateExifData($fileObject);
                 $indexer = $this->getIndexer($fileObject->getStorage());
                 // Do not use "extractMetaData" as this will only process the OnlineExtractor, but does
                 // not update the image width/height
@@ -48,6 +61,62 @@ class SysFileController
         }
 
         return (new JsonResponse())->setPayload([]);
+    }
+
+    /**
+     * In imagemagick prior version 6.6 EXIF data was not written correctly. It may happen that
+     * width/height of EXIF differs from original width/height.
+     * This is an important step for further file extractors registered in TYPO3 like EXT:solr and/or EXT:tika
+     * which does not read the original image dimensions, but width/height from EXIF data instead.
+     *
+     * @param FileInterface $fileObject
+     */
+    protected function updateExifData(FileInterface $fileObject): void
+    {
+        // Only update EXIF width/height, if we have an updated imagemagick version:
+        // https://stackoverflow.com/questions/5840437/resizing-images-without-losing-exif-data
+        if (version_compare($this->determineImageMagickVersion(), '6.6.9', '>=')) {
+            $imageDimensions = $this->getWidthAndHeightOfFile($fileObject);
+            $width = $imageDimensions['width'] ?? 0;
+            $height = $imageDimensions['height'] ?? 0;
+            if ($width > 0 && $height > 0) {
+                $result = $this->graphicalFunctions->imageMagickConvert(
+                    $fileObject->getForLocalProcessing(),
+                    '', // keep current ext
+                    (string)$width,
+                    (string)$height,
+                    '-colorspace RGB -quality 100', // Do not reduce quality. It's the original image
+                    '', // keep default
+                    ['noScale' => true], // keep default
+                    true // As width/height are the same, we have to force creating a new image
+                );
+                if (is_array($result) && is_file($result[3])) {
+                    $fileObject->getStorage()->replaceFile($fileObject, $result[3]);
+                }
+            }
+        }
+    }
+
+    /**
+     * This method reads the original width/height of the file.
+     * It does not relate to EXIF data
+     *
+     * @param FileInterface $fileObject
+     * @return array
+     */
+    protected function getWidthAndHeightOfFile(FileInterface $fileObject): array
+    {
+        $metaData = [];
+        if ($fileObject->isImage() && $fileObject->getStorage()->getDriverType() === 'Local') {
+            $rawFileLocation = $fileObject->getForLocalProcessing(false);
+            $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $rawFileLocation);
+            $metaData = [
+                'width' => $imageInfo->getWidth(),
+                'height' => $imageInfo->getHeight(),
+            ];
+        }
+
+        return $metaData;
     }
 
     protected function getValidatedFiles(ServerRequestInterface $request): array
@@ -64,6 +133,24 @@ class SysFileController
         return $validatedFiles;
     }
 
+    protected function determineImageMagickVersion(): string
+    {
+        $command = CommandUtility::imageMagickCommand('identify', '-version');
+        CommandUtility::exec($command, $result);
+        $string = $result[0];
+
+        // A version like 6.9.10-23
+        $version = '';
+        if (!empty($string)) {
+            [, $version] = explode('Magick', $string);
+            [$version] = explode(' ', trim($version));
+            [$version] = explode('-', trim($version));
+            $version = trim($version);
+        }
+
+        return $version;
+    }
+
     protected function getIndexer(ResourceStorage $storage): Indexer
     {
         return GeneralUtility::makeInstance(Indexer::class, $storage);
@@ -72,6 +159,8 @@ class SysFileController
     protected function cleanupProcessedFilesForFile(FileInterface $fileObject): void
     {
         $fileDeletionAspect = GeneralUtility::makeInstance(FileDeletionAspect::class);
+
+        // @ToDo: Replace with Typo3Version class in future
         if (version_compare(TYPO3_branch, '10.0', '>=')) {
             $event = new AfterFileAddedEvent(
                 $fileObject,
