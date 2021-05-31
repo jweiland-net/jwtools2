@@ -62,7 +62,7 @@ return PhpCsFixer\Config::create()
         'no_blank_lines_after_phpdoc' => true,
         'no_empty_phpdoc' => true,
         'no_empty_statement' => true,
-        'no_extra_consecutive_blank_lines' => true,
+        'no_extra_blank_lines' => true,
         'no_leading_import_slash' => true,
         'no_leading_namespace_whitespace' => true,
         'no_null_property_initialization' => true,
