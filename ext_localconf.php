@@ -4,8 +4,12 @@ if (!defined('TYPO3_MODE')) {
 }
 
 call_user_func(static function () {
-    $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-    $jwToolsConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('jwtools2');
+    $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        \TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class
+    );
+    $jwToolsConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
+    )->get('jwtools2');
 
     if ($jwToolsConfiguration['solrEnable']) {
         // Add scheduler task to index all Solr Sites
@@ -73,6 +77,10 @@ call_user_func(static function () {
             \JWeiland\Jwtools2\Tca\ReduceCategoryTreeToPageTree::class,
             'reduceCategoriesToPageTree'
         );
+    }
+
+    if ($jwToolsConfiguration['enableContextMenuToUpdateFileMetadata']) {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1622440501] = \JWeiland\Jwtools2\ContextMenu\ItemProviders\UpdateFileMetaDataProvider::class;
     }
 
     // retrieve stdWrap current value into sub cObj. CONTENT

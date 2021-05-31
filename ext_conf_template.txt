@@ -10,6 +10,8 @@ typo3ExcludeVideoFilesFromFalFilter = 0
 reduceCategoriesToPageTree = 0
 # cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:enableExecuteQueryTask
 enableSqlQueryTask = 0
+# cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:enableContextMenuToUpdateFileMetadata
+enableContextMenuToUpdateFileMetadata = 0
 
 # cat=solr; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:solrEnable
 solrEnable = 0
