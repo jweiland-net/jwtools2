@@ -23,6 +23,15 @@
 				<source>Reduce categories to page tree: In case of a multi-domain TYPO3 instances it makes sense to reduce categories in category-tree to PIDs of current page-tree. So, after activating this checkbox you will not see any categories of foreign page-trees anymore. Admin user will still see everything.</source>
 				<target>Reduziere Kategorien auf Seitenbaum: Bei Multi-Domain Instanzen macht es evtl. Sinn die Kategorien innerhalb des Kategorie-Baumes auf die Kategorien des aktuellen Seitenbaumes zu reduzieren. Nach Aktivierung seht Ihr die Kategorien von den anderen Seitenbäumen nicht mehr. Der Admin jedoch sieht immer alles.</target>
 			</trans-unit>
+			<trans-unit id="enableExecuteQueryTask">
+				<source>Enable SQL-Query Task: With this task you can realize your own recurring SQL-Queries.</source>
+				<target>SQL-Abfrage-Task aktivieren: Mit diesem scheduler Task könnt Ihr Eure eigenen SQL-Abfragen wiederkehrend einrichten.</target>
+			</trans-unit>
+			<trans-unit id="enableContextMenuToUpdateFileMetadata">
+				<source>Update file metadata: Activates a new context menu item in filelist to create/update the file metadata. It updates create/edit times and width/height of images.</source>
+				<target>Datei Metadaten aktualisieren: Aktiviert einen neuen Eintrag im Kontextmenü der Dateiliste, um den Matadaten Datensatz zu aktualisieren oder neu anzulegen. Aktualisiert werden Erstell- und Bearbeitungsdatum sowie die Bildabmessungen.</target>
+			</trans-unit>
+
 			<trans-unit id="solrEnable">
 				<source>Enable Solr features</source>
 				<target>Aktiviere Solr Features</target>
@@ -34,10 +43,6 @@
 			<trans-unit id="solrApplyPatches">
 				<source>Solr apply patches: There are some bugs in Solr which we have solved. NOTE: These patches are needed for ext solr 9, later version already contain this patch. Activate this checkbox to apply these patches: https://github.com/TYPO3-Solr/ext-solr/pull/2324/ and https://github.com/TYPO3-Solr/ext-solr/pull/2323</source>
 				<target>Solr Patches einbinden: Wir haben ein paar Fehler in solr gefunden. HINWEIS: Diese patches werde nur für ext solr 9 benötigt, spätere versionen enthalten diese bereits. Nach Aktivierung dieser Checkbox werden diese Patches eingebaut: https://github.com/TYPO3-Solr/ext-solr/pull/2324/ und https://github.com/TYPO3-Solr/ext-solr/pull/2323</target>
-			</trans-unit>
-			<trans-unit id="enableExecuteQueryTask">
-				<source>Enable SQL-Query Task: With this task you can realize your own recurring SQL-Queries.</source>
-				<target>SQL-Abfrage-Task aktivieren: Mit diesem scheduler Task könnt Ihr Eure eigenen SQL-Abfragen wiederkehrend einrichten.</target>
 			</trans-unit>
 		</body>
 	</file>

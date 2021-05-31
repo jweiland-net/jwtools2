@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 5.3.0**
+
+- Add new context menu item to create/update file metadata incl. width/height
+
 **Version 5.2.2**
 
 - EXT:solr in version 11.0.4 has added some more strict types. To be compatible with new version

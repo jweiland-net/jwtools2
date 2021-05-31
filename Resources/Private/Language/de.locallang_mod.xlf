@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-05-31T14:24:45Z" product-name="jwtools2">
+		<header/>
+		<body>
+			<trans-unit id="statusDeleteTitle">
+				<source>File metadata updated</source>
+				<target>Datei Metadaten aktualisiert</target>
+			</trans-unit>
+			<trans-unit id="statusDeleteDescription">
+				<source>Successfully created/updated file metadata and deleted related processed files.</source>
+				<target>Die Metadaten der Datei wurden erstellt/aktualisiert und evtl. verknüpfte temporäre Datei entfernt.</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

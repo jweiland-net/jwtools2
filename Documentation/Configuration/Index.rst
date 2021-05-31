@@ -16,19 +16,20 @@ Extension configuration
 
 .. container:: ts-properties
 
-   ===================================== =========
-   Property                              Default
-   ===================================== =========
-   typo3EnableUidInPageTree_             0
-   typo3TransferTypoScriptCurrent_       0
-   typo3UploadFieldsInTopOfEB_           0
-   typo3ExcludeVideoFilesFromFalFilter_  0
-   reduceCategoriesToPageTree_           0
-   enableSqlQueryTask_                   0
-   solrEnable_                           0
-   solrSchedulerTaskUid_                 0
-   solrApplyPatches_                     false
-   ===================================== =========
+   ====================================== =========
+   Property                               Default
+   ====================================== =========
+   typo3EnableUidInPageTree_              0
+   typo3TransferTypoScriptCurrent_        0
+   typo3UploadFieldsInTopOfEB_            0
+   typo3ExcludeVideoFilesFromFalFilter_   0
+   reduceCategoriesToPageTree_            0
+   enableSqlQueryTask_                    0
+   enableContextMenuToUpdateFileMetadata_ 0
+   solrEnable_                            0
+   solrSchedulerTaskUid_                  0
+   solrApplyPatches_                      false
+   ====================================== =========
 
 
 Property details
@@ -149,6 +150,17 @@ enableSqlQueryTask
 ------------------
 
 Adds a new task to scheduler to execute your individual SQL-Query.
+
+
+.. _enableContextMenuToUpdateFileMetadata:
+
+enableContextMenuToUpdateFileMetadata
+-------------------------------------
+
+Adds a new entry ``Create/Update file metadata`` into context menu of filelist module to create a missing file
+metadata record or to update the metadata record (sys_file_metadata).
+
+This entry will also update image width/height and deleted old related processed files.
 
 
 .. _solrEnable:
