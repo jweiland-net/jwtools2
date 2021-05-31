@@ -52,7 +52,6 @@ return PhpCsFixer\Config::create()
         'declare_equal_normalize' => ['space' => 'none'],
         'dir_constant' => true,
         'function_typehint_space' => true,
-        'hash_to_slash_comment' => true,
         'lowercase_cast' => true,
         'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
         'modernize_types_casting' => true,
@@ -86,6 +85,7 @@ return PhpCsFixer\Config::create()
         'phpdoc_types' => true,
         'phpdoc_types_order' => ['null_adjustment' => 'always_last', 'sort_algorithm' => 'none'],
         'return_type_declaration' => ['space_before' => 'none'],
+        'single_line_comment_style' => true,
         'single_quote' => true,
         'single_trait_insert_per_statement' => true,
         'whitespace_after_comma_in_array' => true
