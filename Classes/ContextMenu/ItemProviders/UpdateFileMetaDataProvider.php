@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\ContextMenu\ItemProviders;
 
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileProvider;
 
 /**
@@ -41,10 +42,6 @@ class UpdateFileMetaDataProvider extends FileProvider
 
     /**
      * Checks whether certain item can be rendered (e.g. check for disabled items or permissions)
-     *
-     * @param string $itemName
-     * @param string $type
-     * @return bool
      */
     protected function canRender(string $itemName, string $type): bool
     {
@@ -52,14 +49,24 @@ class UpdateFileMetaDataProvider extends FileProvider
             return false;
         }
 
-        return true;
+        return $this->canUpdateFile();
+    }
+
+    /**
+     * Checks if the file (sys_file) is of type image
+     */
+    protected function canUpdateFile(): bool
+    {
+        if ($this->record instanceof File) {
+            // Do not use $this->record->isImage() as this is also true for SVG and PDF
+            return $this->record->getType() === $this->record::FILETYPE_IMAGE;
+        }
+
+        return false;
     }
 
     /**
      * As we can't extend ContextMenuActions.js of TYPO3 Core we have to use our own JS module.
-     *
-     * @param string $itemName
-     * @return array
      */
     protected function getAdditionalAttributes(string $itemName): array
     {

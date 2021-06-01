@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 5.3.2**
+
+- Show ``create/update file metadata`` item just for images and not SVG, PDF and folders.
+
 **Version 5.3.1**
 
 - Update width/height in EXIF before starting TYPO3s extractor service
