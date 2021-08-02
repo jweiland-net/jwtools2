@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 5.4.2**
+
+- Add report to show updatable TYPO3 extensions
+
 **Version 5.3.2**
 
 - Show ``create/update file metadata`` item just for images and not SVG, PDF and folders.

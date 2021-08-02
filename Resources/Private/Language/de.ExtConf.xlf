@@ -31,6 +31,10 @@
 				<source>Update file metadata: Activates a new context menu item in filelist to create/update the file metadata. It updates create/edit times and width/height of images.</source>
 				<target>Datei Metadaten aktualisieren: Aktiviert einen neuen Eintrag im Kontextmenü der Dateiliste, um den Matadaten Datensatz zu aktualisieren oder neu anzulegen. Aktualisiert werden Erstell- und Bearbeitungsdatum sowie die Bildabmessungen.</target>
 			</trans-unit>
+			<trans-unit id="enableReportProvider">
+				<source>Enable provider for EXT reports: If EXT:reports is installed it will show additional information about updatable extensions.</source>
+				<target>Aktiviere Status-Provider für EXT reports: Wenn die EXT:reports installiert und aktiviert ist werden zusätzlich Informationen über updatefähige Extensions angezeigt.</target>
+			</trans-unit>
 
 			<trans-unit id="solrEnable">
 				<source>Enable Solr features</source>
