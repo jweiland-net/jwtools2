@@ -24,6 +24,9 @@
 			<trans-unit id="enableContextMenuToUpdateFileMetadata">
 				<source>Update file metadata: Activates a new context menu item in filelist to create/update the file metadata. It updates create/edit times and width/height of images.</source>
 			</trans-unit>
+			<trans-unit id="enableReportProvider">
+				<source>Enable provider for EXT reports: If EXT:reports is installed it will show additional information about updatable extensions.</source>
+			</trans-unit>
 
 			<trans-unit id="solrEnable">
 				<source>Enable Solr features</source>

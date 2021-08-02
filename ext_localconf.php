@@ -83,6 +83,13 @@ call_user_func(static function () {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1622440501] = \JWeiland\Jwtools2\ContextMenu\ItemProviders\UpdateFileMetaDataProvider::class;
     }
 
+    if (
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('reports')
+        && $jwToolsConfiguration['enableReportProvider']
+    ) {
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['jwtools2'][] = \JWeiland\Jwtools2\Provider\ReportProvider::class;
+    }
+
     // retrieve stdWrap current value into sub cObj. CONTENT
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'][] = \JWeiland\Jwtools2\Hooks\InitializeStdWrap::class;
 

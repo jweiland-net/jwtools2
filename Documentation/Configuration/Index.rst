@@ -26,6 +26,7 @@ Extension configuration
    reduceCategoriesToPageTree_            0
    enableSqlQueryTask_                    0
    enableContextMenuToUpdateFileMetadata_ 0
+   enableReportProvider_                  0
    solrEnable_                            0
    solrSchedulerTaskUid_                  0
    solrApplyPatches_                      false
@@ -165,6 +166,19 @@ dimension, 100% quality and colorspace RGB to update width/height also in EXIF m
 registered file extractors like OnlineHelper and EXT:tika which may read width/heigth from EXIF instead, which could
 be wrong in some cases. Because of different image tools (Photoshop, Paint, Gimp) the original file may result in a
 different image size after process with imagemagick/graphicsmagick.
+
+
+.. _enableReportProvider:
+
+enableReportProvider
+--------------------
+
+If EXT:reports is installed and activated this option will add additional information to reports module. These
+information will also be available in status report mail, if configured in scheduler.
+
+Currently following information will be shown:
+
+* List of updatable extensions incl. version number
 
 
 .. _solrEnable:
