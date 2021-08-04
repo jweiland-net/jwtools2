@@ -11,7 +11,6 @@ namespace JWeiland\Jwtools2\Provider;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\CMS\Reports\ExtendedStatusProviderInterface;
