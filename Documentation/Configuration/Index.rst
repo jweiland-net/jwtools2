@@ -27,7 +27,7 @@ Extension configuration
    enableSqlQueryTask_                    0
    enableContextMenuToUpdateFileMetadata_ 0
    enableReportProvider_                  0
-   sendUpdatableExtensionsWithSeverity_   0
+   sendUpdatableExtensionsWithSeverity_   info
    solrEnable_                            0
    solrSchedulerTaskUid_                  0
    solrApplyPatches_                      false
