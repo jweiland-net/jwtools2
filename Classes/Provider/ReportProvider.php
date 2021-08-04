@@ -8,8 +8,10 @@
 
 namespace JWeiland\Jwtools2\Provider;
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\CMS\Reports\ExtendedStatusProviderInterface;
@@ -32,12 +34,18 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
     protected $listUtility;
 
     /**
+     * @var ExtensionConfiguration
+     */
+    protected $extensionConfiguration;
+
+    /**
      * Default constructor
      */
     public function __construct()
     {
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->listUtility = $this->objectManager->get(ListUtility::class);
+        $this->extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
     }
 
     /**
@@ -49,7 +57,7 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
     public function getStatus(): array
     {
         return [
-            'jwtools2' => $this->getUpdatableExtensions(true)
+            'jwtools2' => $this->getUpdatableExtensions()
         ];
     }
 
@@ -62,11 +70,11 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
     public function getDetailedStatus(): array
     {
         return [
-            'jwtools2' => $this->getUpdatableExtensions(false)
+            'jwtools2' => $this->getUpdatableExtensions(true)
         ];
     }
 
-    protected function getUpdatableExtensions(bool $useHtml = true)
+    protected function getUpdatableExtensions(bool $renderForReportMail = false)
     {
         $extensionInformation = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
         $updatableExtensions = [];
@@ -96,18 +104,18 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
             $message = 'No TYPO3 extensions found for update. But please update extension list before to be sure.';
         } else {
             $value = sprintf('%d extensions found', count($updatableExtensions));
-            if ($useHtml) {
+            if ($renderForReportMail) {
+                $message = 'Following TYPO3 extensions are ready for update:' . chr(10);
+                foreach ($updatableExtensions as $updatableExtension) {
+                    $message .= '* ' . $updatableExtension . chr(10);
+                }
+            } else {
                 $message = 'Following TYPO3 extensions are ready for update:';
                 $message .= '<ul>';
                 foreach ($updatableExtensions as $updatableExtension) {
                     $message .= '<li>' . $updatableExtension . '</li>';
                 }
                 $message .= '</ul>';
-            } else {
-                $message = 'Following TYPO3 extensions are ready for update:' . chr(10);
-                foreach ($updatableExtensions as $updatableExtension) {
-                    $message .= '* ' . $updatableExtension . chr(10);
-                }
             }
         }
 
@@ -116,7 +124,18 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
             'Updatable Extensions',
             $value,
             $message,
-            Status::INFO
+            $this->getSeverity($renderForReportMail)
         );
+    }
+
+    protected function getSeverity(bool $renderForReportMail): int
+    {
+        $extConfSeverity = $this->extensionConfiguration->get(
+            'jwtools2',
+            'sendUpdatableExtensionsWithSeverity'
+        );
+
+        // There is no need to render extension updates as WARNING in reports module.
+        return $renderForReportMail && $extConfSeverity === 'warning' ? Status::WARNING : Status::INFO;
     }
 }

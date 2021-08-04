@@ -27,6 +27,7 @@ Extension configuration
    enableSqlQueryTask_                    0
    enableContextMenuToUpdateFileMetadata_ 0
    enableReportProvider_                  0
+   sendUpdatableExtensionsWithSeverity_   0
    solrEnable_                            0
    solrSchedulerTaskUid_                  0
    solrApplyPatches_                      false
@@ -178,7 +179,32 @@ information will also be available in status report mail, if configured in sched
 
 Currently following information will be shown:
 
-* List of updatable extensions incl. version number
+* List of all (not only security related) updatable extensions incl. version number.
+* ...
+
+
+.. _sendUpdatableExtensionsWithSeverity:
+
+sendUpdatableExtensionsWithSeverity
+-----------------------------------
+
+**Default**: info
+
+Only valid, if option ``enableReportProvider`` was activated and you
+make use of the ``System Status Update (reports)`` task.
+
+The information about updatable extensions has a severity of type INFO by default. It does not make sense for us to
+categorize bugfix extensions as WARNING. But why should YOU decide about that?
+
+There is a checkbox called ``Always send notification mail (not only on errors or warnings)`` in
+``System Status Update (reports)`` task which is deactivated by default. As we categorize updatable extensions
+as INFO you will not be notified about them in status mail. But if you activate the checkbox in task you will
+be notified about various system status and of cause updatable extensions with each scheduler run. Yes, this can be
+a lot of mails and a lot of content to search for the right section. Maybe a frustrating job.
+
+Setting ``sendUpdatableExtensionsWithSeverity`` to ``warning`` will set severity of updatable extensions to
+``WARNING``. Now, you can leave the checkbox in task deactivated and you will only get mails, if there are
+warnings in your TYPO3 system and/or updatable extensions.
 
 
 .. _solrEnable:
