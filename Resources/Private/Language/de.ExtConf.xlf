@@ -35,6 +35,10 @@
 				<source>Enable provider for EXT reports: If EXT:reports is installed it will show additional information about updatable extensions.</source>
 				<target>Aktiviere Status-Provider für EXT reports: Wenn die EXT:reports installiert und aktiviert ist werden zusätzlich Informationen über updatefähige Extensions angezeigt.</target>
 			</trans-unit>
+			<trans-unit id="sendUpdatableExtensionsWithSeverity">
+				<source>Set severity for report about updatable extensions: If set to "Info" you also have to activate the checkbox "Always send notification mail" in reports scheduler task. If set to "Warning" you can leave "Always send notification mail" unchecked. Please have a look into documentation for more information.</source>
+				<target>Setze Schweregrad für Bericht über updatefähige Erweiterungen: Wenn "Info" gewählt wurde dann muss auch die Checkbox "Immer eine Benachrichtigung senden" in der Planeraufgabe der Berichtextension gesetzt sein. Wenn "Warning" ausgewählt wird, kann die Checkbox "Immer eine Benachrichtigung senden" deaktiviert bleiben. Für weitere Informationen schaut mal in die Dokumentation.</target>
+			</trans-unit>
 
 			<trans-unit id="solrEnable">
 				<source>Enable Solr features</source>

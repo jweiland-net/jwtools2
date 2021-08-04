@@ -6,7 +6,11 @@
 ChangeLog
 =========
 
-**Version 5.4.2**
+**Version 5.4.1**
+
+- Add option to send reports about updatable extensions as INFO or WARNING
+
+**Version 5.4.0**
 
 - Add report to show updatable TYPO3 extensions
 

@@ -27,6 +27,9 @@
 			<trans-unit id="enableReportProvider">
 				<source>Enable provider for EXT reports: If EXT:reports is installed it will show additional information about updatable extensions.</source>
 			</trans-unit>
+			<trans-unit id="sendUpdatableExtensionsWithSeverity">
+				<source>Set severity for report about updatable extensions: If set to "Info" you also have to activate the checkbox "Always send notification mail" in reports scheduler task. If set to "Warning" you can leave "Always send notification mail" unchecked. Please have a look into documentation for more information.</source>
+			</trans-unit>
 
 			<trans-unit id="solrEnable">
 				<source>Enable Solr features</source>
