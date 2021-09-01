@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 5.5.0**
+
+- Add patch to move related translated records (tt_content). See: https://forge.typo3.org/issues/21161
+
 **Version 5.4.1**
 
 - Add option to send reports about updatable extensions as INFO or WARNING

@@ -16,22 +16,23 @@ Extension configuration
 
 .. container:: ts-properties
 
-   ====================================== =========
-   Property                               Default
-   ====================================== =========
-   typo3EnableUidInPageTree_              0
-   typo3TransferTypoScriptCurrent_        0
-   typo3UploadFieldsInTopOfEB_            0
-   typo3ExcludeVideoFilesFromFalFilter_   0
-   reduceCategoriesToPageTree_            0
-   enableSqlQueryTask_                    0
-   enableContextMenuToUpdateFileMetadata_ 0
-   enableReportProvider_                  0
-   sendUpdatableExtensionsWithSeverity_   info
-   solrEnable_                            0
-   solrSchedulerTaskUid_                  0
-   solrApplyPatches_                      false
-   ====================================== =========
+   =============================================== =========
+   Property                                         Default
+   =============================================== =========
+   typo3EnableUidInPageTree_                        0
+   typo3TransferTypoScriptCurrent_                  0
+   typo3UploadFieldsInTopOfEB_                      0
+   typo3ExcludeVideoFilesFromFalFilter_             0
+   typo3ApplyFixForMoveTranslatedContentElements_   0
+   reduceCategoriesToPageTree_                      0
+   enableSqlQueryTask_                              0
+   enableContextMenuToUpdateFileMetadata_           0
+   enableReportProvider_                            0
+   sendUpdatableExtensionsWithSeverity_             info
+   solrEnable_                                      0
+   solrSchedulerTaskUid_                            0
+   solrApplyPatches_                                false
+   =============================================== =========
 
 
 Property details
@@ -131,6 +132,23 @@ If a title could not be created the files name is still ".youtube". On Mac and L
 with a dot are handled as hidden files. So it is not possible for an editor to rename, edit or show this file.
 Activating this option will still not show hidden files in general, except files with .youtube and .vimeo
 file ending.
+
+
+.. _typo3ApplyFixForMoveTranslatedContentElements:
+
+typo3ApplyFixForMoveTranslatedContentElements
+-----------------------------------
+
+If you move a content element (tt_content) from one col to another (backend_layout) the related translated
+records will not be moved to new col. This is a problem for over 11 years in TYPO3.
+See: https://forge.typo3.org/issues/21161
+
+Activate this option to apply a patch (hook) to solve this problem. We add the missing DB queries to move
+the related translated records to new colPos, too.
+
+BUT: Currently I haven't found a solution to hook into JavaScript of TYPO3 to move the translated records directly.
+So after a move of tt_content records you have to reload the right frame on your own. If you have a cool idea how
+to solve that the nice way feel free to create a PullRequest to jwtools2 ;-)
 
 
 .. _reduceCategoriesToPageTree:
