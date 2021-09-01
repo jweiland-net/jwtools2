@@ -15,6 +15,9 @@
 			<trans-unit id="typo3ExcludeVideoFilesFromFalFilter">
 				<source>Exclude hidden video files: If you work with video files, TYPO3 creates .youtube and/or .vimeo files. If a title could not be fetched a file like ".youtube" will be created which is handled as hidden file. Instead of showing all hidden files you can activate this option, to only show these two hidden video types in filelist.</source>
 			</trans-unit>
+			<trans-unit id="typo3ApplyFixForMoveTranslatedContentElements">
+				<source>Apply patch for #21161: If you move content records from col_pos X to Y the related translated records will not be moved to new col_pos. Activate this feature to solve that problem. See: https://forge.typo3.org/issues/21161</source>
+			</trans-unit>
 			<trans-unit id="reduceCategoriesToPageTree">
 				<source>Reduce categories to page tree: In case of a multi-domain TYPO3 instances it makes sense to reduce categories in category-tree to PIDs of current page-tree. So, after activating this checkbox you will not see any categories of foreign page-trees anymore. Admin user will still see everything.</source>
 			</trans-unit>

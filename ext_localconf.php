@@ -69,6 +69,11 @@ call_user_func(static function () {
         ];
     }
 
+    if ($jwToolsConfiguration['typo3ApplyFixForMoveTranslatedContentElements']) {
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['jwtools2MoveTranslated']
+            = \JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook::class;
+    }
+
     if ($jwToolsConfiguration['reduceCategoriesToPageTree']) {
         // Reduce categories to PIDs of current page tree
         $signalSlotDispatcher->connect(
