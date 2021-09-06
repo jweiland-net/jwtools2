@@ -22,6 +22,41 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class MoveTranslatedContentElementsHook
 {
+    public function processDatamap_beforeStart(DataHandler $dataHandler)
+    {
+        // For "move"-cmd both cmdmap and datamap has to be filled
+        if (
+            isset($dataHandler->cmdmap['tt_content'])
+            && isset($dataHandler->datamap['tt_content'])
+            && !empty($dataHandler->cmdmap['tt_content'])
+            && !empty($dataHandler->datamap['tt_content'])
+        ) {
+            foreach ($dataHandler->cmdmap['tt_content'] as $uid => $cmdRecordInDefaultLanguage) {
+                // sys_language_uid
+                $languageField = $GLOBALS['TCA']['tt_content']['ctrl']['languageField'];
+
+                // Check for "move"-cmd and, if datamap contains instructions for same UID
+                if (
+                    array_key_exists('move', $cmdRecordInDefaultLanguage)
+                    && array_key_exists($uid, $dataHandler->datamap['tt_content'])
+                    && ($dataRecordInDefaultLanguage = $dataHandler->datamap['tt_content'][$uid])
+                    && array_key_exists('colPos', $dataRecordInDefaultLanguage)
+                    && MathUtility::canBeInterpretedAsInteger($uid)
+                ) {
+                    foreach ($this->getOverlayRecords((int)$uid, $dataHandler) as $translatedContentRecord) {
+                        // Moved tt_content records will add "colPos" and "sys_language_uid" to datamap.
+                        // Both values were set as string in core.
+                        // We do that for translated records here, too.
+                        $dataHandler->datamap['tt_content'][$translatedContentRecord['uid']] = [
+                            'colPos' => (string)$dataRecordInDefaultLanguage['colPos'],
+                            $languageField => (string)$translatedContentRecord[$languageField]
+                        ];
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * @param string $command Something like "move" or "copy"
      * @param string $table The table name
@@ -47,13 +82,13 @@ class MoveTranslatedContentElementsHook
         ) {
             // sys_language_uid
             $languageField = $GLOBALS['TCA']['tt_content']['ctrl']['languageField'];
-            foreach ($this->getOverlayRecords((int)$uid, $dataHandler) as $contentRecord) {
+            foreach ($this->getOverlayRecords((int)$uid, $dataHandler) as $translatedContentRecord) {
                 // Moved tt_content records will add "colPos" and "sys_language_uid" to datamap.
                 // Both values were set as string in core.
                 // We do that for translated records here, too.
-                $pasteDatamap['tt_content'][$contentRecord['uid']] = [
+                $pasteDatamap['tt_content'][$translatedContentRecord['uid']] = [
                     'colPos' => (string)$pasteUpdate['colPos'],
-                    $languageField => (string)$contentRecord[$languageField]
+                    $languageField => (string)$translatedContentRecord[$languageField]
                 ];
             }
         }
