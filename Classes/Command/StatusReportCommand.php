@@ -57,6 +57,12 @@ class StatusReportCommand extends Command
     {
         $this
             ->setDescription('Show Status Report')
+            ->addOption(
+                'exclude-robots-txt-url-check',
+                'r',
+                InputOption::VALUE_NONE,
+                'By default we try to request [domain]/robots.txt if we can not found any in site configuration. Add this option to prevent that check to speed up the report check.'
+            )
             ->setHelp(
                 'This command checks various settings in your TYPO3 environment and shows them as a report.'
             );
@@ -143,13 +149,11 @@ class StatusReportCommand extends Command
 
         $result = json_decode($json, true);
 
-        foreach ($this->getAllSites() as $site) {
-            $this->ioStyled->definitionList(
-                'Checking database maintenance',
-                ['Status' => $result['success'] ? '<info>OK</info>' : '<error>Error</error>'],
-                ['Has suggestions?' => !empty($result['suggestions']) ? '<error>YES</error>' : '<info>NO</info>']
-            );
-        }
+        $this->ioStyled->definitionList(
+            'Checking database maintenance',
+            ['Status' => $result['success'] ? '<info>OK</info>' : '<error>Error</error>'],
+            ['Has suggestions?' => !empty($result['suggestions']) ? '<error>YES</error>' : '<info>NO</info>']
+        );
     }
 
     protected function getSchedulerTasks(): array
@@ -206,9 +210,13 @@ class StatusReportCommand extends Command
             $content = trim((string)$route['content']);
         }
 
-        if ($content === '') {
+        if ($content === '' && !$this->input->hasOption('exclude-robots-txt-url-check')) {
             $base = rtrim((string)$site->getBase(), '/') . '/';
             $content = GeneralUtility::getUrl($base . 'robots.txt');
+
+            if (empty($content)) {
+                $content = '';
+            }
         }
 
         return $content;
