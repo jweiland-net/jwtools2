@@ -6,4 +6,7 @@ return [
     'jwtools2:convertpasswords' => [
         'class' => \JWeiland\Jwtools2\Command\ConvertPlainPasswordToHashCommand::class
     ],
+    'jwtools2:statusreport' => [
+        'class' => \JWeiland\Jwtools2\Command\StatusReportCommand::class
+    ],
 ];

@@ -1,0 +1,299 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the package jweiland/jwtools2.
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
+namespace JWeiland\Jwtools2\Command;
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility;
+use TYPO3\CMS\Install\Controller\MaintenanceController;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
+
+/**
+ * A command which shows a status report about the TYPO3 system
+ */
+class StatusReportCommand extends Command
+{
+    private const RETURN_YES = '<info>YES</info>';
+    private const RETURN_NO = '<error>NO</error>';
+
+    /**
+     * @var InputInterface
+     */
+    protected $input;
+
+    /**
+     * @var OutputInterface
+     */
+    protected $output;
+
+    /**
+     * @var SymfonyStyle
+     */
+    protected $ioStyled;
+
+    public function configure(): void
+    {
+        $this
+            ->setDescription('Show Status Report')
+            ->setHelp(
+                'This command checks various settings in your TYPO3 environment and shows them as a report.'
+            );
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    {
+        $this->input = $input;
+        $this->output = $output;
+        $this->ioStyled = new SymfonyStyle($input, $output);
+
+        $this->checkSiteConfiguration();
+        $this->checkScheduler();
+        $this->checkDatabaseStatus();
+
+        return 0; // everything fine
+    }
+
+    protected function checkSiteConfiguration(): void
+    {
+        $this->ioStyled->title('Start analyzing Site Configuration');
+
+        foreach ($this->getAllSites() as $site) {
+            $this->ioStyled->definitionList(
+                'Checking site configuration of domain: ' . $site->getBase(),
+                ['robots.txt exists?' => $this->checkRobotsTxt($site)],
+                ['robots.txt contains Sitemap?' => $this->checkSitemapOfRobotsTxt($site)],
+                ['sitemap.xml exists' => $this->checkSitemapXml($site)],
+                ['Error 404 configured' => $this->check404ErrorHandling($site)]
+            );
+        }
+    }
+
+    protected function checkScheduler(): void
+    {
+        $this->ioStyled->title('Checking scheduler tasks');
+
+        $lastExecution = 0;
+        $recurringTasks = [];
+        $yesterday = time() - (60 * 60 * 24);
+
+        foreach ($this->getSchedulerTasks() as $taskRecord) {
+            // Do not add allowed_classes here
+            $taskObject = unserialize($taskRecord['serialized_task_object']);
+            if (
+                is_subclass_of($taskObject, AbstractTask::class)
+                && $taskObject->getType() === AbstractTask::TYPE_RECURRING
+            ) {
+                if ($taskRecord['lastexecution_time'] > $lastExecution) {
+                    $lastExecution = $taskRecord['lastexecution_time'];
+                }
+
+                $taskTitle = sprintf(
+                    '%d: %s - Context: %s',
+                    $taskRecord['uid'],
+                    $taskObject->getTaskTitle(),
+                    $taskRecord['lastexecution_context']
+                );
+                if (!empty($taskRecord['serialized_executions'])) {
+                    $recurringTasks[] = [$taskTitle => '<info>running...</info>'];
+                } elseif ($taskRecord['lastexecution_time'] === 0) {
+                    $recurringTasks[] = [$taskTitle => '<error>never executed</error>'];
+                } else {
+                    $recurringTasks[] = [$taskTitle => $taskRecord['lastexecution_time'] < $yesterday ? '<error>scheduled > 24h</error>' : '<info>scheduled < 24h</info>'];
+                }
+            }
+        }
+
+        $this->ioStyled->definitionList(
+            $lastExecution < $yesterday ? '<error>The last execution was over 24 hours ago</error>' : '<info>Last execution within last 24 hours</info>',
+            ...$recurringTasks
+        );
+    }
+
+    protected function checkDatabaseStatus(): void
+    {
+        $this->ioStyled->title('Start analyzing DB status');
+
+        $maintenanceController = GeneralUtility::makeInstance(MaintenanceController::class);
+        $serverRequest = GeneralUtility::makeInstance(ServerRequest::class);
+        $response = $maintenanceController->databaseAnalyzerAnalyzeAction($serverRequest);
+        $response->getBody()->rewind();
+        $json = $response->getBody()->getContents();
+
+        $result = json_decode($json, true);
+
+        foreach ($this->getAllSites() as $site) {
+            $this->ioStyled->definitionList(
+                'Checking database maintenance',
+                ['Status' => $result['success'] ? '<info>OK</info>' : '<error>Error</error>'],
+                ['Has suggestions?' => !empty($result['suggestions']) ? '<error>YES</error>' : '<info>NO</info>']
+            );
+        }
+    }
+
+    protected function getSchedulerTasks(): array
+    {
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_scheduler_task');
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $statement = $queryBuilder
+            ->select('*')
+            ->from('tx_scheduler_task')
+            ->execute();
+
+        $schedulerTasks = [];
+        while ($schedulerTask = $statement->fetch()) {
+            $schedulerTasks[] = $schedulerTask;
+        }
+
+        return $schedulerTasks;
+    }
+
+    protected function checkRobotsTxt(Site $site): string
+    {
+        return $this->getContentOfRobotsTxt($site) ? self::RETURN_YES : self::RETURN_NO;
+    }
+
+    protected function checkSitemapOfRobotsTxt(Site $site): string
+    {
+        $content = $this->getContentOfRobotsTxt($site);
+
+        return (stripos($content, 'sitemap') !== false) ? self::RETURN_YES : self::RETURN_NO;
+    }
+
+    protected function checkSitemapXml(Site $site): string
+    {
+        return $this->getPageTypeOfSuffix('sitemap.xml', $site) ? self::RETURN_YES : self::RETURN_NO;
+    }
+
+    protected function check404ErrorHandling(Site $site): string
+    {
+        return $this->getErrorHandlingFromSite(404, $site) ? self::RETURN_YES : self::RETURN_NO;
+    }
+
+    protected function getContentOfRobotsTxt(Site $site): string
+    {
+        $content = '';
+        $route = $this->getRouteFromSite('robots.txt', $site);
+        if (
+            $route !== []
+            && array_key_exists('type', $route)
+            && $route['type'] === 'staticText'
+            && array_key_exists('content', $route)
+        ) {
+            $content = trim((string)$route['content']);
+        }
+
+        if ($content === '') {
+            $base = rtrim((string)$site->getBase(), '/') . '/';
+            $content = GeneralUtility::getUrl($base . 'robots.txt');
+        }
+
+        return $content;
+    }
+
+    protected function getRouteFromSite(string $routePath, Site $site): array
+    {
+        $configuration = $site->getConfiguration();
+        if (
+            array_key_exists('routes', $configuration)
+            && is_array($configuration['routes'])
+        ) {
+            foreach ($configuration['routes'] as $route) {
+                if (
+                    is_array($route)
+                    && array_key_exists('route', $route)
+                    && $route['route'] === $routePath
+                ) {
+                    return $route;
+                }
+            }
+        }
+
+        return [];
+    }
+
+    protected function getPageTypeOfSuffix(string $namedPageType, Site $site): int
+    {
+        $routeEnhancer = $this->getRouteEnhancerFromSite('PageTypeSuffix', $site);
+        if (
+            array_key_exists('map', $routeEnhancer)
+            && is_array($routeEnhancer['map'])
+            && array_key_exists($namedPageType, $routeEnhancer['map'])
+        ) {
+            return (int)$routeEnhancer['map'][$namedPageType];
+        }
+
+        return 0;
+    }
+
+    protected function getRouteEnhancerFromSite(string $routeEnhancerName, Site $site): array
+    {
+        $configuration = $site->getConfiguration();
+        if (
+            array_key_exists('routeEnhancers', $configuration)
+            && array_key_exists($routeEnhancerName, $configuration['routeEnhancers'])
+            && is_array($configuration['routeEnhancers'][$routeEnhancerName])
+        ) {
+            return $configuration['routeEnhancers'][$routeEnhancerName];
+        }
+
+        return [];
+    }
+
+    protected function getErrorHandlingFromSite(int $errorCode, Site $site): array
+    {
+        $configuration = $site->getConfiguration();
+        if (
+            array_key_exists('errorHandling', $configuration)
+            && is_array($configuration['errorHandling'])
+        ) {
+            foreach ($configuration['errorHandling'] as $errorHandling) {
+                if (
+                    array_key_exists('errorCode', $errorHandling)
+                    && $errorHandling['errorCode'] === $errorCode
+                ) {
+                    return $errorHandling;
+                }
+            }
+        }
+
+        return [];
+    }
+
+    protected function getConnectionPool(): ConnectionPool
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class);
+    }
+
+    /**
+     * @return Site[]
+     */
+    protected function getAllSites(): array
+    {
+        $site = GeneralUtility::makeInstance(SiteFinder::class);
+        return $site->getAllSites();
+    }
+}
