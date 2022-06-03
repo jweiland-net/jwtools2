@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
@@ -13,6 +13,7 @@ namespace JWeiland\Jwtools2\Tests\Unit\Task;
 use Doctrine\DBAL\Driver\Statement;
 use JWeiland\Jwtools2\Task\ExecuteQueryTask;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -24,6 +25,8 @@ use TYPO3\CMS\Scheduler\Scheduler;
  */
 class ExecuteQueryTaskTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ExecuteQueryTask
      */

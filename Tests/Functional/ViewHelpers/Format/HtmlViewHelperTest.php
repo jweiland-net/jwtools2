@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
@@ -12,6 +12,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Format;
 
 use JWeiland\Jwtools2\ViewHelpers\Format\HtmlViewHelper;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
@@ -26,6 +27,8 @@ use TYPO3\CMS\Frontend\Typolink\ExternalUrlLinkBuilder;
  */
 class HtmlViewHelperTest extends FunctionalTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var HtmlViewHelper
      */
