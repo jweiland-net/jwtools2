@@ -47,13 +47,6 @@ class HtmlViewHelperTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = [
-        'frontend',
-    ];
-
-    /**
-     * @var array
-     */
     protected $testExtensionsToLoad = [
         'typo3conf/ext/jwtools2',
     ];
