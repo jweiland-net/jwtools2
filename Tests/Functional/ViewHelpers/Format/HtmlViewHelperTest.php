@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -43,15 +45,14 @@ class HtmlViewHelperTest extends FunctionalTestCase
      * @var array
      */
     protected $coreExtensionsToLoad = [
-        'fluid',
-        'frontend'
+        'frontend',
     ];
 
     /**
      * @var array
      */
     protected $testExtensionsToLoad = [
-        'typo3conf/ext/jwtools2'
+        'typo3conf/ext/jwtools2',
     ];
 
     /**
@@ -65,8 +66,8 @@ class HtmlViewHelperTest extends FunctionalTestCase
                 'makelinks' => '1',
                 'makelinks.' => [
                     'http' => [
-                        'keep' => 'path'
-                    ]
+                        'keep' => 'path',
+                    ],
                 ],
                 'tags.' => [
                     'a' => 'TEXT',
@@ -74,20 +75,20 @@ class HtmlViewHelperTest extends FunctionalTestCase
                         'current' => '1',
                         'typolink.' => [
                             'parameter.' => [
-                                'data' => 'parameters:href'
+                                'data' => 'parameters:href',
                             ],
                             'ATagParams.' => [
-                                'data' => 'parameters:allParams'
-                            ]
-                        ]
-                    ]
+                                'data' => 'parameters:allParams',
+                            ],
+                        ],
+                    ],
                 ],
                 'nonTypoTagStdWrap.' => [
                     'setContentToCurrent' => '1',
                     'cObject' => 'CASE',
                     'cObject.' => [
                         'key.' => [
-                            'field' => 'colPos'
+                            'field' => 'colPos',
                         ],
                         'default' => 'TEXT',
                         'default.' => [
@@ -99,12 +100,12 @@ class HtmlViewHelperTest extends FunctionalTestCase
                                         'fixAttrib.' => [
                                             'style.' => [
                                                 'always' => '1',
-                                                'set' => 'color: blue;'
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ]
+                                                'set' => 'color: blue;',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                         '2' => 'TEXT',
                         '2.' => [
@@ -116,17 +117,17 @@ class HtmlViewHelperTest extends FunctionalTestCase
                                         'fixAttrib.' => [
                                             'style.' => [
                                                 'always' => '1',
-                                                'set' => 'color: red;'
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ]
+                                                'set' => 'color: red;',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
     ];
 
     protected function setUp(): void
@@ -148,7 +149,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
         $linkDetails = [
             'url' => 'https://typo3.org',
             'type' => 'url',
-            'typoLinkParameter' => 'https://typo3.org'
+            'typoLinkParameter' => 'https://typo3.org',
         ];
 
         /** @var ExternalUrlLinkBuilder|ObjectProphecy $linkBuilder */
@@ -160,18 +161,18 @@ class HtmlViewHelperTest extends FunctionalTestCase
                 '',
                 [
                     'parameter.' => [
-                        'data' => 'parameters:href'
+                        'data' => 'parameters:href',
                     ],
                     'ATagParams.' => [
-                        'data' => 'parameters:allParams'
-                    ]
+                        'data' => 'parameters:allParams',
+                    ],
                 ]
             )
             ->shouldBeCalled()
             ->willReturn([
                 'https://typo3.org',
                 'Link',
-                '_blank'
+                '_blank',
             ]);
 
         GeneralUtility::setSingletonInstance(ObjectManager::class, $this->objectManagerProphecy->reveal());
@@ -198,10 +199,10 @@ class HtmlViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderWithParseFuncTsPathWillRenderBlueLinks()
+    public function renderWithParseFuncTsPathWillRenderBlueLinks(): void
     {
         $this->subject->setArguments([
-            'parseFuncTSPath' => 'lib.parseFunc_RTE'
+            'parseFuncTSPath' => 'lib.parseFunc_RTE',
         ]);
 
         $this->subject->setRenderChildrenClosure(function () {
@@ -209,12 +210,12 @@ class HtmlViewHelperTest extends FunctionalTestCase
         });
 
         if (version_compare(TYPO3_branch, '10.4', '>=')) {
-            parent::assertSame(
+            self::assertSame(
                 'I am a <a href="https://typo3.org" target="_blank" rel="noreferrer" style="color: blue;">Link</a>',
                 $this->subject->initializeArgumentsAndRender()
             );
         } else {
-            parent::assertSame(
+            self::assertSame(
                 'I am a <a href="https://typo3.org" target="_blank" style="color: blue;">Link</a>',
                 $this->subject->initializeArgumentsAndRender()
             );
@@ -224,13 +225,13 @@ class HtmlViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderWithParseFuncTsPathWillConsiderTsConditionAndRendersRedLinks()
+    public function renderWithParseFuncTsPathWillConsiderTsConditionAndRendersRedLinks(): void
     {
         $this->subject->setArguments([
             'parseFuncTSPath' => 'lib.parseFunc_RTE',
             'data' => [
-                'colPos' => '2'
-            ]
+                'colPos' => '2',
+            ],
         ]);
 
         $this->subject->setRenderChildrenClosure(function () {
@@ -238,12 +239,12 @@ class HtmlViewHelperTest extends FunctionalTestCase
         });
 
         if (version_compare(TYPO3_branch, '10.4', '>=')) {
-            parent::assertSame(
+            self::assertSame(
                 'I am a <a href="https://typo3.org" target="_blank" rel="noreferrer" style="color: red;">Link</a>',
                 $this->subject->initializeArgumentsAndRender()
             );
         } else {
-            parent::assertSame(
+            self::assertSame(
                 'I am a <a href="https://typo3.org" target="_blank" style="color: red;">Link</a>',
                 $this->subject->initializeArgumentsAndRender()
             );
