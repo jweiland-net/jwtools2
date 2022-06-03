@@ -34,11 +34,11 @@ an example: One click to show page UID in PageTree.
 Commands
 --------
 
-jwtools2:executeExtensionUpdate
-*******************************
+jwtools2:cacheQuery
+*******************
 
-With this command you can execute the update script of extensions via ``class.ext_update.php``. It only starts the
-update, but if you have something special or a wizard in this file this command will not help.
+Use this command to show all entryIdentifiers of a cache tag or show cache content
+of a specific cache entry.
 
 jwtools2:convertpasswords
 *************************
@@ -48,6 +48,12 @@ the currently configured hashing method.
 Be careful: This command does not know, if password in DB is a plain password or a md5 password. The Command loops
 over all configured Hash Methods of TYPO3. If no Hash Method was found for current password in database, the
 password will be updated.
+
+jwtools2:executeExtensionUpdate
+*******************************
+
+With this command you can execute the update script of extensions via ``class.ext_update.php``. It only starts the
+update, but if you have something special or a wizard in this file this command will not help.
 
 Database
 --------
