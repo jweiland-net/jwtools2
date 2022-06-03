@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 5.6.0**
+
+- Add cache query command
+
 **Version 5.5.1**
 
 - Add patch to move related translated records (tt_content). See: https://forge.typo3.org/issues/21161

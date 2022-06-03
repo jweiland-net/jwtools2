@@ -26,16 +26,14 @@ For the full copyright and license information, please read the
 LICENSE file that was distributed with this source code.
 COMMENT;
 
-// Return a Code Sniffing configuration using
-// all sniffers needed for PSR-2
-// and additionally:
-//  - Remove leading slashes in use clauses.
-//  - PHP single-line arrays should not have trailing comma.
-//  - Single-line whitespace before closing semicolon are prohibited.
-//  - Remove unused use statements in the PHP source code
-//  - Ensure Concatenation to have at least one whitespace around
-//  - Remove trailing whitespace at the end of blank lines.
-return PhpCsFixer\Config::create()
+$finder = PhpCsFixer\Finder::create()
+    ->name('*.php')
+    ->exclude('.build')
+    ->exclude('var')
+    ->in(__DIR__);
+
+$config = new PhpCsFixer\Config();
+return $config
     ->setRiskyAllowed(true)
     ->setRules([
         '@DoctrineAnnotation' => true,
@@ -74,7 +72,7 @@ return PhpCsFixer\Config::create()
         'no_useless_else' => true,
         'no_whitespace_in_blank_line' => true,
         'ordered_imports' => true,
-        'php_unit_construct' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame'],
+        'php_unit_construct' => true,
         'php_unit_mock_short_will_return' => true,
         'php_unit_test_case_static_method_calls' => ['call_type' => 'self'],
         'phpdoc_no_access' => true,
@@ -85,15 +83,9 @@ return PhpCsFixer\Config::create()
         'phpdoc_types' => true,
         'phpdoc_types_order' => ['null_adjustment' => 'always_last', 'sort_algorithm' => 'none'],
         'return_type_declaration' => ['space_before' => 'none'],
-        'single_line_comment_style' => true,
+        'single_line_comment_style' => false,
         'single_quote' => true,
         'single_trait_insert_per_statement' => true,
         'whitespace_after_comma_in_array' => true
     ])
-    ->setFinder(
-        \PhpCsFixer\Finder::create()
-            ->name('*.php')
-            ->exclude('.build')
-            ->exclude('var')
-            ->in(__DIR__)
-    );
+    ->setFinder($finder);
