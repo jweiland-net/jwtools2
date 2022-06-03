@@ -10,7 +10,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'jweiland.net',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,
-    'version' => '5.5.1',
+    'version' => '5.6.0',
     'constraints' => [
         'depends' => [
             'typo3' => '9.5.17-10.4.99',
@@ -18,7 +18,7 @@ $EM_CONF[$_EXTKEY] = [
         'conflicts' => [
         ],
         'suggests' => [
-            'solr' => '11.0.4-0.0.0'
+            'solr' => '11.0.4-0.0.0',
         ],
     ],
 ];
