@@ -84,12 +84,12 @@ class CacheQueryCommand extends Command
         if ($input->getOption('tag')) {
             $backend = $cache->getBackend();
             if ($backend instanceof TaggableBackendInterface) {
-                $entryIdentifiers = $backend->findIdentifiersByTag($input->getOption('tag'));
+                $entryIdentifiers = array_values($backend->findIdentifiersByTag($input->getOption('tag')));
                 $table = new Table($output);
                 $table->setHeaders(['Entry Identifiers']);
-                array_map(static function (string $entryIdentifier) use ($table): void {
-                    $table->setRow($entryIdentifier, [$entryIdentifier]);
-                }, $entryIdentifiers);
+                array_walk($entryIdentifiers, static function (string $entryIdentifier, int $key) use ($table): void {
+                    $table->setRow($key, [$entryIdentifier]);
+                });
                 $table->render();
             } else {
                 $output->writeln('Chosen Backend is not configured as taggable');
