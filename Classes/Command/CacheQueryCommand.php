@@ -41,7 +41,7 @@ class CacheQueryCommand extends Command
     public function configure()
     {
         $this
-            ->setDescription('Cache Query')
+            ->setDescription('Query the cache of TYPO3 regardless of their compression')
             ->addArgument(
                 'cacheIdentifier',
                 InputArgument::REQUIRED,
