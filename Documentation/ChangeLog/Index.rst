@@ -6,6 +6,11 @@
 ChangeLog
 =========
 
+**Version 5.6.1**
+
+- Better short description for query cache command
+- Use int values for array keys in table formatter for query cache command
+
 **Version 5.6.0**
 
 - Add cache query command
