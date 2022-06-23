@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 5.7.0**
+
+- Add Caching Framework analyzer incl. Logging
+
 **Version 5.6.1**
 
 - Better short description for query cache command
