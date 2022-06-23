@@ -12,3 +12,12 @@ CREATE TABLE tx_jwtools2_stored_routes (
 	KEY source_path (source(50), root_page, tablename(20), fieldname(20)),
 	KEY target_path (target(50), root_page, tablename(20), fieldname(20))
 );
+
+#
+# Table structure for table 'tx_jwtools2_cache_expression'
+#
+CREATE TABLE tx_jwtools2_cache_expression (
+	title varchar(100) DEFAULT '' NOT NULL,
+	is_regexp tinyint(1) DEFAULT '0' NOT NULL,
+	expression varchar(255) DEFAULT '' NOT NULL
+);

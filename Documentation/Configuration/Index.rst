@@ -27,6 +27,7 @@ Extension configuration
    reduceCategoriesToPageTree_                      0
    enableSqlQueryTask_                              0
    enableContextMenuToUpdateFileMetadata_           0
+   enableCachingFrameworkLogger_                    0
    enableReportProvider_                            0
    sendUpdatableExtensionsWithSeverity_             info
    solrEnable_                                      0
@@ -185,6 +186,23 @@ dimension, 100% quality and colorspace RGB to update width/height also in EXIF m
 registered file extractors like OnlineHelper and EXT:tika which may read width/heigth from EXIF instead, which could
 be wrong in some cases. Because of different image tools (Photoshop, Paint, Gimp) the original file may result in a
 different image size after process with imagemagick/graphicsmagick.
+
+
+.. _enableCachingFrameworkLogger:
+
+enableCachingFrameworkLogger
+----------------------------
+
+With help of the Caching Framework Logger you can analyze each cache entry just before it was written to cache.
+
+This feature is helpful to inform you, if a "wrong" cache entry was written.
+
+If you activate that feature you (as administrator) have to create one or more cache expression records on root page
+(PID: 0). Give it a title and enter an expression. If you just search for a word in a cache entry leave checkbox
+for regular expression untouched. Internally it will start a PHP:mb_strpos search, so please be aware of
+case sensitive strings. For more complex search activate checkbox for regular expression. It starts a
+PHP:preg_match search internally. You don't need to prepend/append a delimiter. It uses "/" internally and
+escaped values for you automatically.
 
 
 .. _enableReportProvider:

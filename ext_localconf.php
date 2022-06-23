@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
@@ -10,6 +11,17 @@ call_user_func(static function () {
     $jwToolsConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
         \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
     )->get('jwtools2');
+
+    // Create our own logger file
+    if (!isset($GLOBALS['TYPO3_CONF_VARS']['LOG']['JWeiland']['Jwtools2']['writerConfiguration'])) {
+        $GLOBALS['TYPO3_CONF_VARS']['LOG']['JWeiland']['Jwtools2']['writerConfiguration'] = [
+            \Psr\Log\LogLevel::INFO => [
+                \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
+                    'logFileInfix' => 'jwtools2',
+                ],
+            ],
+        ];
+    }
 
     if ($jwToolsConfiguration['solrEnable']) {
         // Add scheduler task to index all Solr Sites
@@ -90,12 +102,18 @@ call_user_func(static function () {
     }
 
     if ($jwToolsConfiguration['enableContextMenuToUpdateFileMetadata']) {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1622440501] = \JWeiland\Jwtools2\ContextMenu\ItemProviders\UpdateFileMetaDataProvider::class;
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1622440501]
+            = \JWeiland\Jwtools2\ContextMenu\ItemProviders\UpdateFileMetaDataProvider::class;
+    }
+
+    if ($jwToolsConfiguration['enableCachingFrameworkLogger']) {
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php']['set'][1655965501]
+            = \JWeiland\Jwtools2\Hooks\CachingFrameworkLoggerHook::class . '->analyze';
     }
 
     if (
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('reports')
-        && $jwToolsConfiguration['enableReportProvider']
+        $jwToolsConfiguration['enableReportProvider']
+        && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('reports')
     ) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['jwtools2'][] = \JWeiland\Jwtools2\Provider\ReportProvider::class;
     }
