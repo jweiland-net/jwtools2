@@ -46,7 +46,8 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
         // Add a warning and stop this hook, if no expression records were created
         $cacheExpressions = $this->getCacheExpressions();
         if ($cacheExpressions === []) {
-            $this->logger->warning('You have activated the Caching Framework logger in jwtools2, but you ' .
+            $this->logger->warning(
+                'You have activated the Caching Framework logger in jwtools2, but you ' .
                 'have not configured any expression records (or they are empty). Deactivate this feature or ' .
                 'configure some records.'
             );
