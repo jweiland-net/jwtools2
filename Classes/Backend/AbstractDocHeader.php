@@ -45,12 +45,6 @@ abstract class AbstractDocHeader
      */
     protected $request;
 
-    /**
-     * AbstractDocHeader constructor.
-     *
-     * @param Request $request
-     * @param ViewInterface $view
-     */
     public function __construct(Request $request, ViewInterface $view)
     {
         $this->request = $request;
