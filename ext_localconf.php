@@ -63,15 +63,19 @@ call_user_func(static function () {
     }
 
     if ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB']) {
-        // for LinkHandler
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\LinkHandler\FileLinkHandler::class]['className']
-            = \JWeiland\Jwtools2\XClasses\LinkHandler\FileLinkHandler::class;
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHandler::class]['className']
-            = \JWeiland\Jwtools2\XClasses\LinkHandler\FolderLinkHandler::class;
+        // Overwrite file ElementBrowser of TYPO3
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']['file']
+            = \JWeiland\Jwtools2\Recordlist\Browser\FileBrowser::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']['file_reference']
+            = \JWeiland\Jwtools2\Recordlist\Browser\FileBrowser::class;
 
-        // for ElementBrowser
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\Browser\FileBrowser::class]['className']
-            = \JWeiland\Jwtools2\XClasses\Browser\FileBrowser::class;
+        // Overwrite TYPO3 LinkHandler
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+            'TCEMAIN.linkHandler.file.handler = JWeiland\\Jwtools2\\LinkHandler\\FileLinkHandler'
+        );
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+            'TCEMAIN.linkHandler.folder.handler = JWeiland\\Jwtools2\\LinkHandler\\FolderLinkHandler'
+        );
     }
 
     if ($jwToolsConfiguration['typo3ExcludeVideoFilesFromFalFilter']) {

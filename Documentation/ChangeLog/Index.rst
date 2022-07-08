@@ -13,6 +13,7 @@ ChangeLog
 - Remove EXT:realurl features
 - Add comma to last entry in array elements
 - Remove interface section from TCA
+- Remove LinkHandler XCLASSes. Override file/folder LinkHandlers of TYPO3 directly
 
 **Version 5.7.0**
 
