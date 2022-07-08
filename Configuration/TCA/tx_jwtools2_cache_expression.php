@@ -14,9 +14,6 @@ return [
             'showitem' => 'title, is_regexp, expression'
         ],
     ],
-    'interface' => [
-        'showRecordFieldList' => 'title, is_regexp, expression',
-    ],
     'palettes' => [],
     'columns' => [
         'crdate' => [

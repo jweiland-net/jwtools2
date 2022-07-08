@@ -14,9 +14,6 @@ return [
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
     ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, title, description, images',
-    ],
     'types' => [
         '1' => [
             'showitem' => 'sys_language_uid, l10n_parent, source, target,
