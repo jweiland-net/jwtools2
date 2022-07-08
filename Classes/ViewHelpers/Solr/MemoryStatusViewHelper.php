@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\ViewHelpers\Solr;
 
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -23,41 +24,28 @@ class MemoryStatusViewHelper extends AbstractViewHelper
      */
     protected $registry;
 
-    public function injectRegistry(Registry $registry): void
+    public function __construct(Registry $registry)
     {
         $this->registry = $registry;
     }
 
     /**
-     * Show index status
+     * Show percentage memory usage
      */
     public function render(): float
     {
         $memoryPeakUsage = $this->registry->get('jwtools2-solr', 'memoryPeakUsage', 0);
-        $memoryLimit = $this->returnBytes(ini_get('memory_limit'));
-
-        return round(100 / $memoryLimit * $memoryPeakUsage, 2);
-    }
-
-    /**
-     * Convert values like 256M to bytes
-     */
-    protected function returnBytes(string $bytes): int
-    {
-        $bytes = trim($bytes);
-        $last = strtolower($bytes[strlen($bytes) - 1]);
-        switch ($last) {
-            // The 'G' modifier is available since PHP 5.1.0
-            case 'g':
-                $bytes *= 1024;
-            // no break
-            case 'm':
-                $bytes *= 1024;
-            // no break
-            case 'k':
-                $bytes *= 1024;
+        $bytes = $this->getBytesFromMemoryLimit();
+        if ($bytes <= 0) {
+            return 0;
         }
 
-        return $bytes;
+        return round(100 / $bytes * $memoryPeakUsage, 2);
+    }
+
+    protected function getBytesFromMemoryLimit(): int
+    {
+        $iniLimit = (string)@ini_get('memory_limit');
+        return $iniLimit === '-1' ? -1 : GeneralUtility::getBytesFromSizeMeasurement($iniLimit);
     }
 }
