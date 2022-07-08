@@ -25,7 +25,7 @@ class UpdateFileMetaDataProvider extends FileProvider
         'update' => [
             'label' => 'Update/Create Metadata',
             'iconIdentifier' => 'actions-page-open',
-            'callbackAction' => 'updateFileMetadata'
+            'callbackAction' => 'updateFileMetadata',
         ],
     ];
 
@@ -72,8 +72,12 @@ class UpdateFileMetaDataProvider extends FileProvider
     {
         return [
             'data-callback-module' => 'TYPO3/CMS/Jwtools2/ContextMenuActions',
-            'data-status-title' => $this->languageService->sL('LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteTitle'),
-            'data-status-description' => $this->languageService->sL('LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteDescription')
+            'data-status-title' => $this->languageService->sL(
+                'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteTitle'
+            ),
+            'data-status-description' => $this->languageService->sL(
+                'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteDescription'
+            ),
         ];
     }
 }

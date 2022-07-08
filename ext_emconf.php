@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'JW tools',
     'description' => 'Jwtools2 contains a scheduler task for Solr to index multiple Pagetrees and a task to execute 
@@ -12,7 +13,7 @@ $EM_CONF[$_EXTKEY] = [
     'version' => '5.7.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '9.5.17-10.4.99',
+            'typo3' => '10.4.29-11.5.99',
         ],
         'conflicts' => [
         ],

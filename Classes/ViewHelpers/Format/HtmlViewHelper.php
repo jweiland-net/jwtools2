@@ -23,68 +23,43 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Renders a string by passing it to a TYPO3 `parseFunc`_.
  * You can either specify a path to the TypoScript setting or set the `parseFunc`_ options directly.
  * By default :ts:`lib.parseFunc_RTE` is used to parse the string.
- *
  * SF: This VH is a modified version of the original HtmlViewHelper of EXT:fluid. We have added the data-Attribute
  * to get TS if-conditions in lib.parseFunc work again. We will remove that VH, if this patch will be merged:
  * https://review.typo3.org/c/Packages/TYPO3.CMS/+/66374
- *
  * Examples
  * ========
- *
  * Default parameters
  * ------------------
- *
  * ::
- *
  *    <jw:format.html>
  *        foo <b>bar</b>. Some <a href="t3://page?uid=1">Link</a>.
  *    </jw:format.html>
- *
  * Output::
- *
  *    <p class="bodytext">foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.</p>
- *
  * Depending on TYPO3 setup.
- *
  * Custom parseFunc
  * ----------------
- *
  * ::
- *
  *    <jw:format.html parseFuncTSPath="lib.parseFunc">
  *        foo <b>bar</b>. Some <a href="t3://page?uid=1">Link</a>.
  *    </jw:format.html>
- *
  * Output::
- *
  *    foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
- *
  * Individual data attribute
  * -------------------------
- *
  * If you work with TS:field property in lib.parseFunc you should add current record to Html VH.
- *
  * ::
- *
  *    <jw:format.html parseFuncTSPath="lib.parseFunc" data="{data}">
  *        foo <b>bar</b>. Some <a href="t3://page?uid=1">Link</a>.
  *    </jw:format.html>
- *
  * Output::
- *
  *    foo <b>bar</b>. Some <a href="index.php?id=1">link</a>.
- *
  * Inline notation
  * ---------------
- *
  * ::
- *
  *    {someText -> jw:format.html(parseFuncTSPath: 'lib.parseFunc')}
- *
  * Output::
- *
  *    foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
- *
  * .. _parseFunc: https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Functions/Parsefunc.html
  */
 class HtmlViewHelper extends AbstractViewHelper
@@ -117,7 +92,13 @@ class HtmlViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('parseFuncTSPath', 'string', 'Path to TypoScript parseFunc setup.', false, 'lib.parseFunc_RTE');
+        $this->registerArgument(
+            'parseFuncTSPath',
+            'string',
+            'Path to TypoScript parseFunc setup.',
+            false,
+            'lib.parseFunc_RTE'
+        );
         $this->registerArgument('data', 'array', 'Initialize ContentObjectRenderer with this set of data.', false, []);
     }
 
@@ -125,7 +106,6 @@ class HtmlViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
-     *
      * @return string the parsed string.
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
@@ -161,7 +141,9 @@ class HtmlViewHelper extends AbstractViewHelper
             $GLOBALS['TSFE']->tmpl = new \stdClass();
             $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
             $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
-            $GLOBALS['TSFE']->tmpl->setup = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+            $GLOBALS['TSFE']->tmpl->setup = $configurationManager->getConfiguration(
+                ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
+            );
         }
     }
 

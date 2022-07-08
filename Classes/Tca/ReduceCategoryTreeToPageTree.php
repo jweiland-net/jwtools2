@@ -61,7 +61,8 @@ class ReduceCategoryTreeToPageTree
      */
     public function reduceCategoriesToPageTree(DatabaseTreeDataProvider $dataProvider, $treeData): void
     {
-        if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !$this->backendUserAuthentication->isAdmin() && $dataProvider->getTableName() === $this->categoryTableName) {
+        if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !$this->backendUserAuthentication->isAdmin(
+            ) && $dataProvider->getTableName() === $this->categoryTableName) {
             $this->removePageTreeForeignCategories($treeData);
         }
     }

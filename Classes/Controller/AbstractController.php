@@ -29,7 +29,6 @@ abstract class AbstractController extends ActionController
 
     /**
      * Initializes the view before invoking an action method.
-     *
      * Override this method to solve assign variables common for all actions
      * or prepare the view in another way before the action is called.
      *

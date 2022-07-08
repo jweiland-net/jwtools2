@@ -97,7 +97,11 @@ class SolrController extends AbstractController
             $docHeader->renderDocHeader();
 
             if (!$this->schedulerRepository->findSolrSchedulerTask()) {
-                $this->addFlashMessage('No or wrong scheduler task UID configured in ExtensionManager Configuration of jwtools2', 'Missing or wrong configuration', FlashMessage::WARNING);
+                $this->addFlashMessage(
+                    'No or wrong scheduler task UID configured in ExtensionManager Configuration of jwtools2',
+                    'Missing or wrong configuration',
+                    FlashMessage::WARNING
+                );
             }
         }
     }
@@ -163,7 +167,7 @@ class SolrController extends AbstractController
             [
                 'rootPageUid' => $rootPageUid,
                 'configurationName' => $configurationName,
-                'languageUid' => $languageUid
+                'languageUid' => $languageUid,
             ]
         );
     }
@@ -176,7 +180,10 @@ class SolrController extends AbstractController
         $site = $this->solrRepository->findByRootPage((int)$rootPageUid);
         if ($site instanceof Site) {
             $this->view->assign('site', $site);
-            $this->view->assign('enabledConfigurationNames', $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames());
+            $this->view->assign(
+                'enabledConfigurationNames',
+                $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames()
+            );
         } else {
             $this->addFlashMessage(
                 $rootPageUid . ' is no valid RootPage UID',
@@ -335,7 +342,6 @@ class SolrController extends AbstractController
 
     /**
      * A factory method to get an indexer depending on an item's configuration.
-     *
      * By default all items are indexed using the default indexer
      * (ApacheSolrForTypo3\Solr\IndexQueue\Indexer) coming with EXT:solr. Pages by default are
      * configured to be indexed through a dedicated indexer
@@ -349,7 +355,9 @@ class SolrController extends AbstractController
     protected function getIndexerByItem($indexingConfigurationName, TypoScriptConfiguration $configuration): Indexer
     {
         $indexerClass = $configuration->getIndexQueueIndexerByConfigurationName($indexingConfigurationName);
-        $indexerConfiguration = $configuration->getIndexQueueIndexerConfigurationByConfigurationName($indexingConfigurationName);
+        $indexerConfiguration = $configuration->getIndexQueueIndexerConfigurationByConfigurationName(
+            $indexingConfigurationName
+        );
 
         $indexer = GeneralUtility::makeInstance($indexerClass, $indexerConfiguration);
         if (!($indexer instanceof Indexer)) {
@@ -365,7 +373,6 @@ class SolrController extends AbstractController
     /**
      * Initializes the $_SERVER['HTTP_HOST'] environment variable in CLI
      * environments dependent on the Index Queue item's root page.
-     *
      * When the Index Queue Worker task is executed by a cron job there is no
      * HTTP_HOST since we are in a CLI environment. RealURL needs the host
      * information to generate a proper URL though. Using the Index Queue item's

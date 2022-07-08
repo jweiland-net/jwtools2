@@ -83,7 +83,10 @@ class NextRunViewHelper extends AbstractViewHelper
         $task = $this->schedulerRepository->findSolrSchedulerTask();
 
         // getExecution() returns a incomplete class it the task was never executed so we check for it.
-        if (!$task || $task->getExecution() instanceof \__PHP_Incomplete_Class || empty($task->getExecution()->getInterval())) {
+        if (!$task || $task->getExecution() instanceof \__PHP_Incomplete_Class || empty(
+            $task->getExecution()
+                ->getInterval()
+            )) {
             return 0;
         }
 

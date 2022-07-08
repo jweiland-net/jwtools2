@@ -154,7 +154,7 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
                 'tablename' => $this->tableName,
                 'fieldname' => $this->fieldName,
                 'source' => $source,
-                'target' => $target
+                'target' => $target,
             ],
             [
                 \PDO::PARAM_INT,

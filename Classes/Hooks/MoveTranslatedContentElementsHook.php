@@ -49,7 +49,7 @@ class MoveTranslatedContentElementsHook
                         // We do that for translated records here, too.
                         $dataHandler->datamap['tt_content'][$translatedContentRecord['uid']] = [
                             'colPos' => (string)$dataRecordInDefaultLanguage['colPos'],
-                            $languageField => (string)$translatedContentRecord[$languageField]
+                            $languageField => (string)$translatedContentRecord[$languageField],
                         ];
                     }
                 }
@@ -88,7 +88,7 @@ class MoveTranslatedContentElementsHook
                 // We do that for translated records here, too.
                 $pasteDatamap['tt_content'][$translatedContentRecord['uid']] = [
                     'colPos' => (string)$pasteUpdate['colPos'],
-                    $languageField => (string)$translatedContentRecord[$languageField]
+                    $languageField => (string)$translatedContentRecord[$languageField],
                 ];
             }
         }

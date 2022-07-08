@@ -56,7 +56,7 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
     public function getStatus(): array
     {
         return [
-            'jwtools2' => $this->getUpdatableExtensions()
+            'jwtools2' => $this->getUpdatableExtensions(),
         ];
     }
 
@@ -69,7 +69,7 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
     public function getDetailedStatus(): array
     {
         return [
-            'jwtools2' => $this->getUpdatableExtensions(true)
+            'jwtools2' => $this->getUpdatableExtensions(true),
         ];
     }
 

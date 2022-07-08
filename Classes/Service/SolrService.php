@@ -95,7 +95,7 @@ class SolrService
     public function clearItemTableByType(Site $site, string $type = '')
     {
         $identifier = [
-            'root' => (int)$site->getRootPageId()
+            'root' => (int)$site->getRootPageId(),
         ];
         if ($type) {
             $identifier['indexing_configuration'] = $type;
@@ -118,7 +118,7 @@ class SolrService
     {
         if (ExtensionManagementUtility::isLoaded('solrfal')) {
             $identifier = [
-                'context_site' => (int)$site->getRootPageId()
+                'context_site' => (int)$site->getRootPageId(),
             ];
             if ($type) {
                 $identifier['context_record_indexing_configuration'] = $type;

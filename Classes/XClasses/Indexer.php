@@ -27,8 +27,8 @@ class Indexer extends \ApacheSolrForTypo3\Solr\IndexQueue\Indexer
      *
      * @param Item $item An index queue item
      * @param int $language Language ID
-     * @throws \RuntimeException
      * @return array Configuration array from TypoScript
+     * @throws \RuntimeException
      */
     protected function getItemTypeConfiguration(Item $item, int $language = 0): array
     {
@@ -37,8 +37,10 @@ class Indexer extends \ApacheSolrForTypo3\Solr\IndexQueue\Indexer
         if (!$this->isRootPageIdPartOfRootLine($item) || count($fields) === 0) {
             $fields = $this->getFieldConfigurationFromItemRootPage($item, $language, $indexConfigurationName);
             if (count($fields) === 0) {
-                throw new \RuntimeException('The item indexing configuration "' . $item->getIndexingConfigurationName() .
-                    '" on root page uid ' . $item->getRootPageUid() . ' could not be found!', 1455530112);
+                throw new \RuntimeException(
+                    'The item indexing configuration "' . $item->getIndexingConfigurationName() .
+                    '" on root page uid ' . $item->getRootPageUid() . ' could not be found!', 1455530112
+                );
             }
         }
 
@@ -47,7 +49,6 @@ class Indexer extends \ApacheSolrForTypo3\Solr\IndexQueue\Indexer
 
     /**
      * SF: https://github.com/TYPO3-Solr/ext-solr/pull/2324/
-     *
      * In case of additionalStoragePid config recordPageId can be outsite of siteroot.
      * In that case we should not read TS config of foreign siteroot.
      *

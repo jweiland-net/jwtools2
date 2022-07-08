@@ -1,4 +1,5 @@
 <?php
+
 return [
     'jwtools2:cacheQuery' => [
         'class' => \JWeiland\Jwtools2\Command\CacheQueryCommand::class,

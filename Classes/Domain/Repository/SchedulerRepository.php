@@ -34,7 +34,10 @@ class SchedulerRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($this->getExtensionConfiguration('solrSchedulerTaskUid'), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(
+                        $this->getExtensionConfiguration('solrSchedulerTaskUid'),
+                        \PDO::PARAM_INT
+                    )
                 ),
                 $queryBuilder->expr()->eq(
                     'disable',
@@ -48,7 +51,8 @@ class SchedulerRepository
         }
 
         /** @var IndexQueueWorkerTask $task */
-        $task = unserialize($taskRecord['serialized_task_object'], ['allowed_classes' => [IndexQueueWorkerTask::class]]);
+        $task = unserialize($taskRecord['serialized_task_object'], ['allowed_classes' => [IndexQueueWorkerTask::class]]
+        );
         if (!$task instanceof IndexQueueWorkerTask) {
             return null;
         }

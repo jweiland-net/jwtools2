@@ -49,17 +49,21 @@ class IndexQueueWorkerTaskAdditionalFieldProvider implements AdditionalFieldProv
         }
 
         $additionalFields['documentsToIndexLimit'] = [
-            'code' => '<input type="text" name="tx_scheduler[documentsToIndexLimit]" value="' . htmlspecialchars($taskInfo['documentsToIndexLimit']) . '" />',
+            'code' => '<input type="text" name="tx_scheduler[documentsToIndexLimit]" value="' . htmlspecialchars(
+                    $taskInfo['documentsToIndexLimit']
+                ) . '" />',
             'label' => LocalizationUtility::translate('indexqueueworker_field_documentsToIndexLimit', 'Jwtools2'),
             'cshKey' => '',
-            'cshLabel' => ''
+            'cshLabel' => '',
         ];
 
         $additionalFields['maxSitesPerRun'] = [
-            'code' => '<input type="text" name="tx_scheduler[maxSitesPerRun]" value="' . htmlspecialchars($taskInfo['maxSitesPerRun']) . '" />',
+            'code' => '<input type="text" name="tx_scheduler[maxSitesPerRun]" value="' . htmlspecialchars(
+                    $taskInfo['maxSitesPerRun']
+                ) . '" />',
             'label' => LocalizationUtility::translate('indexqueueworker_field_maxSitesPerRun', 'Jwtools2'),
             'cshKey' => '',
-            'cshLabel' => ''
+            'cshLabel' => '',
         ];
 
         return $additionalFields;

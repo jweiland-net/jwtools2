@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A command to convert plain passwords to a salted hash.
- *
  * Be careful, this command can not differ between a plain password and a md5 value!
  * This Command updates every password, which does NOT start with '$'
  */
@@ -49,11 +48,11 @@ class ConvertPlainPasswordToHashCommand extends Command
      */
     protected $modeMapping = [
         'FE' => [
-            'table' => 'fe_users'
+            'table' => 'fe_users',
         ],
         'BE' => [
-            'table' => 'be_users'
-        ]
+            'table' => 'be_users',
+        ],
     ];
 
     /**
@@ -76,7 +75,7 @@ class ConvertPlainPasswordToHashCommand extends Command
     /**
      * Executes the current command.
      *
-     * @param InputInterface  $input  An InputInterface instance
+     * @param InputInterface $input An InputInterface instance
      * @param OutputInterface $output An OutputInterface instance
      * @return int|null null or 0 if everything went fine, or an error code
      */
@@ -120,10 +119,10 @@ class ConvertPlainPasswordToHashCommand extends Command
                 $connection->update(
                     $this->modeMapping[$mode]['table'],
                     [
-                        'password' => $this->getNewHashedPassword($user['password'], $mode)
+                        'password' => $this->getNewHashedPassword($user['password'], $mode),
                     ],
                     [
-                        'uid' => (int)$user['uid']
+                        'uid' => (int)$user['uid'],
                     ]
                 );
                 if ($this->output->getVerbosity() === 32) {
@@ -134,11 +133,13 @@ class ConvertPlainPasswordToHashCommand extends Command
         }
 
         $this->output->write('', true);
-        $this->output->writeln(sprintf(
-            'We have updated %d users of table: %s',
-            $counter,
-            $this->modeMapping[$mode]['table']
-        ));
+        $this->output->writeln(
+            sprintf(
+                'We have updated %d users of table: %s',
+                $counter,
+                $this->modeMapping[$mode]['table']
+            )
+        );
     }
 
     protected function getNewHashedPassword(string $password, string $mode): string

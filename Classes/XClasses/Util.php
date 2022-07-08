@@ -49,18 +49,30 @@ class Util extends \ApacheSolrForTypo3\Solr\Util
         // getRootline() below throws an exception (since #typo3-60 )
         // as UID 0 cannot have any parent rootline by design.
         if ($pageId == 0) {
-            return $configurationObjectCache[$cacheId] = self::buildTypoScriptConfigurationFromArray([], $pageId, $language, $path);
+            return $configurationObjectCache[$cacheId] = self::buildTypoScriptConfigurationFromArray([],
+                $pageId,
+                $language,
+                $path);
         }
 
         if ($useTwoLevelCache) {
             /** @var $cache TwoLevelCache */
-            $cache = GeneralUtility::makeInstance(TwoLevelCache::class, /** @scrutinizer ignore-type */ 'tx_solr_configuration');
+            $cache = GeneralUtility::makeInstance(
+                TwoLevelCache::class,
+                /** @scrutinizer ignore-type */
+                'tx_solr_configuration'
+            );
             $configurationArray = $cache->get($cacheId);
         }
 
         if (!empty($configurationArray)) {
             // we have a cache hit and can return it.
-            return $configurationObjectCache[$cacheId] = self::buildTypoScriptConfigurationFromArray($configurationArray, $pageId, $language, $path);
+            return $configurationObjectCache[$cacheId] = self::buildTypoScriptConfigurationFromArray(
+                $configurationArray,
+                $pageId,
+                $language,
+                $path
+            );
         }
 
         // we have nothing in the cache. We need to build the configurationToUse
@@ -70,6 +82,11 @@ class Util extends \ApacheSolrForTypo3\Solr\Util
             $cache->set($cacheId, $configurationArray);
         }
 
-        return $configurationObjectCache[$cacheId] = self::buildTypoScriptConfigurationFromArray($configurationArray, $pageId, $language, $path);
+        return $configurationObjectCache[$cacheId] = self::buildTypoScriptConfigurationFromArray(
+            $configurationArray,
+            $pageId,
+            $language,
+            $path
+        );
     }
 }

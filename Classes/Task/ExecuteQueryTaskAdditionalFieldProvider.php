@@ -48,10 +48,12 @@ class ExecuteQueryTaskAdditionalFieldProvider implements AdditionalFieldProvider
         }
 
         $additionalFields['sqlQuery'] = [
-            'code' => '<textarea cols="50" rows="20" name="tx_scheduler[sqlQuery]" style="width: 100%">' . htmlspecialchars($taskInfo['sqlQuery']) . '</textarea>',
+            'code' => '<textarea cols="50" rows="20" name="tx_scheduler[sqlQuery]" style="width: 100%">' . htmlspecialchars(
+                    $taskInfo['sqlQuery']
+                ) . '</textarea>',
             'label' => LocalizationUtility::translate('executeQueryTask.field.sqlQuery', 'Jwtools2'),
             'cshKey' => '',
-            'cshLabel' => ''
+            'cshLabel' => '',
         ];
 
         return $additionalFields;

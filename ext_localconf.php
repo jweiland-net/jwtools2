@@ -29,7 +29,7 @@ call_user_func(static function () {
             'extension' => 'jwtools2',
             'title' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:indexqueueworker_title',
             'description' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:indexqueueworker_description',
-            'additionalFields' => \JWeiland\Jwtools2\Task\IndexQueueWorkerTaskAdditionalFieldProvider::class
+            'additionalFields' => \JWeiland\Jwtools2\Task\IndexQueueWorkerTaskAdditionalFieldProvider::class,
         ];
         // override RealUrl Utility to reset current cached HTTP_HOST
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\DmitryDulepov\Realurl\Utility::class]['className'] = \JWeiland\Jwtools2\Utility\RealurlUtility::class;
@@ -52,7 +52,7 @@ call_user_func(static function () {
             'extension' => 'jwtools2',
             'title' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:executeQueryTask.title',
             'description' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:executeQueryTask.description',
-            'additionalFields' => \JWeiland\Jwtools2\Task\ExecuteQueryTaskAdditionalFieldProvider::class
+            'additionalFields' => \JWeiland\Jwtools2\Task\ExecuteQueryTaskAdditionalFieldProvider::class,
         ];
     }
 
@@ -76,8 +76,8 @@ call_user_func(static function () {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['defaultFilterCallbacks'] = [
             [
                 \JWeiland\Jwtools2\Fal\Filter\FileNameFilter::class,
-                'filterHiddenFilesAndFolders'
-            ]
+                'filterHiddenFilesAndFolders',
+            ],
         ];
     }
 

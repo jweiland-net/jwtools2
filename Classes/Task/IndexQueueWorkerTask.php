@@ -69,7 +69,9 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
             try {
                 /** @var IndexService $indexService */
                 $indexService = GeneralUtility::makeInstance(IndexService::class, $availableSite);
-                $indexService->setContextTask(null); // we don't set any referenced task. They are only used for emitting signals
+                $indexService->setContextTask(
+                    null
+                ); // we don't set any referenced task. They are only used for emitting signals
                 $indexService->indexItems($this->documentsToIndexLimit);
                 $counter++;
             } catch (\Exception $e) {
@@ -78,7 +80,11 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
             }
         }
 
-        $registry->set('jwtools2-solr', 'lastSitePosition', $maxSitePosition > count($availableSites) ? 0 : $maxSitePosition);
+        $registry->set(
+            'jwtools2-solr',
+            'lastSitePosition',
+            $maxSitePosition > count($availableSites) ? 0 : $maxSitePosition
+        );
 
         if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
             $cliEnvironment->restore();
@@ -159,7 +165,9 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
     {
         /** @var IndexService $indexService */
         $indexService = GeneralUtility::makeInstance(IndexService::class, $site);
-        $indexService->setContextTask(null); // we don't set any referenced task. They are only used for emitting signals
+        $indexService->setContextTask(
+            null
+        ); // we don't set any referenced task. They are only used for emitting signals
 
         return $indexService;
     }

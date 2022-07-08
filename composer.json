@@ -18,8 +18,8 @@
 		"source": "https://github.com/jweiland-net/jwtools2"
 	},
 	"require": {
-		"typo3/cms-core": "^9.5.17 || ^10.4.2",
-		"typo3/cms-scheduler": "^9.5.17 || ^10.4.2"
+		"typo3/cms-core": "^10.4.29 || ^11.5.11",
+		"typo3/cms-scheduler": "^10.4.29 || ^11.5.11"
 	},
 	"require-dev": {
 		"roave/security-advisories": "dev-latest",

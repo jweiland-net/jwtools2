@@ -163,7 +163,11 @@ class SysFileController
         if (version_compare(TYPO3_branch, '10.0', '>=')) {
             $event = new AfterFileAddedEvent(
                 $fileObject,
-                new Folder($fileObject->getStorage(), $fileObject->getParentFolder()->getIdentifier(), $fileObject->getParentFolder()->getName())
+                new Folder(
+                    $fileObject->getStorage(),
+                    $fileObject->getParentFolder()->getIdentifier(),
+                    $fileObject->getParentFolder()->getName()
+                )
             );
             $fileDeletionAspect->cleanupProcessedFilesPostFileAdd($event);
         } else {

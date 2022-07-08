@@ -23,12 +23,12 @@ class TestController extends AbstractController
     protected $prototypeConfiguration = [
         'formElementsDefinition' => [
             'Page' => [
-                'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\Page'
+                'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\Page',
             ],
             'Textfield' => [
-                'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
-            ]
-        ]
+                'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement',
+            ],
+        ],
     ];
 
     /**

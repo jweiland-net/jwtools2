@@ -55,9 +55,11 @@ class AjaxSolrController
                 foreach ($configurationNames as $configurationName) {
                     $solrService->clearIndexByType($site, $clear, $configurationName);
                 }
-                $response->getBody()->write(json_encode([
-                    'success' => 1
-                ]));
+                $response->getBody()->write(
+                    json_encode([
+                        'success' => 1,
+                    ])
+                );
             }
         }
 
@@ -85,9 +87,11 @@ class AjaxSolrController
             );
         }
 
-        $response->getBody()->write(json_encode([
-            'success' => 1
-        ]));
+        $response->getBody()->write(
+            json_encode([
+                'success' => 1,
+            ])
+        );
 
         return $response;
     }
@@ -109,10 +113,12 @@ class AjaxSolrController
             );
             $indexService->setContextTask(null);
 
-            $response->getBody()->write(json_encode([
-                'success' => 1,
-                'progress' => $indexService->getProgress()
-            ]));
+            $response->getBody()->write(
+                json_encode([
+                    'success' => 1,
+                    'progress' => $indexService->getProgress(),
+                ])
+            );
         }
 
         return $response;
