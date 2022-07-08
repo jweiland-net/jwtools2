@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 class FileNameFilter
 {
     /**
-     * whether to also show the hidden files (don't show them by default)
+     * Whether to also show the hidden files (don't show them by default)
      *
      * @var bool
      */
@@ -39,7 +39,7 @@ class FileNameFilter
         array $additionalInformation,
         DriverInterface $driverInstance
     ) {
-        // Only apply the filter if you want to hide the hidden files
+        // Only apply the filter if hidden files should not be listed
         if (
             self::$showHiddenFilesAndFolders === false
             && strpos($itemIdentifier, '/.') !== false
