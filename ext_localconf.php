@@ -39,8 +39,10 @@ call_user_func(static function () {
             'beforeIndexItem'
         );
         if ($jwToolsConfiguration['solrApplyPatches']) {
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\ApacheSolrForTypo3\Solr\Util::class]['className'] = \JWeiland\Jwtools2\XClasses\Util::class;
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\ApacheSolrForTypo3\Solr\IndexQueue\Indexer::class]['className'] = \JWeiland\Jwtools2\XClasses\Indexer::class;
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\ApacheSolrForTypo3\Solr\Util::class]['className']
+                = \JWeiland\Jwtools2\XClasses\Util::class;
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\ApacheSolrForTypo3\Solr\IndexQueue\Indexer::class]['className']
+                = \JWeiland\Jwtools2\XClasses\Indexer::class;
         }
     }
 
@@ -62,11 +64,14 @@ call_user_func(static function () {
 
     if ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB']) {
         // for LinkHandler
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\LinkHandler\FileLinkHandler::class]['className'] = \JWeiland\Jwtools2\XClasses\LinkHandler\FileLinkHandler::class;
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHandler::class]['className'] = \JWeiland\Jwtools2\XClasses\LinkHandler\FolderLinkHandler::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\LinkHandler\FileLinkHandler::class]['className']
+            = \JWeiland\Jwtools2\XClasses\LinkHandler\FileLinkHandler::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHandler::class]['className']
+            = \JWeiland\Jwtools2\XClasses\LinkHandler\FolderLinkHandler::class;
 
         // for ElementBrowser
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\Browser\FileBrowser::class]['className'] = \JWeiland\Jwtools2\XClasses\Browser\FileBrowser::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\Browser\FileBrowser::class]['className']
+            = \JWeiland\Jwtools2\XClasses\Browser\FileBrowser::class;
     }
 
     if ($jwToolsConfiguration['typo3ExcludeVideoFilesFromFalFilter']) {
@@ -113,12 +118,15 @@ call_user_func(static function () {
         $jwToolsConfiguration['enableReportProvider']
         && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('reports')
     ) {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['jwtools2'][] = \JWeiland\Jwtools2\Provider\ReportProvider::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['jwtools2'][]
+            = \JWeiland\Jwtools2\Provider\ReportProvider::class;
     }
 
-    // retrieve stdWrap current value into sub cObj. CONTENT
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'][] = \JWeiland\Jwtools2\Hooks\InitializeStdWrap::class;
+    // Retrieve stdWrap current value into sub cObj. CONTENT
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit']['jwtools2_initStdWrap']
+        = \JWeiland\Jwtools2\Hooks\InitializeStdWrap::class;
 
     // Register an Aspect to store source/target-mapping. Will be activated, if used in SiteConfiguration only.
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects']['PersistedTableMapper'] = \JWeiland\Jwtools2\Routing\Aspect\PersistedTableMapper::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects']['PersistedTableMapper']
+        = \JWeiland\Jwtools2\Routing\Aspect\PersistedTableMapper::class;
 });
