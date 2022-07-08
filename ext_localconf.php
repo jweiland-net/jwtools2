@@ -98,16 +98,6 @@ call_user_func(static function () {
         }
     }
 
-    if ($jwToolsConfiguration['reduceCategoriesToPageTree']) {
-        // Reduce categories to PIDs of current page tree
-        $signalSlotDispatcher->connect(
-            \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::class,
-            \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::SIGNAL_PostProcessTreeData,
-            \JWeiland\Jwtools2\Tca\ReduceCategoryTreeToPageTree::class,
-            'reduceCategoriesToPageTree'
-        );
-    }
-
     if ($jwToolsConfiguration['enableContextMenuToUpdateFileMetadata']) {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1622440501]
             = \JWeiland\Jwtools2\ContextMenu\ItemProviders\UpdateFileMetaDataProvider::class;

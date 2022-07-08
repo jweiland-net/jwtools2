@@ -19,3 +19,8 @@ services:
   # Called by makeInstance in constructor of LinkService
   JWeiland\Jwtools2\LinkHandling\FolderLinkHandler:
     public: true
+
+  JWeiland\Jwtools2\Tca\ReduceCategoryTreeToPageTree:
+    tags:
+    - name: event.listener
+      event: TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent

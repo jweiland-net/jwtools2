@@ -14,10 +14,13 @@ use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\QueryGenerator;
-use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
+use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -41,16 +44,27 @@ class ReduceCategoryTreeToPageTree
     protected $listOfCategoryUids = '';
 
     /**
-     * The slot for the signal in DatabaseTreeDataProvider.
-     *
-     * @param DatabaseTreeDataProvider $dataProvider
-     * @param TreeNode $treeData
+     * @var ExtensionConfiguration
      */
-    public function reduceCategoriesToPageTree(DatabaseTreeDataProvider $dataProvider, $treeData): void
+    protected $extensionConfiguration;
+
+    public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
-        if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !$this->getBackendUserAuthentication()->isAdmin(
-            ) && $dataProvider->getTableName() === $this->categoryTableName) {
-            $this->removePageTreeForeignCategories($treeData);
+        $this->extensionConfiguration = $extensionConfiguration;
+    }
+
+    public function __invoke(ModifyTreeDataEvent $event): void
+    {
+        try {
+            if (
+                (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE)
+                && $this->extensionConfiguration->get('jwtools2', 'reduceCategoriesToPageTree') === '1'
+                && !$this->getBackendUserAuthentication()->isAdmin()
+                && $event->getProvider()->getTableName() === $this->categoryTableName
+            ) {
+                $this->removePageTreeForeignCategories($event->getTreeData());
+            }
+        } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException $exception) {
         }
     }
 
