@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -37,12 +39,10 @@ class SysFileController
      */
     protected $graphicalFunctions;
 
-    public function __construct(
-        ResourceFactory $resourceFactory = null,
-        GraphicalFunctions $graphicalFunctions = null
-    ) {
-        $this->resourceFactory = $resourceFactory ?? GeneralUtility::makeInstance(ResourceFactory::class);
-        $this->graphicalFunctions = $graphicalFunctions ?? GeneralUtility::makeInstance(GraphicalFunctions::class);
+    public function __construct(ResourceFactory $resourceFactory, GraphicalFunctions $graphicalFunctions)
+    {
+        $this->resourceFactory = $resourceFactory;
+        $this->graphicalFunctions = $graphicalFunctions;
     }
 
     public function updateFileMetadataAction(ServerRequestInterface $request): JsonResponse

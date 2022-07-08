@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -20,12 +22,8 @@ class IndexService
 {
     /**
      * Save current Item ID in sys_registry for debugging
-     *
-     * @param Item $item
-     * @param IndexQueueWorkerTask|null $task
-     * @param string $uniqueId
      */
-    public function beforeIndexItem(Item $item, $task, $uniqueId = '')
+    public function beforeIndexItem(Item $item, ?IndexQueueWorkerTask $task, string $uniqueId = ''): void
     {
         /** @var Registry $registry */
         $registry = GeneralUtility::makeInstance(Registry::class);

@@ -27,17 +27,12 @@ class Database
      * Get QueryBuilder for table.
      * If only table is given it calls default getQueryBuilder from ConnectionPool.
      * If more arguments are given we build our own special QueryBuilder
-     *
-     * @param string $tableName
-     * @param bool $useRestrictionsForCurrentTypo3Mode If true it will automatically implement a RestrictionContainer fitting to TYPO3_MODE
-     * @param QueryRestrictionContainerInterface $restrictionContainer Implement your own RestrictionContainer. Only available if $useRestrictionsForCurrentTypo3Mode is set to false
-     * @return QueryBuilder
      */
     public static function getQueryBuilderForTable(
-        $tableName,
-        $useRestrictionsForCurrentTypo3Mode = true,
+        string $tableName,
+        bool $useRestrictionsForCurrentTypo3Mode = true,
         QueryRestrictionContainerInterface $restrictionContainer = null
-    ) {
+    ): QueryBuilder {
         if ($useRestrictionsForCurrentTypo3Mode) {
             if (TYPO3_MODE === 'FE') {
                 $restrictionContainer = GeneralUtility::makeInstance(FrontendRestrictionContainer::class);
@@ -59,27 +54,13 @@ class Database
         return self::getConnectionPool()->getQueryBuilderForTable($tableName);
     }
 
-    /**
-     * Creates a connection object based on the specified table name.
-     *
-     * @param string $tableName
-     * @return Connection
-     */
-    public static function getConnectionForTable($tableName)
+    public static function getConnectionForTable(string $tableName): Connection
     {
         return self::getConnectionPool()->getConnectionForTable($tableName);
     }
 
-    /**
-     * Get TYPO3s Connection Pool
-     *
-     * @return ConnectionPool
-     */
-    public static function getConnectionPool()
+    public static function getConnectionPool(): ConnectionPool
     {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-
-        return $connectionPool;
+        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -36,12 +38,9 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
 
     /**
      * Works through the indexing queue and indexes the queued items into Solr.
-     *
-     * @return bool Returns TRUE on success, FALSE if no items were indexed or none were found.
      */
-    public function execute()
+    public function execute(): bool
     {
-        /** @var Registry $registry */
         $registry = GeneralUtility::makeInstance(Registry::class);
         $registry->set('jwtools2-solr', 'memoryPeakUsage', 0);
         $lastSitePosition = (int)$registry->get('jwtools2-solr', 'lastSitePosition');
@@ -96,8 +95,6 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
     /**
      * Returns some additional information about indexing progress, shown in
      * the scheduler's task overview list.
-     *
-     * @return string Information to display
      */
     public function getAdditionalInformation(): string
     {
@@ -131,8 +128,6 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
 
     /**
      * Gets the indexing progress.
-     *
-     * @return float Indexing progress as a two decimal precision float. f.e. 44.87
      */
     public function getProgress(): float
     {
@@ -144,10 +139,9 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
     /**
      * Gets all available TYPO3 sites with Solr configured.
      *
-     * @param bool $stopOnInvalidSite
      * @return Site[] An array of available sites
      */
-    public function getAvailableSites($stopOnInvalidSite = false): array
+    public function getAvailableSites(bool $stopOnInvalidSite = false): array
     {
         /** @var SiteRepository $siteRepository */
         $siteRepository = GeneralUtility::makeInstance(SiteRepository::class);
@@ -156,10 +150,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
     }
 
     /**
-     * Returns the initialize IndexService instance.
-     *
-     * @param Site $site
-     * @return IndexService
+     * Returns the initialized IndexService instance.
      */
     protected function getInitializedIndexServiceForSite(Site $site): IndexService
     {
@@ -177,25 +168,16 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
         return $this->documentsToIndexLimit;
     }
 
-    /**
-     * @param int $limit
-     */
     public function setDocumentsToIndexLimit(int $limit): void
     {
         $this->documentsToIndexLimit = $limit;
     }
 
-    /**
-     * @return int $maxSitesPerRun
-     */
     public function getMaxSitesPerRun(): int
     {
         return $this->maxSitesPerRun;
     }
 
-    /**
-     * @param int $maxSitesPerRun
-     */
     public function setMaxSitesPerRun(int $maxSitesPerRun): void
     {
         $this->maxSitesPerRun = $maxSitesPerRun;

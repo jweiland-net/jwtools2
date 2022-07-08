@@ -31,8 +31,13 @@ class Util extends \ApacheSolrForTypo3\Solr\Util
      * @param bool $useTwoLevelCache Flag to enable the two level cache for the typoscript configuration array
      * @return TypoScriptConfiguration The Solr configuration for the requested tree.
      */
-    public static function getConfigurationFromPageId($pageId, $path, $initializeTsfe = false, $language = 0, $useTwoLevelCache = true)
-    {
+    public static function getConfigurationFromPageId(
+        $pageId,
+        $path,
+        $initializeTsfe = false,
+        $language = 0,
+        $useTwoLevelCache = true
+    ): TypoScriptConfiguration {
         $pageId = self::getConfigurationPageIdToUse($pageId);
 
         static $configurationObjectCache = [];

@@ -22,8 +22,6 @@ class InitializeStdWrap implements ContentObjectPostInitHookInterface
 {
     /**
      * Hook for post processing the initialization of ContentObjectRenderer
-     *
-     * @param ContentObjectRenderer $parentObject Parent content object
      */
     public function postProcessContentObjectInitialization(ContentObjectRenderer &$parentObject): void
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -13,6 +15,7 @@ use ApacheSolrForTypo3\Solr\Domain\Site\Site;
 use ApacheSolrForTypo3\Solr\IndexQueue\Queue;
 use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use JWeiland\Jwtools2\Service\SolrService;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -23,11 +26,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
  */
 class AjaxSolrController
 {
-    /**
-     * @param ServerRequest $request
-     * @return Response
-     */
-    public function clearIndexAction(ServerRequest $request)
+    public function clearIndexAction(ServerRequest $request): ResponseInterface
     {
         $response = new Response();
         $postData = $request->getParsedBody();
@@ -68,11 +67,8 @@ class AjaxSolrController
 
     /**
      * Create index queue entries for given site.
-     *
-     * @param ServerRequest $request
-     * @return Response
      */
-    public function createIndexQueueAction(ServerRequest $request)
+    public function createIndexQueueAction(ServerRequest $request): ResponseInterface
     {
         $response = new Response();
         $site = $this->getSolrSiteFromRequest($request);
@@ -96,11 +92,7 @@ class AjaxSolrController
         return $response;
     }
 
-    /**
-     * @param ServerRequest $request
-     * @return Response
-     */
-    public function getProgressAction(ServerRequest $request)
+    public function getProgressAction(ServerRequest $request): ResponseInterface
     {
         $response = new Response();
         $site = $this->getSolrSiteFromRequest($request);
@@ -124,11 +116,7 @@ class AjaxSolrController
         return $response;
     }
 
-    /**
-     * @param ServerRequest $request
-     * @return int
-     */
-    protected function getRootPageUidFromRequest(ServerRequest $request)
+    protected function getRootPageUidFromRequest(ServerRequest $request): int
     {
         $postData = $request->getParsedBody();
         $moduleData = $postData['tx_jwtools2'];
@@ -139,11 +127,7 @@ class AjaxSolrController
         return $rootPageUid;
     }
 
-    /**
-     * @param ServerRequest $request
-     * @return Site|null
-     */
-    protected function getSolrSiteFromRequest(ServerRequest $request)
+    protected function getSolrSiteFromRequest(ServerRequest $request): ?Site
     {
         $rootPageUid = $this->getRootPageUidFromRequest($request);
         /** @var ObjectManager $objectManager */

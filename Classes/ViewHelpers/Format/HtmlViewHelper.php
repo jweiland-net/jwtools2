@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -14,7 +16,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -67,7 +69,7 @@ class HtmlViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
 
     /**
-     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
+     * @var TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
      */
     protected static $tsfeBackup;
 
@@ -90,7 +92,7 @@ class HtmlViewHelper extends AbstractViewHelper
      *
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'parseFuncTSPath',
@@ -102,14 +104,11 @@ class HtmlViewHelper extends AbstractViewHelper
         $this->registerArgument('data', 'array', 'Initialize ContentObjectRenderer with this set of data.', false, []);
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string the parsed string.
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ): string {
         $parseFuncTSPath = $arguments['parseFuncTSPath'];
         if (TYPO3_MODE === 'BE') {
             self::simulateFrontendEnvironment();
@@ -128,7 +127,7 @@ class HtmlViewHelper extends AbstractViewHelper
      * Copies the specified parseFunc configuration to $GLOBALS['TSFE']->tmpl->setup in Backend mode
      * This somewhat hacky work around is currently needed because the parseFunc() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on those variables to be set
      */
-    protected static function simulateFrontendEnvironment()
+    protected static function simulateFrontendEnvironment(): void
     {
         if (
             !$GLOBALS['TSFE'] instanceof TypoScriptFrontendController
@@ -152,7 +151,7 @@ class HtmlViewHelper extends AbstractViewHelper
      *
      * @see simulateFrontendEnvironment()
      */
-    protected static function resetFrontendEnvironment()
+    protected static function resetFrontendEnvironment(): void
     {
         if ($GLOBALS['TSFE'] instanceof \stdClass) {
             $GLOBALS['TSFE'] = self::$tsfeBackup;

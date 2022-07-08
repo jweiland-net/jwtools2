@@ -80,10 +80,8 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
             if (preg_match('/' . preg_quote($cacheExpression['expression'], '/') . '/', $variable, $matches)) {
                 $this->createLogEntry($entryIdentifier, $cacheExpression);
             }
-        } else {
-            if (mb_strpos($variable, $cacheExpression['expression']) !== false) {
-                $this->createLogEntry($entryIdentifier, $cacheExpression);
-            }
+        } elseif (mb_strpos($variable, $cacheExpression['expression']) !== false) {
+            $this->createLogEntry($entryIdentifier, $cacheExpression);
         }
     }
 

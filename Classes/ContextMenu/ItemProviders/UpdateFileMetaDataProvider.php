@@ -32,8 +32,6 @@ class UpdateFileMetaDataProvider extends FileProvider
     /**
      * Priority must be higher than and different from 100 (FileProvider/AbstractProvider).
      * We don't want to replace FileProvider, we want to add further items to FileProvider.
-     *
-     * @return int
      */
     public function getPriority(): int
     {

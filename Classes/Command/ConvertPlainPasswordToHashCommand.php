@@ -46,7 +46,7 @@ class ConvertPlainPasswordToHashCommand extends Command
     /**
      * @var array
      */
-    protected $modeMapping = [
+    protected array $modeMapping = [
         'FE' => [
             'table' => 'fe_users',
         ],
@@ -55,10 +55,7 @@ class ConvertPlainPasswordToHashCommand extends Command
         ],
     ];
 
-    /**
-     * Configure the command by defining the name, options and arguments
-     */
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setDescription('Convert plain passwords to Salted Hashes')
@@ -72,14 +69,7 @@ class ConvertPlainPasswordToHashCommand extends Command
             );
     }
 
-    /**
-     * Executes the current command.
-     *
-     * @param InputInterface $input An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     * @return int|null null or 0 if everything went fine, or an error code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->output = $output;
         $this->passwordHashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
@@ -96,7 +86,7 @@ class ConvertPlainPasswordToHashCommand extends Command
         return 0;
     }
 
-    protected function updateUsers(string $mode)
+    protected function updateUsers(string $mode): void
     {
         $counter = 0;
         $connection = $this->getConnectionPool()->getConnectionForTable($this->modeMapping[$mode]['table']);
@@ -169,16 +159,6 @@ class ConvertPlainPasswordToHashCommand extends Command
             $this->modeMapping[$mode]['hashInstance'] = $this->passwordHashFactory->getDefaultHashInstance($mode);
         }
         return $this->modeMapping[$mode]['hashInstance'];
-    }
-
-    protected function isValidSaltedPassword(string $password): bool
-    {
-        foreach ($this->hashingMethods as $hashingMethod) {
-            if ($hashingMethod->isAvailable() && $hashingMethod->isValidSaltedPW($password)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     protected function getStatementForUsers(string $tableName): Statement

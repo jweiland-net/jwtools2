@@ -30,17 +30,12 @@ class FileNameFilter
      * We have to use -1 as the „don't include“ return value, as call_user_func() will return FALSE
      * If calling the method succeeded and thus we can't use that as a return value.
      *
-     * @param string $itemName
-     * @param string $itemIdentifier
-     * @param string $parentIdentifier
-     * @param array $additionalInformation Additional information (driver dependent) about the inspected item
-     * @param DriverInterface $driverInstance
      * @return bool|int -1 if the file should not be included in a listing
      */
     public static function filterHiddenFilesAndFolders(
-        $itemName,
-        $itemIdentifier,
-        $parentIdentifier,
+        string $itemName,
+        string $itemIdentifier,
+        string $parentIdentifier,
         array $additionalInformation,
         DriverInterface $driverInstance
     ) {
@@ -58,9 +53,6 @@ class FileNameFilter
 
     /**
      * Gets the info whether the hidden files are also displayed currently
-     *
-     * @static
-     * @return bool
      */
     public static function getShowHiddenFilesAndFolders(): bool
     {
@@ -68,14 +60,10 @@ class FileNameFilter
     }
 
     /**
-     * set the flag to show (or hide) the hidden files
-     *
-     * @static
-     * @param bool $showHiddenFilesAndFolders
-     * @return bool
+     * Set the flag to show (or hide) the hidden files
      */
-    public static function setShowHiddenFilesAndFolders($showHiddenFilesAndFolders): bool
+    public static function setShowHiddenFilesAndFolders(bool $showHiddenFilesAndFolders): bool
     {
-        return self::$showHiddenFilesAndFolders = (bool)$showHiddenFilesAndFolders;
+        return self::$showHiddenFilesAndFolders = $showHiddenFilesAndFolders;
     }
 }

@@ -22,8 +22,6 @@ class SchedulerRepository
 {
     /**
      * Get Solr Scheduler Task of this extension
-     *
-     * @return IndexQueueWorkerTask|null
      */
     public function findSolrSchedulerTask(): ?IndexQueueWorkerTask
     {
@@ -65,11 +63,6 @@ class SchedulerRepository
         return GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jwtools2', $path);
     }
 
-    /**
-     * Get TYPO3s Connection Pool
-     *
-     * @return ConnectionPool
-     */
     protected function getConnectionPool(): ConnectionPool
     {
         return GeneralUtility::makeInstance(ConnectionPool::class);

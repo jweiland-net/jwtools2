@@ -62,12 +62,8 @@ class SolrService
     /**
      * Clear various indexes by type
      * Be careful: If type is empty, it will delete EVERYTHING from given $site
-     *
-     * @param Site $site
-     * @param array $clear
-     * @param string $type TableName of the configuration
      */
-    public function clearIndexByType(Site $site, array $clear, string $type = '')
+    public function clearIndexByType(Site $site, array $clear, string $type = ''): void
     {
         // clear local tx_solr_indexqueue_item table
         if (in_array('clearItem', $clear)) {
@@ -88,11 +84,8 @@ class SolrService
     /**
      * Clear item table by type
      * Be careful: If type is empty, it will delete EVERYTHING from given $site
-     *
-     * @param Site $site
-     * @param string $type TableName of the configuration
      */
-    public function clearItemTableByType(Site $site, string $type = '')
+    public function clearItemTableByType(Site $site, string $type = ''): void
     {
         $identifier = [
             'root' => (int)$site->getRootPageId(),
@@ -110,11 +103,8 @@ class SolrService
     /**
      * Clear file table by type
      * Be careful: If type is empty, it will delete EVERYTHING from given $site
-     *
-     * @param Site $site
-     * @param string $type TableName of the configuration
      */
-    public function clearFileTableByType(Site $site, string $type = '')
+    public function clearFileTableByType(Site $site, string $type = ''): void
     {
         if (ExtensionManagementUtility::isLoaded('solrfal')) {
             $identifier = [
@@ -135,11 +125,8 @@ class SolrService
     /**
      * Clear Solr Index by type
      * Be careful: If type is empty, it will delete EVERYTHING from given $site
-     *
-     * @param Site $site
-     * @param string $type TableName of the configuration
      */
-    public function clearSolrIndexByType(Site $site, $type = '')
+    public function clearSolrIndexByType(Site $site, $type = ''): void
     {
         $tableName = $site->getSolrConfiguration()->getIndexQueueTableNameOrFallbackToConfigurationName($type);
         /** @var SolrConnection[] $solrServers */
@@ -151,11 +138,6 @@ class SolrService
         }
     }
 
-    /**
-     * Get TYPO3s Connection Pool
-     *
-     * @return ConnectionPool
-     */
     protected function getConnectionPool(): ConnectionPool
     {
         return GeneralUtility::makeInstance(ConnectionPool::class);

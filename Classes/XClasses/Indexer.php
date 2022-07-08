@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\XClasses;
 
 use ApacheSolrForTypo3\Solr\IndexQueue\Item;
+use Doctrine\DBAL\Driver\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
@@ -28,7 +29,7 @@ class Indexer extends \ApacheSolrForTypo3\Solr\IndexQueue\Indexer
      * @param Item $item An index queue item
      * @param int $language Language ID
      * @return array Configuration array from TypoScript
-     * @throws \RuntimeException
+     * @throws \RuntimeException|Exception
      */
     protected function getItemTypeConfiguration(Item $item, int $language = 0): array
     {

@@ -31,8 +31,6 @@ call_user_func(static function () {
             'description' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:indexqueueworker_description',
             'additionalFields' => \JWeiland\Jwtools2\Task\IndexQueueWorkerTaskAdditionalFieldProvider::class,
         ];
-        // override RealUrl Utility to reset current cached HTTP_HOST
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\DmitryDulepov\Realurl\Utility::class]['className'] = \JWeiland\Jwtools2\Utility\RealurlUtility::class;
         // Hook into Solr Index Service
         $signalSlotDispatcher->connect(
             \ApacheSolrForTypo3\Solr\Domain\Index\IndexService::class,

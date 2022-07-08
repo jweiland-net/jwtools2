@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -13,10 +15,7 @@ namespace JWeiland\Jwtools2\Controller;
  */
 class ToolsController extends AbstractController
 {
-    /**
-     * Overview action
-     */
-    public function overviewAction()
+    public function overviewAction(): void
     {
     }
 }

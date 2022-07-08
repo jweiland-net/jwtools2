@@ -20,8 +20,6 @@ class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
 {
     /**
      * TODO: Solve this via $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']
-     *
-     * @return string HTML content
      */
     public function render(): string
     {

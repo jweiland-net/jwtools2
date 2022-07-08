@@ -31,11 +31,6 @@ class ReduceCategoryTreeToPageTree
     protected $categoryTableName = 'sys_category';
 
     /**
-     * @var BackendUserAuthentication
-     */
-    protected $backendUserAuthentication;
-
-    /**
      * @var int
      */
     protected $pageUid = 0;
@@ -46,14 +41,6 @@ class ReduceCategoryTreeToPageTree
     protected $listOfCategoryUids = '';
 
     /**
-     * @param BackendUserAuthentication|null $backendUserAuthentication
-     */
-    public function __construct($backendUserAuthentication = null)
-    {
-        $this->backendUserAuthentication = $backendUserAuthentication ?: $GLOBALS['BE_USER'];
-    }
-
-    /**
      * The slot for the signal in DatabaseTreeDataProvider.
      *
      * @param DatabaseTreeDataProvider $dataProvider
@@ -61,7 +48,7 @@ class ReduceCategoryTreeToPageTree
      */
     public function reduceCategoriesToPageTree(DatabaseTreeDataProvider $dataProvider, $treeData): void
     {
-        if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !$this->backendUserAuthentication->isAdmin(
+        if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !$this->getBackendUserAuthentication()->isAdmin(
             ) && $dataProvider->getTableName() === $this->categoryTableName) {
             $this->removePageTreeForeignCategories($treeData);
         }
@@ -211,21 +198,16 @@ class ReduceCategoryTreeToPageTree
         return (int)$rootPage['uid'];
     }
 
-    /**
-     * Get QueryGenerator
-     *
-     * @return QueryGenerator
-     */
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
     protected function getQueryGenerator(): QueryGenerator
     {
         return GeneralUtility::makeInstance(QueryGenerator::class);
     }
 
-    /**
-     * Get TYPO3s Connection Pool
-     *
-     * @return ConnectionPool
-     */
     protected function getConnectionPool(): ConnectionPool
     {
         return GeneralUtility::makeInstance(ConnectionPool::class);

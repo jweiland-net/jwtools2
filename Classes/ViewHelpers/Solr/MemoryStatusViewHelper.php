@@ -23,20 +23,13 @@ class MemoryStatusViewHelper extends AbstractViewHelper
      */
     protected $registry;
 
-    /**
-     * inject registry
-     *
-     * @param Registry $registry
-     */
-    public function injectRegistry(Registry $registry)
+    public function injectRegistry(Registry $registry): void
     {
         $this->registry = $registry;
     }
 
     /**
      * Show index status
-     *
-     * @return float
      */
     public function render(): float
     {
@@ -48,9 +41,6 @@ class MemoryStatusViewHelper extends AbstractViewHelper
 
     /**
      * Convert values like 256M to bytes
-     *
-     * @param string $bytes
-     * @return int
      */
     protected function returnBytes(string $bytes): int
     {

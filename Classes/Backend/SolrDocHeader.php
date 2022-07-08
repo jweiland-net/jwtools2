@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -15,10 +17,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
  */
 class SolrDocHeader extends AbstractDocHeader
 {
-    /**
-     * Render DocHeader for View
-     */
-    public function renderDocHeader()
+    public function renderDocHeader(): void
     {
         // initialize UriBuilder
         $this->uriBuilder->setRequest($this->request);
@@ -30,10 +29,7 @@ class SolrDocHeader extends AbstractDocHeader
         $this->addModuleSelector();
     }
 
-    /**
-     * Add module selector
-     */
-    protected function addModuleSelector()
+    protected function addModuleSelector(): void
     {
         $buttonBar = $this->view
             ->getModuleTemplate()

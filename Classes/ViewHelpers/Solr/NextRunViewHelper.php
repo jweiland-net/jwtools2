@@ -36,33 +36,21 @@ class NextRunViewHelper extends AbstractViewHelper
      */
     protected $registry;
 
-    /**
-     * @param SolrRepository $solrRepository
-     */
-    public function injectSolrRepository(SolrRepository $solrRepository)
+    public function injectSolrRepository(SolrRepository $solrRepository): void
     {
         $this->solrRepository = $solrRepository;
     }
 
-    /**
-     * @param SchedulerRepository $schedulerRepository
-     */
-    public function injectSchedulerRepository(SchedulerRepository $schedulerRepository)
+    public function injectSchedulerRepository(SchedulerRepository $schedulerRepository): void
     {
         $this->schedulerRepository = $schedulerRepository;
     }
 
-    /**
-     * @param Registry $registry
-     */
-    public function injectRegistry(Registry $registry)
+    public function injectRegistry(Registry $registry): void
     {
         $this->registry = $registry;
     }
 
-    /**
-     * Initialize all arguments.
-     */
     public function initializeArguments(): void
     {
         $this->registerArgument(
@@ -75,8 +63,6 @@ class NextRunViewHelper extends AbstractViewHelper
 
     /**
      * Calculate next run for given site
-     *
-     * @return float
      */
     public function render(): float
     {
@@ -118,19 +104,16 @@ class NextRunViewHelper extends AbstractViewHelper
     /**
      * available sites is an array with increasing numeric keys.
      * Return array key of matching site
-     *
-     * @param Site $site
-     * @return int
      */
     protected function getKeyOfAllAvailableSites(Site $site): int
     {
-        /** @var Site[] $sites */
         $sites = array_values($this->solrRepository->findAllAvailableSites());
         foreach ($sites as $key => $availableSite) {
             if ($availableSite->getRootPageId() === $site->getRootPageId()) {
                 return (int)$key;
             }
         }
+
         // normally this will not be reached
         return 0;
     }

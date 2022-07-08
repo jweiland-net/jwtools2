@@ -49,9 +49,6 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
     use SiteAccessorTrait;
     use SiteLanguageAccessorTrait;
 
-    /**
-     * @var array
-     */
     protected $settings;
 
     /**
@@ -72,9 +69,6 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
         $this->settings = $settings;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function generate(string $value): ?string
     {
         // SlugHelper->sanitize will not replace / to -, so do it here
@@ -92,9 +86,6 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
         return $target;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolve(string $value): ?string
     {
         $storedRoute = $this->getStoredRoute('', $value);

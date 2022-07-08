@@ -22,12 +22,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class MoveTranslatedContentElementsHook
 {
-    public function processDatamap_beforeStart(DataHandler $dataHandler)
+    public function processDatamap_beforeStart(DataHandler $dataHandler): void
     {
         // For "move"-cmd both cmdmap and datamap has to be filled
         if (
-            isset($dataHandler->cmdmap['tt_content'])
-            && isset($dataHandler->datamap['tt_content'])
+            isset($dataHandler->cmdmap['tt_content'], $dataHandler->datamap['tt_content'])
             && !empty($dataHandler->cmdmap['tt_content'])
             && !empty($dataHandler->datamap['tt_content'])
         ) {

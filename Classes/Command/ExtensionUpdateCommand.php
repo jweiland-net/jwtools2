@@ -26,9 +26,6 @@ use TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility;
  */
 class ExtensionUpdateCommand extends Command
 {
-    /**
-     * Configure the command by defining the name, options and arguments
-     */
     public function configure(): void
     {
         $this
@@ -55,14 +52,7 @@ class ExtensionUpdateCommand extends Command
             );
     }
 
-    /**
-     * Executes the current command.
-     *
-     * @param InputInterface $input An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     * @return int|null null or 0 if everything went fine, or an error code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $packages = $this->getUpdatePossibleActivePackages();
 

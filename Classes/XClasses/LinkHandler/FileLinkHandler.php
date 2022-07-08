@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -20,13 +22,12 @@ class FileLinkHandler extends \TYPO3\CMS\Recordlist\LinkHandler\FileLinkHandler
 {
     /**
      * Initialize the handler
-     *
-     * @param AbstractLinkBrowserController $linkBrowser
-     * @param string $identifier
-     * @param array $configuration Page TSconfig
      */
-    public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration)
-    {
+    public function initialize(
+        AbstractLinkBrowserController $linkBrowser,
+        $identifier,
+        array $configuration
+    ): void {
         parent::initialize($linkBrowser, $identifier, $configuration);
 
         // Override template paths
