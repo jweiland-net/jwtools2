@@ -316,22 +316,12 @@ class SolrController extends AbstractController
     {
         $indexer = $this->getIndexerByItem($item->getIndexingConfigurationName(), $configuration);
 
-        // Remember original http host value
-        $originalHttpHost = $_SERVER['HTTP_HOST'] ?? null;
-
-        $this->initializeHttpServerEnvironment($item);
         $itemIndexed = $indexer->index($item);
 
         // update IQ item so that the IQ can determine what's been indexed already
         if ($itemIndexed) {
             $indexQueue = GeneralUtility::makeInstance(Queue::class);
             $indexQueue->updateIndexTimeByItem($item);
-        }
-
-        if (!is_null($originalHttpHost)) {
-            $_SERVER['HTTP_HOST'] = $originalHttpHost;
-        } else {
-            unset($_SERVER['HTTP_HOST']);
         }
 
         // needed since TYPO3 7.5
@@ -368,33 +358,5 @@ class SolrController extends AbstractController
         }
 
         return $indexer;
-    }
-
-    /**
-     * Initializes the $_SERVER['HTTP_HOST'] environment variable in CLI
-     * environments dependent on the Index Queue item's root page.
-     * When the Index Queue Worker task is executed by a cron job there is no
-     * HTTP_HOST since we are in a CLI environment. RealURL needs the host
-     * information to generate a proper URL though. Using the Index Queue item's
-     * root page information we can determine the correct host although being
-     * in a CLI environment.
-     *
-     * @param Item $item Index Queue item to use to determine the host.
-     * @param
-     */
-    protected function initializeHttpServerEnvironment(Item $item): void
-    {
-        static $hosts = [];
-        $rootpageId = $item->getRootPageUid();
-        $hostFound = !empty($hosts[$rootpageId]);
-
-        if (!$hostFound) {
-            $hosts[$rootpageId] = $item->getSite()->getDomain();
-        }
-
-        $_SERVER['HTTP_HOST'] = $hosts[$rootpageId];
-
-        // needed since TYPO3 7.5
-        GeneralUtility::flushInternalRuntimeCaches();
     }
 }

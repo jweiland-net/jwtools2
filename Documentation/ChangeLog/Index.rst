@@ -6,6 +6,14 @@
 ChangeLog
 =========
 
+**Version 6.0.0**
+
+- Add TYPO3 11 compatibility
+- Remove TYPO3 9 compatibility
+- Remove EXT:realurl features
+- Add comma to last entry in array elements
+- Remove interface section from TCA
+
 **Version 5.7.0**
 
 - Add Caching Framework analyzer incl. Logging
