@@ -300,41 +300,13 @@ class LiveSearch
 
         // If the search string is a simple integer, assemble an equality comparison
         if (MathUtility::canBeInterpretedAsInteger($this->queryString)) {
-            foreach ($fieldsToSearchWithin as $fieldName) {
-                if ($fieldName !== 'uid'
-                    && $fieldName !== 'pid'
-                    && !isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])
-                ) {
-                    continue;
-                }
-                $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] ?? [];
-                $fieldType = $fieldConfig['type'] ?? '';
-                $evalRules = $fieldConfig['eval'] ?? '';
-
-                // Assemble the search condition only if the field is an integer, or is uid or pid
-                if ($fieldName === 'uid'
-                    || $fieldName === 'pid'
-                    || ($fieldType === 'input' && $evalRules && GeneralUtility::inList($evalRules, 'int'))
-                ) {
-                    $constraints[] = $queryBuilder->expr()->eq(
-                        $fieldName,
-                        $queryBuilder->createNamedParameter($this->queryString, \PDO::PARAM_INT)
-                    );
-                } elseif ($fieldType === 'text'
-                    || $fieldType === 'flex'
-                    || $fieldType === 'slug'
-                    || ($fieldType === 'input' && (!$evalRules || !preg_match('/\b(?:date|time|int)\b/', $evalRules)))
-                ) {
-                    // Otherwise and if the field makes sense to be searched, assemble a like condition
-                    $constraints[] = $queryBuilder->expr()->like(
-                        $fieldName,
-                        $queryBuilder->createNamedParameter(
-                            '%' . $queryBuilder->escapeLikeWildcards((int)$this->queryString) . '%',
-                            \PDO::PARAM_STR
-                        )
-                    );
-                }
-            }
+            // SF: We have reduced this query to just UID column.
+            // So, if you search for #page:11 you will get just the page with UID 11 and not
+            // some pages where "11" is somewhere in a timestamp or whatever
+            $constraints[] = $queryBuilder->expr()->eq(
+                'uid',
+                $queryBuilder->createNamedParameter($this->queryString, \PDO::PARAM_INT)
+            );
         } else {
             $like = '%' . $queryBuilder->escapeLikeWildcards($this->queryString) . '%';
             foreach ($fieldsToSearchWithin as $fieldName) {
