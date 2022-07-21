@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 5.8.0**
+
+- Add feature to enable performance in LiveSearch for admins
+
 **Version 5.7.0**
 
 - Add Caching Framework analyzer incl. Logging
