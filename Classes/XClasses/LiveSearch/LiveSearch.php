@@ -1,11 +1,7 @@
 <?php
 
-// Do not add strict_types. This class is a copy of TYPO3 11, where strict_type is also not given.
-// Try to be as compatible as possible ;-)
-
 /*
  * This file is part of the package jweiland/jwtools2.
- *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
