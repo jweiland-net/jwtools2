@@ -16,6 +16,10 @@ services:
   JWeiland\Jwtools2\LinkHandling\FileLinkHandler:
     public: true
 
+  # Called by makeInstance in start() of ContentObjectRenderer
+  JWeiland\Jwtools2\Hooks\InitializeStdWrap:
+    public: true
+
   # Called by makeInstance in constructor of LinkService
   JWeiland\Jwtools2\LinkHandling\FolderLinkHandler:
     public: true
