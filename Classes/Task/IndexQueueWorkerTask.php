@@ -41,7 +41,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
      */
     public function execute(): bool
     {
-        $registry = GeneralUtility::makeInstance(Registry::class);
+        $registry = $this->getRegistry();
         $registry->set('jwtools2-solr', 'memoryPeakUsage', 0);
         $lastSitePosition = (int)$registry->get('jwtools2-solr', 'lastSitePosition');
         $maxSitePosition = $lastSitePosition + $this->getMaxSitesPerRun();
@@ -98,8 +98,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
      */
     public function getAdditionalInformation(): string
     {
-        /** @var Registry $registry */
-        $registry = GeneralUtility::makeInstance(Registry::class);
+        $registry = $this->getRegistry();
         $rootPageId = (int)$registry->get('jwtools2-solr', 'rootPageId');
         $message = 'Please execute this task first to retrieve site information';
         if ($rootPageId === 0) {
@@ -181,5 +180,10 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
     public function setMaxSitesPerRun(int $maxSitesPerRun): void
     {
         $this->maxSitesPerRun = $maxSitesPerRun;
+    }
+
+    protected function getRegistry(): Registry
+    {
+        return GeneralUtility::makeInstance(Registry::class);
     }
 }
