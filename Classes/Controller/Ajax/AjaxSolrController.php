@@ -98,12 +98,7 @@ class AjaxSolrController
         $site = $this->getSolrSiteFromRequest($request);
 
         if ($site instanceof Site) {
-            /** @var IndexService $indexService */
-            $indexService = GeneralUtility::makeInstance(
-                IndexService::class,
-                $site
-            );
-            $indexService->setContextTask(null);
+            $indexService = GeneralUtility::makeInstance(IndexService::class, $site);
 
             $response->getBody()->write(
                 json_encode([

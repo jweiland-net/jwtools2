@@ -67,9 +67,6 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
 
             try {
                 $indexService = GeneralUtility::makeInstance(IndexService::class, $availableSite);
-
-                // we don't set any referenced task. They are only used for emitting signals
-                $indexService->setContextTask(null);
                 $indexService->indexItems($this->documentsToIndexLimit);
                 $counter++;
             } catch (\Exception $e) {
@@ -154,12 +151,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
      */
     protected function getInitializedIndexServiceForSite(Site $site): IndexService
     {
-        $indexService = GeneralUtility::makeInstance(IndexService::class, $site);
-
-        // we don't set any referenced task. They are only used for emitting signals
-        $indexService->setContextTask(null);
-
-        return $indexService;
+        return GeneralUtility::makeInstance(IndexService::class, $site);
     }
 
     public function getDocumentsToIndexLimit(): int
