@@ -13,7 +13,6 @@ namespace JWeiland\Jwtools2\Service;
 use ApacheSolrForTypo3\Solr\ConnectionManager;
 use ApacheSolrForTypo3\Solr\Domain\Index\Queue\Statistic\QueueStatistic;
 use ApacheSolrForTypo3\Solr\Domain\Site\Site;
-use ApacheSolrForTypo3\Solr\System\Solr\SolrConnection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,28 +27,29 @@ class SolrService
      * a statistic over all sites
      *
      * @return QueueStatistic
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function getStatistic(): QueueStatistic
     {
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_solr_indexqueue_item');
-        $indexQueueStats = $queryBuilder
+        $statement = $queryBuilder
             ->selectLiteral('indexed < changed as pending, (errors not like "") as failed, COUNT(*) as count')
             ->from('tx_solr_indexqueue_item')
             ->groupBy('pending')
             ->addGroupBy('failed')
-            ->execute()
-            ->fetchAll();
-        if (!$indexQueueStats) {
-            $indexQueueStats = [];
+            ->execute();
+
+        $indexQueueStats = [];
+        while ($indexQueueStat = $statement->fetch()) {
+            $indexQueueStats[] = $indexQueueStat;
         }
 
-        /** @var $statistic QueueStatistic */
         $statistic = GeneralUtility::makeInstance(QueueStatistic::class);
 
         foreach ($indexQueueStats as $row) {
-            if ($row['failed'] == 1) {
+            if ((int)($row['failed']) === 1) {
                 $statistic->setFailedCount((int)$row['count']);
-            } elseif ($row['pending'] == 1) {
+            } elseif ((int)($row['pending']) === 1) {
                 $statistic->setPendingCount((int)$row['count']);
             } else {
                 $statistic->setSuccessCount((int)$row['count']);
@@ -66,17 +66,17 @@ class SolrService
     public function clearIndexByType(Site $site, array $clear, string $type = ''): void
     {
         // clear local tx_solr_indexqueue_item table
-        if (in_array('clearItem', $clear)) {
+        if (in_array('clearItem', $clear, true)) {
             $this->clearItemTableByType($site, $type);
         }
 
         // clear local tx_solr_indexqueue_file table
-        if (in_array('clearFile', $clear)) {
+        if (in_array('clearFile', $clear, true)) {
             $this->clearFileTableByType($site, $type);
         }
 
         // clear external Solr Server
-        if (in_array('clearSolr', $clear)) {
+        if (in_array('clearSolr', $clear, true)) {
             $this->clearSolrIndexByType($site, $type);
         }
     }
@@ -88,16 +88,20 @@ class SolrService
     public function clearItemTableByType(Site $site, string $type = ''): void
     {
         $identifier = [
-            'root' => (int)$site->getRootPageId(),
+            'root' => $site->getRootPageId(),
         ];
-        if ($type) {
+
+        if ($type !== '') {
             $identifier['indexing_configuration'] = $type;
         }
-        $connection = $this->getConnectionPool()->getConnectionForTable('tx_solr_indexqueue_item');
-        $connection->delete(
-            'tx_solr_indexqueue_item',
-            $identifier
-        );
+
+        $this
+            ->getConnectionPool()
+            ->getConnectionForTable('tx_solr_indexqueue_item')
+            ->delete(
+                'tx_solr_indexqueue_item',
+                $identifier
+            );
     }
 
     /**
@@ -108,17 +112,20 @@ class SolrService
     {
         if (ExtensionManagementUtility::isLoaded('solrfal')) {
             $identifier = [
-                'context_site' => (int)$site->getRootPageId(),
+                'context_site' => $site->getRootPageId(),
             ];
-            if ($type) {
+
+            if ($type !== '') {
                 $identifier['context_record_indexing_configuration'] = $type;
             }
 
-            $connection = $this->getConnectionPool()->getConnectionForTable('tx_solr_indexqueue_file');
-            $connection->delete(
-                'tx_solr_indexqueue_file',
-                $identifier
-            );
+            $this
+                ->getConnectionPool()
+                ->getConnectionForTable('tx_solr_indexqueue_file')
+                ->delete(
+                    'tx_solr_indexqueue_file',
+                    $identifier
+                );
         }
     }
 
@@ -129,9 +136,10 @@ class SolrService
     public function clearSolrIndexByType(Site $site, $type = ''): void
     {
         $tableName = $site->getSolrConfiguration()->getIndexQueueTableNameOrFallbackToConfigurationName($type);
-        /** @var SolrConnection[] $solrServers */
+
         $solrServers = GeneralUtility::makeInstance(ConnectionManager::class)
             ->getConnectionsBySite($site);
+
         foreach ($solrServers as $solrServer) {
             $solrServer->getWriteService()->deleteByType($tableName); // Document
             $solrServer->getWriteService()->deleteByQuery('fileReferenceType:' . $tableName); // tx_solr_file
