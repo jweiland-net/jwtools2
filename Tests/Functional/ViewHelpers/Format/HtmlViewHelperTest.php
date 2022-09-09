@@ -197,24 +197,21 @@ class HtmlViewHelperTest extends FunctionalTestCase
      */
     public function renderWithParseFuncTsPathWillRenderBlueLinks(): void
     {
-        $this->subject->setArguments([
-            'parseFuncTSPath' => 'lib.parseFunc_RTE',
-        ]);
+        if (version_compare(TYPO3_branch, '10.4', '=')) {
+            $this->subject->setArguments([
+                'parseFuncTSPath' => 'lib.parseFunc_RTE',
+            ]);
 
-        $this->subject->setRenderChildrenClosure(function () {
-            return 'I am a <a href="https://typo3.org">Link</a>';
-        });
+            $this->subject->setRenderChildrenClosure(function () {
+                return 'I am a <a href="https://typo3.org">Link</a>';
+            });
 
-        if (version_compare(TYPO3_branch, '10.4', '>=')) {
             self::assertSame(
                 'I am a <a href="https://typo3.org" target="_blank" rel="noreferrer" style="color: blue;">Link</a>',
                 $this->subject->initializeArgumentsAndRender()
             );
         } else {
-            self::assertSame(
-                'I am a <a href="https://typo3.org" target="_blank" style="color: blue;">Link</a>',
-                $this->subject->initializeArgumentsAndRender()
-            );
+            self::markTestSkipped('Skipped, because our modified version of HtmlViewHelper was merged to TYPO3 11');
         }
     }
 
@@ -223,27 +220,24 @@ class HtmlViewHelperTest extends FunctionalTestCase
      */
     public function renderWithParseFuncTsPathWillConsiderTsConditionAndRendersRedLinks(): void
     {
-        $this->subject->setArguments([
-            'parseFuncTSPath' => 'lib.parseFunc_RTE',
-            'data' => [
-                'colPos' => '2',
-            ],
-        ]);
+        if (version_compare(TYPO3_branch, '10.4', '=')) {
+            $this->subject->setArguments([
+                'parseFuncTSPath' => 'lib.parseFunc_RTE',
+                'data' => [
+                    'colPos' => '2',
+                ],
+            ]);
 
-        $this->subject->setRenderChildrenClosure(function () {
-            return 'I am a <a href="https://typo3.org">Link</a>';
-        });
+            $this->subject->setRenderChildrenClosure(function () {
+                return 'I am a <a href="https://typo3.org">Link</a>';
+            });
 
-        if (version_compare(TYPO3_branch, '10.4', '>=')) {
             self::assertSame(
                 'I am a <a href="https://typo3.org" target="_blank" rel="noreferrer" style="color: red;">Link</a>',
                 $this->subject->initializeArgumentsAndRender()
             );
         } else {
-            self::assertSame(
-                'I am a <a href="https://typo3.org" target="_blank" style="color: red;">Link</a>',
-                $this->subject->initializeArgumentsAndRender()
-            );
+            self::markTestSkipped('Skipped, because our modified version of HtmlViewHelper was merged to TYPO3 11');
         }
     }
 }
