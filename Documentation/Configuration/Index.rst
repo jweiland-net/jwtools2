@@ -28,6 +28,7 @@ Extension configuration
    enableSqlQueryTask_                              0
    enableContextMenuToUpdateFileMetadata_           0
    enableCachingFrameworkLogger_                    0
+   enableLiveSearchPerformanceForAdmins_            0
    enableReportProvider_                            0
    sendUpdatableExtensionsWithSeverity_             info
    solrEnable_                                      0
@@ -203,6 +204,17 @@ for regular expression untouched. Internally it will start a PHP:mb_strpos searc
 case sensitive strings. For more complex search activate checkbox for regular expression. It starts a
 PHP:preg_match search internally. You don't need to prepend/append a delimiter. It uses "/" internally and
 escaped values for you automatically.
+
+
+.. _enableLiveSearchPerformanceForAdmins:
+
+enableLiveSearchPerformanceForAdmins
+------------------------------------
+
+For admins LiveSearch is very slow (TYPO3 < 11). That's because LiveSearch builds up a complete list of
+ALL available page UIDs. That's not neccessary as admins always have access to all pages.
+
+Activate that checkbox to get more performance while searching with LiveSearch as admin.
 
 
 .. _enableReportProvider:

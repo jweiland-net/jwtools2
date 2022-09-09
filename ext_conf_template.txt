@@ -16,6 +16,9 @@ enableSqlQueryTask = 0
 enableContextMenuToUpdateFileMetadata = 0
 # cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:enableCachingFrameworkLogger
 enableCachingFrameworkLogger = 0
+# cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:enableLiveSearchPerformanceForAdmins
+enableLiveSearchPerformanceForAdmins = 0
+
 # cat=reports; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:enableReportProvider
 enableReportProvider = 0
 # cat=reports; type=options[Info=info,Warning=warning]; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:sendUpdatableExtensionsWithSeverity
