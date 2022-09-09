@@ -39,8 +39,9 @@ class Indexer extends \ApacheSolrForTypo3\Solr\IndexQueue\Indexer
             $fields = $this->getFieldConfigurationFromItemRootPage($item, $language, $indexConfigurationName);
             if (count($fields) === 0) {
                 throw new \RuntimeException(
-                    'The item indexing configuration "' . $item->getIndexingConfigurationName() .
-                    '" on root page uid ' . $item->getRootPageUid() . ' could not be found!', 1455530112
+                    'The item indexing configuration "' . $item->getIndexingConfigurationName()
+                    . '" on root page uid ' . $item->getRootPageUid() . ' could not be found!',
+                    1455530112
                 );
             }
         }

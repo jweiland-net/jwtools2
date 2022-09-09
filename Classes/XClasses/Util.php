@@ -54,14 +54,15 @@ class Util extends \ApacheSolrForTypo3\Solr\Util
         // getRootline() below throws an exception (since #typo3-60 )
         // as UID 0 cannot have any parent rootline by design.
         if ($pageId == 0) {
-            return $configurationObjectCache[$cacheId] = self::buildTypoScriptConfigurationFromArray([],
+            return $configurationObjectCache[$cacheId] = self::buildTypoScriptConfigurationFromArray(
+                [],
                 $pageId,
                 $language,
-                $path);
+                $path
+            );
         }
 
         if ($useTwoLevelCache) {
-            /** @var $cache TwoLevelCache */
             $cache = GeneralUtility::makeInstance(
                 TwoLevelCache::class,
                 /** @scrutinizer ignore-type */

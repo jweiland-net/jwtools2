@@ -49,8 +49,15 @@ class SchedulerRepository
         }
 
         /** @var IndexQueueWorkerTask $task */
-        $task = unserialize($taskRecord['serialized_task_object'], ['allowed_classes' => [IndexQueueWorkerTask::class]]
+        $task = unserialize(
+            $taskRecord['serialized_task_object'],
+            [
+                'allowed_classes' => [
+                    IndexQueueWorkerTask::class
+                ]
+            ]
         );
+
         if (!$task instanceof IndexQueueWorkerTask) {
             return null;
         }

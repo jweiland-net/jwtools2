@@ -31,7 +31,8 @@ class FolderLinkHandler extends \TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHand
     ): void {
         parent::initialize($linkBrowser, $identifier, $configuration);
 
-        $this->addTemplatePath($this->view);    }
+        $this->addTemplatePath($this->view);
+    }
 
     /**
      * The parent::setView() method was implemented with TYPO3 11.2
@@ -58,6 +59,7 @@ class FolderLinkHandler extends \TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHand
             } else {
                 $templateRootPaths[] = 'EXT:jwtools2/Resources/Private/Extensions/Recordlist/Templates';
             }
+
             $view->setTemplateRootPaths($templateRootPaths);
         }
     }
