@@ -78,6 +78,10 @@ call_user_func(static function () {
         );
     }
 
+    if ($jwToolsConfiguration['enableLiveSearchPerformanceForAdmins']) {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Search\LiveSearch\LiveSearch::class]['className'] = \JWeiland\Jwtools2\XClasses\LiveSearch\LiveSearch::class;
+    }
+
     if ($jwToolsConfiguration['typo3ExcludeVideoFilesFromFalFilter']) {
         // Exclude .youtube and .vimeo from hidden files in filelist
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['defaultFilterCallbacks'] = [

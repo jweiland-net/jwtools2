@@ -15,6 +15,14 @@ ChangeLog
 - Remove interface section from TCA
 - Remove LinkHandler XCLASSes. Override file/folder LinkHandlers of TYPO3 directly
 
+**Version 5.8.1**
+
+- Reduce LiveSearch to UID column, if just an INT is given
+
+**Version 5.8.0**
+
+- Add feature to enable performance in LiveSearch for admins
+
 **Version 5.7.0**
 
 - Add Caching Framework analyzer incl. Logging
