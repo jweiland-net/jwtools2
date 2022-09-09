@@ -66,11 +66,10 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
             $registry->set('jwtools2-solr', 'rootPageId', $availableSite->getRootPageId());
 
             try {
-                /** @var IndexService $indexService */
                 $indexService = GeneralUtility::makeInstance(IndexService::class, $availableSite);
-                $indexService->setContextTask(
-                    null
-                ); // we don't set any referenced task. They are only used for emitting signals
+
+                // we don't set any referenced task. They are only used for emitting signals
+                $indexService->setContextTask(null);
                 $indexService->indexItems($this->documentsToIndexLimit);
                 $counter++;
             } catch (\Exception $e) {
@@ -95,6 +94,8 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
     /**
      * Returns some additional information about indexing progress, shown in
      * the scheduler's task overview list.
+     *
+     * @throws \Doctrine\DBAL\Driver\Exception
      */
     public function getAdditionalInformation(): string
     {
@@ -130,22 +131,22 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
      */
     public function getProgress(): float
     {
-        /** @var SolrService $solrService */
-        $solrService = GeneralUtility::makeInstance(SolrService::class);
-        return $solrService->getStatistic()->getSuccessPercentage();
+        return GeneralUtility::makeInstance(SolrService::class)
+            ->getStatistic()
+            ->getSuccessPercentage();
     }
 
     /**
      * Gets all available TYPO3 sites with Solr configured.
      *
      * @return Site[] An array of available sites
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \Throwable
      */
     public function getAvailableSites(bool $stopOnInvalidSite = false): array
     {
-        /** @var SiteRepository $siteRepository */
-        $siteRepository = GeneralUtility::makeInstance(SiteRepository::class);
-
-        return $siteRepository->getAvailableSites($stopOnInvalidSite);
+        return GeneralUtility::makeInstance(SiteRepository::class)
+            ->getAvailableSites($stopOnInvalidSite);
     }
 
     /**
@@ -153,11 +154,10 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
      */
     protected function getInitializedIndexServiceForSite(Site $site): IndexService
     {
-        /** @var IndexService $indexService */
         $indexService = GeneralUtility::makeInstance(IndexService::class, $site);
-        $indexService->setContextTask(
-            null
-        ); // we don't set any referenced task. They are only used for emitting signals
+
+        // we don't set any referenced task. They are only used for emitting signals
+        $indexService->setContextTask(null);
 
         return $indexService;
     }
