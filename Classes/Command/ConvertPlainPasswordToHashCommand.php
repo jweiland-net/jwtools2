@@ -46,7 +46,7 @@ class ConvertPlainPasswordToHashCommand extends Command
     /**
      * @var array
      */
-    protected array $modeMapping = [
+    protected $modeMapping = [
         'FE' => [
             'table' => 'fe_users',
         ],
