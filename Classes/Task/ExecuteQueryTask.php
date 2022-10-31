@@ -55,7 +55,7 @@ class ExecuteQueryTask extends AbstractTask
         } catch (\Exception $e) {
             $this->addMessage(
                 'Error occurred: ' . $e->getMessage(),
-                FlashMessage::ERROR
+                AbstractMessage::ERROR
             );
 
             return false;

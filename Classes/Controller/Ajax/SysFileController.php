@@ -159,19 +159,14 @@ class SysFileController
     {
         $fileDeletionAspect = GeneralUtility::makeInstance(FileDeletionAspect::class);
 
-        // @ToDo: Replace with Typo3Version class in future
-        if (version_compare(TYPO3_branch, '10.0', '>=')) {
-            $event = new AfterFileAddedEvent(
-                $fileObject,
-                new Folder(
-                    $fileObject->getStorage(),
-                    $fileObject->getParentFolder()->getIdentifier(),
-                    $fileObject->getParentFolder()->getName()
-                )
-            );
-            $fileDeletionAspect->cleanupProcessedFilesPostFileAdd($event);
-        } else {
-            $fileDeletionAspect->cleanupProcessedFilesPostFileAdd($fileObject, '');
-        }
+        $event = new AfterFileAddedEvent(
+            $fileObject,
+            new Folder(
+                $fileObject->getStorage(),
+                $fileObject->getParentFolder()->getIdentifier(),
+                $fileObject->getParentFolder()->getName()
+            )
+        );
+        $fileDeletionAspect->cleanupProcessedFilesPostFileAdd($event);
     }
 }
