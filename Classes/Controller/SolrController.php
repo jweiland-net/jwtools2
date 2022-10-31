@@ -21,7 +21,6 @@ use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use JWeiland\Jwtools2\Service\SolrService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -65,11 +64,6 @@ class SolrController extends AbstractController
         $this->registry = $registry;
     }
 
-    /**
-     * Pre-Execute some scripts
-     *
-     * @param ViewInterface $view
-     */
     public function initializeView(ViewInterface $view): void
     {
         if (!$view instanceof NotFoundView) {
@@ -87,7 +81,7 @@ class SolrController extends AbstractController
                 $this->addFlashMessage(
                     'No or wrong scheduler task UID configured in ExtensionManager Configuration of jwtools2',
                     'Missing or wrong configuration',
-                    FlashMessage::WARNING
+                    AbstractMessage::WARNING
                 );
             }
         }
@@ -208,8 +202,7 @@ class SolrController extends AbstractController
             }
             $this->addFlashMessage(
                 'We successfully have cleared the index of Site: "' . $site->getTitle() . '"',
-                'Index cleared',
-                FlashMessage::OK
+                'Index cleared'
             );
             $this->redirect('list');
         } else {
