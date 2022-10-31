@@ -88,13 +88,11 @@ class ReduceCategoryTreeToPageTree
                     $childNode->getId()
                 )) {
                     unset($treeNode->getChildNodes()[$key]);
-                } else {
-                    if (
-                        $childNode->getChildNodes() instanceof TreeNodeCollection
-                        && $childNode->getChildNodes()->count()
-                    ) {
-                        $this->removePageTreeForeignCategories($treeNode->getChildNodes()[$key]);
-                    }
+                } elseif (
+                    $childNode->getChildNodes() instanceof TreeNodeCollection
+                    && $childNode->getChildNodes()->count()
+                ) {
+                    $this->removePageTreeForeignCategories($treeNode->getChildNodes()[$key]);
                 }
             }
         }

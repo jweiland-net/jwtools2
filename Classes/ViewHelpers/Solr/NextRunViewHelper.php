@@ -99,7 +99,7 @@ class NextRunViewHelper extends AbstractViewHelper
         }
 
         // diff / indexed sites per run * 300 seconds (task interval)
-        return ceil(($diff / $task->getMaxSitesPerRun()) * (int)$task->getExecution()->getInterval());
+        return ceil(($diff / $task->getMaxSitesPerRun()) * $task->getExecution()->getInterval());
     }
 
     /**

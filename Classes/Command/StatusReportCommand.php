@@ -295,7 +295,6 @@ class StatusReportCommand extends Command
      */
     protected function getAllSites(): array
     {
-        $site = GeneralUtility::makeInstance(SiteFinder::class);
-        return $site->getAllSites();
+        return GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
     }
 }

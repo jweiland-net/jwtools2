@@ -14,6 +14,7 @@ use ApacheSolrForTypo3\Solr\Domain\Index\IndexService;
 use ApacheSolrForTypo3\Solr\Domain\Site\Site;
 use ApacheSolrForTypo3\Solr\Domain\Site\SiteRepository;
 use ApacheSolrForTypo3\Solr\System\Environment\CliEnvironment;
+use Doctrine\DBAL\Driver\Exception;
 use JWeiland\Jwtools2\Service\SolrService;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Registry;
@@ -92,7 +93,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
      * Returns some additional information about indexing progress, shown in
      * the scheduler's task overview list.
      *
-     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws Exception
      */
     public function getAdditionalInformation(): string
     {
@@ -137,7 +138,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
      * Gets all available TYPO3 sites with Solr configured.
      *
      * @return Site[] An array of available sites
-     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws Exception
      * @throws \Throwable
      */
     public function getAvailableSites(bool $stopOnInvalidSite = false): array
