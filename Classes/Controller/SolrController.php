@@ -100,7 +100,7 @@ class SolrController extends AbstractController
         $this->view->assign('memoryPeakUsage', $this->registry->get('jwtools2-solr', 'memoryPeakUsage', 0));
     }
 
-    public function showIndexQueueAction(int $rootPageUid, string $configurationName, int $languageUid = 0): void
+    public function showIndexQueueAction(int $rootPageUid, string $configurationName): void
     {
         $site = $this->solrRepository->findByRootPage($rootPageUid);
         if ($site instanceof Site) {
