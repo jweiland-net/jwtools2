@@ -99,9 +99,9 @@ class SolrController extends AbstractController
         $this->view->assign('currentRootPageUid', $this->registry->get('jwtools2-solr', 'rootPageId', 0));
     }
 
-    public function showAction(int $rootPageUid, int $languageUid = 0): void
+    public function showAction(int $rootPageUid): void
     {
-        $site = $this->solrRepository->findByRootPage((int)$rootPageUid);
+        $site = $this->solrRepository->findByRootPage($rootPageUid);
         $this->view->assign('site', $site);
         $this->view->assign('memoryPeakUsage', $this->registry->get('jwtools2-solr', 'memoryPeakUsage', 0));
     }
