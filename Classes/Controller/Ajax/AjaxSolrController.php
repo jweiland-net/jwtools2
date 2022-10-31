@@ -73,22 +73,29 @@ class AjaxSolrController
     {
         $response = new Response();
         $site = $this->getSolrSiteFromRequest($request);
+        if ($site instanceof Site) {
+            /** @var Queue $indexQueue */
+            $indexQueue = GeneralUtility::makeInstance(Queue::class);
+            $indexingConfigurationsToReIndex = $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames();
+            foreach ($indexingConfigurationsToReIndex as $indexingConfigurationName) {
+                $indexQueue->getInitializationService()->initializeBySiteAndIndexConfiguration(
+                    $site,
+                    $indexingConfigurationName
+                );
+            }
 
-        /** @var Queue $indexQueue */
-        $indexQueue = GeneralUtility::makeInstance(Queue::class);
-        $indexingConfigurationsToReIndex = $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames();
-        foreach ($indexingConfigurationsToReIndex as $indexingConfigurationName) {
-            $indexQueue->getInitializationService()->initializeBySiteAndIndexConfiguration(
-                $site,
-                $indexingConfigurationName
+            $response->getBody()->write(
+                json_encode([
+                    'success' => 1,
+                ])
+            );
+        } else {
+            $response->getBody()->write(
+                json_encode([
+                    'success' => 0,
+                ])
             );
         }
-
-        $response->getBody()->write(
-            json_encode([
-                'success' => 1,
-            ])
-        );
 
         return $response;
     }
@@ -105,6 +112,12 @@ class AjaxSolrController
                 json_encode([
                     'success' => 1,
                     'progress' => $indexService->getProgress(),
+                ])
+            );
+        } else {
+            $response->getBody()->write(
+                json_encode([
+                    'success' => 0,
                 ])
             );
         }
@@ -131,6 +144,7 @@ class AjaxSolrController
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var SolrRepository $solrRepository */
         $solrRepository = $objectManager->get(SolrRepository::class);
+
         return $solrRepository->findByRootPage($rootPageUid);
     }
 }
