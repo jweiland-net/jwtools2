@@ -170,7 +170,7 @@ class SolrController extends AbstractController
 
     public function showClearIndexFormAction(int $rootPageUid): void
     {
-        $site = $this->solrRepository->findByRootPage((int)$rootPageUid);
+        $site = $this->solrRepository->findByRootPage($rootPageUid);
         if ($site instanceof Site) {
             $this->view->assign('site', $site);
             $this->view->assign(
