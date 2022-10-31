@@ -108,19 +108,58 @@ class SolrController extends AbstractController
 
     public function showIndexQueueAction(int $rootPageUid, string $configurationName, int $languageUid = 0): void
     {
-        $site = $this->solrRepository->findByRootPage((int)$rootPageUid);
-        $solrConfiguration = $site->getSolrConfiguration()->getIndexQueueConfigurationByName($configurationName);
-        $this->view->assign('site', $site);
-        $this->view->assign('solrConfiguration', $solrConfiguration);
-        $this->view->assign('configurationName', $configurationName);
+        $site = $this->solrRepository->findByRootPage($rootPageUid);
+        if ($site instanceof Site) {
+            $solrConfiguration = $site->getSolrConfiguration()->getIndexQueueConfigurationByName($configurationName);
+            $this->view->assign('site', $site);
+            $this->view->assign('solrConfiguration', $solrConfiguration);
+            $this->view->assign('configurationName', $configurationName);
+        }
     }
 
-    public function indexOneRecordAction(int $rootPageUid, string $configurationName, int $recordUid, int $languageUid = 0): void
-    {
-        $site = $this->solrRepository->findByRootPage($rootPageUid);
-        $item = $this->getIndexQueueItem($rootPageUid, $configurationName, $recordUid);
-        if ($item instanceof Item) {
-            $this->indexItem($item, $site->getSolrConfiguration());
+    public function indexOneRecordAction(
+        int $rootPageUid,
+        string $configurationName,
+        ?int $recordUid,
+        int $languageUid = 0
+    ): void {
+        if ($recordUid === null) {
+            $this->addFlashMessage(
+                'Please enter a record UID before submitting the form',
+                'Record UID empty',
+                AbstractMessage::ERROR
+            );
+        } else {
+            $site = $this->solrRepository->findByRootPage($rootPageUid);
+            if ($recordUid !== null && $site instanceof Site) {
+                $item = $this->getIndexQueueItem($rootPageUid, $configurationName, $recordUid);
+                if ($item instanceof Item) {
+                    if ($this->indexItem($item, $site->getSolrConfiguration())) {
+                        $this->addFlashMessage(
+                            'Solr Index Queue Item was successfully indexed to Solr Server',
+                            'Item Indexed'
+                        );
+                    } else {
+                        $this->addFlashMessage(
+                            'Indexing Solr Queue Item object failed. Please check logs. Record UID: ' . $recordUid,
+                            'Indexing Failed',
+                            AbstractMessage::ERROR
+                        );
+                    }
+                } else {
+                    $this->addFlashMessage(
+                        'Solr Index Queue Item could not be found by Record UID: ' . $recordUid,
+                        'Indexing Failed',
+                        AbstractMessage::ERROR
+                    );
+                }
+            } else {
+                $this->addFlashMessage(
+                    'Solr Site object could not be retrieved by RootPageUid: ' . $rootPageUid,
+                    'Indexing Failed',
+                    AbstractMessage::ERROR
+                );
+            }
         }
 
         $this->redirect(

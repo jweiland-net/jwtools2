@@ -5,7 +5,9 @@
 <f:layout name="Default"/>
 
 <f:section name="main">
-	<h1>{configurationName}</h1>
+	<f:flashMessages />
+
+	<h1>Index individual record for configuration "{configurationName}"</h1>
 
 	<f:form action="indexOneRecord" arguments="{rootPageUid: site.rootPageId, configurationName: configurationName}">
 		<f:form.textfield name="recordUid" placeholder="Record UID"/>
