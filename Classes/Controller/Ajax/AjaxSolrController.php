@@ -37,12 +37,13 @@ class AjaxSolrController
         if (array_key_exists('configurationNames', $moduleData)) {
             $configurationNames = (array)$moduleData['configurationNames'];
         }
+
         $clear = [];
         if (array_key_exists('clear', $moduleData)) {
             $clear = (array)$moduleData['clear'];
         }
 
-        if (!empty($rootPageUid) && !empty($configurationNames) && !empty($clear)) {
+        if ($rootPageUid !== 0 && $configurationNames !== [] && $clear !== []) {
             /** @var ObjectManager $objectManager */
             $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
             /** @var SolrService $solrService */
@@ -119,6 +120,7 @@ class AjaxSolrController
         if (array_key_exists('rootPageUid', $moduleData)) {
             $rootPageUid = (int)$moduleData['rootPageUid'];
         }
+
         return $rootPageUid;
     }
 
