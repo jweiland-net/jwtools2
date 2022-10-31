@@ -57,7 +57,7 @@ class SolrDocHeader extends AbstractDocHeader
             ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
             ->setTitle('Clear full index...')
             ->setShowLabelText(true);
-        $splitButtonBar->addItem($newButton, false);
+        $splitButtonBar->addItem($newButton);
 
         $buttonBar->addButton($splitButtonBar);
     }

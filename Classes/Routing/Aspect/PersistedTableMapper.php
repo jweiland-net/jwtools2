@@ -74,7 +74,7 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
         // SlugHelper->sanitize will not replace / to -, so do it here
         $value = str_replace('/', '-', $value);
 
-        $storedRoute = $this->getStoredRoute($value, '');
+        $storedRoute = $this->getStoredRoute($value);
         if (empty($storedRoute)) {
             $slugHelper = $this->getSlugHelper();
             $target = $slugHelper->sanitize($value);
