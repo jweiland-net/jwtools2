@@ -131,7 +131,7 @@ class SolrController extends AbstractController
             );
         } else {
             $site = $this->solrRepository->findByRootPage($rootPageUid);
-            if ($recordUid !== null && $site instanceof Site) {
+            if ($site instanceof Site) {
                 $item = $this->getIndexQueueItem($rootPageUid, $configurationName, $recordUid);
                 if ($item instanceof Item) {
                     if ($this->indexItem($item, $site->getSolrConfiguration())) {
