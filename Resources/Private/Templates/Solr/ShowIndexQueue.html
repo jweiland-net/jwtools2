@@ -1,12 +1,16 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:layout name="Default" />
+<html lang="en"
+			xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+			data-namespace-typo3-fluid="true">
+
+<f:layout name="Default"/>
 
 <f:section name="main">
 	<h1>{configurationName}</h1>
 
 	<f:form action="indexOneRecord" arguments="{rootPageUid: site.rootPageId, configurationName: configurationName}">
-		<f:form.textfield name="recordUid" placeholder="Record UID" /><br>
-		<f:form.submit value="Start Indexing" />
+		<f:form.textfield name="recordUid" placeholder="Record UID"/>
+		<br>
+		<f:form.submit value="Start Indexing"/>
 	</f:form>
 </f:section>
 </html>

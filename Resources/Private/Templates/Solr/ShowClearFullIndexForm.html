@@ -1,80 +1,83 @@
-<html
-	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-	xmlns:c="http://typo3.org/ns/TYPO3\CMS\Core\ViewHelpers"
-	data-namespace-typo3-fluid="true"
->
-	<f:flashMessages />
+<html lang="en"
+			xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+			xmlns:c="http://typo3.org/ns/TYPO3\CMS\Core\ViewHelpers"
+			data-namespace-typo3-fluid="true">
 
-	<h1>Clear Index of all sites</h1>
+<f:flashMessages/>
 
-	<f:form action="clearFullIndex" class="form">
-		<h2>
-			Configuration names
-			<small>This is a merged collection of all configuration names of all sites</small>
-		</h2>
-		<f:render section="validationResults" arguments="{field: 'configurationNames'}" />
-		<f:for each="{configurationNamesOfAllSites}" as="enabledConfigurationName">
-			<div class="form-group">
-				<f:form.checkbox id="configurationName-{enabledConfigurationName}" class="configurationNames" name="configurationNames" multiple="1" value="{enabledConfigurationName}" />
-				<label for="configurationName-{enabledConfigurationName}">{enabledConfigurationName}</label>
-			</div>
-		</f:for>
+<h1>Clear Index of all sites</h1>
 
-		<h2>Choose which index should be cleared</h2>
-		<f:render section="validationResults" arguments="{field: 'clear'}" />
+<f:form action="clearFullIndex" class="form">
+	<h2>
+		Configuration names
+		<small>This is a merged collection of all configuration names of all sites</small>
+	</h2>
+	<f:render section="validationResults" arguments="{field: 'configurationNames'}"/>
+	<f:for each="{configurationNamesOfAllSites}" as="enabledConfigurationName">
 		<div class="form-group">
-			<f:form.checkbox id="clearItem" class="clear" name="clear" multiple="1" value="clearItem" />
-			<label for="clearItem">Clear local Solr table: tx_solr_indexqueue_item</label>
+			<f:form.checkbox id="configurationName-{enabledConfigurationName}" class="configurationNames"
+											 name="configurationNames" multiple="1" value="{enabledConfigurationName}"/>
+			<label for="configurationName-{enabledConfigurationName}">{enabledConfigurationName}</label>
 		</div>
-		<div class="form-group">
-			<f:form.checkbox id="clearFile" class="clear" name="clear" multiple="1" value="clearFile" />
-			<label for="clearFile">Clear local Solr table: tx_solr_indexqueue_file</label>
-		</div>
-		<div class="form-group">
-			<f:form.checkbox id="clearSolr" class="clear" name="clear" multiple="1" value="clearSolr" />
-			<label for="clearSolr">Clear Solr Index</label>
-		</div>
+	</f:for>
 
-		<f:form.submit id="clearFullIndex" value="Clear" />
-	</f:form>
+	<h2>Choose which index should be cleared</h2>
+	<f:render section="validationResults" arguments="{field: 'clear'}"/>
+	<div class="form-group">
+		<f:form.checkbox id="clearItem" class="clear" name="clear" multiple="1" value="clearItem"/>
+		<label for="clearItem">Clear local Solr table: tx_solr_indexqueue_item</label>
+	</div>
+	<div class="form-group">
+		<f:form.checkbox id="clearFile" class="clear" name="clear" multiple="1" value="clearFile"/>
+		<label for="clearFile">Clear local Solr table: tx_solr_indexqueue_file</label>
+	</div>
+	<div class="form-group">
+		<f:form.checkbox id="clearSolr" class="clear" name="clear" multiple="1" value="clearSolr"/>
+		<label for="clearSolr">Clear Solr Index</label>
+	</div>
 
-	<h2>Configured Sites</h2>
+	<f:form.submit id="clearFullIndex" value="Clear"/>
+</f:form>
 
-	<f:if condition="{sites}">
-		<f:then>
-			<table class="table table-bordered">
-				<thead>
+<h2>Configured Sites</h2>
+
+<f:if condition="{sites}">
+	<f:then>
+		<table class="table table-bordered">
+			<thead>
+			<tr>
+				<th>UID</th>
+				<th>Title</th>
+				<th>Status</th>
+			</tr>
+			</thead>
+			<tbody>
+			<f:for each="{sites}" as="site">
 				<tr>
-					<th>UID</th>
-					<th>Title</th>
-					<th>Status</th>
+					<td class="rootPageUid" data-root-page-uid="{site.rootPage.uid}">{site.rootPage.uid}</td>
+					<td>{site.rootPage.title}</td>
+					<td>
+						<div class="status" style="display: none;">
+							<c:icon identifier="spinner-circle-dark"/>
+						</div>
+					</td>
 				</tr>
-				</thead>
-				<tbody>
-				<f:for each="{sites}" as="site">
-					<tr>
-						<td class="rootPageUid" data-root-page-uid="{site.rootPage.uid}">{site.rootPage.uid}</td>
-						<td>{site.rootPage.title}</td>
-						<td>
-							<div class="status" style="display: none;"><c:icon identifier="spinner-circle-dark" /></div>
-						</td>
-					</tr>
-				</f:for>
-				</tbody>
-			</table>
-		</f:then>
-		<f:else>
-			No Solr RootPages configured
-		</f:else>
-	</f:if>
+			</f:for>
+			</tbody>
+		</table>
+	</f:then>
+	<f:else>
+		No Solr RootPages configured
+	</f:else>
+</f:if>
 
-	<f:section name="validationResults">
-		<f:form.validationResults for="{field}">
-			<f:if condition="{validationResults.flattenedErrors}">
-				<f:for each="{validationResults.errors}" as="error">
-					<f:be.infobox title="Error" message="{error.message}" state="2" disableIcon="0" />
-				</f:for>
-			</f:if>
-		</f:form.validationResults>
-	</f:section>
+<f:section name="validationResults">
+	<f:form.validationResults for="{field}">
+		<f:if condition="{validationResults.flattenedErrors}">
+			<f:for each="{validationResults.errors}" as="error">
+				<f:be.infobox title="Error" message="{error.message}" state="2" disableIcon="0"/>
+			</f:for>
+		</f:if>
+	</f:form.validationResults>
+</f:section>
 </html>
