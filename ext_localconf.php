@@ -63,12 +63,14 @@ call_user_func(static function () {
     }
 
     if ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB']) {
-        // for LinkHandler
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\LinkHandler\FileLinkHandler::class]['className'] = \JWeiland\Jwtools2\XClasses\LinkHandler\FileLinkHandler::class;
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHandler::class]['className'] = \JWeiland\Jwtools2\XClasses\LinkHandler\FolderLinkHandler::class;
+        // For LinkHandler: overwrite TYPO3's LinkHandlers
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks']['jwtools2'] = [
+            'handler' => \JWeiland\Jwtools2\Hooks\ModifyLinkHandlerHook::class
+        ];
 
-        // for ElementBrowser
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\Browser\FileBrowser::class]['className'] = \JWeiland\Jwtools2\XClasses\Browser\FileBrowser::class;
+        // For ElementBrowser: split parsed template and re-order the form parts
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']['jwtools2_file']
+            = \JWeiland\Jwtools2\Backend\Browser\FileBrowser::class;
     }
 
     if ($jwToolsConfiguration['enableLiveSearchPerformanceForAdmins']) {
