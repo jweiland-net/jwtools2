@@ -12,6 +12,9 @@
 			<trans-unit id="typo3UploadFieldsInTopOfEB">
 				<source>Upload Fields in top of EB: The UserTSconfig option uploadFieldsInTopOfEB was removed with TYPO3 8.7.0. Activate this Option to show upload fields in top of ElementBrowser and LinkHandler again.</source>
 			</trans-unit>
+			<trans-unit id="typo3RequiredColumnsForFiles">
+				<source>Required columns for image files: Enter here columns of the DB tables sys_file and/or sys_file_metadata which are to be regarded as mandatory fields. Files for which these columns are not set are available in the file browser, but cannot be selected.</source>
+			</trans-unit>
 			<trans-unit id="typo3ExcludeVideoFilesFromFalFilter">
 				<source>Exclude hidden video files: If you work with video files, TYPO3 creates .youtube and/or .vimeo files. If a title could not be fetched a file like ".youtube" will be created which is handled as hidden file. Instead of showing all hidden files you can activate this option, to only show these two hidden video types in filelist.</source>
 			</trans-unit>

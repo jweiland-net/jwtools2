@@ -10,7 +10,13 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Backend\Browser;
 
-use TYPO3\CMS\Core\Page\PageRenderer;
+use Doctrine\DBAL\Schema\AbstractSchemaManager;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -20,24 +26,58 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
 {
     /**
-     * @var PageRenderer
+     * @var ExtensionConfiguration
      */
-    protected $pageRenderer;
+    protected $extensionConfiguration;
 
-    public function initialize(): void
+    public function injectExtensionConfiguration(ExtensionConfiguration $extensionConfiguration): void
     {
-        parent::initialize();
+        $this->extensionConfiguration = $extensionConfiguration;
     }
 
     /**
-     * Return "false", as we don't want to render something.
-     * We just want to add some RequireJS
+     * Return "true". Else complete rendering will not start.
      */
     public function isValid(): bool
     {
-        $urlParameters = $this->getUrlParameters([]);
+        return true;
+    }
 
-        return isset($urlParameters['mode']) && $urlParameters['mode'] === 'file';
+    protected function fileIsSelectableInFileList(FileInterface $file, array $imgInfo): bool
+    {
+        // Return true, if there are no columns to skip.
+        if ($this->getRequiredColumnsFromExtensionConfiguration() === []) {
+            return true;
+        }
+
+        // Do not process folders or processed files
+        if (!$file instanceof File) {
+            return true;
+        }
+
+        // Process only images
+        if ($file->getType() !== 2) {
+            return true;
+        }
+
+        foreach ($this->getRequiredColumnsForFileMetaData() as $requiredColumn) {
+            $properties = $file->getProperties();
+
+            // Do not use isset() as "null" values have to be tested, too.
+            if (!array_key_exists($requiredColumn, $properties)) {
+                return false;
+            }
+
+            $value = is_string($properties[$requiredColumn])
+                ? trim($properties[$requiredColumn])
+                : $properties[$requiredColumn];
+
+            if (empty($value)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -45,18 +85,94 @@ class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
      */
     public function render(): string
     {
-        // h3 is the first header. It's before the three following forms: filelist, uploadForm and createForm
-        [$top, $content] = GeneralUtility::trimExplode('<h3>', parent::render(), true, 2);
-        $content = '<h3>' . $content;
-        [$header, $fileList, $uploadForm, $createForm] = explode('<form', $content);
+        if (!$this->isShowUploadFieldsInTopOfEB()) {
+            return parent::render();
+        }
 
-        return sprintf(
-            '%s<form%s<form%s%s<form%s',
-            $top,
-            $uploadForm,
-            $createForm,
-            $header,
-            $fileList
-        );
+        // <h3> is the first header. It's before the three following forms: searchForm, uploadForm and createForm
+        [$top, $content] = GeneralUtility::trimExplode('<h3>', parent::render(), true, 2);
+        if (preg_match_all('/(?P<header><h3>.*?<\/h3>)(?P<searchForm><form.*?<\/form>)(?P<fileList><div id="filelist">.*<\/div>)(?P<uploadForm><form.*?<\/form>)(?P<createForm><form.*?<\/form>)/usm', '<h3>' . $content, $matches)) {
+            return sprintf(
+                '%s%s%s%s%s%s',
+                $top,
+                $matches['uploadForm'][0],
+                $matches['createForm'][0],
+                $matches['header'][0],
+                $matches['searchForm'][0],
+                $matches['fileList'][0]
+            );
+        }
+
+        return $top . '<h3>' . $content;
+    }
+
+    protected function getRequiredColumnsForFileMetaData(): array
+    {
+        // ToDo: Check against SchemaManager, if columns are valid
+        // Cache result, is this method will be called from within a loop
+        static $requiredColumns = null;
+
+        if ($requiredColumns === null) {
+            $validColumns = [];
+            foreach ($this->getRequiredColumnsFromExtensionConfiguration() as $column) {
+                if ($this->isValidColumn($column)) {
+                    $validColumns[] = $column;
+                }
+            }
+            $requiredColumns = $validColumns;
+        }
+
+        return $requiredColumns;
+    }
+
+    protected function getRequiredColumnsFromExtensionConfiguration(): array
+    {
+        static $requiredColumns = null;
+
+        if ($requiredColumns === null) {
+            try {
+                $requiredColumns = GeneralUtility::trimExplode(
+                    ',',
+                    $this->extensionConfiguration->get('jwtools2', 'typo3RequiredColumnsForFiles'),
+                    true
+                );
+            } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException $exception) {
+            }
+        }
+
+        return $requiredColumns;
+    }
+
+    protected function isShowUploadFieldsInTopOfEB(): bool
+    {
+        try {
+            return (bool)$this->extensionConfiguration->get('jwtools2', 'typo3UploadFieldsInTopOfEB');
+        } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException $exception) {
+        }
+
+        return false;
+    }
+
+    protected function isValidColumn(string $column, string $table = 'sys_file'): bool
+    {
+        $columnExists = false;
+        $connection = $this->getConnectionPool()->getConnectionForTable($table);
+        $schemaManager = $connection->getSchemaManager();
+        if (
+            $schemaManager instanceof AbstractSchemaManager
+            && $schemaManager->tablesExist($table)
+        ) {
+            $columnExists = $schemaManager->listTableDetails($table)->hasColumn($column);
+            if ($columnExists === false && $table !== 'sys_file_metadata') {
+                $columnExists = $this->isValidColumn($column, 'sys_file_metadata');
+            }
+        }
+
+        return $columnExists;
+    }
+
+    protected function getConnectionPool(): ConnectionPool
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }
