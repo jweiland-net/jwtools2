@@ -8,8 +8,9 @@ services:
     resource: '../Classes/*'
 
   # Will be called by GeneralUtility::makeInstance in ElementBrowserController
-  JWeiland\Jwtools2\Hooks\FileBrowserHook:
+  JWeiland\Jwtools2\Backend\Browser\FileBrowser:
     public: true
+
   # Will be called by GeneralUtility::makeInstance in AbstractLinkBrowserControler
   JWeiland\Jwtools2\Hooks\ModifyLinkHandlerHook:
     public: true

@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 5.9.0**
+
+- Add option to define columns of sys_file/sys_file_metadata as required.
+
 **Version 5.8.1**
 
 - Reduce LiveSearch to UID column, if just an INT is given

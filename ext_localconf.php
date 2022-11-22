@@ -62,15 +62,19 @@ call_user_func(static function () {
         );
     }
 
+    if (
+        $jwToolsConfiguration['typo3RequiredColumnsForFiles']
+        || $jwToolsConfiguration['typo3UploadFieldsInTopOfEB']
+    ) {
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']['jwtools2_file']
+            = \JWeiland\Jwtools2\Backend\Browser\FileBrowser::class;
+    }
+
     if ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB']) {
         // For LinkHandler: overwrite TYPO3's LinkHandlers
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks']['jwtools2'] = [
             'handler' => \JWeiland\Jwtools2\Hooks\ModifyLinkHandlerHook::class
         ];
-
-        // For ElementBrowser: split parsed template and re-order the form parts
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']['jwtools2_file']
-            = \JWeiland\Jwtools2\Backend\Browser\FileBrowser::class;
     }
 
     if ($jwToolsConfiguration['enableLiveSearchPerformanceForAdmins']) {
