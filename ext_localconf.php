@@ -77,6 +77,11 @@ call_user_func(static function () {
         ];
     }
 
+    if ($jwToolsConfiguration['typo3ShowEditButtonInElementInformation']) {
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering']['jwtools']
+            = \JWeiland\Jwtools2\Hooks\ModifyElementInformationHook::class;
+    }
+
     if ($jwToolsConfiguration['enableLiveSearchPerformanceForAdmins']) {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Search\LiveSearch\LiveSearch::class]['className'] = \JWeiland\Jwtools2\XClasses\LiveSearch\LiveSearch::class;
     }

@@ -8,6 +8,10 @@ ChangeLog
 
 **Version 5.9.0**
 
+- Add option to show "edit" button in element information view.
+
+**Version 5.9.0**
+
 - Add option to define columns of sys_file/sys_file_metadata as required.
 
 **Version 5.8.1**
