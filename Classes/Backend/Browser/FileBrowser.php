@@ -91,15 +91,16 @@ class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
 
         // <h3> is the first header. It's before the three following forms: searchForm, uploadForm and createForm
         [$top, $content] = GeneralUtility::trimExplode('<h3>', parent::render(), true, 2);
-        if (preg_match_all('/(?P<header><h3>.*?<\/h3>)(?P<searchForm><form.*?<\/form>)(?P<fileList><div id="filelist">.*<\/div>)(?P<uploadForm><form.*?<\/form>)(?P<createForm><form.*?<\/form>)/usm', '<h3>' . $content, $matches)) {
+        $pattern = '/(?P<header><h3>.*?<\/h3>)(?P<searchForm><form.*?<\/form>)(?P<fileList><div id="filelist">.*<\/div>)(?P<uploadForm><form.*?<\/form>)(?P<createForm><form.*?<\/form>)/usm';
+        if (preg_match($pattern, '<h3>' . $content, $matches)) {
             return sprintf(
                 '%s%s%s%s%s%s',
                 $top,
-                $matches['uploadForm'][0],
-                $matches['createForm'][0],
-                $matches['header'][0],
-                $matches['searchForm'][0],
-                $matches['fileList'][0]
+                $matches['uploadForm'],
+                $matches['createForm'],
+                $matches['header'],
+                $matches['searchForm'],
+                $matches['fileList']
             );
         }
 
@@ -108,7 +109,6 @@ class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
 
     protected function getRequiredColumnsForFileMetaData(): array
     {
-        // ToDo: Check against SchemaManager, if columns are valid
         // Cache result, is this method will be called from within a loop
         static $requiredColumns = null;
 
