@@ -108,7 +108,6 @@ class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
 
     protected function getRequiredColumnsForFileMetaData(): array
     {
-        // ToDo: Check against SchemaManager, if columns are valid
         // Cache result, is this method will be called from within a loop
         static $requiredColumns = null;
 
