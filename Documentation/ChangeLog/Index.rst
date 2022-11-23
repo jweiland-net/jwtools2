@@ -6,7 +6,11 @@
 ChangeLog
 =========
 
-**Version 5.9.0**
+**Version 5.10.1**
+
+- ModifyElementInformationHook get's lost. Re-add that file
+
+**Version 5.10.0**
 
 - Add option to show "edit" button in element information view.
 
