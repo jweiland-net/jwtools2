@@ -302,9 +302,8 @@ class ModifyElementInformationHook
                     [],
                     true
                 );
-
-                // else check if we can create an Image preview
             } elseif ($this->fileObject->isImage()) {
+                // else check if we can create an Image preview
                 $preview['fileObject'] = $this->fileObject;
                 $preview['width'] = $width;
                 $preview['height'] = $height;
