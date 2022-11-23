@@ -19,6 +19,10 @@
 				<source>Required columns for image files: Enter here columns of the DB tables sys_file and/or sys_file_metadata which are to be regarded as mandatory fields. Files for which these columns are not set are available in the file browser, but cannot be selected.</source>
 				<target>Benötigte Spalten für Bilddateien: Tragen Sie hier Spalten der DB Tabellen sys_file und/oder sys_file_metadata ein, die als Pflichtfelder anzusehen sind. Dateien, bei denen diese Spalten nicht gesetzt sind stehen im Dateibrowser zwar zur Verfügung, können jedoch nicht ausgewählt werden.</target>
 			</trans-unit>
+			<trans-unit id="typo3ShowEditButtonInElementInformation">
+				<source>Add "Edit" button in the file info view: After activation, an additional "Edit" button is added in the file info view (accessible via the "i" icon), with which you can edit the current file with just one click.</source>
+				<target>"Bearbeiten" Schaltfläche in der Datei-Info-Ansicht hinzufügen: Nach Aktivierung wird in der Datei-Info-Ansicht (erreichbar über das "i" Icon) eine zusätzliche "Bearbeiten" Schaltfläche hinzugefügt, mit der Sie mit nur einem Klick die aktuelle Datei bearbeiten können.</target>
+			</trans-unit>
 			<trans-unit id="typo3ExcludeVideoFilesFromFalFilter">
 				<source>Exclude hidden video files: If you work with video files, TYPO3 creates .youtube and/or .vimeo files. If a title could not be fetched a file like ".youtube" will be created which is handled as hidden file. Instead of showing all hidden files you can activate this option, to only show these two hidden video types in filelist.</source>
 				<target>Versteckte Video Dateien ausschließen: TYPO3 erstellt für externe Videos Dateien mit der Endung .youtube und/oder .vimeo. Wenn der Videotitel jedoch nicht generiert werden konnte, dann wird eine Datei wie ".vimeo" angelegt, die im Dateisystem als versteckt markiert werden. Anstatt den Redakteuren alle versteckten Datensätze anzeigen zu lassen, kann diese Option aktiviert werden, die nur diese 2 Videotypen in der Filelist anzeigen lässt.</target>
