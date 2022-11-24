@@ -7,9 +7,8 @@ services:
   JWeiland\Jwtools2\:
     resource: '../Classes/*'
 
-  # Called by makeInstance in getElementBrowserInstance of ElementBrowserController
-  JWeiland\Jwtools2\Recordlist\Browser\FileBrowser:
-    shared: false
+  # Called by makeInstance in main of ElementBrowserController
+  JWeiland\Jwtools2\Backend\Browser\FileBrowser:
     public: true
 
   # Called by makeInstance in constructor of LinkService
