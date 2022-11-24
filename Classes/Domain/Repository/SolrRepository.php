@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -20,28 +22,18 @@ class SolrRepository
     /**
      * Gets all available TYPO3 sites with Solr configured.
      *
-     * @param bool $stopOnInvalidSite
      * @return Site[] An array of available sites
      */
-    public function findAllAvailableSites($stopOnInvalidSite = false)
+    public function findAllAvailableSites(bool $stopOnInvalidSite = false): array
     {
-        /** @var SiteRepository $siteRepository */
-        $siteRepository = GeneralUtility::makeInstance(SiteRepository::class);
-
-        return $siteRepository->getAvailableSites($stopOnInvalidSite);
+        return GeneralUtility::makeInstance(SiteRepository::class)->getAvailableSites($stopOnInvalidSite);
     }
 
     /**
      * Get site by root page
-     *
-     * @param int $rootPage
-     * @return Site
      */
-    public function findByRootPage($rootPage)
+    public function findByRootPage(int $rootPage): ?Site
     {
-        /** @var SiteRepository $siteRepository */
-        $siteRepository = GeneralUtility::makeInstance(SiteRepository::class);
-
-        return $siteRepository->getSiteByRootPageId((int)$rootPage);
+        return GeneralUtility::makeInstance(SiteRepository::class)->getSiteByRootPageId($rootPage);
     }
 }

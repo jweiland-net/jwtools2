@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -21,13 +23,11 @@ class IndexService
     /**
      * Save current Item ID in sys_registry for debugging
      *
-     * @param Item $item
-     * @param IndexQueueWorkerTask|null $task
-     * @param string $uniqueId
+     * Called by SignalSlot in IndexService of EXT:solr.
+     * SignalSlot is also available in solr version 11.5
      */
-    public function beforeIndexItem(Item $item, $task, $uniqueId = '')
+    public function beforeIndexItem(Item $item, ?IndexQueueWorkerTask $task, string $uniqueId = ''): void
     {
-        /** @var Registry $registry */
         $registry = GeneralUtility::makeInstance(Registry::class);
         $registry->set('jwtools2-solr', 'indexQueueUid', $item->getIndexQueueUid());
         $registry->set('jwtools2-solr', 'memoryPeakUsage', memory_get_peak_usage(true));

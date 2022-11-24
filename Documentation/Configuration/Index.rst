@@ -35,7 +35,6 @@ Extension configuration
    sendUpdatableExtensionsWithSeverity_             info
    solrEnable_                                      0
    solrSchedulerTaskUid_                            0
-   solrApplyPatches_                                false
    =============================================== =========
 
 
@@ -294,15 +293,3 @@ solrSchedulerTaskUid
 If you make use of our Solr Scheduler Task after activating ``solrEnable`` you must copy and paste the UID
 of our Scheduler Task into this setting. We need it to show Scheduler Task related information in our
 Solr backend module.
-
-.. _solrApplyPatches:
-
-solrApplyPatches
-----------------
-
-We have fixed following issues in EXT:solr:
-- https://github.com/TYPO3-Solr/ext-solr/pull/2323/
-- https://github.com/TYPO3-Solr/ext-solr/pull/2324/
-
-Currently these patches were merged in EXT:solr version 10. If you need these fixes for earlier solr versions you can
-activate this checkbox to override them via TYPO3 XClasses.

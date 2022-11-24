@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'Cache Expressions',
@@ -11,11 +12,8 @@ return [
     ],
     'types' => [
         '1' => [
-            'showitem' => 'title, is_regexp, expression'
+            'showitem' => 'title, is_regexp, expression',
         ],
-    ],
-    'interface' => [
-        'showRecordFieldList' => 'title, is_regexp, expression',
     ],
     'palettes' => [],
     'columns' => [
@@ -23,20 +21,20 @@ return [
             'label' => 'crdate',
             'config' => [
                 'type' => 'passthrough',
-            ]
+            ],
         ],
         'tstamp' => [
             'label' => 'tstamp',
             'config' => [
                 'type' => 'passthrough',
-            ]
+            ],
         ],
         'title' => [
             'label' => 'Title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim, required'
+                'eval' => 'trim, required',
             ],
         ],
         'is_regexp' => [
@@ -52,8 +50,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim, required'
+                'eval' => 'trim, required',
             ],
         ],
-    ]
+    ],
 ];

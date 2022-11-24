@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -43,42 +45,23 @@ abstract class AbstractDocHeader
      */
     protected $request;
 
-    /**
-     * AbstractDocHeader constructor.
-     *
-     * @param Request $request
-     * @param ViewInterface $view
-     */
     public function __construct(Request $request, ViewInterface $view)
     {
         $this->request = $request;
         $this->view = $view;
     }
 
-    /**
-     * inject uriBuilder
-     *
-     * @param UriBuilder $uriBuilder
-     */
-    public function injectUriBuilder(UriBuilder $uriBuilder)
+    public function injectUriBuilder(UriBuilder $uriBuilder): void
     {
         $this->uriBuilder = $uriBuilder;
     }
 
-    /**
-     * inject iconFactory
-     *
-     * @param IconFactory $iconFactory
-     */
-    public function injectIconFactory(IconFactory $iconFactory)
+    public function injectIconFactory(IconFactory $iconFactory): void
     {
         $this->iconFactory = $iconFactory;
     }
 
-    /**
-     * Add Help CSH Button
-     */
-    protected function addHelpButton()
+    protected function addHelpButton(): void
     {
         $buttonBar = $this->view->getModuleTemplate()
             ->getDocHeaderComponent()
@@ -92,10 +75,7 @@ abstract class AbstractDocHeader
         $buttonBar->addButton($cshButton);
     }
 
-    /**
-     * Add Shortcut Button
-     */
-    protected function addShortcutButton()
+    protected function addShortcutButton(): void
     {
         $buttonBar = $this->view
             ->getModuleTemplate()
@@ -111,10 +91,7 @@ abstract class AbstractDocHeader
         $buttonBar->addButton($shortcutButton);
     }
 
-    /**
-     * Add "Close" button to DocHeader
-     */
-    protected function addCloseButton()
+    protected function addCloseButton(): void
     {
         $buttonBar = $this->view
             ->getModuleTemplate()
@@ -136,11 +113,8 @@ abstract class AbstractDocHeader
 
     /**
      * Get Link to create new configuration records of defined type
-     *
-     * @param string $url
-     * @return string
      */
-    protected function getLinkForUrl($url)
+    protected function getLinkForUrl(string $url): string
     {
         return 'window.location.href=' . GeneralUtility::quoteJSvalue($url) . '; return false;';
     }

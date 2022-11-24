@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\Task;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -54,7 +55,7 @@ class ExecuteQueryTask extends AbstractTask
         } catch (\Exception $e) {
             $this->addMessage(
                 'Error occurred: ' . $e->getMessage(),
-                FlashMessage::ERROR
+                AbstractMessage::ERROR
             );
 
             return false;
@@ -74,11 +75,9 @@ class ExecuteQueryTask extends AbstractTask
     /**
      * This method is used to add a message to the internal queue
      *
-     * @param string $message The message itself
-     * @param int $severity Message level (according to \TYPO3\CMS\Core\Messaging\FlashMessage class constants)
      * @throws \Exception
      */
-    public function addMessage(string $message, int $severity = FlashMessage::OK): void
+    public function addMessage(string $message, int $severity = AbstractMessage::OK): void
     {
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, '', $severity);
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);

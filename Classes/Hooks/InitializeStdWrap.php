@@ -10,8 +10,9 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Hooks;
 
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectPostInitHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -21,19 +22,38 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 class InitializeStdWrap implements ContentObjectPostInitHookInterface
 {
     /**
-     * Hook for post processing the initialization of ContentObjectRenderer
-     *
-     * @param ContentObjectRenderer $parentObject Parent content object
+     * @var ExtensionConfiguration
+     */
+    protected $extensionConfiguration;
+
+    public function __construct(ExtensionConfiguration $extensionConfiguration)
+    {
+        $this->extensionConfiguration = $extensionConfiguration;
+    }
+
+    /**
+     * Hook for post-processing the initialization of ContentObjectRenderer
      */
     public function postProcessContentObjectInitialization(ContentObjectRenderer &$parentObject): void
     {
-        $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jwtools2');
-        if ($extConf['typo3TransferTypoScriptCurrent']) {
-            // parentRecord is filled in CONTENT and RECORD context only. So no further checks needed
-            if (is_array($parentObject->parentRecord) && !empty($parentObject->parentRecord)) {
-                // set current to value of parent current
-                $parentObject->data[$parentObject->currentValKey] = $parentObject->parentRecord['data'][$parentObject->currentValKey];
-            }
+        // parentRecord is filled in CONTENT and RECORD context only. So no further checks needed
+        if (
+            is_array($parentObject->parentRecord)
+            && $parentObject->parentRecord !== []
+            && isset($parentObject->parentRecord['data'][$parentObject->currentValKey])
+            && ($this->getConfiguration()['typo3TransferTypoScriptCurrent'] ?? false)
+        ) {
+            // Set current to value of parent current
+            $parentObject->data[$parentObject->currentValKey] = $parentObject->parentRecord['data'][$parentObject->currentValKey];
+        }
+    }
+
+    protected function getConfiguration(): array
+    {
+        try {
+            return $this->extensionConfiguration->get('jwtools2');
+        } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException $exception) {
+            return [];
         }
     }
 }

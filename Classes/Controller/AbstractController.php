@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -29,7 +31,6 @@ abstract class AbstractController extends ActionController
 
     /**
      * Initializes the view before invoking an action method.
-     *
      * Override this method to solve assign variables common for all actions
      * or prepare the view in another way before the action is called.
      *

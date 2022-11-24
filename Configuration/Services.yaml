@@ -7,21 +7,24 @@ services:
   JWeiland\Jwtools2\:
     resource: '../Classes/*'
 
-  # Will be called by GeneralUtility::makeInstance in ElementBrowserController
-  JWeiland\Jwtools2\Backend\Browser\FileBrowser:
+  # Called by makeInstance in getElementBrowserInstance of ElementBrowserController
+  JWeiland\Jwtools2\Recordlist\Browser\FileBrowser:
+    shared: false
     public: true
 
-  # Will be called by GeneralUtility::makeInstance in ElementInformationController
-  JWeiland\Jwtools2\Hooks\ModifyElementInformationHook:
-    public: true
-  # Will be called by GeneralUtility::makeInstance in AbstractLinkBrowserControler
-  JWeiland\Jwtools2\Hooks\ModifyLinkHandlerHook:
+  # Called by makeInstance in constructor of LinkService
+  JWeiland\Jwtools2\LinkHandling\FileLinkHandler:
     public: true
 
-  # Will be called by GeneralUtility::makeInstance in AbstractLinkBrowserControler
-  JWeiland\Jwtools2\LinkHandler\FileLinkHandler:
-    public: true
-  # Will be called by GeneralUtility::makeInstance in AbstractLinkBrowserControler
-  JWeiland\Jwtools2\LinkHandler\FolderLinkHandler:
+  # Called by makeInstance in start() of ContentObjectRenderer
+  JWeiland\Jwtools2\Hooks\InitializeStdWrap:
     public: true
 
+  # Called by makeInstance in constructor of LinkService
+  JWeiland\Jwtools2\LinkHandling\FolderLinkHandler:
+    public: true
+
+  JWeiland\Jwtools2\Tca\ReduceCategoryTreeToPageTree:
+    tags:
+    - name: event.listener
+      event: TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent

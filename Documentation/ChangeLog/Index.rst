@@ -6,6 +6,15 @@
 ChangeLog
 =========
 
+**Version 6.0.0**
+
+- Add TYPO3 11 compatibility
+- Remove TYPO3 9 compatibility
+- Remove EXT:realurl features
+- Add comma to last entry in array elements
+- Remove interface section from TCA
+- Remove LinkHandler XCLASSes. Override file/folder LinkHandlers of TYPO3 directly
+
 **Version 5.10.2**
 
 - Add FlashMessage for non selectable files to FileBrowser

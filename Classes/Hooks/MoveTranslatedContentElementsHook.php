@@ -22,12 +22,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class MoveTranslatedContentElementsHook
 {
-    public function processDatamap_beforeStart(DataHandler $dataHandler)
+    public function processDatamap_beforeStart(DataHandler $dataHandler): void
     {
         // For "move"-cmd both cmdmap and datamap has to be filled
         if (
-            isset($dataHandler->cmdmap['tt_content'])
-            && isset($dataHandler->datamap['tt_content'])
+            isset($dataHandler->cmdmap['tt_content'], $dataHandler->datamap['tt_content'])
             && !empty($dataHandler->cmdmap['tt_content'])
             && !empty($dataHandler->datamap['tt_content'])
         ) {
@@ -49,7 +48,7 @@ class MoveTranslatedContentElementsHook
                         // We do that for translated records here, too.
                         $dataHandler->datamap['tt_content'][$translatedContentRecord['uid']] = [
                             'colPos' => (string)$dataRecordInDefaultLanguage['colPos'],
-                            $languageField => (string)$translatedContentRecord[$languageField]
+                            $languageField => (string)$translatedContentRecord[$languageField],
                         ];
                     }
                 }
@@ -88,7 +87,7 @@ class MoveTranslatedContentElementsHook
                 // We do that for translated records here, too.
                 $pasteDatamap['tt_content'][$translatedContentRecord['uid']] = [
                     'colPos' => (string)$pasteUpdate['colPos'],
-                    $languageField => (string)$translatedContentRecord[$languageField]
+                    $languageField => (string)$translatedContentRecord[$languageField],
                 ];
             }
         }

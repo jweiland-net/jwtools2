@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -37,9 +39,6 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
      */
     protected $extensionConfiguration;
 
-    /**
-     * Default constructor
-     */
     public function __construct()
     {
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -56,7 +55,7 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
     public function getStatus(): array
     {
         return [
-            'jwtools2' => $this->getUpdatableExtensions()
+            'jwtools2' => $this->getUpdatableExtensions(),
         ];
     }
 
@@ -69,7 +68,7 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
     public function getDetailedStatus(): array
     {
         return [
-            'jwtools2' => $this->getUpdatableExtensions(true)
+            'jwtools2' => $this->getUpdatableExtensions(true),
         ];
     }
 

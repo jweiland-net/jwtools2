@@ -62,7 +62,7 @@ class StatusReportCommand extends Command
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;
@@ -295,7 +295,6 @@ class StatusReportCommand extends Command
      */
     protected function getAllSites(): array
     {
-        $site = GeneralUtility::makeInstance(SiteFinder::class);
-        return $site->getAllSites();
+        return GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
     }
 }

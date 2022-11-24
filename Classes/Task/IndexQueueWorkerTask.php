@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -12,6 +14,7 @@ use ApacheSolrForTypo3\Solr\Domain\Index\IndexService;
 use ApacheSolrForTypo3\Solr\Domain\Site\Site;
 use ApacheSolrForTypo3\Solr\Domain\Site\SiteRepository;
 use ApacheSolrForTypo3\Solr\System\Environment\CliEnvironment;
+use Doctrine\DBAL\Driver\Exception;
 use JWeiland\Jwtools2\Service\SolrService;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Registry;
@@ -36,13 +39,10 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
 
     /**
      * Works through the indexing queue and indexes the queued items into Solr.
-     *
-     * @return bool Returns TRUE on success, FALSE if no items were indexed or none were found.
      */
-    public function execute()
+    public function execute(): bool
     {
-        /** @var Registry $registry */
-        $registry = GeneralUtility::makeInstance(Registry::class);
+        $registry = $this->getRegistry();
         $registry->set('jwtools2-solr', 'memoryPeakUsage', 0);
         $lastSitePosition = (int)$registry->get('jwtools2-solr', 'lastSitePosition');
         $maxSitePosition = $lastSitePosition + $this->getMaxSitesPerRun();
@@ -67,9 +67,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
             $registry->set('jwtools2-solr', 'rootPageId', $availableSite->getRootPageId());
 
             try {
-                /** @var IndexService $indexService */
                 $indexService = GeneralUtility::makeInstance(IndexService::class, $availableSite);
-                $indexService->setContextTask(null); // we don't set any referenced task. They are only used for emitting signals
                 $indexService->indexItems($this->documentsToIndexLimit);
                 $counter++;
             } catch (\Exception $e) {
@@ -78,7 +76,11 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
             }
         }
 
-        $registry->set('jwtools2-solr', 'lastSitePosition', $maxSitePosition > count($availableSites) ? 0 : $maxSitePosition);
+        $registry->set(
+            'jwtools2-solr',
+            'lastSitePosition',
+            $maxSitePosition > count($availableSites) ? 0 : $maxSitePosition
+        );
 
         if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
             $cliEnvironment->restore();
@@ -91,12 +93,11 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
      * Returns some additional information about indexing progress, shown in
      * the scheduler's task overview list.
      *
-     * @return string Information to display
+     * @throws Exception
      */
     public function getAdditionalInformation(): string
     {
-        /** @var Registry $registry */
-        $registry = GeneralUtility::makeInstance(Registry::class);
+        $registry = $this->getRegistry();
         $rootPageId = (int)$registry->get('jwtools2-solr', 'rootPageId');
         $message = 'Please execute this task first to retrieve site information';
         if ($rootPageId === 0) {
@@ -125,43 +126,33 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
 
     /**
      * Gets the indexing progress.
-     *
-     * @return float Indexing progress as a two decimal precision float. f.e. 44.87
      */
     public function getProgress(): float
     {
-        /** @var SolrService $solrService */
-        $solrService = GeneralUtility::makeInstance(SolrService::class);
-        return $solrService->getStatistic()->getSuccessPercentage();
+        return GeneralUtility::makeInstance(SolrService::class)
+            ->getStatistic()
+            ->getSuccessPercentage();
     }
 
     /**
      * Gets all available TYPO3 sites with Solr configured.
      *
-     * @param bool $stopOnInvalidSite
      * @return Site[] An array of available sites
+     * @throws Exception
+     * @throws \Throwable
      */
-    public function getAvailableSites($stopOnInvalidSite = false): array
+    public function getAvailableSites(bool $stopOnInvalidSite = false): array
     {
-        /** @var SiteRepository $siteRepository */
-        $siteRepository = GeneralUtility::makeInstance(SiteRepository::class);
-
-        return $siteRepository->getAvailableSites($stopOnInvalidSite);
+        return GeneralUtility::makeInstance(SiteRepository::class)
+            ->getAvailableSites($stopOnInvalidSite);
     }
 
     /**
-     * Returns the initialize IndexService instance.
-     *
-     * @param Site $site
-     * @return IndexService
+     * Returns the initialized IndexService instance.
      */
     protected function getInitializedIndexServiceForSite(Site $site): IndexService
     {
-        /** @var IndexService $indexService */
-        $indexService = GeneralUtility::makeInstance(IndexService::class, $site);
-        $indexService->setContextTask(null); // we don't set any referenced task. They are only used for emitting signals
-
-        return $indexService;
+        return GeneralUtility::makeInstance(IndexService::class, $site);
     }
 
     public function getDocumentsToIndexLimit(): int
@@ -169,27 +160,23 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
         return $this->documentsToIndexLimit;
     }
 
-    /**
-     * @param int $limit
-     */
     public function setDocumentsToIndexLimit(int $limit): void
     {
         $this->documentsToIndexLimit = $limit;
     }
 
-    /**
-     * @return int $maxSitesPerRun
-     */
     public function getMaxSitesPerRun(): int
     {
         return $this->maxSitesPerRun;
     }
 
-    /**
-     * @param int $maxSitesPerRun
-     */
     public function setMaxSitesPerRun(int $maxSitesPerRun): void
     {
         $this->maxSitesPerRun = $maxSitesPerRun;
+    }
+
+    protected function getRegistry(): Registry
+    {
+        return GeneralUtility::makeInstance(Registry::class);
     }
 }

@@ -1,17 +1,17 @@
 <?php
+
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-/** Register JW Tools module */
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'JWeiland.jwtools2',
+    'jwtools2',
     'tools',
     'tools',
     '',
     [
-        'Tools' => 'overview',
-        'Solr' => 'list, show, showIndexQueue, indexOneRecord, createIndexQueueForAllSites, showClearFullIndexForm, showClearIndexForm, clearIndex'
+        \JWeiland\Jwtools2\Controller\ToolsController::class => 'overview',
+        \JWeiland\Jwtools2\Controller\SolrController::class => 'list, show, showIndexQueue, indexOneRecord, createIndexQueueForAllSites, showClearFullIndexForm, showClearIndexForm, clearIndex',
     ],
     [
         'access' => 'user,group',

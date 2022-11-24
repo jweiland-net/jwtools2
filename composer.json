@@ -4,7 +4,7 @@
 	"description": "Various tools/hooks to extend/modify TYPO3",
 	"license": "GPL-2.0-or-later",
 	"keywords": ["typo3", "TYPO3 CMS", "tools", "hooks"],
-	"homepage": "http://www.jweiland.net",
+	"homepage": "https://www.jweiland.net",
 	"authors": [
 		{
 			"name": "Stefan Froemken",
@@ -18,12 +18,12 @@
 		"source": "https://github.com/jweiland-net/jwtools2"
 	},
 	"require": {
-		"typo3/cms-core": "^9.5.17 || ^10.4.2",
-		"typo3/cms-scheduler": "^9.5.17 || ^10.4.2"
+		"typo3/cms-core": "^10.4.29 || ^11.5.11",
+		"typo3/cms-scheduler": "^10.4.29 || ^11.5.11"
 	},
 	"require-dev": {
 		"roave/security-advisories": "dev-latest",
-		"friendsofphp/php-cs-fixer": "^3.0",
+		"friendsofphp/php-cs-fixer": "^3.10",
 		"nimut/testing-framework": "^6.0",
 		"phpunit/phpunit": "^9.5",
 		"phpspec/prophecy-phpunit": "^2.0"

@@ -25,15 +25,13 @@ class UpdateFileMetaDataProvider extends FileProvider
         'update' => [
             'label' => 'Update/Create Metadata',
             'iconIdentifier' => 'actions-page-open',
-            'callbackAction' => 'updateFileMetadata'
+            'callbackAction' => 'updateFileMetadata',
         ],
     ];
 
     /**
      * Priority must be higher than and different from 100 (FileProvider/AbstractProvider).
      * We don't want to replace FileProvider, we want to add further items to FileProvider.
-     *
-     * @return int
      */
     public function getPriority(): int
     {
@@ -72,8 +70,12 @@ class UpdateFileMetaDataProvider extends FileProvider
     {
         return [
             'data-callback-module' => 'TYPO3/CMS/Jwtools2/ContextMenuActions',
-            'data-status-title' => $this->languageService->sL('LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteTitle'),
-            'data-status-description' => $this->languageService->sL('LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteDescription')
+            'data-status-title' => $this->languageService->sL(
+                'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteTitle'
+            ),
+            'data-status-description' => $this->languageService->sL(
+                'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteDescription'
+            ),
         ];
     }
 }

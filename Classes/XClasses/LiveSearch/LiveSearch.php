@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * This is a backport of LiveSearch of TYPO3 11, where we have added multiple performance implovements
+ * This is a backport of LiveSearch of TYPO3 11, where we have added multiple performance improvements
  *
  * This class can be removed while removing compatibility for TYPO3 10.4
  */

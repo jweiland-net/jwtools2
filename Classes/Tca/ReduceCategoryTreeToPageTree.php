@@ -14,10 +14,13 @@ use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\QueryGenerator;
-use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
+use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -31,11 +34,6 @@ class ReduceCategoryTreeToPageTree
     protected $categoryTableName = 'sys_category';
 
     /**
-     * @var BackendUserAuthentication
-     */
-    protected $backendUserAuthentication;
-
-    /**
      * @var int
      */
     protected $pageUid = 0;
@@ -46,23 +44,27 @@ class ReduceCategoryTreeToPageTree
     protected $listOfCategoryUids = '';
 
     /**
-     * @param BackendUserAuthentication|null $backendUserAuthentication
+     * @var ExtensionConfiguration
      */
-    public function __construct($backendUserAuthentication = null)
+    protected $extensionConfiguration;
+
+    public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
-        $this->backendUserAuthentication = $backendUserAuthentication ?: $GLOBALS['BE_USER'];
+        $this->extensionConfiguration = $extensionConfiguration;
     }
 
-    /**
-     * The slot for the signal in DatabaseTreeDataProvider.
-     *
-     * @param DatabaseTreeDataProvider $dataProvider
-     * @param TreeNode $treeData
-     */
-    public function reduceCategoriesToPageTree(DatabaseTreeDataProvider $dataProvider, $treeData): void
+    public function __invoke(ModifyTreeDataEvent $event): void
     {
-        if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !$this->backendUserAuthentication->isAdmin() && $dataProvider->getTableName() === $this->categoryTableName) {
-            $this->removePageTreeForeignCategories($treeData);
+        try {
+            if (
+                (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE)
+                && $this->extensionConfiguration->get('jwtools2', 'reduceCategoriesToPageTree') === '1'
+                && !$this->getBackendUserAuthentication()->isAdmin()
+                && $event->getProvider()->getTableName() === $this->categoryTableName
+            ) {
+                $this->removePageTreeForeignCategories($event->getTreeData());
+            }
+        } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException $exception) {
         }
     }
 
@@ -86,13 +88,11 @@ class ReduceCategoryTreeToPageTree
                     $childNode->getId()
                 )) {
                     unset($treeNode->getChildNodes()[$key]);
-                } else {
-                    if (
-                        $childNode->getChildNodes() instanceof TreeNodeCollection
-                        && $childNode->getChildNodes()->count()
-                    ) {
-                        $this->removePageTreeForeignCategories($treeNode->getChildNodes()[$key]);
-                    }
+                } elseif (
+                    $childNode->getChildNodes() instanceof TreeNodeCollection
+                    && $childNode->getChildNodes()->count()
+                ) {
+                    $this->removePageTreeForeignCategories($treeNode->getChildNodes()[$key]);
                 }
             }
         }
@@ -210,21 +210,16 @@ class ReduceCategoryTreeToPageTree
         return (int)$rootPage['uid'];
     }
 
-    /**
-     * Get QueryGenerator
-     *
-     * @return QueryGenerator
-     */
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
     protected function getQueryGenerator(): QueryGenerator
     {
         return GeneralUtility::makeInstance(QueryGenerator::class);
     }
 
-    /**
-     * Get TYPO3s Connection Pool
-     *
-     * @return ConnectionPool
-     */
     protected function getConnectionPool(): ConnectionPool
     {
         return GeneralUtility::makeInstance(ConnectionPool::class);

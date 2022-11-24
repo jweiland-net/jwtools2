@@ -36,33 +36,21 @@ class NextRunViewHelper extends AbstractViewHelper
      */
     protected $registry;
 
-    /**
-     * @param SolrRepository $solrRepository
-     */
-    public function injectSolrRepository(SolrRepository $solrRepository)
+    public function injectSolrRepository(SolrRepository $solrRepository): void
     {
         $this->solrRepository = $solrRepository;
     }
 
-    /**
-     * @param SchedulerRepository $schedulerRepository
-     */
-    public function injectSchedulerRepository(SchedulerRepository $schedulerRepository)
+    public function injectSchedulerRepository(SchedulerRepository $schedulerRepository): void
     {
         $this->schedulerRepository = $schedulerRepository;
     }
 
-    /**
-     * @param Registry $registry
-     */
-    public function injectRegistry(Registry $registry)
+    public function injectRegistry(Registry $registry): void
     {
         $this->registry = $registry;
     }
 
-    /**
-     * Initialize all arguments.
-     */
     public function initializeArguments(): void
     {
         $this->registerArgument(
@@ -75,15 +63,17 @@ class NextRunViewHelper extends AbstractViewHelper
 
     /**
      * Calculate next run for given site
-     *
-     * @return float
      */
     public function render(): float
     {
         $task = $this->schedulerRepository->findSolrSchedulerTask();
 
         // getExecution() returns a incomplete class it the task was never executed so we check for it.
-        if (!$task || $task->getExecution() instanceof \__PHP_Incomplete_Class || empty($task->getExecution()->getInterval())) {
+        if (
+            !$task
+            || $task->getExecution() instanceof \__PHP_Incomplete_Class
+            || empty($task->getExecution()->getInterval())
+        ) {
             return 0;
         }
 
@@ -109,25 +99,22 @@ class NextRunViewHelper extends AbstractViewHelper
         }
 
         // diff / indexed sites per run * 300 seconds (task interval)
-        return ceil(($diff / $task->getMaxSitesPerRun()) * (int)$task->getExecution()->getInterval());
+        return ceil(($diff / $task->getMaxSitesPerRun()) * $task->getExecution()->getInterval());
     }
 
     /**
      * available sites is an array with increasing numeric keys.
      * Return array key of matching site
-     *
-     * @param Site $site
-     * @return int
      */
     protected function getKeyOfAllAvailableSites(Site $site): int
     {
-        /** @var Site[] $sites */
         $sites = array_values($this->solrRepository->findAllAvailableSites());
         foreach ($sites as $key => $availableSite) {
             if ($availableSite->getRootPageId() === $site->getRootPageId()) {
                 return (int)$key;
             }
         }
+
         // normally this will not be reached
         return 0;
     }

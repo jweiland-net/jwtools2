@@ -26,9 +26,6 @@ use TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility;
  */
 class ExtensionUpdateCommand extends Command
 {
-    /**
-     * Configure the command by defining the name, options and arguments
-     */
     public function configure(): void
     {
         $this
@@ -55,14 +52,7 @@ class ExtensionUpdateCommand extends Command
             );
     }
 
-    /**
-     * Executes the current command.
-     *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     * @return int|null null or 0 if everything went fine, or an error code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $packages = $this->getUpdatePossibleActivePackages();
 
@@ -82,20 +72,24 @@ class ExtensionUpdateCommand extends Command
             }
             $output->writeln('Start update script of extension: ' . $input->getArgument('ext_key'));
             if (!$this->updateExtension($input->getArgument('ext_key'))) {
-                $output->writeln(sprintf(
-                    'Error while executing main() method of extension: %s',
-                    $input->getArgument('ext_key')
-                ));
+                $output->writeln(
+                    sprintf(
+                        'Error while executing main() method of extension: %s',
+                        $input->getArgument('ext_key')
+                    )
+                );
                 return 2;
             }
         } else {
             foreach ($packages as $extKey => $_) {
                 $output->writeln('Start update script of extension: ' . $extKey);
                 if (!$this->updateExtension($extKey)) {
-                    $output->writeln(sprintf(
-                        'Error while executing main() method of extension: %s',
-                        $input->getArgument('ext_key')
-                    ));
+                    $output->writeln(
+                        sprintf(
+                            'Error while executing main() method of extension: %s',
+                            $input->getArgument('ext_key')
+                        )
+                    );
                     if ($input->getOption('force')) {
                         continue;
                     }
@@ -145,7 +139,7 @@ class ExtensionUpdateCommand extends Command
         foreach ($activePackages as $activePackage) {
             if ($updateScriptUtility->checkUpdateScriptExists($activePackage->getPackageKey())) {
                 $packages[$activePackage->getPackageKey()] = [
-                    $activePackage->getPackageKey()
+                    $activePackage->getPackageKey(),
                 ];
             }
         }

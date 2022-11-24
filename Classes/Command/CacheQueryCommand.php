@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A command to convert plain passwords to a salted hash.
- *
  * Be careful, this command can not differ between a plain password and a md5 value!
  * This Command updates every password, which does NOT start with '$'
  */
@@ -35,10 +34,7 @@ class CacheQueryCommand extends Command
      */
     protected $output;
 
-    /**
-     * Configure the command by defining the name, options and arguments
-     */
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setDescription('Query the cache of TYPO3 regardless of their compression')
@@ -64,14 +60,7 @@ class CacheQueryCommand extends Command
             );
     }
 
-    /**
-     * Executes the current command.
-     *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     * @return int|null null or 0 if everything went fine, or an error code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->output = $output;
 

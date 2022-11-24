@@ -66,7 +66,9 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
             try {
                 $this->checkVariableForExpression($variable, $parameters['entryIdentifier'], $cacheExpression);
             } catch (\Exception $exception) {
-                $this->logger->error('[jwtools2] Error occurred while analyzing cache entry: ' . $exception->getMessage());
+                $this->logger->error(
+                    '[jwtools2] Error occurred while analyzing cache entry: ' . $exception->getMessage()
+                );
             }
         }
     }
@@ -78,10 +80,8 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
             if (preg_match('/' . preg_quote($cacheExpression['expression'], '/') . '/', $variable, $matches)) {
                 $this->createLogEntry($entryIdentifier, $cacheExpression);
             }
-        } else {
-            if (mb_strpos($variable, $cacheExpression['expression']) !== false) {
-                $this->createLogEntry($entryIdentifier, $cacheExpression);
-            }
+        } elseif (mb_strpos($variable, $cacheExpression['expression']) !== false) {
+            $this->createLogEntry($entryIdentifier, $cacheExpression);
         }
     }
 
@@ -122,7 +122,9 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
                 $cacheExpressions[] = $cacheExpression;
             }
         } catch (\Exception $exception) {
-            $this->logger->error('Error while querying table tx_jwtools2_cache_expression: ' . $exception->getMessage());
+            $this->logger->error(
+                'Error while querying table tx_jwtools2_cache_expression: ' . $exception->getMessage()
+            );
         }
 
         return $cacheExpressions;

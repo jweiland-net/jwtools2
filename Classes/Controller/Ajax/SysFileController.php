@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -37,12 +39,10 @@ class SysFileController
      */
     protected $graphicalFunctions;
 
-    public function __construct(
-        ResourceFactory $resourceFactory = null,
-        GraphicalFunctions $graphicalFunctions = null
-    ) {
-        $this->resourceFactory = $resourceFactory ?? GeneralUtility::makeInstance(ResourceFactory::class);
-        $this->graphicalFunctions = $graphicalFunctions ?? GeneralUtility::makeInstance(GraphicalFunctions::class);
+    public function __construct(ResourceFactory $resourceFactory, GraphicalFunctions $graphicalFunctions)
+    {
+        $this->resourceFactory = $resourceFactory;
+        $this->graphicalFunctions = $graphicalFunctions;
     }
 
     public function updateFileMetadataAction(ServerRequestInterface $request): JsonResponse
@@ -159,15 +159,14 @@ class SysFileController
     {
         $fileDeletionAspect = GeneralUtility::makeInstance(FileDeletionAspect::class);
 
-        // @ToDo: Replace with Typo3Version class in future
-        if (version_compare(TYPO3_branch, '10.0', '>=')) {
-            $event = new AfterFileAddedEvent(
-                $fileObject,
-                new Folder($fileObject->getStorage(), $fileObject->getParentFolder()->getIdentifier(), $fileObject->getParentFolder()->getName())
-            );
-            $fileDeletionAspect->cleanupProcessedFilesPostFileAdd($event);
-        } else {
-            $fileDeletionAspect->cleanupProcessedFilesPostFileAdd($fileObject, '');
-        }
+        $event = new AfterFileAddedEvent(
+            $fileObject,
+            new Folder(
+                $fileObject->getStorage(),
+                $fileObject->getParentFolder()->getIdentifier(),
+                $fileObject->getParentFolder()->getName()
+            )
+        );
+        $fileDeletionAspect->cleanupProcessedFilesPostFileAdd($event);
     }
 }

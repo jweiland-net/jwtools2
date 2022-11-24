@@ -29,10 +29,8 @@ call_user_func(static function () {
             'extension' => 'jwtools2',
             'title' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:indexqueueworker_title',
             'description' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:indexqueueworker_description',
-            'additionalFields' => \JWeiland\Jwtools2\Task\IndexQueueWorkerTaskAdditionalFieldProvider::class
+            'additionalFields' => \JWeiland\Jwtools2\Task\IndexQueueWorkerTaskAdditionalFieldProvider::class,
         ];
-        // override RealUrl Utility to reset current cached HTTP_HOST
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\DmitryDulepov\Realurl\Utility::class]['className'] = \JWeiland\Jwtools2\Utility\RealurlUtility::class;
         // Hook into Solr Index Service
         $signalSlotDispatcher->connect(
             \ApacheSolrForTypo3\Solr\Domain\Index\IndexService::class,
@@ -40,10 +38,6 @@ call_user_func(static function () {
             \JWeiland\Jwtools2\Hooks\IndexService::class,
             'beforeIndexItem'
         );
-        if ($jwToolsConfiguration['solrApplyPatches']) {
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\ApacheSolrForTypo3\Solr\Util::class]['className'] = \JWeiland\Jwtools2\XClasses\Util::class;
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\ApacheSolrForTypo3\Solr\IndexQueue\Indexer::class]['className'] = \JWeiland\Jwtools2\XClasses\Indexer::class;
-        }
     }
 
     if ($jwToolsConfiguration['enableSqlQueryTask']) {
@@ -52,7 +46,7 @@ call_user_func(static function () {
             'extension' => 'jwtools2',
             'title' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:executeQueryTask.title',
             'description' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:executeQueryTask.description',
-            'additionalFields' => \JWeiland\Jwtools2\Task\ExecuteQueryTaskAdditionalFieldProvider::class
+            'additionalFields' => \JWeiland\Jwtools2\Task\ExecuteQueryTaskAdditionalFieldProvider::class,
         ];
     }
 
@@ -91,8 +85,8 @@ call_user_func(static function () {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['defaultFilterCallbacks'] = [
             [
                 \JWeiland\Jwtools2\Fal\Filter\FileNameFilter::class,
-                'filterHiddenFilesAndFolders'
-            ]
+                'filterHiddenFilesAndFolders',
+            ],
         ];
     }
 
@@ -104,16 +98,6 @@ call_user_func(static function () {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['jwtools2MoveTranslated']
                 = \JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook::class;
         }
-    }
-
-    if ($jwToolsConfiguration['reduceCategoriesToPageTree']) {
-        // Reduce categories to PIDs of current page tree
-        $signalSlotDispatcher->connect(
-            \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::class,
-            \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::SIGNAL_PostProcessTreeData,
-            \JWeiland\Jwtools2\Tca\ReduceCategoryTreeToPageTree::class,
-            'reduceCategoriesToPageTree'
-        );
     }
 
     if ($jwToolsConfiguration['enableContextMenuToUpdateFileMetadata']) {
@@ -130,12 +114,15 @@ call_user_func(static function () {
         $jwToolsConfiguration['enableReportProvider']
         && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('reports')
     ) {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['jwtools2'][] = \JWeiland\Jwtools2\Provider\ReportProvider::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['jwtools2'][]
+            = \JWeiland\Jwtools2\Provider\ReportProvider::class;
     }
 
-    // retrieve stdWrap current value into sub cObj. CONTENT
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'][] = \JWeiland\Jwtools2\Hooks\InitializeStdWrap::class;
+    // Retrieve stdWrap current value into sub cObj. CONTENT
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit']['jwtools2_initStdWrap']
+        = \JWeiland\Jwtools2\Hooks\InitializeStdWrap::class;
 
     // Register an Aspect to store source/target-mapping. Will be activated, if used in SiteConfiguration only.
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects']['PersistedTableMapper'] = \JWeiland\Jwtools2\Routing\Aspect\PersistedTableMapper::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects']['PersistedTableMapper']
+        = \JWeiland\Jwtools2\Routing\Aspect\PersistedTableMapper::class;
 });

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  * For the full copyright and license information, please read the
@@ -19,7 +21,6 @@ use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use JWeiland\Jwtools2\Service\SolrService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -48,41 +49,21 @@ class SolrController extends AbstractController
      */
     protected $registry;
 
-    /**
-     * inject solrRepository
-     *
-     * @param SolrRepository $solrRepository
-     */
-    public function injectSolrRepository(SolrRepository $solrRepository)
+    public function injectSolrRepository(SolrRepository $solrRepository): void
     {
         $this->solrRepository = $solrRepository;
     }
 
-    /**
-     * inject schedulerRepository
-     *
-     * @param SchedulerRepository $schedulerRepository
-     */
-    public function injectSchedulerRepository(SchedulerRepository $schedulerRepository)
+    public function injectSchedulerRepository(SchedulerRepository $schedulerRepository): void
     {
         $this->schedulerRepository = $schedulerRepository;
     }
 
-    /**
-     * inject registry
-     *
-     * @param Registry $registry
-     */
-    public function injectRegistry(Registry $registry)
+    public function injectRegistry(Registry $registry): void
     {
         $this->registry = $registry;
     }
 
-    /**
-     * Pre-Execute some scripts
-     *
-     * @param ViewInterface $view
-     */
     public function initializeView(ViewInterface $view): void
     {
         if (!$view instanceof NotFoundView) {
@@ -97,63 +78,82 @@ class SolrController extends AbstractController
             $docHeader->renderDocHeader();
 
             if (!$this->schedulerRepository->findSolrSchedulerTask()) {
-                $this->addFlashMessage('No or wrong scheduler task UID configured in ExtensionManager Configuration of jwtools2', 'Missing or wrong configuration', FlashMessage::WARNING);
+                $this->addFlashMessage(
+                    'No or wrong scheduler task UID configured in ExtensionManager Configuration of jwtools2',
+                    'Missing or wrong configuration',
+                    AbstractMessage::WARNING
+                );
             }
         }
     }
 
-    /**
-     * List action
-     */
-    public function listAction()
+    public function listAction(): void
     {
         $this->view->assign('sites', $this->solrRepository->findAllAvailableSites());
         $this->view->assign('currentRootPageUid', $this->registry->get('jwtools2-solr', 'rootPageId', 0));
     }
 
-    /**
-     * Show action
-     *
-     * @param int $rootPageUid
-     * @param int $languageUid
-     */
-    public function showAction($rootPageUid, $languageUid = 0)
+    public function showAction(int $rootPageUid): void
     {
-        $site = $this->solrRepository->findByRootPage((int)$rootPageUid);
+        $site = $this->solrRepository->findByRootPage($rootPageUid);
         $this->view->assign('site', $site);
         $this->view->assign('memoryPeakUsage', $this->registry->get('jwtools2-solr', 'memoryPeakUsage', 0));
     }
 
-    /**
-     * Show index queue configuration action
-     *
-     * @param int $rootPageUid
-     * @param string $configurationName
-     * @param int $languageUid
-     */
-    public function showIndexQueueAction(int $rootPageUid, string $configurationName, int $languageUid = 0)
-    {
-        $site = $this->solrRepository->findByRootPage((int)$rootPageUid);
-        $solrConfiguration = $site->getSolrConfiguration()->getIndexQueueConfigurationByName($configurationName);
-        $this->view->assign('site', $site);
-        $this->view->assign('solrConfiguration', $solrConfiguration);
-        $this->view->assign('configurationName', $configurationName);
-    }
-
-    /**
-     * Index one special record by configuration name and site
-     *
-     * @param int $rootPageUid
-     * @param string $configurationName
-     * @param int $recordUid
-     * @param int $languageUid
-     */
-    public function indexOneRecordAction(int $rootPageUid, string $configurationName, int $recordUid, int $languageUid = 0)
+    public function showIndexQueueAction(int $rootPageUid, string $configurationName): void
     {
         $site = $this->solrRepository->findByRootPage($rootPageUid);
-        $item = $this->getIndexQueueItem($rootPageUid, $configurationName, $recordUid);
-        if ($item instanceof Item) {
-            $this->indexItem($item, $site->getSolrConfiguration());
+        if ($site instanceof Site) {
+            $solrConfiguration = $site->getSolrConfiguration()->getIndexQueueConfigurationByName($configurationName);
+            $this->view->assign('site', $site);
+            $this->view->assign('solrConfiguration', $solrConfiguration);
+            $this->view->assign('configurationName', $configurationName);
+        }
+    }
+
+    public function indexOneRecordAction(
+        int $rootPageUid,
+        string $configurationName,
+        ?int $recordUid,
+        int $languageUid = 0
+    ): void {
+        if ($recordUid === null) {
+            $this->addFlashMessage(
+                'Please enter a record UID before submitting the form',
+                'Record UID empty',
+                AbstractMessage::ERROR
+            );
+        } else {
+            $site = $this->solrRepository->findByRootPage($rootPageUid);
+            if ($site instanceof Site) {
+                $item = $this->getIndexQueueItem($rootPageUid, $configurationName, $recordUid);
+                if ($item instanceof Item) {
+                    if ($this->indexItem($item, $site->getSolrConfiguration())) {
+                        $this->addFlashMessage(
+                            'Solr Index Queue Item was successfully indexed to Solr Server',
+                            'Item Indexed'
+                        );
+                    } else {
+                        $this->addFlashMessage(
+                            'Indexing Solr Queue Item object failed. Please check logs. Record UID: ' . $recordUid,
+                            'Indexing Failed',
+                            AbstractMessage::ERROR
+                        );
+                    }
+                } else {
+                    $this->addFlashMessage(
+                        'Solr Index Queue Item could not be found by Record UID: ' . $recordUid,
+                        'Indexing Failed',
+                        AbstractMessage::ERROR
+                    );
+                }
+            } else {
+                $this->addFlashMessage(
+                    'Solr Site object could not be retrieved by RootPageUid: ' . $rootPageUid,
+                    'Indexing Failed',
+                    AbstractMessage::ERROR
+                );
+            }
         }
 
         $this->redirect(
@@ -163,20 +163,20 @@ class SolrController extends AbstractController
             [
                 'rootPageUid' => $rootPageUid,
                 'configurationName' => $configurationName,
-                'languageUid' => $languageUid
+                'languageUid' => $languageUid,
             ]
         );
     }
 
-    /**
-     * @param int $rootPageUid
-     */
-    public function showClearIndexFormAction($rootPageUid)
+    public function showClearIndexFormAction(int $rootPageUid): void
     {
-        $site = $this->solrRepository->findByRootPage((int)$rootPageUid);
+        $site = $this->solrRepository->findByRootPage($rootPageUid);
         if ($site instanceof Site) {
             $this->view->assign('site', $site);
-            $this->view->assign('enabledConfigurationNames', $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames());
+            $this->view->assign(
+                'enabledConfigurationNames',
+                $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames()
+            );
         } else {
             $this->addFlashMessage(
                 $rootPageUid . ' is no valid RootPage UID',
@@ -188,9 +188,6 @@ class SolrController extends AbstractController
     }
 
     /**
-     * @param int $rootPageUid
-     * @param array $configurationNames
-     * @param array $clear
      * @Extbase\Validate("NotEmpty", param="configurationNames")
      * @Extbase\Validate("NotEmpty", param="clear")
      */
@@ -205,8 +202,7 @@ class SolrController extends AbstractController
             }
             $this->addFlashMessage(
                 'We successfully have cleared the index of Site: "' . $site->getTitle() . '"',
-                'Index cleared',
-                FlashMessage::OK
+                'Index cleared'
             );
             $this->redirect('list');
         } else {
@@ -223,7 +219,6 @@ class SolrController extends AbstractController
      */
     public function showClearFullIndexFormAction(): void
     {
-        /** @var PageRenderer $pageRenderer */
         $pageRenderer = $this->objectManager->get(PageRenderer::class);
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Jwtools2/ClearFullIndex');
 
@@ -239,12 +234,6 @@ class SolrController extends AbstractController
         $this->view->assign('configurationNamesOfAllSites', $configurationNamesOfAllSites);
     }
 
-    /**
-     * @param int $rootPageUid
-     * @param string $configurationName
-     * @param int $recordUid
-     * @return Item|object|null
-     */
     protected function getIndexQueueItem(int $rootPageUid, string $configurationName, int $recordUid): ?Item
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -298,33 +287,16 @@ class SolrController extends AbstractController
         );
     }
 
-    /**
-     * Indexes an item from the Index Queue.
-     *
-     * @param Item $item An index queue item to index
-     * @param TypoScriptConfiguration $configuration
-     * @return bool TRUE if the item was successfully indexed, FALSE otherwise
-     */
     protected function indexItem(Item $item, TypoScriptConfiguration $configuration): bool
     {
         $indexer = $this->getIndexerByItem($item->getIndexingConfigurationName(), $configuration);
 
-        // Remember original http host value
-        $originalHttpHost = $_SERVER['HTTP_HOST'] ?? null;
-
-        $this->initializeHttpServerEnvironment($item);
         $itemIndexed = $indexer->index($item);
 
         // update IQ item so that the IQ can determine what's been indexed already
         if ($itemIndexed) {
             $indexQueue = GeneralUtility::makeInstance(Queue::class);
             $indexQueue->updateIndexTimeByItem($item);
-        }
-
-        if (!is_null($originalHttpHost)) {
-            $_SERVER['HTTP_HOST'] = $originalHttpHost;
-        } else {
-            unset($_SERVER['HTTP_HOST']);
         }
 
         // needed since TYPO3 7.5
@@ -335,21 +307,18 @@ class SolrController extends AbstractController
 
     /**
      * A factory method to get an indexer depending on an item's configuration.
-     *
-     * By default all items are indexed using the default indexer
+     * By default, all items are indexed using the default indexer
      * (ApacheSolrForTypo3\Solr\IndexQueue\Indexer) coming with EXT:solr. Pages by default are
      * configured to be indexed through a dedicated indexer
      * (ApacheSolrForTypo3\Solr\IndexQueue\PageIndexer). In all other cases a dedicated indexer
      * can be specified through TypoScript if needed.
-     *
-     * @param string $indexingConfigurationName Indexing configuration name.
-     * @param TypoScriptConfiguration $configuration
-     * @return Indexer
      */
-    protected function getIndexerByItem($indexingConfigurationName, TypoScriptConfiguration $configuration): Indexer
+    protected function getIndexerByItem(string $indexingConfigurationName, TypoScriptConfiguration $configuration): Indexer
     {
         $indexerClass = $configuration->getIndexQueueIndexerByConfigurationName($indexingConfigurationName);
-        $indexerConfiguration = $configuration->getIndexQueueIndexerConfigurationByConfigurationName($indexingConfigurationName);
+        $indexerConfiguration = $configuration->getIndexQueueIndexerConfigurationByConfigurationName(
+            $indexingConfigurationName
+        );
 
         $indexer = GeneralUtility::makeInstance($indexerClass, $indexerConfiguration);
         if (!($indexer instanceof Indexer)) {
@@ -360,34 +329,5 @@ class SolrController extends AbstractController
         }
 
         return $indexer;
-    }
-
-    /**
-     * Initializes the $_SERVER['HTTP_HOST'] environment variable in CLI
-     * environments dependent on the Index Queue item's root page.
-     *
-     * When the Index Queue Worker task is executed by a cron job there is no
-     * HTTP_HOST since we are in a CLI environment. RealURL needs the host
-     * information to generate a proper URL though. Using the Index Queue item's
-     * root page information we can determine the correct host although being
-     * in a CLI environment.
-     *
-     * @param Item $item Index Queue item to use to determine the host.
-     * @param
-     */
-    protected function initializeHttpServerEnvironment(Item $item): void
-    {
-        static $hosts = [];
-        $rootpageId = $item->getRootPageUid();
-        $hostFound = !empty($hosts[$rootpageId]);
-
-        if (!$hostFound) {
-            $hosts[$rootpageId] = $item->getSite()->getDomain();
-        }
-
-        $_SERVER['HTTP_HOST'] = $hosts[$rootpageId];
-
-        // needed since TYPO3 7.5
-        GeneralUtility::flushInternalRuntimeCaches();
     }
 }
