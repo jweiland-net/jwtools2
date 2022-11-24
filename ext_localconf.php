@@ -56,20 +56,24 @@ call_user_func(static function () {
         );
     }
 
-    if ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB']) {
-        // Overwrite file ElementBrowser of TYPO3
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']['file']
-            = \JWeiland\Jwtools2\Recordlist\Browser\FileBrowser::class;
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']['file_reference']
-            = \JWeiland\Jwtools2\Recordlist\Browser\FileBrowser::class;
+    if (
+        $jwToolsConfiguration['typo3RequiredColumnsForFiles']
+        || $jwToolsConfiguration['typo3UploadFieldsInTopOfEB']
+    ) {
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']['jwtools2_file']
+            = \JWeiland\Jwtools2\Backend\Browser\FileBrowser::class;
+    }
 
-        // Overwrite TYPO3 LinkHandler
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-            'TCEMAIN.linkHandler.file.handler = JWeiland\\Jwtools2\\LinkHandler\\FileLinkHandler'
-        );
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-            'TCEMAIN.linkHandler.folder.handler = JWeiland\\Jwtools2\\LinkHandler\\FolderLinkHandler'
-        );
+    if ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB']) {
+        // For LinkHandler: overwrite TYPO3's LinkHandlers
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks']['jwtools2'] = [
+            'handler' => \JWeiland\Jwtools2\Hooks\ModifyLinkHandlerHook::class
+        ];
+    }
+
+    if ($jwToolsConfiguration['typo3ShowEditButtonInElementInformation']) {
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering']['jwtools']
+            = \JWeiland\Jwtools2\Hooks\ModifyElementInformationHook::class;
     }
 
     if ($jwToolsConfiguration['enableLiveSearchPerformanceForAdmins']) {

@@ -4,6 +4,10 @@ typo3EnableUidInPageTree = 0
 typo3TransferTypoScriptCurrent = 0
 # cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3UploadFieldsInTopOfEB
 typo3UploadFieldsInTopOfEB = 0
+# cat=typo3; type=string; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3RequiredColumnsForFiles
+typo3RequiredColumnsForFiles =
+# cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3ShowEditButtonInElementInformation
+typo3ShowEditButtonInElementInformation = 0
 # cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3ExcludeVideoFilesFromFalFilter
 typo3ExcludeVideoFilesFromFalFilter = 0
 # cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3ApplyFixForMoveTranslatedContentElements

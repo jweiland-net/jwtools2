@@ -15,6 +15,22 @@ ChangeLog
 - Remove interface section from TCA
 - Remove LinkHandler XCLASSes. Override file/folder LinkHandlers of TYPO3 directly
 
+**Version 5.10.2**
+
+- Add FlashMessage for non selectable files to FileBrowser
+
+**Version 5.10.1**
+
+- ModifyElementInformationHook get's lost. Re-add that file
+
+**Version 5.10.0**
+
+- Add option to show "edit" button in element information view.
+
+**Version 5.9.0**
+
+- Add option to define columns of sys_file/sys_file_metadata as required.
+
 **Version 5.8.1**
 
 - Reduce LiveSearch to UID column, if just an INT is given
