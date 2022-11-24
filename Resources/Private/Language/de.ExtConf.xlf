@@ -49,7 +49,7 @@
 			</trans-unit>
 			<trans-unit id="enableLiveSearchPerformanceForAdmins">
 				<source>Enable LiveSearch performance: Overwrite LiveSearch class to get more performance for searchresults as admin.</source>
-				<target>Caching Framework Logger aktivieren: Überschreibe die LiveSearch Klasse, um mehr Performance bei der Suche als Admin zu erhalten.</target>
+				<target>Aktivieren Sie LiveSearch Performance: Überschreiben Sie die LiveSearch-Klasse, um mehr Leistung für Suchergebnisse als Admin zu erhalten.</target>
 			</trans-unit>
 
 			<trans-unit id="enableReportProvider">
