@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 5.10.2**
+
+- Add FlashMessage for non selectable files to FileBrowser
+
 **Version 5.10.1**
 
 - ModifyElementInformationHook get's lost. Re-add that file
