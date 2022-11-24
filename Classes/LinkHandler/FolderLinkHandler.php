@@ -6,25 +6,18 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Jwtools2\XClasses\LinkHandler;
+namespace JWeiland\Jwtools2\LinkHandler;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
 /**
- * Link handler for folder links
- * @internal This class is a specific LinkHandler implementation and is not part of the TYPO3's Core API.
+ * Modified version of TYPO3's FolderLinkHandler.
+ * We have modified the templates to allow showing the upload form on top of the folder list
  */
 class FolderLinkHandler extends \TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHandler
 {
-    /**
-     * Initialize the handler
-     *
-     * @param AbstractLinkBrowserController $linkBrowser
-     * @param string $identifier
-     * @param array $configuration Page TSconfig
-     */
-    public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration)
+    public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration): void
     {
         parent::initialize($linkBrowser, $identifier, $configuration);
 

@@ -22,6 +22,8 @@ Extension configuration
    typo3EnableUidInPageTree_                        0
    typo3TransferTypoScriptCurrent_                  0
    typo3UploadFieldsInTopOfEB_                      0
+   typo3RequiredColumnsForFiles_
+   typo3ShowEditButtonInElementInformation_         0
    typo3ExcludeVideoFilesFromFalFilter_             0
    typo3ApplyFixForMoveTranslatedContentElements_   0
    reduceCategoriesToPageTree_                      0
@@ -119,6 +121,26 @@ https://review.typo3.org/c/Packages/TYPO3.CMS/+/52170
 
 After activating this Option we XClasses 3 files to show
 Upload Fields in top of ElementBrowser and LinkHandler again.
+
+
+.. _typo3RequiredColumnsForFiles:
+
+typo3RequiredColumnsForFiles
+----------------------------
+
+Add a comma separated list of column names of table `sys_file` or `sys_file_metadata` to set these columns as
+required. If these columns are not filled for an image it is not selectable in FileBrowser. It can not be
+inserted into a ContentElement or record.
+
+
+.. _typo3ShowEditButtonInElementInformation:
+
+typo3ShowEditButtonInElementInformation
+---------------------------------------
+
+In FileBrowser you can click on the "i" icon to show the element information view. After activation this option
+you will get an "edit" button just right after the "preview" button for faster access to the
+file metadata edit form, instead that you have to switch to "filelist" module.
 
 
 .. _typo3ExcludeVideoFilesFromFalFilter:
