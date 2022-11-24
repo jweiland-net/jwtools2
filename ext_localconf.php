@@ -11,6 +11,9 @@ call_user_func(static function () {
     $jwToolsConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
         \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
     )->get('jwtools2');
+    $typo3Version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        \TYPO3\CMS\Core\Information\Typo3Version::class
+    );
 
     // Create our own logger file
     if (!isset($GLOBALS['TYPO3_CONF_VARS']['LOG']['JWeiland']['Jwtools2']['writerConfiguration'])) {
@@ -76,7 +79,12 @@ call_user_func(static function () {
             = \JWeiland\Jwtools2\Hooks\ModifyElementInformationHook::class;
     }
 
-    if ($jwToolsConfiguration['enableLiveSearchPerformanceForAdmins']) {
+    // Feature was implemented in TYPO3 11.5. No need to XClass LiveSearch.
+    // Remove that feature while removing TYPO3 10 compatibility.
+    if (
+        $jwToolsConfiguration['enableLiveSearchPerformanceForAdmins']
+        && version_compare($typo3Version->getBranch(), '11.5', '<')
+    ) {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Search\LiveSearch\LiveSearch::class]['className'] = \JWeiland\Jwtools2\XClasses\LiveSearch\LiveSearch::class;
     }
 
