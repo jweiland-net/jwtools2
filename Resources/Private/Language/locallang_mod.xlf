@@ -9,6 +9,13 @@
 			<trans-unit id="statusDeleteDescription">
 				<source>Successfully created/updated file metadata and deleted related processed files.</source>
 			</trans-unit>
+
+			<trans-unit id="fileBrowser.flashMessage.requiredColumns.title">
+				<source>Info about non selectable files</source>
+			</trans-unit>
+			<trans-unit id="fileBrowser.flashMessage.requiredColumns.description">
+				<source>For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files cannot currently be linked to content elements or other records. Please complete these mandatory fields first.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

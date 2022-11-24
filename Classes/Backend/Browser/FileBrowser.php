@@ -15,9 +15,14 @@ use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotCon
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Modified version of TYPO3's ElementBrowserController.
@@ -40,6 +45,25 @@ class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
      */
     public function isValid(): bool
     {
+        if ($this->getRequiredColumnsFromExtensionConfiguration()) {
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $flashMessageQueue->addMessage(
+                GeneralUtility::makeInstance(
+                    FlashMessage::class,
+                    LocalizationUtility::translate(
+                        'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:fileBrowser.flashMessage.requiredColumns.description',
+                        null,
+                        [implode(', ', $this->getRequiredColumnsFromExtensionConfiguration())]
+                    ),
+                    LocalizationUtility::translate(
+                        'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:fileBrowser.flashMessage.requiredColumns.title'
+                    ),
+                    AbstractMessage::INFO
+                )
+            );
+        }
+
         return true;
     }
 
