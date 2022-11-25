@@ -15,6 +15,7 @@ use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotCon
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -114,6 +115,26 @@ class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
 
         if (!$this->isShowUploadFieldsInTopOfEB()) {
             return parent::render();
+        }
+
+        $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+        if (version_compare($typo3Version->getBranch(), '11.5', '=')) {
+            // <h4> is the first header. It's before the three following forms: searchForm, uploadForm and createForm
+            [$top, $content] = GeneralUtility::trimExplode('<h4 class="text-truncate', parent::render(), true, 2);
+            $pattern = '/(?P<header><h4 class="text-truncate.*?<\/h4>)(?P<searchForm><div class="mt-4 mb-4"><form.*?<\/form>\v<\/div>)(?P<fileList><div id="filelist">.*<\/div>)\v(?P<uploadForm><form.*?<\/form>)(?P<createForm><form.*?<\/form>)/usm';
+            if (preg_match($pattern, '<h4 class="text-truncate' . $content, $matches)) {
+                return sprintf(
+                    '%s%s%s%s%s%s',
+                    $top,
+                    $matches['uploadForm'],
+                    $matches['createForm'],
+                    $matches['header'],
+                    $matches['searchForm'],
+                    $matches['fileList']
+                );
+            }
+
+            return $top . '<h4 class="text-truncate' . $content;
         }
 
         // <h3> is the first header. It's before the three following forms: searchForm, uploadForm and createForm
