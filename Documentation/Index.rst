@@ -1,59 +1,58 @@
-.. include:: Includes.txt
+.. include:: /Includes.rst.txt
 
-.. Every manual should have a start label for cross-referencing to
-.. start page. Do not remove this!
 
-.. _start:
+==========
+JW Tools 2
+==========
 
-=============================================================
-Extension Name
-=============================================================
+:Extension key:
+   jwtools2
 
-.. only:: html
+:Package name:
+   jweiland/jwtools2
 
-   :Classification:
-      jwtools2
+:Version:
+   |release|
 
-   :Version:
-      |release|
+:Language:
+   en
 
-   :Language:
-      en
+:Author:
+   Stefan Froemken
 
-   :Description:
-      Manual covering TYPO3 extension jwtools2
+:License:
+   This document is published under the
+   `Creative Commons BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`__
+   license.
 
-   :Keywords:
-      tools,solr,sql,task,settings
+:Rendered:
+   |today|
 
-   :Copyright:
-      2013-2020
+----
 
-   :Author:
-      Stefan Froemken
+`jwtools2` comes with a huge set of tools for TYPO3. Each feature you want has to be
+activated first, before using. So, only activate, what you really need.
 
-   :Email:
-      projects@jweiland.net
+----
 
-   :License:
-      This document is published under the Open Publication License
-      available from http://www.opencontent.org/openpub/
-
-   :Rendered:
-      |today|
-
-   The content of this document is related to TYPO3,
-   a GNU/GPL CMS/Framework available from `www.typo3.org <https://typo3.org/>`__.
-
-   **Table of Contents**
+**Table of Contents:**
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
+   :titlesonly:
 
    Introduction/Index
    Installation/Index
    Configuration/Index
    KnownProblems/Index
-   ToDoList/Index
+   Contribute/Index
    ChangeLog/Index
    Links
+
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
+   Sitemap
+   genindex
