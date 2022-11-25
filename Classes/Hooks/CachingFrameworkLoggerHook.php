@@ -59,7 +59,7 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
         // I know nothing about the datatype, structure or whatever in $variable.
         // IMO a string representation is a good start for analyzing: preg_match, strpos, ...
         if (!is_string($variable)) {
-            $variable = serialize($variable);
+            $variable = json_encode($variable);
         }
 
         foreach ($cacheExpressions as $cacheExpression) {
