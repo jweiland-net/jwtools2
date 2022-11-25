@@ -14,6 +14,7 @@ use JWeiland\Jwtools2\ViewHelpers\Format\HtmlViewHelper;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -197,7 +198,8 @@ class HtmlViewHelperTest extends FunctionalTestCase
      */
     public function renderWithParseFuncTsPathWillRenderBlueLinks(): void
     {
-        if (version_compare(TYPO3_branch, '10.4', '=')) {
+        $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+        if (version_compare($typo3Version->getBranch(), '10.4', '=')) {
             $this->subject->setArguments([
                 'parseFuncTSPath' => 'lib.parseFunc_RTE',
             ]);
@@ -220,7 +222,8 @@ class HtmlViewHelperTest extends FunctionalTestCase
      */
     public function renderWithParseFuncTsPathWillConsiderTsConditionAndRendersRedLinks(): void
     {
-        if (version_compare(TYPO3_branch, '10.4', '=')) {
+        $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+        if (version_compare($typo3Version->getBranch(), '10.4', '=')) {
             $this->subject->setArguments([
                 'parseFuncTSPath' => 'lib.parseFunc_RTE',
                 'data' => [

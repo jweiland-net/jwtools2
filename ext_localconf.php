@@ -99,13 +99,8 @@ call_user_func(static function () {
     }
 
     if ($jwToolsConfiguration['typo3ApplyFixForMoveTranslatedContentElements']) {
-        if (version_compare(TYPO3_branch, '10.0', '>=')) {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['jwtools2MoveTranslated']
-                = \JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook::class;
-        } else {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['jwtools2MoveTranslated']
-                = \JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook::class;
-        }
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['jwtools2MoveTranslated']
+            = \JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook::class;
     }
 
     if ($jwToolsConfiguration['enableContextMenuToUpdateFileMetadata']) {
