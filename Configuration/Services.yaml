@@ -11,12 +11,33 @@ services:
   JWeiland\Jwtools2\Backend\Browser\FileBrowser:
     public: true
 
-  # Called by makeInstance in constructor of LinkService
-  JWeiland\Jwtools2\LinkHandling\FileLinkHandler:
-    public: true
+  JWeiland\Jwtools2\Command\CacheQueryCommand:
+    tags:
+    - name: 'console.command'
+      command: 'jwtools2:cacheQuery'
+      schedulable: false
+  JWeiland\Jwtools2\Command\ConvertPlainPasswordToHashCommand:
+    tags:
+    - name: 'console.command'
+      command: 'jwtools2:convertpasswords'
+      schedulable: false
+  JWeiland\Jwtools2\Command\ExtensionUpdateCommand:
+    tags:
+    - name: 'console.command'
+      command: 'jwtools2:executeExtensionUpdate'
+      schedulable: false
+  JWeiland\Jwtools2\Command\StatusReportCommand:
+    tags:
+    - name: 'console.command'
+      command: 'jwtools2:statusreport'
+      schedulable: false
 
   # Called by makeInstance in start() of ContentObjectRenderer
   JWeiland\Jwtools2\Hooks\InitializeStdWrap:
+    public: true
+
+  # Called by makeInstance in constructor of LinkService
+  JWeiland\Jwtools2\LinkHandling\FileLinkHandler:
     public: true
 
   # Called by makeInstance in constructor of LinkService

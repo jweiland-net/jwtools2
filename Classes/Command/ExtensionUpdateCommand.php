@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -54,6 +55,12 @@ class ExtensionUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+        if (version_compare($typo3Version->getBranch(), '11.0', '>=')) {
+            $output->writeln('<error>Processing class.ext_update.php files has been removed with TYPO3 11. This command will only work in TYPO3 10.</error>');
+            return 100;
+        }
+
         $packages = $this->getUpdatePossibleActivePackages();
 
         if ($input->getOption('list')) {

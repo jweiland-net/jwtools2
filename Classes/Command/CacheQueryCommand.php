@@ -70,6 +70,11 @@ class CacheQueryCommand extends Command
             return 101;
         }
 
+        if ($input->getOption('tag') === null && $input->getOption('entryIdentifier') === null) {
+            $output->writeln('Without specifying tag or entryIdentifier option the result is too big. Please set one of these options.');
+            return 105;
+        }
+
         if ($input->getOption('tag')) {
             $backend = $cache->getBackend();
             if ($backend instanceof TaggableBackendInterface) {
