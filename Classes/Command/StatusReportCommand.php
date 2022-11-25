@@ -55,7 +55,7 @@ class StatusReportCommand extends Command
                 'exclude-robots-txt-url-check',
                 'r',
                 InputOption::VALUE_NONE,
-                'By default we try to request [domain]/robots.txt if we can not found any in site configuration. Add this option to prevent that check to speed up the report check.'
+                'By default we try to request [domain]/robots.txt if we can not find any in site configuration. Add this option to prevent that check to speed up the report check.'
             )
             ->setHelp(
                 'This command checks various settings in your TYPO3 environment and shows them as a report.'
