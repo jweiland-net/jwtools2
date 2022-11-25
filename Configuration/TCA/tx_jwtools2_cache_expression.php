@@ -9,6 +9,9 @@ return [
         'adminOnly' => true,
         'rootLevel' => 1,
         'versioningWS' => false,
+        'typeicon_classes' => [
+            'default' => 'actions-filter',
+        ],
     ],
     'types' => [
         '1' => [
