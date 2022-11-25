@@ -26,7 +26,7 @@ call_user_func(static function () {
         ];
     }
 
-    if ($jwToolsConfiguration['solrEnable']) {
+    if ($jwToolsConfiguration['solrEnable'] ?? false) {
         // Add scheduler task to index all Solr Sites
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\JWeiland\Jwtools2\Task\IndexQueueWorkerTask::class] = [
             'extension' => 'jwtools2',
@@ -43,7 +43,7 @@ call_user_func(static function () {
         );
     }
 
-    if ($jwToolsConfiguration['enableSqlQueryTask']) {
+    if ($jwToolsConfiguration['enableSqlQueryTask'] ?? false) {
         // Add scheduler task to execute SQL-Queries
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\JWeiland\Jwtools2\Task\ExecuteQueryTask::class] = [
             'extension' => 'jwtools2',
@@ -53,28 +53,28 @@ call_user_func(static function () {
         ];
     }
 
-    if ($jwToolsConfiguration['typo3EnableUidInPageTree']) {
+    if ($jwToolsConfiguration['typo3EnableUidInPageTree'] ?? false) {
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig(
             'options.pageTree.showPageIdWithTitle = 1'
         );
     }
 
     if (
-        $jwToolsConfiguration['typo3RequiredColumnsForFiles']
-        || $jwToolsConfiguration['typo3UploadFieldsInTopOfEB']
+        ($jwToolsConfiguration['typo3RequiredColumnsForFiles'] ?? false)
+        || ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB'] ?? false)
     ) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']['jwtools2_file']
             = \JWeiland\Jwtools2\Backend\Browser\FileBrowser::class;
     }
 
-    if ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB']) {
+    if ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB'] ?? false) {
         // For LinkHandler: overwrite TYPO3's LinkHandlers
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks']['jwtools2'] = [
             'handler' => \JWeiland\Jwtools2\Hooks\ModifyLinkHandlerHook::class
         ];
     }
 
-    if ($jwToolsConfiguration['typo3ShowEditButtonInElementInformation']) {
+    if ($jwToolsConfiguration['typo3ShowEditButtonInElementInformation'] ?? false) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering']['jwtools']
             = \JWeiland\Jwtools2\Hooks\ModifyElementInformationHook::class;
     }
@@ -82,13 +82,13 @@ call_user_func(static function () {
     // Feature was implemented in TYPO3 11.5. No need to XClass LiveSearch.
     // Remove that feature while removing TYPO3 10 compatibility.
     if (
-        $jwToolsConfiguration['enableLiveSearchPerformanceForAdmins']
+        ($jwToolsConfiguration['enableLiveSearchPerformanceForAdmins'] ?? false)
         && version_compare($typo3Version->getBranch(), '11.5', '<')
     ) {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Search\LiveSearch\LiveSearch::class]['className'] = \JWeiland\Jwtools2\XClasses\LiveSearch\LiveSearch::class;
     }
 
-    if ($jwToolsConfiguration['typo3ExcludeVideoFilesFromFalFilter']) {
+    if ($jwToolsConfiguration['typo3ExcludeVideoFilesFromFalFilter'] ?? false) {
         // Exclude .youtube and .vimeo from hidden files in filelist
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['defaultFilterCallbacks'] = [
             [
@@ -98,23 +98,23 @@ call_user_func(static function () {
         ];
     }
 
-    if ($jwToolsConfiguration['typo3ApplyFixForMoveTranslatedContentElements']) {
+    if ($jwToolsConfiguration['typo3ApplyFixForMoveTranslatedContentElements'] ?? false) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['jwtools2MoveTranslated']
             = \JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook::class;
     }
 
-    if ($jwToolsConfiguration['enableContextMenuToUpdateFileMetadata']) {
+    if ($jwToolsConfiguration['enableContextMenuToUpdateFileMetadata'] ?? false) {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1622440501]
             = \JWeiland\Jwtools2\ContextMenu\ItemProviders\UpdateFileMetaDataProvider::class;
     }
 
-    if ($jwToolsConfiguration['enableCachingFrameworkLogger']) {
+    if ($jwToolsConfiguration['enableCachingFrameworkLogger'] ?? false) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php']['set'][1655965501]
             = \JWeiland\Jwtools2\Hooks\CachingFrameworkLoggerHook::class . '->analyze';
     }
 
     if (
-        $jwToolsConfiguration['enableReportProvider']
+        ($jwToolsConfiguration['enableReportProvider'] ?? false)
         && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('reports')
     ) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['jwtools2'][]
