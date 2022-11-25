@@ -1,4 +1,5 @@
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
+
 
 .. _configuration:
 
@@ -8,44 +9,19 @@ Configuration
 
 Target group: **Developers, Integrators**
 
-jwtools2 initially does nothing after installation. Each feature has to be activated manually with
-Extensionmanager configuration (TYPO3 8.7) or with module Settings since TYPO3 9.5.
-
-Extension configuration
-=======================
-
-.. container:: ts-properties
-
-   =============================================== =========
-   Property                                         Default
-   =============================================== =========
-   typo3EnableUidInPageTree_                        0
-   typo3TransferTypoScriptCurrent_                  0
-   typo3UploadFieldsInTopOfEB_                      0
-   typo3RequiredColumnsForFiles_
-   typo3ShowEditButtonInElementInformation_         0
-   typo3ExcludeVideoFilesFromFalFilter_             0
-   typo3ApplyFixForMoveTranslatedContentElements_   0
-   reduceCategoriesToPageTree_                      0
-   enableSqlQueryTask_                              0
-   enableContextMenuToUpdateFileMetadata_           0
-   enableCachingFrameworkLogger_                    0
-   enableLiveSearchPerformanceForAdmins_            0
-   enableReportProvider_                            0
-   sendUpdatableExtensionsWithSeverity_             info
-   solrEnable_                                      0
-   solrSchedulerTaskUid_                            0
-   =============================================== =========
+`jwtools2` initially does nothing after installation. Each feature has to be activated manually with
+Extensionmanager configuration (TYPO3 8.7) or with Module Settings since TYPO3 9.5.
 
 
-Property details
-================
+.. _extensionSettings:
+
+Extension Settings
+==================
 
 .. only:: html
 
    .. contents::
       :local:
-      :depth: 1
 
 
 .. _typo3EnableUidInPageTree:
@@ -160,7 +136,7 @@ file ending.
 .. _typo3ApplyFixForMoveTranslatedContentElements:
 
 typo3ApplyFixForMoveTranslatedContentElements
------------------------------------
+---------------------------------------------
 
 If you move a content element (tt_content) from one col to another (backend_layout) the related translated
 records will not be moved to new col. This is a problem for over 11 years in TYPO3.
