@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\MaintenanceController;
+use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -152,21 +153,7 @@ class StatusReportCommand extends Command
 
     protected function getSchedulerTasks(): array
     {
-        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_scheduler_task');
-        $queryBuilder->getRestrictions()->removeAll();
-        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        $statement = $queryBuilder
-            ->select('*')
-            ->from('tx_scheduler_task')
-            ->execute();
-
-        $schedulerTasks = [];
-        while ($schedulerTask = $statement->fetch()) {
-            $schedulerTasks[] = $schedulerTask;
-        }
-
-        return $schedulerTasks;
+        return GeneralUtility::makeInstance(Scheduler::class)->fetchTasksWithCondition('');
     }
 
     protected function checkRobotsTxt(Site $site): string
