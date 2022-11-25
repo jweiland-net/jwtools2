@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Hooks;
 
-use Doctrine\DBAL\Connection;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController;
@@ -20,6 +19,7 @@ use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -112,11 +112,14 @@ class ModifyElementInformationHook
     protected $iconFactory;
 
     /**
-     * Constructor
+     * @var UriBuilder
      */
+    protected $uriBuilder;
+
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
     }
 
     public function isValid(string $type, ElementInformationController $elementInformationController): bool
@@ -163,8 +166,8 @@ class ModifyElementInformationHook
         // Check permissions and uid value:
         if ($this->uid && $this->getBackendUser()->check('tables_select', $this->table)) {
             if ((string)$this->table === 'pages') {
-                $this->pageInfo = BackendUtility::readPageAccess($this->uid, $this->permsClause);
-                $this->access = is_array($this->pageInfo);
+                $this->pageInfo = BackendUtility::readPageAccess($this->uid, $this->permsClause) ?: [];
+                $this->access = $this->pageInfo !== [];
                 $this->row = $this->pageInfo;
             } else {
                 $this->row = BackendUtility::getRecordWSOL($this->table, $this->uid);
@@ -173,8 +176,8 @@ class ModifyElementInformationHook
                         // Make $this->uid the uid of the versioned record, while $this->row['uid'] is live record uid
                         $this->uid = (int)$this->row['_ORIG_uid'];
                     }
-                    $this->pageInfo = BackendUtility::readPageAccess((int)$this->row['pid'], $this->permsClause);
-                    $this->access = is_array($this->pageInfo);
+                    $this->pageInfo = BackendUtility::readPageAccess((int)$this->row['pid'], $this->permsClause) ?: [];
+                    $this->access = $this->pageInfo !== [];
                 }
             }
         }
@@ -234,7 +237,7 @@ class ModifyElementInformationHook
     protected function getPageTitle(): array
     {
         $pageTitle = [
-            'title' => BackendUtility::getRecordTitle($this->table, $this->row)
+            'title' => BackendUtility::getRecordTitle($this->table, $this->row),
         ];
         if ($this->type === 'folder') {
             $pageTitle['title'] = htmlspecialchars($this->folderObject->getName());
@@ -270,7 +273,7 @@ class ModifyElementInformationHook
         } else {
             $rendererRegistry = GeneralUtility::makeInstance(RendererRegistry::class);
             $fileRenderer = $rendererRegistry->getRenderer($this->fileObject);
-            $preview['url'] = $this->fileObject->getPublicUrl(true);
+            $preview['url'] = $this->fileObject->getPublicUrl(true) ?? '';
             $preview['editUrl'] = '';
 
             if (
@@ -286,8 +289,7 @@ class ModifyElementInformationHook
                     ],
                     'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                 ];
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                $preview['editUrl'] = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                $preview['editUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             }
 
             $width = min(590, $this->fileObject->getMetaData()['width'] ?? 590) . 'm';
@@ -295,13 +297,7 @@ class ModifyElementInformationHook
 
             // Check if there is a FileRenderer
             if ($fileRenderer !== null) {
-                $preview['fileRenderer'] = $fileRenderer->render(
-                    $this->fileObject,
-                    $width,
-                    $height,
-                    [],
-                    true
-                );
+                $preview['fileRenderer'] = $fileRenderer->render($this->fileObject, $width, $height);
             } elseif ($this->fileObject->isImage()) {
                 // else check if we can create an Image preview
                 $preview['fileObject'] = $this->fileObject;
@@ -324,13 +320,18 @@ class ModifyElementInformationHook
         $propertiesForTable['extraFields'] = $this->getExtraFields();
 
         // Traverse the list of fields to display for the record:
-        $fieldList = $this->getFieldList($this->table, (int)$this->row['uid']);
+        $fieldList = $this->getFieldList($this->table, (int)($this->row['uid'] ?? 0));
 
         foreach ($fieldList as $name) {
             $name = trim($name);
-            $uid = $this->row['uid'];
+            $uid = $this->row['uid'] ?? 0;
 
             if (!isset($GLOBALS['TCA'][$this->table]['columns'][$name])) {
+                continue;
+            }
+
+            // @todo Add meaningful information for mfa field. For the time being we don't display anything at all.
+            if ($this->type === 'db' && $name === 'mfa' && in_array($this->table, ['be_users', 'fe_users'], true)) {
                 continue;
             }
 
@@ -339,7 +340,12 @@ class ModifyElementInformationHook
                 continue;
             }
 
-            $isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name));
+            // Field does not exist (e.g. having type=none) -> skip
+            if (!array_key_exists($name, $this->row)) {
+                continue;
+            }
+
+            $isExcluded = !(!($GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] ?? false) || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name));
             if ($isExcluded) {
                 continue;
             }
@@ -348,7 +354,7 @@ class ModifyElementInformationHook
 
             $propertiesForTable['fields'][] = [
                 'fieldValue' => BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, false, false, $uid),
-                'fieldLabel' => htmlspecialchars($label)
+                'fieldLabel' => htmlspecialchars($label),
             ];
         }
 
@@ -358,7 +364,7 @@ class ModifyElementInformationHook
             if ($this->folderObject instanceof Folder) {
                 $propertiesForTable['fields']['storage'] = [
                     'fieldValue' => $this->folderObject->getStorage()->getName(),
-                    'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.storage'))
+                    'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.storage')),
                 ];
             }
 
@@ -366,7 +372,7 @@ class ModifyElementInformationHook
             $resourceObject = $this->fileObject ?: $this->folderObject;
             $propertiesForTable['fields']['folder'] = [
                 'fieldValue' => $resourceObject->getParentFolder()->getReadablePath(),
-                'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:folder'))
+                'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:folder')),
             ];
 
             if ($this->fileObject instanceof File) {
@@ -374,18 +380,18 @@ class ModifyElementInformationHook
                 if ($this->fileObject->getType() === AbstractFile::FILETYPE_IMAGE) {
                     $propertiesForTable['fields']['width'] = [
                         'fieldValue' => $this->fileObject->getProperty('width') . 'px',
-                        'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.width'))
+                        'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.width')),
                     ];
                     $propertiesForTable['fields']['height'] = [
                         'fieldValue' => $this->fileObject->getProperty('height') . 'px',
-                        'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.height'))
+                        'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.height')),
                     ];
                 }
 
                 // file size
                 $propertiesForTable['fields']['size'] = [
                     'fieldValue' => GeneralUtility::formatSize((int)$this->fileObject->getProperty('size'), htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:byteSizeUnits'))),
-                    'fieldLabel' => $lang->sL(BackendUtility::getItemLabel($this->table, 'size'))
+                    'fieldLabel' => $lang->sL(BackendUtility::getItemLabel($this->table, 'size')),
                 ];
 
                 // show the metadata of a file as well
@@ -401,7 +407,7 @@ class ModifyElementInformationHook
                             continue;
                         }
 
-                        $isExcluded = !(!$GLOBALS['TCA'][$table]['columns'][$name]['exclude'] || $this->getBackendUser()->check('non_exclude_fields', $table . ':' . $name));
+                        $isExcluded = !(!($GLOBALS['TCA'][$table]['columns'][$name]['exclude'] ?? false) || $this->getBackendUser()->check('non_exclude_fields', $table . ':' . $name));
                         if ($isExcluded) {
                             continue;
                         }
@@ -411,7 +417,7 @@ class ModifyElementInformationHook
 
                         $propertiesForTable['fields'][] = [
                             'fieldValue' => BackendUtility::getProcessedValue($table, $name, $metaData[$name], 0, false, false, (int)$metaData['uid']),
-                            'fieldLabel' => htmlspecialchars($label)
+                            'fieldLabel' => htmlspecialchars($label),
                         ];
                     }
                 }
@@ -443,7 +449,7 @@ class ModifyElementInformationHook
 
             $ctrlKeysOfUnneededFields = ['origUid', 'transOrigPointerField', 'transOrigDiffSourceField'];
             foreach ($ctrlKeysOfUnneededFields as $field) {
-                if (($key = array_search($GLOBALS['TCA'][$table]['ctrl'][$field], $fieldList, true)) !== false) {
+                if (isset($GLOBALS['TCA'][$table]['ctrl'][$field]) && ($key = array_search($GLOBALS['TCA'][$table]['ctrl'][$field], $fieldList, true)) !== false) {
                     unset($fieldList[$key]);
                 }
             }
@@ -451,7 +457,7 @@ class ModifyElementInformationHook
             $fieldList = [];
         }
 
-        $searchFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['searchFields']);
+        $searchFields = GeneralUtility::trimExplode(',', ($GLOBALS['TCA'][$table]['ctrl']['searchFields'] ?? ''));
 
         return array_unique(array_merge($fieldList, $searchFields));
     }
@@ -468,17 +474,16 @@ class ModifyElementInformationHook
         if (in_array($this->type, ['folder', 'file'], true)) {
             if ($this->type === 'file') {
                 $keyLabelPair['uid'] = [
-                    'value' => BackendUtility::getProcessedValueExtra($this->table, 'uid', $this->row['uid']),
-                    'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid')), ':'),
+                    'value' => (int)$this->row['uid'],
                 ];
                 $keyLabelPair['creation_date'] = [
                     'value' => BackendUtility::datetime($this->row['creation_date']),
-                    'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.creationDate')), ':'),
+                    'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.creationDate')),
                     'isDatetime' => true,
                 ];
                 $keyLabelPair['modification_date'] = [
                     'value' => BackendUtility::datetime($this->row['modification_date']),
-                    'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.timestamp')), ':'),
+                    'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.timestamp')),
                     'isDatetime' => true,
                 ];
             }
@@ -553,7 +558,7 @@ class ModifyElementInformationHook
      */
     protected function getLabelForTableColumn($tableName, $fieldName): string
     {
-        if ($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label'] !== null) {
+        if (($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label'] ?? null) !== null) {
             $field = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
             if (trim($field) === '') {
                 $field = $fieldName;
@@ -584,24 +589,23 @@ class ModifyElementInformationHook
         $urlParameters = [
             'edit' => [
                 $table => [
-                    $uid => 'edit'
-                ]
+                    $uid => 'edit',
+                ],
             ],
-            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
         ];
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $actions['recordEditUrl'] = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+        $actions['recordEditUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 
         // History button
         $urlParameters = [
             'element' => $table . ':' . $uid,
-            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
         ];
-        $actions['recordHistoryUrl'] = (string)$uriBuilder->buildUriFromRoute('record_history', $urlParameters);
+        $actions['recordHistoryUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_history', $urlParameters);
 
         if ($table === 'pages') {
             // Recordlist button
-            $actions['webListUrl'] = (string)$uriBuilder->buildUriFromRoute('web_list', ['id' => $uid, 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()]);
+            $actions['webListUrl'] = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $uid, 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()]);
 
             // View page button
             $actions['viewOnClick'] = BackendUtility::viewOnClick($uid, '', BackendUtility::BEgetRootLine($uid));
@@ -637,16 +641,12 @@ class ModifyElementInformationHook
         $predicates = [
             $queryBuilder->expr()->eq(
                 'ref_table',
-                $queryBuilder->createNamedParameter($selectTable, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($selectTable, Connection::PARAM_STR)
             ),
             $queryBuilder->expr()->eq(
                 'ref_uid',
-                $queryBuilder->createNamedParameter($selectUid, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($selectUid, Connection::PARAM_INT)
             ),
-            $queryBuilder->expr()->eq(
-                'deleted',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-            )
         ];
 
         $backendUser = $this->getBackendUser();
@@ -675,9 +675,8 @@ class ModifyElementInformationHook
             }
 
             $line = [];
-            $record = BackendUtility::getRecord($row['tablename'], $row['recuid']);
+            $record = BackendUtility::getRecordWSOL($row['tablename'], $row['recuid']);
             if ($record) {
-                BackendUtility::fixVersioningPid($row['tablename'], $record);
                 if (!$this->canAccessPage($row['tablename'], $record)) {
                     continue;
                 }
@@ -688,18 +687,18 @@ class ModifyElementInformationHook
                 $urlParameters = [
                     'edit' => [
                         $row['tablename'] => [
-                            $row['recuid'] => 'edit'
-                        ]
+                            $row['recuid'] => 'edit',
+                        ],
                     ],
-                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                 ];
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
                 $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
                 $line['row'] = $row;
                 $line['record'] = $record;
                 $line['recordTitle'] = BackendUtility::getRecordTitle($row['tablename'], $record, false, true);
+                $line['parentRecord'] = $parentRecord;
                 $line['parentRecordTitle'] = $parentRecordTitle;
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']);
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($row['tablename'], $row['field']);
@@ -707,7 +706,7 @@ class ModifyElementInformationHook
                 $line['actions'] = $this->getRecordActions($row['tablename'], $row['recuid'], $request);
             } else {
                 $line['row'] = $row;
-                $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']) ?: $row['tablename'];
+                $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'] ?? '') ?: $row['tablename'];
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($row['tablename'], $row['field']);
             }
             $refLines[] = $line;
@@ -734,12 +733,12 @@ class ModifyElementInformationHook
         $predicates = [
             $queryBuilder->expr()->eq(
                 'tablename',
-                $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($table, Connection::PARAM_STR)
             ),
             $queryBuilder->expr()->eq(
                 'recuid',
-                $queryBuilder->createNamedParameter($ref, \PDO::PARAM_INT)
-            )
+                $queryBuilder->createNamedParameter($ref, Connection::PARAM_INT)
+            ),
         ];
 
         $backendUser = $this->getBackendUser();
@@ -761,34 +760,32 @@ class ModifyElementInformationHook
         // Compile information for title tag:
         foreach ($rows as $row) {
             $line = [];
-            $record = BackendUtility::getRecord($row['ref_table'], $row['ref_uid']);
+            $record = BackendUtility::getRecordWSOL($row['ref_table'], $row['ref_uid']);
             if ($record) {
-                BackendUtility::fixVersioningPid($row['ref_table'], $record);
                 if (!$this->canAccessPage($row['ref_table'], $record)) {
                     continue;
                 }
                 $urlParameters = [
                     'edit' => [
                         $row['ref_table'] => [
-                            $row['ref_uid'] => 'edit'
-                        ]
+                            $row['ref_uid'] => 'edit',
+                        ],
                     ],
-                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                 ];
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
                 $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
                 $line['row'] = $row;
                 $line['record'] = $record;
                 $line['recordTitle'] = BackendUtility::getRecordTitle($row['ref_table'], $record, false, true);
-                $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title']);
+                $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'] ?? '');
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($table, $row['field']);
                 $line['path'] = BackendUtility::getRecordPath($record['pid'], '', 0, 0);
                 $line['actions'] = $this->getRecordActions($row['ref_table'], $row['ref_uid'], $request);
             } else {
                 $line['row'] = $row;
-                $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title']);
+                $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'] ?? '');
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($table, $row['field']);
             }
             $refFromLines[] = $line;
@@ -813,7 +810,7 @@ class ModifyElementInformationHook
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($referenceRecord['recuid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($referenceRecord['recuid'], Connection::PARAM_INT)
                 )
             )
             ->execute()
@@ -825,7 +822,7 @@ class ModifyElementInformationHook
             'field' => $fileReference['fieldname'],
             'flexpointer' => '',
             'softref_key' => '',
-            'sorting' => $fileReference['sorting_foreign']
+            'sorting' => $fileReference['sorting_foreign'],
         ];
     }
 

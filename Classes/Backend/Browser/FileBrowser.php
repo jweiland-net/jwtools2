@@ -108,6 +108,10 @@ class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
      */
     public function render(): string
     {
+        if (is_callable([$this, 'setRequest'])) {
+            $this->setRequest($GLOBALS['TYPO3_REQUEST']);
+        }
+
         if (!$this->isShowUploadFieldsInTopOfEB()) {
             return parent::render();
         }
