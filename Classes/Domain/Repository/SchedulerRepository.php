@@ -11,12 +11,16 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\Domain\Repository;
 
 use JWeiland\Jwtools2\Task\IndexQueueWorkerTask;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Scheduler;
 
 /**
- * Class SchedulerRepository
+ * Repository to find records from tx_scheduler_task table.
+ * In this special case it just fetches specific solr indexing tasks.
  */
 class SchedulerRepository
 {
@@ -25,49 +29,33 @@ class SchedulerRepository
      */
     public function findSolrSchedulerTask(): ?IndexQueueWorkerTask
     {
-        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_scheduler_task');
-        $taskRecord = $queryBuilder
-            ->select('*')
-            ->from('tx_scheduler_task')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter(
-                        $this->getExtensionConfiguration('solrSchedulerTaskUid'),
-                        \PDO::PARAM_INT
-                    )
-                ),
-                $queryBuilder->expr()->eq(
-                    'disable',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                )
-            )
-            ->execute()
-            ->fetch();
-        if (!$taskRecord) {
-            return null;
-        }
+        try {
+            $task = $this->getScheduler()->fetchTask(
+                (int)$this->getExtensionConfiguration('solrSchedulerTaskUid')
+            );
 
-        /** @var IndexQueueWorkerTask $task */
-        $task = unserialize(
-            $taskRecord['serialized_task_object'],
-            [
-                'allowed_classes' => [
-                    IndexQueueWorkerTask::class
-                ]
-            ]
-        );
-
-        if (!$task instanceof IndexQueueWorkerTask) {
+            if (!$task instanceof IndexQueueWorkerTask) {
+                return null;
+            }
+        } catch (\OutOfBoundsException $outOfBoundsException) {
             return null;
         }
 
         return $task;
     }
 
-    protected function getExtensionConfiguration(string $path)
+    protected function getExtensionConfiguration(string $path): string
     {
-        return GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jwtools2', $path);
+        try {
+            return (string)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jwtools2', $path);
+        } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException $exception) {
+            return '';
+        }
+    }
+
+    protected function getScheduler(): Scheduler
+    {
+        return GeneralUtility::makeInstance(Scheduler::class);
     }
 
     protected function getConnectionPool(): ConnectionPool
