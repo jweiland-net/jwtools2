@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\LinkHandler;
 
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 use TYPO3Fluid\Fluid\View\ViewInterface;
@@ -53,8 +55,9 @@ class FolderLinkHandler extends \TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHand
     protected function addTemplatePath(?ViewInterface $view): void
     {
         if ($view instanceof StandaloneView) {
+            $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
             $templateRootPaths = ['EXT:recordlist/Resources/Private/Templates/LinkBrowser'];
-            if (version_compare(TYPO3_branch, '11.2', '<')) {
+            if (version_compare($typo3Version->getBranch(), '11.2', '<')) {
                 $templateRootPaths[] = 'EXT:jwtools2/Resources/Private/Extensions/Recordlist/Templates/V10';
             } else {
                 $templateRootPaths[] = 'EXT:jwtools2/Resources/Private/Extensions/Recordlist/Templates';
