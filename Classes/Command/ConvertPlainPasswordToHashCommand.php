@@ -34,11 +34,6 @@ class ConvertPlainPasswordToHashCommand extends Command
     protected $output;
 
     /**
-     * @var PasswordHashInterface[]
-     */
-    protected $hashingMethods = [];
-
-    /**
      * @var PasswordHashFactory
      */
     protected $passwordHashFactory;
