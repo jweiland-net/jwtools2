@@ -12,6 +12,7 @@ namespace JWeiland\Jwtools2\Domain\Repository;
 
 use ApacheSolrForTypo3\Solr\Domain\Site\Site;
 use ApacheSolrForTypo3\Solr\Domain\Site\SiteRepository;
+use Doctrine\DBAL\Driver\Exception as DBALDriverException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -26,7 +27,11 @@ class SolrRepository
      */
     public function findAllAvailableSites(bool $stopOnInvalidSite = false): array
     {
-        return GeneralUtility::makeInstance(SiteRepository::class)->getAvailableSites($stopOnInvalidSite);
+        try {
+            return GeneralUtility::makeInstance(SiteRepository::class)->getAvailableSites($stopOnInvalidSite);
+        } catch (DBALDriverException | \Throwable $exception) {
+            return [];
+        }
     }
 
     /**
@@ -34,6 +39,10 @@ class SolrRepository
      */
     public function findByRootPage(int $rootPage): ?Site
     {
-        return GeneralUtility::makeInstance(SiteRepository::class)->getSiteByRootPageId($rootPage);
+        try {
+            return GeneralUtility::makeInstance(SiteRepository::class)->getSiteByRootPageId($rootPage);
+        } catch (DBALDriverException $exception) {
+            return null;
+        }
     }
 }
