@@ -11,11 +11,13 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\Backend\Browser;
 
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -54,7 +56,14 @@ class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
                     LocalizationUtility::translate(
                         'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:fileBrowser.flashMessage.requiredColumns.description',
                         null,
-                        [implode(', ', $this->getRequiredColumnsFromExtensionConfiguration())]
+                        [
+                            implode(
+                                ', ',
+                                $this->getTranslatedColumnNames(
+                                    $this->getRequiredColumnsFromExtensionConfiguration()
+                                )
+                            )
+                        ]
                     ),
                     LocalizationUtility::translate(
                         'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:fileBrowser.flashMessage.requiredColumns.title'
@@ -65,6 +74,33 @@ class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
         }
 
         return true;
+    }
+
+    protected function getTranslatedColumnNames(array $requiredColumns): array
+    {
+        if (!$this->getLanguageService() instanceof LanguageService) {
+            return $requiredColumns;
+        }
+
+        foreach ($requiredColumns as $key => $requiredColumn) {
+            $label = BackendUtility::getItemLabel('sys_file', $requiredColumn);
+            if ($label === '' || $label === null) {
+                $label = BackendUtility::getItemLabel('sys_file_metadata', $requiredColumn);
+            }
+
+            if ($label === '' || $label === null) {
+                continue;
+            }
+
+            $translatedLabel = $this->getLanguageService()->sL($label);
+            if ($translatedLabel === '' || $translatedLabel === null) {
+                continue;
+            }
+
+            $requiredColumns[$key] = $translatedLabel;
+        }
+
+        return $requiredColumns;
     }
 
     protected function fileIsSelectableInFileList(FileInterface $file, array $imgInfo): bool
