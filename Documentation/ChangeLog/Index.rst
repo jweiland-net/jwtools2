@@ -11,6 +11,11 @@ ChangeLog
    :local:
 
 
+Version 6.0.1
+=============
+
+*  Translate columns in infobox of non-selectable image feature
+
 Version 6.0.0
 =============
 
