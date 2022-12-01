@@ -11,6 +11,11 @@ ChangeLog
    :local:
 
 
+Version 6.0.2
+=============
+
+*  Overwrite FileBrowser for file and folder requests only
+
 Version 6.0.1
 =============
 
