@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Recordlist\Controller\ElementBrowserController;
 
 /**
  * Modified version of TYPO3's ElementBrowserController.
@@ -45,35 +46,39 @@ class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
     /**
      * Return "true". Else complete rendering will not start.
      */
-    public function isValid(): bool
+    public function isValid(string $mode, ElementBrowserController $elementBrowserController): bool
     {
-        if ($this->getRequiredColumnsFromExtensionConfiguration()) {
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-            $flashMessageQueue->addMessage(
-                GeneralUtility::makeInstance(
-                    FlashMessage::class,
-                    LocalizationUtility::translate(
-                        'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:fileBrowser.flashMessage.requiredColumns.description',
-                        null,
-                        [
-                            implode(
-                                ', ',
-                                $this->getTranslatedColumnNames(
-                                    $this->getRequiredColumnsFromExtensionConfiguration()
+        if ($mode === 'file' || $mode === 'folder') {
+            if ($this->getRequiredColumnsFromExtensionConfiguration()) {
+                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+                $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+                $flashMessageQueue->addMessage(
+                    GeneralUtility::makeInstance(
+                        FlashMessage::class,
+                        LocalizationUtility::translate(
+                            'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:fileBrowser.flashMessage.requiredColumns.description',
+                            null,
+                            [
+                                implode(
+                                    ', ',
+                                    $this->getTranslatedColumnNames(
+                                        $this->getRequiredColumnsFromExtensionConfiguration()
+                                    )
                                 )
-                            )
-                        ]
-                    ),
-                    LocalizationUtility::translate(
-                        'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:fileBrowser.flashMessage.requiredColumns.title'
-                    ),
-                    AbstractMessage::INFO
-                )
-            );
+                            ]
+                        ),
+                        LocalizationUtility::translate(
+                            'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:fileBrowser.flashMessage.requiredColumns.title'
+                        ),
+                        AbstractMessage::INFO
+                    )
+                );
+            }
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     protected function getTranslatedColumnNames(array $requiredColumns): array
