@@ -223,7 +223,12 @@ class ModifyElementInformationHook
         $view->assignMultiple($this->getPreview($request));
         $view->assignMultiple($this->getPropertiesForTable());
         $view->assignMultiple($this->getReferences($request));
-        $view->assign('returnUrl', GeneralUtility::sanitizeLocalUrl($request->getQueryParams()['returnUrl']));
+        $view->assign(
+            'returnUrl',
+            GeneralUtility::sanitizeLocalUrl(
+                $request->getQueryParams()['returnUrl'] ?? GeneralUtility::linkThisScript()
+            )
+        );
         $view->assign('maxTitleLength', $this->getBackendUser()->uc['titleLen'] ?? 20);
 
         return $view->render();

@@ -1,4 +1,4 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
 ==========
@@ -6,27 +6,27 @@ JW Tools 2
 ==========
 
 :Extension key:
-   jwtools2
+    jwtools2
 
 :Package name:
-   jweiland/jwtools2
+    jweiland/jwtools2
 
 :Version:
-   |release|
+    |release|
 
 :Language:
-   en
+    en
 
 :Author:
-   Stefan Froemken
+    Stefan Froemken
 
 :License:
-   This document is published under the
-   `Creative Commons BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`__
-   license.
+    This document is published under the
+    `Creative Commons BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`__
+    license.
 
 :Rendered:
-   |today|
+    |today|
 
 ----
 
@@ -37,22 +37,22 @@ activated first, before using. So, only activate, what you really need.
 
 **Table of Contents:**
 
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
+..  toctree::
+    :maxdepth: 2
+    :titlesonly:
 
-   Introduction/Index
-   Installation/Index
-   Configuration/Index
-   KnownProblems/Index
-   Contribute/Index
-   ChangeLog/Index
-   Links
+    Introduction/Index
+    Installation/Index
+    Configuration/Index
+    KnownProblems/Index
+    Contribute/Index
+    ChangeLog/Index
+    Links
 
-.. Meta Menu
+..  Meta Menu
 
-.. toctree::
-   :hidden:
+..  toctree::
+    :hidden:
 
-   Sitemap
-   genindex
+    Sitemap
+    genindex

@@ -1,7 +1,7 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _configuration:
+..  _configuration:
 
 =============
 Configuration
@@ -13,18 +13,18 @@ Target group: **Developers, Integrators**
 Extensionmanager configuration (TYPO3 8.7) or with Module Settings since TYPO3 9.5.
 
 
-.. _extensionSettings:
+..  _extensionSettings:
 
 Extension Settings
 ==================
 
-.. only:: html
+..  only:: html
 
-   .. contents::
-      :local:
+    ..  contents::
+        :local:
 
 
-.. _typo3EnableUidInPageTree:
+..  _typo3EnableUidInPageTree:
 
 typo3EnableUidInPageTree
 ------------------------
@@ -34,7 +34,7 @@ Activate this settings to show page UIDs in front of page title in pagetree. Yes
 options.pageTree.showPageIdWithTitle = 1
 
 
-.. _typo3TransferTypoScriptCurrent:
+..  _typo3TransferTypoScriptCurrent:
 
 typo3TransferTypoScriptCurrent
 ------------------------------
@@ -42,34 +42,34 @@ typo3TransferTypoScriptCurrent
 This is a really special setting. It transports the value of ``current`` into its Subproperties. Please have a look
 to following TypoScript:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-  tt_content.list.20.avalex_avalex.stdWrap {
-    setContentToCurrent = 1
-    cObject = CONTENT
-    cObject {
-      table = tx_drstmplmodule_domain_model_configuration
-      select {
-        pidInList = {$drs.root}
-      }
-      renderObj = TEXT
-      renderObj {
-        current = 1
-        replacement {
-          10.search = avalexDefaultChurch
-          10.replace.data = FIELD:church
-          20.search = avalexDefaultResponsible
-          20.replace.data = FIELD:responsible
-          30.search = avalexDefaultStreet
-          30.replace.dataWrap = {FIELD:street} {FIELD:house_number}
-          40.search = avalexDefaultZIP
-          40.replace.data = FIELD:zip
-          50.search = avalexDefaultCity
-          50.replace.data = FIELD:city
+    tt_content.list.20.avalex_avalex.stdWrap {
+      setContentToCurrent = 1
+      cObject = CONTENT
+      cObject {
+        table = tx_drstmplmodule_domain_model_configuration
+        select {
+          pidInList = {$drs.root}
+        }
+        renderObj = TEXT
+        renderObj {
+          current = 1
+          replacement {
+            10.search = avalexDefaultChurch
+            10.replace.data = FIELD:church
+            20.search = avalexDefaultResponsible
+            20.replace.data = FIELD:responsible
+            30.search = avalexDefaultStreet
+            30.replace.dataWrap = {FIELD:street} {FIELD:house_number}
+            40.search = avalexDefaultZIP
+            40.replace.data = FIELD:zip
+            50.search = avalexDefaultCity
+            50.replace.data = FIELD:city
+          }
         }
       }
     }
-  }
 
 After generating the content of plugin Avalex we call ``stdWrap`` and set ``current`` to the output of the plugin with
 ``setContentToCurrent``. As each pagetree has its own configuration record assigned, we have to retrieve this
@@ -83,7 +83,7 @@ If you activate ``typo3TransferTypoScriptCurrent`` we make use of a hook in TYPO
 This option will only work for cObj types CONTENT and RECORD.
 
 
-.. _typo3UploadFieldsInTopOfEB:
+..  _typo3UploadFieldsInTopOfEB:
 
 typo3UploadFieldsInTopOfEB
 --------------------------
@@ -98,7 +98,7 @@ After activating this Option we XClasses 3 files to show
 Upload Fields in top of ElementBrowser and LinkHandler again.
 
 
-.. _typo3RequiredColumnsForFiles:
+..  _typo3RequiredColumnsForFiles:
 
 typo3RequiredColumnsForFiles
 ----------------------------
@@ -108,7 +108,7 @@ required. If these columns are not filled for an image it is not selectable in F
 inserted into a ContentElement or record.
 
 
-.. _typo3ShowEditButtonInElementInformation:
+..  _typo3ShowEditButtonInElementInformation:
 
 typo3ShowEditButtonInElementInformation
 ---------------------------------------
@@ -118,7 +118,7 @@ you will get an "edit" button just right after the "preview" button for faster a
 file metadata edit form, instead that you have to switch to "filelist" module.
 
 
-.. _typo3ExcludeVideoFilesFromFalFilter:
+..  _typo3ExcludeVideoFilesFromFalFilter:
 
 typo3ExcludeVideoFilesFromFalFilter
 -----------------------------------
@@ -133,7 +133,7 @@ Activating this option will still not show hidden files in general, except files
 file ending.
 
 
-.. _typo3ApplyFixForMoveTranslatedContentElements:
+..  _typo3ApplyFixForMoveTranslatedContentElements:
 
 typo3ApplyFixForMoveTranslatedContentElements
 ---------------------------------------------
@@ -150,7 +150,7 @@ So after a move of tt_content records you have to reload the right frame on your
 to solve that the nice way feel free to create a PullRequest to jwtools2 ;-)
 
 
-.. _reduceCategoriesToPageTree:
+..  _reduceCategoriesToPageTree:
 
 reduceCategoriesToPageTree
 --------------------------
@@ -163,7 +163,7 @@ We try to get the current Page UID you're editing and slide up until we find a p
 from Categorytrees.
 
 
-.. _enableSqlQueryTask:
+..  _enableSqlQueryTask:
 
 enableSqlQueryTask
 ------------------
@@ -171,7 +171,7 @@ enableSqlQueryTask
 Adds a new task to scheduler to execute your individual SQL-Query.
 
 
-.. _enableContextMenuToUpdateFileMetadata:
+..  _enableContextMenuToUpdateFileMetadata:
 
 enableContextMenuToUpdateFileMetadata
 -------------------------------------
@@ -186,7 +186,7 @@ be wrong in some cases. Because of different image tools (Photoshop, Paint, Gimp
 different image size after process with imagemagick/graphicsmagick.
 
 
-.. _enableCachingFrameworkLogger:
+..  _enableCachingFrameworkLogger:
 
 enableCachingFrameworkLogger
 ----------------------------
@@ -203,7 +203,7 @@ PHP:preg_match search internally. You don't need to prepend/append a delimiter. 
 escaped values for you automatically.
 
 
-.. _enableLiveSearchPerformanceForAdmins:
+..  _enableLiveSearchPerformanceForAdmins:
 
 enableLiveSearchPerformanceForAdmins
 ------------------------------------
@@ -214,7 +214,7 @@ ALL available page UIDs. That's not neccessary as admins always have access to a
 Activate that checkbox to get more performance while searching with LiveSearch as admin.
 
 
-.. _enableReportProvider:
+..  _enableReportProvider:
 
 enableReportProvider
 --------------------
@@ -228,7 +228,7 @@ Currently following information will be shown:
 * ...
 
 
-.. _sendUpdatableExtensionsWithSeverity:
+..  _sendUpdatableExtensionsWithSeverity:
 
 sendUpdatableExtensionsWithSeverity
 -----------------------------------
@@ -252,7 +252,7 @@ Setting ``sendUpdatableExtensionsWithSeverity`` to ``warning`` will set severity
 warnings in your TYPO3 system and/or updatable extensions.
 
 
-.. _solrEnable:
+..  _solrEnable:
 
 solrEnable
 ----------
@@ -261,7 +261,7 @@ Activates Solr feature in our jwtools2 Backend module where you can manage your 
 index types.
 
 
-.. _solrSchedulerTaskUid:
+..  _solrSchedulerTaskUid:
 
 solrSchedulerTaskUid
 --------------------

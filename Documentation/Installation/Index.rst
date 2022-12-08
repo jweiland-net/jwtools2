@@ -1,7 +1,7 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _installation:
+..  _installation:
 
 ============
 Installation
@@ -46,35 +46,35 @@ Install `jwtools2` in TYPO3 Composer-based installations on the shell:
 
 ..  rst-class:: bignums
 
-1. Shell Login
+1.  Shell Login
 
-   Login into shell of your TYPO3 installation.
+    Login into shell of your TYPO3 installation.
 
-2. Change Directory
+2.  Change Directory
 
-   Move into the root directory of your TYPO3 installation
+    Move into the root directory of your TYPO3 installation
 
-3. Install
+3.  Install
 
-   .. code-block:: bash
+    .. code-block:: bash
 
-      composer req jweiland/jwtools2
+       composer req jweiland/jwtools2
 
-4. Add `jwtools2` profile table
+4.  Add `jwtools2` profile table
 
-   .. tabs::
+    ..  tabs::
 
-      .. group-tab:: Composer-based installation
+        ..  group-tab:: Composer-based installation
 
-         .. code-block:: bash
+            ..  code-block:: bash
 
-            vendor/bin/typo3 extension:setup -e jwtools2
+                vendor/bin/typo3 extension:setup -e jwtools2
 
-      .. group-tab:: Legacy installation
+        ..  group-tab:: Legacy installation
 
-         .. code-block:: bash
+            ..  code-block:: bash
 
-            typo3/sysext/core/bin/typo3 extension:setup -e jwtools2
+               typo3/sysext/core/bin/typo3 extension:setup -e jwtools2
 
 
 Next step
