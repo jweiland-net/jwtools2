@@ -1,13 +1,13 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _introduction:
+..  _introduction:
 
 ============
 Introduction
 ============
 
-.. _what-it-does:
+..  _what-it-does:
 
 What does it do?
 ================
@@ -105,10 +105,10 @@ static mapper interfaces to prevent generation of cHash in URL.
 
 See header of Classes/Routing/Aspect/PersistedTableMapper for a full example.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   aspects:
-     uid:
-       type: PersistedTableMapper
-     title:
-       type: PersistedTableMapper
+    aspects:
+      uid:
+        type: PersistedTableMapper
+      title:
+        type: PersistedTableMapper
