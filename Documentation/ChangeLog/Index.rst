@@ -11,6 +11,11 @@ ChangeLog
     :local:
 
 
+Version 6.0.4
+=============
+
+*   [BUGFIX] Allow switching the folders in FileBrowser. JS error.
+
 Version 6.0.3
 =============
 

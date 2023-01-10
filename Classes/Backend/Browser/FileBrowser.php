@@ -161,7 +161,8 @@ class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
         $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
         if (version_compare($typo3Version->getBranch(), '11.5', '=')) {
             // <h4> is the first header. It's before the three following forms: searchForm, uploadForm and createForm
-            [$top, $content] = GeneralUtility::trimExplode('<h4 class="text-truncate', parent::render(), true, 2);
+            // Do not remove empty values. In same cases $top contains just spaces/tabs.
+            [$top, $content] = GeneralUtility::trimExplode('<h4 class="text-truncate', parent::render(), false, 2);
             $pattern = '/(?P<header><h4 class="text-truncate.*?<\/h4>)(?P<searchForm><div class="mt-4 mb-4"><form.*?<\/form>\v<\/div>)(?P<fileList><div id="filelist">.*<\/div>)\v(?P<uploadForm><form.*?<\/form>)(?P<createForm><form.*?<\/form>)/usm';
             if (preg_match($pattern, '<h4 class="text-truncate' . $content, $matches)) {
                 return sprintf(
