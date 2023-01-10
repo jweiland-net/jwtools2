@@ -10,6 +10,10 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 6.0.5
+=============
+
+*   [BUGFIX] Repair upload form on top of EB for TYPO3 11
 
 Version 6.0.4
 =============
