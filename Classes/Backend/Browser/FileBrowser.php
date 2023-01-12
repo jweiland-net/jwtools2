@@ -44,6 +44,20 @@ class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
     }
 
     /**
+     * Only load additional JavaScript, if in file or folder context
+     */
+    protected function initialize(): void
+    {
+        // We have to prevent, that __construct() of AbstractElementBrowser will call initialize()
+        // of TYPO3's FileBrowser where additional JavaScript will be loaded. That would break the selection and
+        // transfer of chosen records into the parent form. Error: file_undefined insteadof file_123.
+        // JS module "TYPO3/CMS/Recordlist/BrowseFiles" should NOT be loaded, if we are not in file or folder context!!!
+        if (in_array((string)GeneralUtility::_GP('mode'), ['file', 'folder'])) {
+            parent::initialize();
+        }
+    }
+
+    /**
      * Return "true". Else complete rendering will not start.
      */
     public function isValid(string $mode, ElementBrowserController $elementBrowserController): bool
