@@ -10,6 +10,11 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 6.0.6
+=============
+
+*   [BUGFIX] Do not load FileBrowser JS in case of file or folder mode
+
 Version 6.0.5
 =============
 
