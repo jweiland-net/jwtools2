@@ -6,6 +6,10 @@
 ChangeLog
 =========
 
+**Version 5.10.3**
+
+- Use TYPO3 core LogLevel to prevent error while creating execute query task.
+
 **Version 5.10.2**
 
 - Add FlashMessage for non selectable files to FileBrowser
