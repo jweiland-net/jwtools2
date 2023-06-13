@@ -15,7 +15,7 @@ call_user_func(static function () {
     // Create our own logger file
     if (!isset($GLOBALS['TYPO3_CONF_VARS']['LOG']['JWeiland']['Jwtools2']['writerConfiguration'])) {
         $GLOBALS['TYPO3_CONF_VARS']['LOG']['JWeiland']['Jwtools2']['writerConfiguration'] = [
-            \Psr\Log\LogLevel::INFO => [
+            \TYPO3\CMS\Core\Log\LogLevel::INFO => [
                 \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
                     'logFileInfix' => 'jwtools2',
                 ],
