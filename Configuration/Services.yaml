@@ -11,6 +11,10 @@ services:
   JWeiland\Jwtools2\Backend\Browser\FileBrowser:
     public: true
 
+  # Called by makeInstance in getCallableFromTarget of Dispatcher
+  JWeiland\Jwtools2\Controller\Ajax\SysFileController:
+    public: true
+
   JWeiland\Jwtools2\Command\CacheQueryCommand:
     tags:
     - name: 'console.command'
