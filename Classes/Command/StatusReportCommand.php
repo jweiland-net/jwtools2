@@ -192,7 +192,7 @@ class StatusReportCommand extends Command
 
         if ($content === '' && !$this->input->hasOption('exclude-robots-txt-url-check')) {
             $base = rtrim((string)$site->getBase(), '/') . '/';
-            $content = GeneralUtility::getUrl($base . 'robots.txt');
+            $content = @file_get_contents($base . 'robots.txt');
 
             if (empty($content)) {
                 $content = '';
