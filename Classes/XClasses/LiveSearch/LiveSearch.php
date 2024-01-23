@@ -41,30 +41,15 @@ class LiveSearch
      */
     const RECURSIVE_PAGE_LEVEL = 99;
 
-    /**
-     * @var string
-     */
-    private $queryString = '';
+    private string $queryString = '';
 
-    /**
-     * @var int
-     */
-    private $startCount = 0;
+    private int $startCount = 0;
 
-    /**
-     * @var int
-     */
-    private $limitCount = 5;
+    private int $limitCount = 5;
 
-    /**
-     * @var string
-     */
-    protected $userPermissions = '';
+    protected string $userPermissions = '';
 
-    /**
-     * @var QueryParser
-     */
-    protected $queryParser;
+    protected QueryParser $queryParser;
 
     /**
      * Initialize access settings
@@ -77,11 +62,8 @@ class LiveSearch
 
     /**
      * Find records from database based on the given $searchQuery.
-     *
-     * @param string $searchQuery
-     * @return array Result list of database search.
      */
-    public function find($searchQuery)
+    public function find(string $searchQuery): array
     {
         $recordArray = [];
         $pageIdList = $this->getPageIdList();
@@ -318,7 +300,7 @@ class LiveSearch
                 $evalRules = $fieldConfig['eval'] ?? '';
 
                 // Check whether search should be case-sensitive or not
-                $searchConstraint = $queryBuilder->expr()->andX(
+                $searchConstraint = $queryBuilder->expr()->and(
                     $queryBuilder->expr()->comparison(
                         'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
                         'LIKE',
@@ -339,13 +321,13 @@ class LiveSearch
                     // Apply additional condition, if any
                     if ($fieldConfig['search']['andWhere'] ?? false) {
                         if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('runtimeDbQuotingOfTcaConfiguration')) {
-                            $searchConstraint->add(
+                            $searchConstraint = $searchConstraint->with(
                                 QueryHelper::stripLogicalOperatorPrefix(QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), $fieldConfig['search']['andWhere']))
                             );
                         } else {
-                            $searchConstraint->add(
+                            $searchConstraint = $searchConstraint->with(
                                 QueryHelper::stripLogicalOperatorPrefix($fieldConfig['search']['andWhere'])
-                            );
+                                );
                         }
                     }
                 }
@@ -367,7 +349,7 @@ class LiveSearch
             return '0=1';
         }
 
-        return $queryBuilder->expr()->orX(...$constraints);
+        return $queryBuilder->expr()->or(...$constraints);
     }
 
     /**

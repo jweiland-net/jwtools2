@@ -10,12 +10,15 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * Class ToolsController
  */
 class ToolsController extends AbstractController
 {
-    public function overviewAction(): void
+    public function overviewAction(): ResponseInterface
     {
+        return $this->htmlResponse();
     }
 }

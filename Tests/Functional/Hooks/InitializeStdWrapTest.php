@@ -11,11 +11,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\Hooks;
 
 use JWeiland\Jwtools2\Hooks\InitializeStdWrap;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case

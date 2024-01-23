@@ -12,13 +12,13 @@ namespace JWeiland\Jwtools2\Tests\Unit\Task;
 
 use Doctrine\DBAL\Driver\Statement;
 use JWeiland\Jwtools2\Task\ExecuteQueryTask;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Scheduler;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case.

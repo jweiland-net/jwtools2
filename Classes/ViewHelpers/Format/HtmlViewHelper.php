@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\ViewHelpers\Format;
 
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -107,7 +108,7 @@ class HtmlViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ): string {
         $parseFuncTSPath = $arguments['parseFuncTSPath'];
-        if (TYPO3_MODE === 'BE') {
+        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
             self::simulateFrontendEnvironment();
         }
 
@@ -116,7 +117,7 @@ class HtmlViewHelper extends AbstractViewHelper
         $contentObject->start($arguments['data'] ?? []);
         $content = $contentObject->parseFunc($value, [], '< ' . $parseFuncTSPath);
 
-        if (TYPO3_MODE === 'BE') {
+        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
             self::resetFrontendEnvironment();
         }
 

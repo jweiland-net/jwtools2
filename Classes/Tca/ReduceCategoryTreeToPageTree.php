@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Tca;
 
+use Doctrine\DBAL\ArrayParameterType;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -20,6 +21,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\QueryGenerator;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -57,7 +59,7 @@ class ReduceCategoryTreeToPageTree
     {
         try {
             if (
-                (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE)
+                (TYPO3_REQUESTTYPE & ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend())
                 && $this->extensionConfiguration->get('jwtools2', 'reduceCategoriesToPageTree') === '1'
                 && !$this->getBackendUserAuthentication()->isAdmin()
                 && $event->getProvider()->getTableName() === $this->categoryTableName
@@ -147,12 +149,12 @@ class ReduceCategoryTreeToPageTree
                         'pid',
                         $queryBuilder->createNamedParameter(
                             $this->getPagesOfCurrentRootPage($pageUid),
-                            Connection::PARAM_INT_ARRAY
+                            ArrayParameterType::INTEGER
                         )
                     )
                 )
-                ->execute()
-                ->fetchAll();
+                ->executeQuery()
+                ->fetchAllAssociative();
 
             if (empty($categories)) {
                 return '0';

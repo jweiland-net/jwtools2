@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Controller;
 
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,13 +22,9 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
  */
 abstract class AbstractController extends ActionController
 {
-    /**
-     * The default view object to use if none of the resolved views can render
-     * a response for the current request.
-     *
-     * @var string
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
+    public function __construct(private ModuleTemplateFactory $moduleTemplateFactory)
+    {
+    }
 
     /**
      * Initializes the view before invoking an action method.
