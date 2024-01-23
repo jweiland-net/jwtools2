@@ -116,7 +116,7 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
                     $queryBuilder->expr()->neq('expression', $queryBuilder->createNamedParameter(''))
                 )
                 ->from('tx_jwtools2_cache_expression')
-                ->execute();
+                ->executeQuery();
 
             while ($cacheExpression = $statement->fetch(\PDO::FETCH_ASSOC)) {
                 $cacheExpressions[] = $cacheExpression;

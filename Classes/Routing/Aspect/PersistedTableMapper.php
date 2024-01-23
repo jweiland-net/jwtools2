@@ -126,8 +126,8 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
                     $queryBuilder->createNamedParameter($source ?: $target, \PDO::PARAM_STR)
                 )
             )
-            ->execute()
-            ->fetch();
+            ->executeQuery()
+            ->fetchAllAssociative();
 
         return $storedRoute ?: [];
     }

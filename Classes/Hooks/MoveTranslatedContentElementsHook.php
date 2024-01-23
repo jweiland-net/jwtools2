@@ -109,10 +109,10 @@ class MoveTranslatedContentElementsHook
                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT, ':pointer')
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         $contentRecords = [];
-        while ($contentRecord = $statement->fetch()) {
+        while ($contentRecord = $statement->fetchAssociative()) {
             $contentRecords[] = $contentRecord;
         }
 

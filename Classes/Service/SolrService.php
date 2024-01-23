@@ -38,10 +38,10 @@ class SolrService
             ->from('tx_solr_indexqueue_item')
             ->groupBy('pending')
             ->addGroupBy('failed')
-            ->execute();
+            ->executeQuery();
 
         $indexQueueStats = [];
-        while ($indexQueueStat = $statement->fetch()) {
+        while ($indexQueueStat = $statement->fetchAssociative()) {
             $indexQueueStats[] = $indexQueueStat;
         }
 

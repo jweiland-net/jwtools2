@@ -16,6 +16,7 @@ use TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -97,7 +98,7 @@ class ModifyElementInformationHook
     protected $row;
 
     /**
-     * @var \TYPO3\CMS\Core\Resource\File|null
+     * @var File|null
      */
     protected $fileObject;
 
@@ -613,7 +614,7 @@ class ModifyElementInformationHook
             $actions['webListUrl'] = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $uid, 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()]);
 
             // View page button
-            $actions['viewOnClick'] = BackendUtility::viewOnClick($uid, '', BackendUtility::BEgetRootLine($uid));
+            $actions['viewOnClick'] = PreviewUriBuilder::create($uid)->buildDispatcherDataAttributes();
         }
 
         return $actions;
@@ -623,7 +624,7 @@ class ModifyElementInformationHook
      * Make reference display
      *
      * @param string $table Table name
-     * @param int|\TYPO3\CMS\Core\Resource\File $ref Filename or uid
+     * @param int|File $ref Filename or uid
      * @param ServerRequestInterface $request
      * @return array
      * @throws RouteNotFoundException
@@ -667,8 +668,8 @@ class ModifyElementInformationHook
             ->select('*')
             ->from('sys_refindex')
             ->where(...$predicates)
-            ->execute()
-            ->fetchAll();
+            ->executeQuery()
+            ->fetchAllAssociative();
 
         // Compile information for title tag:
         foreach ($rows as $row) {
@@ -759,8 +760,8 @@ class ModifyElementInformationHook
             ->select('*')
             ->from('sys_refindex')
             ->where(...$predicates)
-            ->execute()
-            ->fetchAll();
+            ->executeQuery()
+            ->fetchAllAssociative();
 
         // Compile information for title tag:
         foreach ($rows as $row) {
@@ -818,8 +819,8 @@ class ModifyElementInformationHook
                     $queryBuilder->createNamedParameter($referenceRecord['recuid'], Connection::PARAM_INT)
                 )
             )
-            ->execute()
-            ->fetch();
+            ->executeQuery()
+            ->fetchAssociative();
 
         return [
             'recuid' => $fileReference['uid_foreign'],
