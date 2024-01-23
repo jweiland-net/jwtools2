@@ -10,16 +10,16 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\LinkHandler;
 
+use TYPO3\CMS\Backend\Controller\AbstractLinkBrowserController;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * This folder LinkHandler overwrites the LinkHandler of TYPO3 and moves upload and create folder fields to top
  */
-class FolderLinkHandler extends \TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHandler
+class FolderLinkHandler extends \TYPO3\CMS\Backend\LinkHandler\FolderLinkHandler
 {
     /**
      * @var StandaloneView|ViewInterface
