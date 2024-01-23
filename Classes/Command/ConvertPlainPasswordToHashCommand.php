@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\Command;
 
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -156,13 +157,13 @@ class ConvertPlainPasswordToHashCommand extends Command
         return $this->modeMapping[$mode]['hashInstance'];
     }
 
-    protected function getStatementForUsers(string $tableName): Statement
+    protected function getStatementForUsers(string $tableName): Result
     {
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($tableName);
         return $queryBuilder
             ->select('uid', 'password')
             ->from($tableName)
-            ->execute();
+            ->executeQuery();
     }
 
     protected function getConnectionPool(): ConnectionPool
