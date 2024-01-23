@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\Backend\Browser;
 
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
+use TYPO3\CMS\Backend\Controller\ElementBrowserController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
@@ -25,13 +26,12 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Recordlist\Controller\ElementBrowserController;
 
 /**
  * Modified version of TYPO3's ElementBrowserController.
  * We have modified the templates to allow showing the upload form on top of the file/folder list
  */
-class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
+class FileBrowser extends \TYPO3\CMS\Backend\ElementBrowser\FileBrowser
 {
     /**
      * @var ExtensionConfiguration
