@@ -22,8 +22,11 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
  */
 abstract class AbstractController extends ActionController
 {
-    public function __construct(private ModuleTemplateFactory $moduleTemplateFactory)
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(ModuleTemplateFactory $moduleTemplateFactory)
     {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
