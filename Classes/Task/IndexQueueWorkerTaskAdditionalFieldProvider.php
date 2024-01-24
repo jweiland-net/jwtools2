@@ -20,7 +20,7 @@ use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 /**
  * Additional field provider for the index queue worker task
  */
-class IndexQueueWorkerTaskAdditionalFieldProvider implements AbstractAdditionalFieldProvider
+class IndexQueueWorkerTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {
     /**
      * Used to define fields to provide the TYPO3 site to index and number of
