@@ -5,9 +5,6 @@ if (!defined('TYPO3')) {
 }
 
 call_user_func(static function () {
-    $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-        \TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class
-    );
     $jwToolsConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
         \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
     )->get('jwtools2');
@@ -34,13 +31,6 @@ call_user_func(static function () {
             'description' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang.xlf:indexqueueworker_description',
             'additionalFields' => \JWeiland\Jwtools2\Task\IndexQueueWorkerTaskAdditionalFieldProvider::class,
         ];
-        // Hook into Solr Index Service
-        $signalSlotDispatcher->connect(
-            \ApacheSolrForTypo3\Solr\Domain\Index\IndexService::class,
-            'beforeIndexItem',
-            \JWeiland\Jwtools2\Hooks\IndexService::class,
-            'beforeIndexItem'
-        );
     }
 
     if ($jwToolsConfiguration['enableSqlQueryTask'] ?? false) {
