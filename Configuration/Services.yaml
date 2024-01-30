@@ -48,7 +48,14 @@ services:
   JWeiland\Jwtools2\LinkHandling\FolderLinkHandler:
     public: true
 
-  JWeiland\Jwtools2\Tca\ReduceCategoryTreeToPageTree:
+  # Event Listeners
+  JWeiland\Jwtools2\EventListener\ReduceCategoryTreeToPageTree:
     tags:
     - name: event.listener
       event: TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent
+
+  JWeiland\Jwtools2\EventListener\IndexServiceEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'jwtools2.events.beforeItemIsIndexedEvent'
+        event: ApacheSolrForTypo3\Solr\Event\Indexing\BeforeItemIsIndexedEvent

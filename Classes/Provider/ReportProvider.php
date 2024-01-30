@@ -136,4 +136,9 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
         // There is no need to render extension updates as WARNING in reports module.
         return $renderForReportMail && $extConfSeverity === 'warning' ? Status::WARNING : Status::INFO;
     }
+
+    public function getLabel(): string
+    {
+        return '';
+    }
 }

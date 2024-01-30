@@ -8,7 +8,7 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Jwtools2\Tca;
+namespace JWeiland\Jwtools2\EventListener;
 
 use Doctrine\DBAL\ArrayParameterType;
 use TYPO3\CMS\Backend\Tree\TreeNode;

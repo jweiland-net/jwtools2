@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\Backend;
 
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
  * DocHeader for our Solr Module
@@ -20,6 +22,9 @@ class SolrDocHeader extends AbstractDocHeader
     public function renderDocHeader(): void
     {
         // initialize UriBuilder
+        if (!($this->uriBuilder instanceof UriBuilder)) {
+            $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        }
         $this->uriBuilder->setRequest($this->request);
 
         // Render Buttons

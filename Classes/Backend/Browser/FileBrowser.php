@@ -19,11 +19,11 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -33,16 +33,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class FileBrowser extends \TYPO3\CMS\Backend\ElementBrowser\FileBrowser
 {
-    /**
-     * @var ExtensionConfiguration
-     */
-    protected $extensionConfiguration;
-
-    public function injectExtensionConfiguration(ExtensionConfiguration $extensionConfiguration): void
-    {
-        $this->extensionConfiguration = $extensionConfiguration;
-    }
-
     /**
      * Only load additional JavaScript, if in file or folder context
      */
@@ -84,7 +74,7 @@ class FileBrowser extends \TYPO3\CMS\Backend\ElementBrowser\FileBrowser
                         LocalizationUtility::translate(
                             'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:fileBrowser.flashMessage.requiredColumns.title'
                         ),
-                        AbstractMessage::INFO
+                        ContextualFeedbackSeverity::INFO
                     )
                 );
             }

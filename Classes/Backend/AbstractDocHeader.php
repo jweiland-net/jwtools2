@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Backend;
 
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -17,35 +18,22 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Fluid\View\TemplateView;
 
 /**
  * Abstract DocHeader for Backend Modules
  */
 abstract class AbstractDocHeader
 {
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
+    protected ?UriBuilder $uriBuilder = null;
 
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
+    protected IconFactory $iconFactory;
 
-    /**
-     * @var BackendTemplateView
-     */
-    protected $view;
+    protected ModuleTemplate $view;
 
-    /**
-     * The current request.
-     *
-     * @var Request
-     */
-    protected $request;
+    protected Request $request;
 
-    public function __construct(Request $request, ViewInterface $view)
+    public function __construct(Request $request, ModuleTemplate $view)
     {
         $this->request = $request;
         $this->view = $view;
@@ -63,7 +51,8 @@ abstract class AbstractDocHeader
 
     protected function addHelpButton(): void
     {
-        $buttonBar = $this->view->getModuleTemplate()
+        debug($this->view);
+        $buttonBar = $this->view
             ->getDocHeaderComponent()
             ->getButtonBar();
 
@@ -78,7 +67,6 @@ abstract class AbstractDocHeader
     protected function addShortcutButton(): void
     {
         $buttonBar = $this->view
-            ->getModuleTemplate()
             ->getDocHeaderComponent()
             ->getButtonBar();
 
@@ -94,7 +82,6 @@ abstract class AbstractDocHeader
     protected function addCloseButton(): void
     {
         $buttonBar = $this->view
-            ->getModuleTemplate()
             ->getDocHeaderComponent()
             ->getButtonBar();
 

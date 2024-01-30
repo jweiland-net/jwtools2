@@ -20,6 +20,10 @@ use JWeiland\Jwtools2\Domain\Repository\SchedulerRepository;
 use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use JWeiland\Jwtools2\Service\SolrService;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -30,25 +34,16 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
-/**
- * Class SolrController
- */
+#[AsController]
 class SolrController extends AbstractController
 {
-    /**
-     * @var SolrRepository
-     */
-    protected $solrRepository;
+    protected SolrRepository $solrRepository;
 
-    /**
-     * @var SchedulerRepository
-     */
-    protected $schedulerRepository;
+    protected SchedulerRepository $schedulerRepository;
 
-    /**
-     * @var Registry
-     */
-    protected $registry;
+    protected Registry $registry;
+
+    protected PageRenderer $pageRenderer;
 
     public function injectSolrRepository(SolrRepository $solrRepository): void
     {
@@ -65,17 +60,20 @@ class SolrController extends AbstractController
         $this->registry = $registry;
     }
 
-    public function initializeView(ViewInterface $view): void
+    public function injectPageRenderer(PageRenderer $pageRenderer): void
+    {
+        $this->pageRenderer = $pageRenderer;
+    }
+
+    public function initializeView($view): void
     {
         if (!$view instanceof NotFoundView) {
             parent::initializeView($view);
 
-            /** @var PageRenderer $pageRenderer */
-            $pageRenderer = $this->objectManager->get(PageRenderer::class);
-            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Jwtools2/SolrIndex');
+            $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Jwtools2/SolrIndex');
 
             /** @var SolrDocHeader $docHeader */
-            $docHeader = $this->objectManager->get(SolrDocHeader::class, $this->request, $view);
+            $docHeader = GeneralUtility::makeInstance(SolrDocHeader::class, $this->request, $this->moduleTemplate);
             $docHeader->renderDocHeader();
 
             if (!$this->schedulerRepository->findSolrSchedulerTask()) {
