@@ -4,9 +4,11 @@
 			xmlns:c="http://typo3.org/ns/TYPO3\CMS\Core\ViewHelpers"
 			data-namespace-typo3-fluid="true">
 
-<f:layout name="Default"/>
+<f:layout name="Module" />
 
-<f:section name="main">
+<f:section name="Content">
+    <f:flashMessages />
+
 	<div class="row">
 		<h1>{f:translate(key: 'mod.solr.solrFeaturesOverview')}</h1>
 		<h2>{f:translate(key: 'mod.solr.memoryUsageSchedulerTask')}</h2>

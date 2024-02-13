@@ -26,17 +26,18 @@ use TYPO3\CMS\Fluid\View\TemplateView;
 abstract class AbstractDocHeader
 {
     protected ?UriBuilder $uriBuilder = null;
-
-    protected IconFactory $iconFactory;
-
-    protected ModuleTemplate $view;
-
-    protected Request $request;
+    protected ?IconFactory $iconFactory = null;
+    protected ?ModuleTemplate $view = null;
+    protected ?Request $request = null;
 
     public function __construct(Request $request, ModuleTemplate $view)
     {
         $this->request = $request;
         $this->view = $view;
+
+        if ($this->iconFactory === null) {
+            $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        }
     }
 
     public function injectUriBuilder(UriBuilder $uriBuilder): void
@@ -51,7 +52,6 @@ abstract class AbstractDocHeader
 
     protected function addHelpButton(): void
     {
-        debug($this->view);
         $buttonBar = $this->view
             ->getDocHeaderComponent()
             ->getButtonBar();
@@ -72,9 +72,8 @@ abstract class AbstractDocHeader
 
         $shortcutButton = $buttonBar
             ->makeShortcutButton()
-            ->setModuleName(
-                $this->request->getPluginName()
-            );
+            ->setRouteIdentifier($this->request->getPluginName())
+            ->setDisplayName('Jwtools2');
 
         $buttonBar->addButton($shortcutButton);
     }

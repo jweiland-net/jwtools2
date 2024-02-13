@@ -37,7 +37,6 @@ class SolrDocHeader extends AbstractDocHeader
     protected function addModuleSelector(): void
     {
         $buttonBar = $this->view
-            ->getModuleTemplate()
             ->getDocHeaderComponent()
             ->getButtonBar();
 
@@ -48,17 +47,26 @@ class SolrDocHeader extends AbstractDocHeader
             ->makeInputButton()
             ->setName('module')
             ->setValue('solr')
-            ->setOnClick($this->getLinkForUrl($this->uriBuilder->reset()->uriFor('list', [], 'Solr')))
+            //->setOnClick()
             ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
             ->setTitle('Solr Overview')
-            ->setShowLabelText(true);
+            ->setShowLabelText(true)
+            ->setDataAttributes([
+                'dispatch-action' => 'TYPO3.WindowManager.localOpen',
+                // JSON encoded representation of JavaScript function arguments
+                // (HTML attributes are encoded in \TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton)
+                'dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                    $this->getLinkForUrl($this->uriBuilder->reset()->uriFor('list', [], 'Solr')),
+                ], false)
+            ]);
+
         $splitButtonBar->addItem($newButton, true);
 
         $newButton = $buttonBar
             ->makeInputButton()
             ->setName('module')
             ->setValue('cleanUp')
-            ->setOnClick($this->getLinkForUrl($this->uriBuilder->reset()->uriFor('showClearFullIndexForm', [], 'Solr')))
+            //->setOnClick($this->getLinkForUrl($this->uriBuilder->reset()->uriFor('showClearFullIndexForm', [], 'Solr')))
             ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
             ->setTitle('Clear full index...')
             ->setShowLabelText(true);
