@@ -16,18 +16,16 @@ use ApacheSolrForTypo3\Solr\IndexQueue\Item;
 use ApacheSolrForTypo3\Solr\IndexQueue\Queue;
 use ApacheSolrForTypo3\Solr\System\Configuration\TypoScriptConfiguration;
 use JWeiland\Jwtools2\Backend\SolrDocHeader;
-use JWeiland\Jwtools2\Domain\Repository\SchedulerRepository;
-use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use JWeiland\Jwtools2\Service\SolrService;
+use JWeiland\Jwtools2\Traits\InjectPageRendererTrait;
+use JWeiland\Jwtools2\Traits\InjectRegistryTrait;
+use JWeiland\Jwtools2\Traits\InjectSchedulerRepositoryTrait;
+use JWeiland\Jwtools2\Traits\InjectSolrRepositoryTrait;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
@@ -37,40 +35,18 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 #[AsController]
 class SolrController extends AbstractController
 {
-    protected SolrRepository $solrRepository;
-
-    protected SchedulerRepository $schedulerRepository;
-
-    protected Registry $registry;
-
-    protected PageRenderer $pageRenderer;
-
-    public function injectSolrRepository(SolrRepository $solrRepository): void
-    {
-        $this->solrRepository = $solrRepository;
-    }
-
-    public function injectSchedulerRepository(SchedulerRepository $schedulerRepository): void
-    {
-        $this->schedulerRepository = $schedulerRepository;
-    }
-
-    public function injectRegistry(Registry $registry): void
-    {
-        $this->registry = $registry;
-    }
-
-    public function injectPageRenderer(PageRenderer $pageRenderer): void
-    {
-        $this->pageRenderer = $pageRenderer;
-    }
+    use InjectSolrRepositoryTrait;
+    use InjectSchedulerRepositoryTrait;
+    use InjectRegistryTrait;
+    use InjectPageRendererTrait;
 
     public function initializeView($view): void
     {
         if (!$view instanceof NotFoundView) {
             parent::initializeView($view);
 
-            $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Jwtools2/SolrIndex');
+            //$this->pageRenderer->loadJavaScriptModule('@jweiland/jwtools2/SolrBackendModule.js');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Jwtools2/SolrIndex');
 
             /** @var SolrDocHeader $docHeader */
             $docHeader = GeneralUtility::makeInstance(SolrDocHeader::class, $this->request, $this->moduleTemplate);
@@ -80,7 +56,7 @@ class SolrController extends AbstractController
                 $this->addFlashMessage(
                     'No or wrong scheduler task UID configured in ExtensionManager Configuration of jwtools2',
                     'Missing or wrong configuration',
-                    AbstractMessage::WARNING
+                    ContextualFeedbackSeverity::WARNING
                 );
             }
         }
@@ -88,10 +64,10 @@ class SolrController extends AbstractController
 
     public function listAction(): ResponseInterface
     {
-        $this->view->assign('sites', $this->solrRepository->findAllAvailableSites());
-        $this->view->assign('currentRootPageUid', $this->registry->get('jwtools2-solr', 'rootPageId', 0));
+        $this->moduleTemplate->assign('sites', $this->solrRepository->findAllAvailableSites());
+        $this->moduleTemplate->assign('currentRootPageUid', $this->registry->get('jwtools2-solr', 'rootPageId', 0));
 
-        return $this->htmlResponse();
+        return $this->moduleTemplate->renderResponse('List');
     }
 
     public function showAction(int $rootPageUid): ResponseInterface
@@ -126,7 +102,7 @@ class SolrController extends AbstractController
             $this->addFlashMessage(
                 'Please enter a record UID before submitting the form',
                 'Record UID empty',
-                AbstractMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         } else {
             $site = $this->solrRepository->findByRootPage($rootPageUid);
@@ -142,21 +118,21 @@ class SolrController extends AbstractController
                         $this->addFlashMessage(
                             'Indexing Solr Queue Item object failed. Please check logs. Record UID: ' . $recordUid,
                             'Indexing Failed',
-                            AbstractMessage::ERROR
+                            ContextualFeedbackSeverity::ERROR
                         );
                     }
                 } else {
                     $this->addFlashMessage(
                         'Solr Index Queue Item could not be found by Record UID: ' . $recordUid,
                         'Indexing Failed',
-                        AbstractMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     );
                 }
             } else {
                 $this->addFlashMessage(
                     'Solr Site object could not be retrieved by RootPageUid: ' . $rootPageUid,
                     'Indexing Failed',
-                    AbstractMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 );
             }
         }
@@ -188,7 +164,7 @@ class SolrController extends AbstractController
             $this->addFlashMessage(
                 $rootPageUid . ' is no valid RootPage UID',
                 'Invalid RootPage UID',
-                AbstractMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             );
             $this->redirect('list');
         }
@@ -216,7 +192,7 @@ class SolrController extends AbstractController
             $this->addFlashMessage(
                 'We haven\'t found a Site with RootPage UID: ' . $rootPageUid,
                 'Site not found',
-                AbstractMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             );
         }
 
