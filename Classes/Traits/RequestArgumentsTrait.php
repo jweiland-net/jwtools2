@@ -18,19 +18,27 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 trait RequestArgumentsTrait
 {
+    private ?ServerRequestInterface $request = null;
+
     public function getGPValue(string $key): ?string
     {
-        /** @var ServerRequestInterface $request */
-        $request = GeneralUtility::makeInstance(ServerRequestInterface::class);
-
+        $request = $this->getServerRequestInterface();
         return $request->getParsedBody()[$key] ?? $request->getQueryParams()[$key];
     }
 
     public function getMergedPostAndGetValues(): array
     {
-        /** @var ServerRequestInterface $request */
-        $request = GeneralUtility::makeInstance(ServerRequestInterface::class);
+        $request = $this->getServerRequestInterface();
 
         return array_merge($request->getQueryParams(), $request->getParsedBody());
+    }
+
+    private function getServerRequestInterface(): ServerRequestInterface
+    {
+        if ($this->request === null) {
+            $this->request = GeneralUtility::makeInstance(ServerRequestInterface::class);
+        }
+
+        return $this->request;
     }
 }
