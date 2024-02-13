@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\Backend\Browser;
 
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
+use JWeiland\Jwtools2\Traits\RequestArgumentsTrait;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\ElementBrowserController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
@@ -33,16 +35,18 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class FileBrowser extends \TYPO3\CMS\Backend\ElementBrowser\FileBrowser
 {
+    use RequestArgumentsTrait;
+
     /**
      * Only load additional JavaScript, if in file or folder context
      */
-    protected function initialize(): void
+    protected function initialize(ServerRequestInterface $request): void
     {
         // We have to prevent, that __construct() of AbstractElementBrowser will call initialize()
         // of TYPO3's FileBrowser where additional JavaScript will be loaded. That would break the selection and
         // transfer of chosen records into the parent form. Error: file_undefined insteadof file_123.
         // JS module "TYPO3/CMS/Recordlist/BrowseFiles" should NOT be loaded, if we are not in file or folder context!!!
-        if (in_array((string)GeneralUtility::_GP('mode'), ['file', 'folder'])) {
+        if (in_array($this->getGPValue('mode'), ['file', 'folder'])) {
             parent::initialize();
         }
     }
