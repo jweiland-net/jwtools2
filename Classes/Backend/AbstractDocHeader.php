@@ -50,20 +50,6 @@ abstract class AbstractDocHeader
         $this->iconFactory = $iconFactory;
     }
 
-    protected function addHelpButton(): void
-    {
-        $buttonBar = $this->view
-            ->getDocHeaderComponent()
-            ->getButtonBar();
-
-        $cshButton = $buttonBar
-            ->makeHelpButton()
-            ->setModuleName('_MOD_' . 'tools_Jwtools2tools')
-            ->setFieldName('');
-
-        $buttonBar->addButton($cshButton);
-    }
-
     protected function addShortcutButton(): void
     {
         $buttonBar = $this->view

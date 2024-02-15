@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Hooks;
 
+use JWeiland\Jwtools2\Traits\RequestArgumentsTrait;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -23,6 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class CachingFrameworkLoggerHook implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use RequestArgumentsTrait;
 
     /**
      * @var FrontendInterface
@@ -93,8 +95,8 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
             'cacheExpression' => $cacheExpression,
             'backtrace' => debug_backtrace(2), // 0 => without objects
             'request' => GeneralUtility::getIndpEnv('_ARRAY'),
-            'GET' => GeneralUtility::_GET(),
-            'POST' => GeneralUtility::_POST(),
+            'GET' => $this->getGetArguments(),
+            'POST' => $this->getPostArguments(),
         ];
         // Yes, we log that as error. In most cases you have problems on LIVE/PRODUCTION where severities of info and
         // warning are not logged.

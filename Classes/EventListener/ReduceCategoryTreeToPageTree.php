@@ -11,6 +11,9 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\EventListener;
 
 use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\Exception;
+use JWeiland\Jwtools2\Query\QueryGenerator;
+use JWeiland\Jwtools2\Traits\RequestArgumentsTrait;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -20,7 +23,6 @@ use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExis
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,6 +32,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ReduceCategoryTreeToPageTree
 {
+    use RequestArgumentsTrait;
+
     /**
      * @var string
      */
@@ -59,7 +63,7 @@ class ReduceCategoryTreeToPageTree
     {
         try {
             if (
-                (TYPO3_REQUESTTYPE & ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend())
+                (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend())
                 && $this->extensionConfiguration->get('jwtools2', 'reduceCategoriesToPageTree') === '1'
                 && !$this->getBackendUserAuthentication()->isAdmin()
                 && $event->getProvider()->getTableName() === $this->categoryTableName
@@ -108,11 +112,11 @@ class ReduceCategoryTreeToPageTree
     protected function getPageUid(): int
     {
         if (empty($this->pageUid)) {
-            $command = GeneralUtility::_GET('command');
+            $command = $this->getGetArguments()['command'] ?? '';
             if ($command === 'edit') {
                 $record = BackendUtility::getRecordWSOL(
-                    GeneralUtility::_GET('tableName'),
-                    (int)GeneralUtility::_GET('uid'),
+                    $this->getGetArguments()['tableName'] ?? '',
+                    (int)$this->getGetArguments()['uid'],
                     'pid'
                 );
                 if (empty($record)) {
@@ -122,7 +126,7 @@ class ReduceCategoryTreeToPageTree
                 }
             } else {
                 // in case of command==new given uid is pid of current page
-                $pid = (int)GeneralUtility::_GET('uid');
+                $pid = (int)$this->getGetArguments()['uid'];
             }
 
             $this->pageUid = $pid;
@@ -136,6 +140,7 @@ class ReduceCategoryTreeToPageTree
      *
      * @param int $pageUid
      * @return string
+     * @throws Exception
      */
     protected function getListOfAllowedCategoryUids(int $pageUid): string
     {

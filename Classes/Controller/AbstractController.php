@@ -15,6 +15,7 @@ use TYPO3\CMS\Backend\Template\Components\Menu\Menu;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -29,7 +30,13 @@ abstract class AbstractController extends ActionController
 
     protected ModuleTemplate $moduleTemplate;
 
+    protected ?IconFactory $iconFactory = null;
     protected UriBuilder $backendUriBuilder;
+
+    public function injectIconFactory(IconFactory $iconFactory): void
+    {
+        $this->iconFactory = $iconFactory;
+    }
 
     public function __construct(ModuleTemplateFactory $moduleTemplateFactory, UriBuilder $backendUriBuilder)
     {

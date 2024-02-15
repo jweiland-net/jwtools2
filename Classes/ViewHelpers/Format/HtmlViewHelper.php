@@ -10,12 +10,13 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\ViewHelpers\Format;
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -127,23 +128,22 @@ class HtmlViewHelper extends AbstractViewHelper
     /**
      * Copies the specified parseFunc configuration to $GLOBALS['TSFE']->tmpl->setup in Backend mode
      * This somewhat hacky work around is currently needed because the parseFunc() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on those variables to be set
+     *
+     * @throws AspectNotFoundException
      */
     protected static function simulateFrontendEnvironment(): void
     {
+        $context = GeneralUtility::makeInstance(Context::class);
         if (
-            !$GLOBALS['TSFE'] instanceof TypoScriptFrontendController
-            || !$GLOBALS['TSFE']->tmpl instanceof TemplateService
-            || !$GLOBALS['TSFE']->sys_page instanceof PageRepository
+            !$context->getPropertyFromAspect('typoscript', 'frontendController') instanceof TypoScriptFrontendController
         ) {
-            self::$tsfeBackup = $GLOBALS['TSFE'] ?? null;
-            $GLOBALS['TSFE'] = new \stdClass();
-            $GLOBALS['TSFE']->cObjectDepthCounter = 50;
-            $GLOBALS['TSFE']->tmpl = new \stdClass();
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
-            $GLOBALS['TSFE']->tmpl->setup = $configurationManager->getConfiguration(
-                ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
-            );
+            self::$tsfeBackup = $context->getPropertyFromAspect('typoscript', 'frontendController');
+            $context->setAspect('typoscript', $context->getAspect('frontendController'), new \stdClass());
+            $context->setAspect('typoscript', $context->getAspect('cObjectDepthCounter'), 50);
+            $context->setAspect('typoscript', $context->getAspect('templateService'), new \stdClass());
+
+            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+            $context->setAspect('typoscript', $context->getAspect('setup'), $typoScriptService->getConfiguration());
         }
     }
 

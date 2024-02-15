@@ -204,7 +204,7 @@ class SolrController extends AbstractController
      */
     public function showClearFullIndexFormAction(): ResponseInterface
     {
-        $pageRenderer = $this->objectManager->get(PageRenderer::class);
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Jwtools2/ClearFullIndex');
 
         $configurationNamesOfAllSites = [];

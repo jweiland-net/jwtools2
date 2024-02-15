@@ -10,7 +10,6 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 /**
  * Module: TYPO3/CMS/Jwtools2/SolrIndex
  */

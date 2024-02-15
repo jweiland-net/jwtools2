@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -40,7 +41,7 @@ class FileBrowser extends \TYPO3\CMS\Backend\ElementBrowser\FileBrowser
     /**
      * Only load additional JavaScript, if in file or folder context
      */
-    protected function initialize(ServerRequestInterface $request): void
+    protected function initialize(): void
     {
         // We have to prevent, that __construct() of AbstractElementBrowser will call initialize()
         // of TYPO3's FileBrowser where additional JavaScript will be loaded. That would break the selection and
@@ -59,8 +60,10 @@ class FileBrowser extends \TYPO3\CMS\Backend\ElementBrowser\FileBrowser
         if ($mode === 'file' || $mode === 'folder') {
             if ($this->getRequiredColumnsFromExtensionConfiguration()) {
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-                $flashMessageQueue->addMessage(
+                $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier(
+                    FlashMessageQueue::NOTIFICATION_QUEUE
+                );
+                $flashMessageQueue->enqueue(
                     GeneralUtility::makeInstance(
                         FlashMessage::class,
                         LocalizationUtility::translate(
