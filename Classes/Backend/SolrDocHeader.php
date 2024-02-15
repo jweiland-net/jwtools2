@@ -28,7 +28,6 @@ class SolrDocHeader extends AbstractDocHeader
         $this->uriBuilder->setRequest($this->request);
 
         // Render Buttons
-        $this->addHelpButton();
         $this->addShortcutButton();
         $this->addCloseButton();
         $this->addModuleSelector();
