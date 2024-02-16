@@ -186,7 +186,7 @@ class SolrController extends AbstractController
                 'We successfully have cleared the index of Site: "' . $site->getTitle() . '"',
                 'Index cleared'
             );
-            $this->redirect('list');
+            return $this->redirect('list');
         } else {
             $this->addFlashMessage(
                 'We haven\'t found a Site with RootPage UID: ' . $rootPageUid,
@@ -195,7 +195,7 @@ class SolrController extends AbstractController
             );
         }
 
-        return $this->htmlResponse();
+        return $this->moduleTemplate->renderResponse('clearIndex');
     }
 
     /**
