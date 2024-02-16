@@ -95,7 +95,7 @@ class IndexQueueWorkerTaskAdditionalFieldProvider extends AbstractAdditionalFiel
     public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
         /** @var IndexQueueWorkerTask $task */
-        $task->setDocumentsToIndexLimit($submittedData['documentsToIndexLimit']);
-        $task->setMaxSitesPerRun($submittedData['maxSitesPerRun']);
+        $task->setDocumentsToIndexLimit((int)$submittedData['documentsToIndexLimit']);
+        $task->setMaxSitesPerRun((int)$submittedData['maxSitesPerRun']);
     }
 }

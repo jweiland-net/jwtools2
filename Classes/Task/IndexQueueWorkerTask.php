@@ -27,15 +27,9 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInterface
 {
-    /**
-     * @var int
-     */
-    protected $documentsToIndexLimit = 50;
+    protected int $documentsToIndexLimit = 50;
 
-    /**
-     * @var int
-     */
-    protected $maxSitesPerRun = 10;
+    protected int $maxSitesPerRun = 10;
 
     /**
      * Works through the indexing queue and indexes the queued items into Solr.
