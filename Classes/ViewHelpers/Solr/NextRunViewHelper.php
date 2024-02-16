@@ -11,45 +11,24 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\ViewHelpers\Solr;
 
 use ApacheSolrForTypo3\Solr\Domain\Site\Site;
-use JWeiland\Jwtools2\Domain\Repository\SchedulerRepository;
-use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
-use TYPO3\CMS\Core\Registry;
+use JWeiland\Jwtools2\Traits\InjectRegistryTrait;
+use JWeiland\Jwtools2\Traits\InjectSchedulerRepositoryTrait;
+use JWeiland\Jwtools2\Traits\InjectSolrRepositoryTrait;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Class NextRunViewHelper
+ * This ViewHelper is used to calculate the next run for a given site.
+ *
+ * Example usage in Fluid template:
+ * <code>
+ * <jwtools2:solr.nextRun site="{site}" />
+ * </code>
  */
 class NextRunViewHelper extends AbstractViewHelper
 {
-    /**
-     * @var SolrRepository
-     */
-    protected $solrRepository;
-
-    /**
-     * @var SchedulerRepository
-     */
-    protected $schedulerRepository;
-
-    /**
-     * @var Registry
-     */
-    protected $registry;
-
-    public function injectSolrRepository(SolrRepository $solrRepository): void
-    {
-        $this->solrRepository = $solrRepository;
-    }
-
-    public function injectSchedulerRepository(SchedulerRepository $schedulerRepository): void
-    {
-        $this->schedulerRepository = $schedulerRepository;
-    }
-
-    public function injectRegistry(Registry $registry): void
-    {
-        $this->registry = $registry;
-    }
+    use InjectSolrRepositoryTrait;
+    use InjectSchedulerRepositoryTrait;
+    use InjectRegistryTrait;
 
     public function initializeArguments(): void
     {
