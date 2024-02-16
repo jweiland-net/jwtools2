@@ -23,6 +23,7 @@ use JWeiland\Jwtools2\Traits\InjectSchedulerRepositoryTrait;
 use JWeiland\Jwtools2\Traits\InjectSolrRepositoryTrait;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -73,10 +74,10 @@ class SolrController extends AbstractController
     public function showAction(int $rootPageUid): ResponseInterface
     {
         $site = $this->solrRepository->findByRootPage($rootPageUid);
-        $this->view->assign('site', $site);
-        $this->view->assign('memoryPeakUsage', $this->registry->get('jwtools2-solr', 'memoryPeakUsage', 0));
+        $this->moduleTemplate->assign('site', $site);
+        $this->moduleTemplate->assign('memoryPeakUsage', $this->registry->get('jwtools2-solr', 'memoryPeakUsage', 0));
 
-        return $this->htmlResponse();
+        return $this->moduleTemplate->renderResponse('Show');
     }
 
     public function showIndexQueueAction(int $rootPageUid, string $configurationName): ResponseInterface
@@ -84,12 +85,12 @@ class SolrController extends AbstractController
         $site = $this->solrRepository->findByRootPage($rootPageUid);
         if ($site instanceof Site) {
             $solrConfiguration = $site->getSolrConfiguration()->getIndexQueueConfigurationByName($configurationName);
-            $this->view->assign('site', $site);
-            $this->view->assign('solrConfiguration', $solrConfiguration);
-            $this->view->assign('configurationName', $configurationName);
+            $this->moduleTemplate->assign('site', $site);
+            $this->moduleTemplate->assign('solrConfiguration', $solrConfiguration);
+            $this->moduleTemplate->assign('configurationName', $configurationName);
         }
 
-        return $this->htmlResponse();
+        return $this->moduleTemplate->renderResponse('showIndexQueue');
     }
 
     public function indexOneRecordAction(
@@ -137,7 +138,7 @@ class SolrController extends AbstractController
             }
         }
 
-        $this->redirect(
+        return $this->redirect(
             'showIndexQueue',
             'Solr',
             'jwtools2',
@@ -147,16 +148,14 @@ class SolrController extends AbstractController
                 'languageUid' => $languageUid,
             ]
         );
-
-        return $this->htmlResponse();
     }
 
     public function showClearIndexFormAction(int $rootPageUid): ResponseInterface
     {
         $site = $this->solrRepository->findByRootPage($rootPageUid);
         if ($site instanceof Site) {
-            $this->view->assign('site', $site);
-            $this->view->assign(
+            $this->moduleTemplate->assign('site', $site);
+            $this->moduleTemplate->assign(
                 'enabledConfigurationNames',
                 $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames()
             );
@@ -166,10 +165,10 @@ class SolrController extends AbstractController
                 'Invalid RootPage UID',
                 ContextualFeedbackSeverity::WARNING
             );
-            $this->redirect('list');
+            return $this->redirect('list');
         }
 
-        return $this->htmlResponse();
+        return $this->moduleTemplate->renderResponse('showClearIndexForm');
     }
 
     #[Extbase\Validate(['validator' => 'NotEmpty', 'param' => 'configurationNames'])]
@@ -231,15 +230,15 @@ class SolrController extends AbstractController
             ->where(
                 $queryBuilder->expr()->eq(
                     'root',
-                    $queryBuilder->createNamedParameter($rootPageUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($rootPageUid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'indexing_configuration',
-                    $queryBuilder->createNamedParameter($configurationName, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($configurationName)
                 ),
                 $queryBuilder->expr()->eq(
                     'item_uid',
-                    $queryBuilder->createNamedParameter($recordUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($recordUid, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -257,11 +256,11 @@ class SolrController extends AbstractController
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($recordUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($recordUid, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
-            ->fetchOne();
+            ->fetchAssociative();
 
         if ($tableRecord === false) {
             return null;
