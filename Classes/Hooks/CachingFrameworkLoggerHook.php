@@ -15,6 +15,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -120,7 +121,7 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
                 ->from('tx_jwtools2_cache_expression')
                 ->executeQuery();
 
-            while ($cacheExpression = $statement->fetch(\PDO::FETCH_ASSOC)) {
+            while ($cacheExpression = $statement->fetchAssociative()) {
                 $cacheExpressions[] = $cacheExpression;
             }
         } catch (\Exception $exception) {

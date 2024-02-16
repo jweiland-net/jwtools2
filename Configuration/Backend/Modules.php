@@ -23,7 +23,7 @@ return [
                 'overview',
             ],
             SolrController::class => [
-                'list',
+                'list','show', 'showIndexQueue', 'indexOneRecord', 'showClearIndexForm', 'clearIndex', 'showClearFullIndexForm',
             ],
         ],
     ],

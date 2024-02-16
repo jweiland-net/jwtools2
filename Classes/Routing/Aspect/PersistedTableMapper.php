@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Routing\Aspect;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
@@ -107,23 +108,23 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
             ->where(
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($this->getSiteLanguage()->getLanguageId(), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->getSiteLanguage()->getLanguageId(), Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'root_page',
-                    $queryBuilder->createNamedParameter($this->getSite()->getRootPageId(), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->getSite()->getRootPageId(), Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'tablename',
-                    $queryBuilder->createNamedParameter($this->tableName, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($this->tableName, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'fieldname',
-                    $queryBuilder->createNamedParameter($this->fieldName, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($this->fieldName)
                 ),
                 $queryBuilder->expr()->eq(
                     $source ? 'source' : 'target',
-                    $queryBuilder->createNamedParameter($source ?: $target, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($source ?: $target)
                 )
             )
             ->executeQuery()
@@ -148,10 +149,10 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
                 'target' => $target,
             ],
             [
-                \PDO::PARAM_INT,
-                \PDO::PARAM_INT,
-                \PDO::PARAM_STR,
-                \PDO::PARAM_STR,
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+                Connection::PARAM_STR,
+                Connection::PARAM_STR,
             ]
         );
     }

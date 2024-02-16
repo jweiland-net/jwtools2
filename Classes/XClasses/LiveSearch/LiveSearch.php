@@ -287,7 +287,7 @@ class LiveSearch
             // some pages where "11" is somewhere in a timestamp or whatever
             $constraints[] = $queryBuilder->expr()->eq(
                 'uid',
-                $queryBuilder->createNamedParameter($this->queryString, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($this->queryString, Connection::PARAM_INT)
             );
         } else {
             $like = '%' . $queryBuilder->escapeLikeWildcards($this->queryString) . '%';
@@ -304,17 +304,17 @@ class LiveSearch
                     $queryBuilder->expr()->comparison(
                         'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
                         'LIKE',
-                        $queryBuilder->createNamedParameter(mb_strtolower($like), \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter(mb_strtolower($like))
                     )
                 );
 
                 if (is_array($fieldConfig['search'] ?? false)) {
                     if (in_array('case', $fieldConfig['search'], true)) {
                         // Replace case insensitive default constraint
-                        $searchConstraint = $queryBuilder->expr()->andX(
+                        $searchConstraint = $queryBuilder->expr()->and(
                             $queryBuilder->expr()->like(
                                 $fieldName,
-                                $queryBuilder->createNamedParameter($like, \PDO::PARAM_STR)
+                                $queryBuilder->createNamedParameter($like)
                             )
                         );
                     }
