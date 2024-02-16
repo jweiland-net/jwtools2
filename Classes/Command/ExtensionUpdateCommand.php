@@ -112,9 +112,6 @@ class ExtensionUpdateCommand extends Command
 
     /**
      * Execute update script of extension
-     *
-     * @param string $extKey
-     * @return bool
      */
     protected function updateExtension(string $extKey): bool
     {
@@ -130,8 +127,6 @@ class ExtensionUpdateCommand extends Command
     /**
      * Get all active extensions with class.ext_update.php
      * where an update is possible (Method call <access> returns true)
-     *
-     * @return array
      */
     protected function getUpdatePossibleActivePackages(): array
     {

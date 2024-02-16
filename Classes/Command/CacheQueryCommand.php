@@ -29,10 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CacheQueryCommand extends Command
 {
-    /**
-     * @var OutputInterface
-     */
-    protected $output;
+    protected OutputInterface $output;
 
     public function configure(): void
     {

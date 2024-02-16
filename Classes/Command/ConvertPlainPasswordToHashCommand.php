@@ -29,20 +29,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ConvertPlainPasswordToHashCommand extends Command
 {
-    /**
-     * @var OutputInterface
-     */
-    protected $output;
+    protected OutputInterface $output;
 
-    /**
-     * @var PasswordHashFactory
-     */
-    protected $passwordHashFactory;
+    protected PasswordHashFactory $passwordHashFactory;
 
-    /**
-     * @var array
-     */
-    protected $modeMapping = [
+    protected array $modeMapping = [
         'FE' => [
             'table' => 'fe_users',
         ],

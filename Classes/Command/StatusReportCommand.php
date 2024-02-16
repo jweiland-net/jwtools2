@@ -34,24 +34,16 @@ class StatusReportCommand extends Command
     private const RETURN_NO = '<error>NO</error>';
     private SchedulerTaskRepository $taskRepository;
 
-    /**
-     * @var InputInterface
-     */
-    protected $input;
+    protected InputInterface $input;
 
-    /**
-     * @var OutputInterface
-     */
-    protected $output;
+    protected OutputInterface $output;
 
-    /**
-     * @var SymfonyStyle
-     */
-    protected $ioStyled;
+    protected SymfonyStyle $ioStyled;
 
     public function __construct(SchedulerTaskRepository $taskRepository)
     {
         parent::__construct();
+
         $this->taskRepository = $taskRepository;
     }
 
