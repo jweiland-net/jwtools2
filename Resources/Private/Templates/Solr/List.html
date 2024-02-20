@@ -17,7 +17,11 @@
     <div class="row">
         <f:alias map="{progress: '{t:solr.memoryStatus()}'}">
             <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="{progress}" aria-valuemin="0" aria-valuemax="100"
+                <div class="progress-bar"
+                     role="progressbar"
+                     aria-valuenow="{progress}"
+                     aria-valuemin="0"
+                     aria-valuemax="100"
                      style="width: {progress}%;">
                     <span>{progress} %</span>
                 </div>
@@ -55,15 +59,16 @@
                             <td>
                                 <f:link.action action="show" arguments="{rootPageUid: site.rootPageRecord.uid}">
                                     {site.rootPageRecord.title}
-                                    {f:if(condition: '{site.rootPageRecord.uid}=={currentRootPageUid}', then: '
-                                    <span
-                                        class="badge">Indexing...
-                                    </span>
-                                    ')}
+                                    <f:if condition="{site.rootPageRecord.uid}=={currentRootPageUid}">
+                                        <span
+                                            class="badge">Indexing...
+                                        </span>
+                                    </f:if>
                                 </f:link.action>
                             </td>
                             <td>
-                                <f:link.action action="showClearIndexForm" arguments="{rootPageUid: site.rootPageRecord.uid}">
+                                <f:link.action action="showClearIndexForm"
+                                               arguments="{rootPageUid: site.rootPageRecord.uid}">
                                     <c:icon identifier="actions-selection-delete"/>
                                     Clear Index...
                                 </f:link.action>
