@@ -11,8 +11,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\Hooks;
 
 use JWeiland\Jwtools2\Hooks\InitializeStdWrap;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -22,43 +21,22 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class InitializeStdWrapTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
+    protected InitializeStdWrap $subject;
 
-    /**
-     * @var InitializeStdWrap
-     */
-    protected $subject;
+    protected ExtensionConfiguration | MockObject $extensionConfigurationMock;
 
-    /**
-     * @var ExtensionConfiguration|ObjectProphecy
-     */
-    protected $extensionConfigurationProphecy;
-
-    /**
-     * @var array
-     */
-    protected $testExtensionsToLoad = [
-        'typo3conf/ext/jwtools2',
+    protected array $testExtensionsToLoad = [
+        'jweiland/jwtools2',
     ];
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->extensionConfigurationProphecy = $this->prophesize(ExtensionConfiguration::class);
+        $this->extensionConfigurationMock = $this->getAccessibleMock(ExtensionConfiguration::class);
         $this->subject = new InitializeStdWrap(
-            $this->extensionConfigurationProphecy->reveal()
+            $this->extensionConfigurationMock
         );
-    }
-
-    protected function tearDown(): void
-    {
-        unset(
-            $this->subject,
-            $this->extensionConfigurationProphecy
-        );
-
-        parent::tearDown();
     }
 
     /**
@@ -71,8 +49,10 @@ class InitializeStdWrapTest extends FunctionalTestCase
             'title' => 'Hello'
         ];
 
-        $this->extensionConfigurationProphecy
-            ->get('jwtools2')
+        $this->extensionConfigurationMock
+            ->expects(self::any())
+            ->method('get')
+            ->with('jwtools2')
             ->willReturn([
                 'typo3TransferTypoScriptCurrent' => '1'
             ]);
@@ -99,8 +79,10 @@ class InitializeStdWrapTest extends FunctionalTestCase
             'title' => 'Hello'
         ];
 
-        $this->extensionConfigurationProphecy
-            ->get('jwtools2')
+        $this->extensionConfigurationMock
+            ->expects(self::any())
+            ->method('get')
+            ->with('jwtools2')
             ->willReturn([
                 'typo3TransferTypoScriptCurrent' => '1'
             ]);
@@ -132,8 +114,10 @@ class InitializeStdWrapTest extends FunctionalTestCase
         $parentRecordData = $data;
         $parentRecordData[$contentObject->currentValKey] = 'Welcome';
 
-        $this->extensionConfigurationProphecy
-            ->get('jwtools2')
+        $this->extensionConfigurationMock
+            ->expects(self::atLeastOnce())
+            ->method('get')
+            ->with('jwtools2')
             ->willReturn([
                 'typo3TransferTypoScriptCurrent' => '0'
             ]);
@@ -164,8 +148,10 @@ class InitializeStdWrapTest extends FunctionalTestCase
         $parentRecordData = $data;
         $parentRecordData[$contentObject->currentValKey] = 'Welcome';
 
-        $this->extensionConfigurationProphecy
-            ->get('jwtools2')
+        $this->extensionConfigurationMock
+            ->expects(self::atLeastOnce())
+            ->method('get')
+            ->with('jwtools2')
             ->willReturn([
                 'typo3TransferTypoScriptCurrent' => '1'
             ]);
