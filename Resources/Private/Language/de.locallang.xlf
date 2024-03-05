@@ -1,48 +1,38 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
-		<header/>
-		<body>
-			<trans-unit id="indexqueueworker_title" xml:space="preserve" approved="yes">
+  <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
+    <header/>
+    <body>
+      <trans-unit id="indexqueueworker_title" xml:space="preserve">
 				<source>Index Queue Worker</source>
-				<target>Index Queue Worker</target>
-			</trans-unit>
-			<trans-unit id="indexqueueworker_description" xml:space="preserve" approved="yes">
+			<target state="needs-translation">Index Queue Worker</target></trans-unit>
+      <trans-unit id="indexqueueworker_description" xml:space="preserve" approved="yes">
 				<source>Processes the items in the Index Queue and sends them to Solr.</source>
-				<target>Verarbeitet einen Item in der Index Queue und sendet ihn an den Solr Server.</target>
-			</trans-unit>
-			<trans-unit id="indexqueueworker_field_documentsToIndexLimit" xml:space="preserve" approved="yes">
+			<target state="final">Verarbeitet einen Item in der Index Queue und sendet ihn an den Solr Server.</target></trans-unit>
+      <trans-unit id="indexqueueworker_field_documentsToIndexLimit" xml:space="preserve" approved="yes">
 				<source>Number of documents to index</source>
-				<target>Anzahl der zu indexierenden Dokumente</target>
-			</trans-unit>
-			<trans-unit id="indexqueueworker_field_maxSitesPerRun" xml:space="preserve" approved="yes">
+			<target state="final">Anzahl der zu indexierenden Dokumente</target></trans-unit>
+      <trans-unit id="indexqueueworker_field_maxSitesPerRun" xml:space="preserve" approved="yes">
 				<source>Max sites per run</source>
-				<target>Maximale Anzahl der zu indexierenden Seiten pro Durchlauf</target>
-			</trans-unit>
-			<trans-unit id="executeQueryTask.title" xml:space="preserve" approved="yes">
+			<target state="final">Maximale Anzahl der zu indexierenden Seiten pro Durchlauf</target></trans-unit>
+      <trans-unit id="executeQueryTask.title" xml:space="preserve" approved="yes">
 				<source>Execute SQL Query</source>
-				<target>SQL Abfrage ausführen</target>
-			</trans-unit>
-			<trans-unit id="executeQueryTask.description" xml:space="preserve" approved="yes">
+			<target state="final">SQL Abfrage ausführen</target></trans-unit>
+      <trans-unit id="executeQueryTask.description" xml:space="preserve" approved="yes">
 				<source>With this task you can write your own SQL-Statement which will be executed with each scheduler run</source>
-				<target>Mit diesem Task kannst Du eine beliebige SQL-Abfrage wiederkehrend ausführen lassen.</target>
-			</trans-unit>
-			<trans-unit id="executeQueryTask.field.sqlQuery" xml:space="preserve" approved="yes">
+			<target state="final">Mit diesem Task kannst Du eine beliebige SQL-Abfrage wiederkehrend ausführen lassen.</target></trans-unit>
+      <trans-unit id="executeQueryTask.field.sqlQuery" xml:space="preserve" approved="yes">
 				<source>SQL Query</source>
-				<target>SQL Abfrage</target>
-			</trans-unit>
-			<trans-unit id="mod.solr.solrFeaturesOverview" xml:space="preserve" approved="yes">
+			<target state="final">SQL Abfrage</target></trans-unit>
+      <trans-unit id="mod.solr.solrFeaturesOverview" xml:space="preserve" approved="yes">
 				<source>Module: Solr Overview</source>
-				<target>Modul: Solr Übersicht</target>
-			</trans-unit>
-			<trans-unit id="mod.solr.memoryUsageSchedulerTask" xml:space="preserve" approved="yes">
+			<target state="final">Modul: Solr Übersicht</target></trans-unit>
+      <trans-unit id="mod.solr.memoryUsageSchedulerTask" xml:space="preserve" approved="yes">
 				<source>Current Memory Usage of running jwtools2 Solr Scheduler Task</source>
-				<target>Aktueller RAM-Verbrauch des Solr Scheduler Tasks der jwtools2</target>
-			</trans-unit>
-			<trans-unit id="mod.solr.configuredRootPages" xml:space="preserve" approved="yes">
+			<target state="final">Aktueller RAM-Verbrauch des Solr Scheduler Tasks der jwtools2</target></trans-unit>
+      <trans-unit id="mod.solr.configuredRootPages" xml:space="preserve" approved="yes">
 				<source>Root Pages with Solr configuration</source>
-				<target>Root-Seiten mit Solr-Konfiguration</target>
-			</trans-unit>
-		</body>
-	</file>
+			<target state="final">Root-Seiten mit Solr-Konfiguration</target></trans-unit>
+    </body>
+  </file>
 </xliff>
