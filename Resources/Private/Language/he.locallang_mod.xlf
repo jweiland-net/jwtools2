@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" target-language="he" datatype="plaintext" original="messages" date="2021-05-31T14:24:45Z" product-name="jwtools2">
+    <header/>
+    <body>
+      <trans-unit id="statusDeleteTitle">
+        <source>File metadata updated</source>
+        <target state="needs-translation">File metadata updated</target>
+      </trans-unit>
+      <trans-unit id="statusDeleteDescription">
+        <source>Successfully created/updated file metadata and deleted related processed files.</source>
+        <target state="needs-translation">Successfully created/updated file metadata and deleted related processed files.</target>
+      </trans-unit>
+      <trans-unit id="fileBrowser.flashMessage.requiredColumns.title">
+        <source>Info about non selectable files</source>
+        <target state="needs-translation">Info about non selectable files</target>
+      </trans-unit>
+      <trans-unit id="fileBrowser.flashMessage.requiredColumns.description">
+        <source>For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files cannot currently be linked to content elements or other records. Please complete these mandatory fields first.</source>
+        <target state="needs-translation">For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files cannot currently be linked to content elements or other records. Please complete these mandatory fields first.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
