@@ -59,3 +59,9 @@ services:
       - name: event.listener
         identifier: 'jwtools2.events.beforeItemIsIndexedEvent'
         event: ApacheSolrForTypo3\Solr\Event\Indexing\BeforeItemIsIndexedEvent
+
+  # Backend Context Menu Provider
+  JWeiland\Jwtools2\ContextMenu\ItemProviders\UpdateFileMetaDataProvider:
+      tags:
+      - name: backend.contextmenu.itemprovider
+        identifier: 'jwtools2.contextmenu.itemproviders.updatefilemetadata'

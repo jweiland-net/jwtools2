@@ -14,7 +14,8 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileProvider;
 
 /**
- * A command to execute extension updates realized with class.ext_update.php
+ * Adds a new entry ``Create/Update file metadata`` into context menu of filelist module to create a missing file
+ * metadata record or to update the existing metadata record (sys_file_metadata).
  */
 class UpdateFileMetaDataProvider extends FileProvider
 {
@@ -69,7 +70,7 @@ class UpdateFileMetaDataProvider extends FileProvider
     protected function getAdditionalAttributes(string $itemName): array
     {
         return [
-            'data-callback-module' => 'TYPO3/CMS/Jwtools2/ContextMenuActions',
+            'data-callback-module' => '@jweiland/jwtools2/context-menu-actions',
             'data-status-title' => $this->languageService->sL(
                 'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteTitle'
             ),

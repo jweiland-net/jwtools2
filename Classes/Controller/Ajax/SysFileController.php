@@ -14,6 +14,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
+use TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
@@ -29,15 +30,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SysFileController
 {
-    /**
-     * @var ResourceFactory
-     */
-    protected $resourceFactory;
+    protected ResourceFactory $resourceFactory;
 
-    /**
-     * @var GraphicalFunctions
-     */
-    protected $graphicalFunctions;
+    protected GraphicalFunctions $graphicalFunctions;
 
     public function __construct(ResourceFactory $resourceFactory, GraphicalFunctions $graphicalFunctions)
     {
@@ -69,6 +64,7 @@ class SysFileController
      * which does not read the original image dimensions, but width/height from EXIF data instead.
      *
      * @param FileInterface $fileObject
+     * @throws IllegalFileExtensionException
      */
     protected function updateExifData(FileInterface $fileObject): void
     {

@@ -93,11 +93,6 @@ call_user_func(static function () {
             = \JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook::class;
     }
 
-    if ($jwToolsConfiguration['enableContextMenuToUpdateFileMetadata'] ?? false) {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1622440501]
-            = \JWeiland\Jwtools2\ContextMenu\ItemProviders\UpdateFileMetaDataProvider::class;
-    }
-
     if ($jwToolsConfiguration['enableCachingFrameworkLogger'] ?? false) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php']['set'][1655965501]
             = \JWeiland\Jwtools2\Hooks\CachingFrameworkLoggerHook::class . '->analyze';
