@@ -49,73 +49,39 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class ModifyElementInformationHook
 {
-    /**
-     * Record table name
-     *
-     * @var string
-     */
-    protected $table;
+    protected string $table;
 
-    /**
-     * Record uid
-     *
-     * @var int
-     */
-    protected $uid;
+    protected int $uid;
 
-    /**
-     * @var string
-     */
-    protected $permsClause;
+    protected string $permsClause;
 
-    /**
-     * @var bool
-     */
-    protected $access = false;
+    protected bool $access = false;
 
     /**
      * Which type of element:
      * - "file"
      * - "db"
-     *
-     * @var string
      */
-    protected $type = '';
+    protected string $type = '';
 
     /**
      * For type "db": Set to page record of the parent page of the item set
      * (if type="db")
-     *
-     * @var array
      */
-    protected $pageInfo;
+    protected array $pageInfo;
 
     /**
      * Database records identified by table/uid
-     *
-     * @var array
      */
-    protected $row;
+    protected array $row;
 
-    /**
-     * @var File|null
-     */
-    protected $fileObject;
+    protected ?File $fileObject;
 
-    /**
-     * @var Folder
-     */
-    protected $folderObject;
+    protected ?Folder $folderObject;
 
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
+    protected IconFactory $iconFactory;
 
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
+    protected UriBuilder $uriBuilder;
 
     public function __construct()
     {
@@ -137,15 +103,13 @@ class ModifyElementInformationHook
     /**
      * Determines if table/uid point to database record or file and
      * if user has access to view information
-     *
-     * @param ServerRequestInterface $request
      */
     protected function init(ServerRequestInterface $request): void
     {
         $queryParams = $request->getQueryParams();
 
         $this->table = $queryParams['table'] ?? null;
-        $this->uid = $queryParams['uid'] ?? null;
+        $this->uid = (int)$queryParams['uid'] ?? null;
 
         $this->permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
 
@@ -190,13 +154,13 @@ class ModifyElementInformationHook
     protected function initFileOrFolderRecord(): void
     {
         $fileOrFolderObject = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($this->uid);
-
         if ($fileOrFolderObject instanceof Folder) {
             $this->folderObject = $fileOrFolderObject;
             $this->access = $this->folderObject->checkActionPermission('read');
             $this->type = 'folder';
         } elseif ($fileOrFolderObject instanceof File) {
             $this->fileObject = $fileOrFolderObject;
+            $this->folderObject = null;
             $this->access = $this->fileObject->checkActionPermission('read');
             $this->type = 'file';
             $this->table = 'sys_file';
@@ -237,8 +201,6 @@ class ModifyElementInformationHook
 
     /**
      * Get page title with icon, table title and record title
-     *
-     * @return array
      */
     protected function getPageTitle(): array
     {
@@ -262,8 +224,6 @@ class ModifyElementInformationHook
 
     /**
      * Get preview for current record
-     *
-     * @return array
      */
     protected function getPreview(ServerRequestInterface $request): array
     {
@@ -316,8 +276,6 @@ class ModifyElementInformationHook
 
     /**
      * Get property array for html table
-     *
-     * @return array
      */
     protected function getPropertiesForTable(): array
     {
@@ -435,10 +393,6 @@ class ModifyElementInformationHook
 
     /**
      * Get the list of fields that should be shown for the given table
-     *
-     * @param string $table
-     * @param int $uid
-     * @return array
      */
     protected function getFieldList(string $table, int $uid): array
     {
@@ -470,8 +424,6 @@ class ModifyElementInformationHook
 
     /**
      * Get the extra fields (uid, timestamps, creator) for the table
-     *
-     * @return array
      */
     protected function getExtraFields(): array
     {
@@ -531,9 +483,6 @@ class ModifyElementInformationHook
 
     /**
      * Get references section (references from and references to current record)
-     *
-     * @param ServerRequestInterface $request
-     * @return array
      */
     protected function getReferences(ServerRequestInterface $request): array
     {
@@ -557,12 +506,8 @@ class ModifyElementInformationHook
 
     /**
      * Get field name for specified table/column name
-     *
-     * @param string $tableName Table name
-     * @param string $fieldName Column name
-     * @return string label
      */
-    protected function getLabelForTableColumn($tableName, $fieldName): string
+    protected function getLabelForTableColumn(string $tableName, string $fieldName): string
     {
         if (($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label'] ?? null) !== null) {
             $field = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
@@ -577,14 +522,9 @@ class ModifyElementInformationHook
 
     /**
      * Returns the record actions
-     *
-     * @param string $table
-     * @param int $uid
-     * @param ServerRequestInterface $request
-     * @return array
      * @throws RouteNotFoundException
      */
-    protected function getRecordActions($table, $uid, ServerRequestInterface $request): array
+    protected function getRecordActions(string $table, int $uid, ServerRequestInterface $request): array
     {
         if ($table === '' || $uid < 0) {
             return [];
@@ -622,14 +562,9 @@ class ModifyElementInformationHook
 
     /**
      * Make reference display
-     *
-     * @param string $table Table name
-     * @param int|File $ref Filename or uid
-     * @param ServerRequestInterface $request
-     * @return array
      * @throws RouteNotFoundException
      */
-    protected function makeRef($table, $ref, ServerRequestInterface $request): array
+    protected function makeRef(string $table, File|int $ref, ServerRequestInterface $request): array
     {
         $refLines = [];
         $lang = $this->getLanguageService();
@@ -722,13 +657,8 @@ class ModifyElementInformationHook
 
     /**
      * Make reference display (what this elements points to)
-     *
-     * @param string $table Table name
-     * @param int $ref Filename or uid
-     * @param ServerRequestInterface $request
-     * @return array
      */
-    protected function makeRefFrom($table, $ref, ServerRequestInterface $request): array
+    protected function makeRefFrom(string $table, int $ref, ServerRequestInterface $request): array
     {
         $refFromLines = [];
         $lang = $this->getLanguageService();
@@ -801,9 +731,6 @@ class ModifyElementInformationHook
 
     /**
      * Convert FAL file reference (sys_file_reference) to reference index (sys_refindex) table format
-     *
-     * @param array $referenceRecord
-     * @return array
      */
     protected function transformFileReferenceToRecordReference(array $referenceRecord): array
     {
@@ -832,16 +759,11 @@ class ModifyElementInformationHook
         ];
     }
 
-    /**
-     * @param string $tableName Name of the table
-     * @param array $record Record to be checked (ensure pid is resolved for workspaces)
-     * @return bool
-     */
     protected function canAccessPage(string $tableName, array $record): bool
     {
         $recordPid = (int)($tableName === 'pages' ? $record['uid'] : $record['pid']);
         return $this->getBackendUser()->isInWebMount($tableName === 'pages' ? $record : $record['pid'])
-            || $recordPid === 0 && !empty($GLOBALS['TCA'][$tableName]['ctrl']['security']['ignoreRootLevelRestriction']);
+            || ($recordPid === 0 && !empty($GLOBALS['TCA'][$tableName]['ctrl']['security']['ignoreRootLevelRestriction']));
     }
 
     /**
