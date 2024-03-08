@@ -12,12 +12,10 @@ namespace JWeiland\Jwtools2\Backend\Browser;
 
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use JWeiland\Jwtools2\Traits\RequestArgumentsTrait;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\ElementBrowserController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;

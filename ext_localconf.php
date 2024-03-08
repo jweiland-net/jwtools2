@@ -49,12 +49,15 @@ call_user_func(static function () {
         );
     }
 
+    // @todo: Removed this Hook in TYPO3 12
     if (
         ($jwToolsConfiguration['typo3RequiredColumnsForFiles'] ?? false)
         || ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB'] ?? false)
     ) {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']['jwtools2_file']
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']['jwtools2_file']
             = \JWeiland\Jwtools2\Backend\Browser\FileBrowser::class;
+        //$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']['jwtools2_file']
+        //    = \JWeiland\Jwtools2\Backend\Browser\FileBrowser::class;
     }
 
     if ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB'] ?? false) {
@@ -67,15 +70,6 @@ call_user_func(static function () {
     if ($jwToolsConfiguration['typo3ShowEditButtonInElementInformation'] ?? false) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering']['jwtools']
             = \JWeiland\Jwtools2\Hooks\ModifyElementInformationHook::class;
-    }
-
-    // Feature was implemented in TYPO3 11.5. No need to XClass LiveSearch.
-    // Remove that feature while removing TYPO3 10 compatibility.
-    if (
-        ($jwToolsConfiguration['enableLiveSearchPerformanceForAdmins'] ?? false)
-        && version_compare($typo3Version->getBranch(), '11.5', '<')
-    ) {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Search\LiveSearch\LiveSearch::class]['className'] = \JWeiland\Jwtools2\XClasses\LiveSearch\LiveSearch::class;
     }
 
     if ($jwToolsConfiguration['typo3ExcludeVideoFilesFromFalFilter'] ?? false) {

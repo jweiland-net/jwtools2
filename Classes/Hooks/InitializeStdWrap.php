@@ -21,10 +21,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class InitializeStdWrap implements ContentObjectPostInitHookInterface
 {
-    /**
-     * @var ExtensionConfiguration
-     */
-    protected $extensionConfiguration;
+    protected ExtensionConfiguration $extensionConfiguration;
 
     public function __construct(ExtensionConfiguration $extensionConfiguration)
     {

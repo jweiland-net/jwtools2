@@ -22,10 +22,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class ExecuteQueryTask extends AbstractTask
 {
-    /**
-     * @var string
-     */
-    protected $sqlQuery = '';
+    protected string $sqlQuery = '';
 
     public function execute(): bool
     {
@@ -37,14 +34,17 @@ class ExecuteQueryTask extends AbstractTask
             }
 
             $sqlQueries = array_filter($sqlQueries);
-
             if (empty($sqlQueries)) {
                 $this->addMessage('No queries for execution found');
                 return false;
             }
 
             foreach ($sqlQueries as $sqlQuery) {
-                $connection->query($sqlQuery)->execute();
+                // check $sqlQuery ends with a semi-colon otherwise add it
+                if (substr($sqlQuery, -1) !== ';') {
+                    $sqlQuery .= ';';
+                }
+                $connection->executeStatement($sqlQuery);
             }
 
             $this->addMessage(

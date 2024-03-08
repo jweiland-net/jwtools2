@@ -47,11 +47,6 @@
 				<source>Enable Caching Framework Logger: Hooks into the TYPO3 caching framework and parses all data using expression records to be created on the root page (PID: 0). If these match, a log entry is created in var/log/.</source>
 				<target>Caching Framework Logger aktivieren: Klinkt sich in das TYPO3 Caching Framework ein und analysiert alle Daten anhand von Expression Records, die auf der Root-Seite (PID: 0) zu erstellen sind. Wenn diese übereinstimmen, wird ein Protokolleintrag in var/log/ erzeugt</target>
 			</trans-unit>
-			<trans-unit id="enableLiveSearchPerformanceForAdmins">
-				<source>Enable LiveSearch performance: Overwrite LiveSearch class to get more performance for searchresults as admin.</source>
-				<target>Aktivieren Sie LiveSearch Performance: Überschreiben Sie die LiveSearch-Klasse, um mehr Leistung für Suchergebnisse als Admin zu erhalten.</target>
-			</trans-unit>
-
 			<trans-unit id="enableReportProvider">
 				<source>Enable provider for EXT reports: If EXT:reports is installed it will show additional information about updatable extensions.</source>
 				<target>Aktiviere Status-Provider für EXT reports: Wenn die EXT:reports installiert und aktiviert ist werden zusätzlich Informationen über updatefähige Extensions angezeigt.</target>
