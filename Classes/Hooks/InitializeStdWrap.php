@@ -41,7 +41,9 @@ class InitializeStdWrap implements ContentObjectPostInitHookInterface
             && ($this->getConfiguration()['typo3TransferTypoScriptCurrent'] ?? false)
         ) {
             // Set current to value of parent current
-            $parentObject->data[$parentObject->currentValKey] = $parentObject->parentRecord['data'][$parentObject->currentValKey];
+            if (isset($parentObject->data['colPos']) && $parentObject->data['colPos'] !== 0) {
+                $parentObject->data[$parentObject->currentValKey] = $parentObject->parentRecord['data'][$parentObject->currentValKey];
+            }
         }
     }
 
