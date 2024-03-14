@@ -8,8 +8,8 @@ services:
     resource: '../Classes/*'
 
   # Called by makeInstance in main of ElementBrowserController
-  JWeiland\Jwtools2\Backend\Browser\FileBrowser:
-    public: true
+  #JWeiland\Jwtools2\Backend\Browser\FileBrowser:
+  #  public: true
 
   # Called by makeInstance in getCallableFromTarget of Dispatcher
   JWeiland\Jwtools2\Controller\Ajax\SysFileController:
@@ -37,12 +37,15 @@ services:
   JWeiland\Jwtools2\Hooks\InitializeStdWrap:
     public: true
 
-  # Called by makeInstance in constructor of LinkService
-  JWeiland\Jwtools2\LinkHandling\FileLinkHandler:
+  # Element Browser should be registered with tags `recordlist.elementbrowser`
+  #JWeiland\Jwtools2\Backend\Browser\FileBrowser:
+  #  tags:
+  #    - name: recordlist.elementbrowser
+
+  JWeiland\Jwtools2\LinkHandler\FileLinkHandler:
     public: true
 
-  # Called by makeInstance in constructor of LinkService
-  JWeiland\Jwtools2\LinkHandling\FolderLinkHandler:
+  JWeiland\Jwtools2\LinkHandler\FolderLinkHandler:
     public: true
 
   # Event Listeners
@@ -56,6 +59,11 @@ services:
       - name: event.listener
         identifier: 'jwtools2.events.beforeItemIsIndexedEvent'
         event: ApacheSolrForTypo3\Solr\Event\Indexing\BeforeItemIsIndexedEvent
+  JWeiland\Jwtools2\EventListener\ModifyLinkEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'jwtools2.events.modifyLinksEventListener'
+        event: TYPO3\CMS\Backend\Controller\Event\ModifyLinkHandlersEvent
 
   # Backend Context Menu Provider
   JWeiland\Jwtools2\ContextMenu\ItemProviders\UpdateFileMetaDataProvider:
