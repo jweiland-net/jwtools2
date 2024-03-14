@@ -14,24 +14,21 @@ use TYPO3\CMS\Backend\Controller\AbstractLinkBrowserController;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3Fluid\Fluid\View\ViewInterface;
+use TYPO3\CMS\Core\View\ViewInterface;
 
 /**
  * This folder LinkHandler overwrites the LinkHandler of TYPO3 and moves upload and create folder fields to top
  */
-class FolderLinkHandler extends \TYPO3\CMS\Backend\LinkHandler\FolderLinkHandler
+class FolderLinkHandler extends \TYPO3\CMS\Filelist\LinkHandler\FolderLinkHandler
 {
-    /**
-     * @var StandaloneView|ViewInterface
-     */
-    protected $view;
+    protected ViewInterface $view;
 
     public function initialize(
         AbstractLinkBrowserController $linkBrowser,
         $identifier,
         array $configuration
     ): void {
-        parent::initialize($linkBrowser, $identifier, $configuration);
+        //parent::initialize($linkBrowser, $identifier, $configuration);
 
         $this->addTemplatePath($this->view);
     }
@@ -40,7 +37,7 @@ class FolderLinkHandler extends \TYPO3\CMS\Backend\LinkHandler\FolderLinkHandler
      * The parent::setView() method was implemented with TYPO3 11.2
      * For earlier TYPO3 version we still need the approach from above
      */
-    public function setView(ViewInterface $view): void
+    public function setView(ViewInterface $view): \TYPO3\CMS\Filelist\LinkHandler\AbstractResourceLinkHandler
     {
         $this->addTemplatePath($view);
 
