@@ -49,17 +49,15 @@ call_user_func(static function () {
         );
     }
 
-    // @todo: Removed this Hook in TYPO3 12
+    // @todo: Removed this Hook in TYPO3 12 it must be implemented with new ElementBrowser API or alternative
     if (
         ($jwToolsConfiguration['typo3RequiredColumnsForFiles'] ?? false)
         || ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB'] ?? false)
     ) {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']['jwtools2_file']
-            = \JWeiland\Jwtools2\Backend\Browser\FileBrowser::class;
-        //$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']['jwtools2_file']
+        //$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']['jwtools2_file']
         //    = \JWeiland\Jwtools2\Backend\Browser\FileBrowser::class;
     }
-
+    // @todo: Removed this Hook in TYPO3 12 moved the logic to EventListener
     if ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB'] ?? false) {
         // For LinkHandler: overwrite TYPO3's LinkHandlers
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks']['jwtools2'] = [
