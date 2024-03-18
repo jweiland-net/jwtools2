@@ -3,9 +3,9 @@
   <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
     <header/>
     <body>
-      <trans-unit id="indexqueueworker_title" xml:space="preserve">
+      <trans-unit id="indexqueueworker_title" xml:space="preserve" approved="yes">
 				<source>Index Queue Worker</source>
-			<target state="needs-translation">Index Queue Worker</target></trans-unit>
+			<target state="final">Task, um die Solr Index Warteschlange abzuarbeiten</target></trans-unit>
       <trans-unit id="indexqueueworker_description" xml:space="preserve" approved="yes">
 				<source>Processes the items in the Index Queue and sends them to Solr.</source>
 			<target state="final">Verarbeitet einen Item in der Index Queue und sendet ihn an den Solr Server.</target></trans-unit>
