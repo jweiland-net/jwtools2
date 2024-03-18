@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" target-language="fi" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
+    <header/>
+    <body>
+      <trans-unit id="typo3EnableUidInPageTree">
+        <source>Enable UID in pagetree: Enable this option to show the page UID in front of the title in pagetree. So no
+					need to hover over the page icon anymore.
+				</source>
+        <target state="needs-translation">Enable UID in pagetree: Enable this option to show the page UID in front of the title in pagetree. So no
+					need to hover over the page icon anymore.
+				</target>
+      </trans-unit>
+      <trans-unit id="typo3TransferTypoScriptCurrent">
+        <source>Transfer TypoScript current: For each record, found by CONTENT, a new instance of ContentObjectRenderer
+					will be created by renderObj. The data property will be filled with the values of the record. The TypoScript
+					current value will be resetted. Activate this option if you want to transfer the parent current value into the
+					sub-property of renderObj.
+				</source>
+        <target state="needs-translation">Transfer TypoScript current: For each record, found by CONTENT, a new instance of ContentObjectRenderer
+					will be created by renderObj. The data property will be filled with the values of the record. The TypoScript
+					current value will be resetted. Activate this option if you want to transfer the parent current value into the
+					sub-property of renderObj.
+				</target>
+      </trans-unit>
+      <trans-unit id="typo3UploadFieldsInTopOfEB">
+        <source>Upload Fields in top of EB: The UserTSconfig option uploadFieldsInTopOfEB was removed with TYPO3 8.7.0.
+					Activate this Option to show upload fields in top of ElementBrowser and LinkHandler again.
+				</source>
+        <target state="needs-translation">Upload Fields in top of EB: The UserTSconfig option uploadFieldsInTopOfEB was removed with TYPO3 8.7.0.
+					Activate this Option to show upload fields in top of ElementBrowser and LinkHandler again.
+				</target>
+      </trans-unit>
+      <trans-unit id="typo3RequiredColumnsForFiles">
+        <source>Required columns for image files: Enter here columns of the DB tables sys_file and/or sys_file_metadata which are to be regarded as mandatory fields. Files for which these columns are not set are available in the file browser, but cannot be selected.</source>
+        <target state="needs-translation">Required columns for image files: Enter here columns of the DB tables sys_file and/or sys_file_metadata which are to be regarded as mandatory fields. Files for which these columns are not set are available in the file browser, but cannot be selected.</target>
+      </trans-unit>
+      <trans-unit id="typo3ShowEditButtonInElementInformation">
+        <source>Add "Edit" button in the file info view: After activation, an additional "Edit" button is added in the file info view (accessible via the "i" icon), with which you can edit the current file with just one click.</source>
+        <target state="needs-translation">Add "Edit" button in the file info view: After activation, an additional "Edit" button is added in the file info view (accessible via the "i" icon), with which you can edit the current file with just one click.</target>
+      </trans-unit>
+      <trans-unit id="typo3ExcludeVideoFilesFromFalFilter">
+        <source>Exclude hidden video files: If you work with video files, TYPO3 creates .youtube and/or .vimeo files. If
+					a title could not be fetched a file like ".youtube" will be created which is handled as hidden file. Instead
+					of showing all hidden files you can activate this option, to only show these two hidden video types in
+					filelist.
+				</source>
+        <target state="needs-translation">Exclude hidden video files: If you work with video files, TYPO3 creates .youtube and/or .vimeo files. If
+					a title could not be fetched a file like ".youtube" will be created which is handled as hidden file. Instead
+					of showing all hidden files you can activate this option, to only show these two hidden video types in
+					filelist.
+				</target>
+      </trans-unit>
+      <trans-unit id="typo3ApplyFixForMoveTranslatedContentElements">
+        <source>Apply patch for #21161: If you move content records from col_pos X to Y the related translated records
+					will not be moved to new col_pos. Activate this feature to solve that problem. See:
+					https://forge.typo3.org/issues/21161
+				</source>
+        <target state="needs-translation">Apply patch for #21161: If you move content records from col_pos X to Y the related translated records
+					will not be moved to new col_pos. Activate this feature to solve that problem. See:
+					https://forge.typo3.org/issues/21161
+				</target>
+      </trans-unit>
+      <trans-unit id="reduceCategoriesToPageTree">
+        <source>Reduce categories to page tree: In case of a multi-domain TYPO3 instances it makes sense to reduce
+					categories in category-tree to PIDs of current page-tree. So, after activating this checkbox you will not see
+					any categories of foreign page-trees anymore. Admin user will still see everything.
+				</source>
+        <target state="needs-translation">Reduce categories to page tree: In case of a multi-domain TYPO3 instances it makes sense to reduce
+					categories in category-tree to PIDs of current page-tree. So, after activating this checkbox you will not see
+					any categories of foreign page-trees anymore. Admin user will still see everything.
+				</target>
+      </trans-unit>
+      <trans-unit id="enableExecuteQueryTask">
+        <source>Enable SQL-Query Task: With this task you can realize your own recurring SQL-Queries.</source>
+        <target state="needs-translation">Enable SQL-Query Task: With this task you can realize your own recurring SQL-Queries.</target>
+      </trans-unit>
+      <trans-unit id="enableContextMenuToUpdateFileMetadata">
+        <source>Update file metadata: Activates a new context menu item in filelist to create/update the file metadata.
+					It updates create/edit times and width/height of images.
+				</source>
+        <target state="needs-translation">Update file metadata: Activates a new context menu item in filelist to create/update the file metadata.
+					It updates create/edit times and width/height of images.
+				</target>
+      </trans-unit>
+      <trans-unit id="enableCachingFrameworkLogger">
+        <source>Enable Caching Framework Logger: Hooks into the TYPO3 caching framework and parses all data using
+					expression records to be created on the root page (PID: 0). If these match, a log entry is created in
+					var/log/.
+				</source>
+        <target state="needs-translation">Enable Caching Framework Logger: Hooks into the TYPO3 caching framework and parses all data using
+					expression records to be created on the root page (PID: 0). If these match, a log entry is created in
+					var/log/.
+				</target>
+      </trans-unit>
+      <trans-unit id="enableLiveSearchPerformanceForAdmins">
+        <source>Enable LiveSearch performance: Overwrite LiveSearch class to get more performance for searchresults as
+					admin.
+				</source>
+        <target state="needs-translation">Enable LiveSearch performance: Overwrite LiveSearch class to get more performance for searchresults as
+					admin.
+				</target>
+      </trans-unit>
+      <trans-unit id="enableReportProvider">
+        <source>Enable provider for EXT reports: If EXT:reports is installed it will show additional information about
+					updatable extensions.
+				</source>
+        <target state="needs-translation">Enable provider for EXT reports: If EXT:reports is installed it will show additional information about
+					updatable extensions.
+				</target>
+      </trans-unit>
+      <trans-unit id="sendUpdatableExtensionsWithSeverity">
+        <source>Set severity for report about updatable extensions: If set to "Info" you also have to activate the
+					checkbox "Always send notification mail" in reports scheduler task. If set to "Warning" you can leave "Always
+					send notification mail" unchecked. Please have a look into documentation for more information.
+				</source>
+        <target state="needs-translation">Set severity for report about updatable extensions: If set to "Info" you also have to activate the
+					checkbox "Always send notification mail" in reports scheduler task. If set to "Warning" you can leave "Always
+					send notification mail" unchecked. Please have a look into documentation for more information.
+				</target>
+      </trans-unit>
+      <trans-unit id="solrEnable">
+        <source>Enable Solr features</source>
+        <target state="needs-translation">Enable Solr features</target>
+      </trans-unit>
+      <trans-unit id="solrSchedulerTaskUid">
+        <source>Solr scheduler task UID: After activating Solr features, you have to create the new Solr task of this
+					extension in scheduler and insert the UID of this task here.
+				</source>
+        <target state="needs-translation">Solr scheduler task UID: After activating Solr features, you have to create the new Solr task of this
+					extension in scheduler and insert the UID of this task here.
+				</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
