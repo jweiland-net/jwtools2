@@ -12,7 +12,6 @@ namespace JWeiland\Jwtools2\Task;
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
-use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
@@ -30,8 +29,8 @@ class IndexQueueWorkerTaskAdditionalFieldProvider extends AbstractAdditionalFiel
      * @param AbstractTask $task when editing, reference to the current task object. Null when adding.
      * @param SchedulerModuleController $schedulerModule : reference to the calling object (Scheduler's BE module)
      * @return array Array containing all the information pertaining to the additional fields
-     *                    The array is multidimensional, keyed to the task class name and each field's id
-     *                    For each field it provides an associative sub-array with the following:
+     *               The array is multidimensional, keyed to the task class name and each field's id
+     *               For each field it provides an associative sub-array with the following:
      */
     public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule): array
     {

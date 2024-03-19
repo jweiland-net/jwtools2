@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Command;
 
-use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Result;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -79,7 +78,7 @@ class ConvertPlainPasswordToHashCommand extends Command
         $connection = $this->getConnectionPool()->getConnectionForTable($this->modeMapping[$mode]['table']);
         $statement = $this->getStatementForUsers($this->modeMapping[$mode]['table']);
         while ($user = $statement->fetch()) {
-            if (empty($user['password'])) {
+            if (!isset($user['password']) || $user['password'] === '') {
                 continue;
             }
             try {

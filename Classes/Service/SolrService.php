@@ -26,9 +26,6 @@ class SolrService
     /**
      * Instead of the Solr Statistic, this Statistic will return
      * a statistic over all sites
-     *
-     * @return QueueStatistic
-     * @throws DBALException
      */
     public function getStatistic(): QueueStatistic
     {

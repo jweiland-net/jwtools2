@@ -137,7 +137,7 @@ class ModifyElementInformationHook
             } else {
                 $this->row = BackendUtility::getRecordWSOL($this->table, $this->uid);
                 if ($this->row) {
-                    if (!empty($this->row['t3ver_oid'])) {
+                    if ((int)$this->row['t3ver_oid'] !== 0) {
                         // Make $this->uid the uid of the versioned record, while $this->row['uid'] is live record uid
                         $this->uid = (int)$this->row['_ORIG_uid'];
                     }

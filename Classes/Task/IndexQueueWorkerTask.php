@@ -86,8 +86,6 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
     /**
      * Returns some additional information about indexing progress, shown in
      * the scheduler's task overview list.
-     *
-     * @throws Exception
      */
     public function getAdditionalInformation(): string
     {
@@ -115,6 +113,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
             $message .= ' / Index queue UID: ' . $registry->get('jwtools2-solr', 'indexQueueUid');
             $message .= ' / Memory Peak: ' . (float)$registry->get('jwtools2-solr', 'memoryPeakUsage');
         }
+
         return $message;
     }
 

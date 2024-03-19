@@ -24,15 +24,9 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
  */
 class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderInterface
 {
-    /**
-     * @var ListUtility
-     */
-    protected $listUtility;
+    protected ListUtility $listUtility;
 
-    /**
-     * @var ExtensionConfiguration
-     */
-    protected $extensionConfiguration;
+    protected ExtensionConfiguration $extensionConfiguration;
 
     public function __construct()
     {
@@ -66,7 +60,7 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
         ];
     }
 
-    protected function getUpdatableExtensions(bool $renderForReportMail = false)
+    protected function getUpdatableExtensions(bool $renderForReportMail = false): Status
     {
         $extensionInformation = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
         $updatableExtensions = [];

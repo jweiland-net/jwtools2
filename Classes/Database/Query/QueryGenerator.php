@@ -57,7 +57,7 @@ class QueryGenerator
                 }
                 if ($depth > 1) {
                     $theSubList = $this->getTreeList($row['uid'], $depth - 1, $begin - 1, $permClause);
-                    if (!empty($theList) && !empty($theSubList) && ($theSubList[0] !== ',')) {
+                    if (($theList !== '') && !empty($theSubList) && ($theSubList[0] !== ',')) {
                         $theList .= ',';
                     }
                     $theList .= $theSubList;

@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\MaintenanceController;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
-use TYPO3\CMS\Scheduler\Scheduler;
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * A command which shows a status report about the TYPO3 system
@@ -119,10 +117,14 @@ class StatusReportCommand extends Command
 
         $result = json_decode($json, true);
 
+        $hasSuggestions = isset($result['suggestions']) && $result['suggestions'] !== ''
+            ? '<error>YES</error>'
+            : '<info>NO</info>';
+
         $this->ioStyled->definitionList(
             'Checking database maintenance',
             ['Status' => $result['success'] ? '<info>OK</info>' : '<error>Error</error>'],
-            ['Has suggestions?' => !empty($result['suggestions']) ? '<error>YES</error>' : '<info>NO</info>']
+            ['Has suggestions?' => $hasSuggestions]
         );
     }
 
@@ -169,10 +171,7 @@ class StatusReportCommand extends Command
         if ($content === '' && !$this->input->hasOption('exclude-robots-txt-url-check')) {
             $base = rtrim((string)$site->getBase(), '/') . '/';
             $content = @file_get_contents($base . 'robots.txt');
-
-            if (empty($content)) {
-                $content = '';
-            }
+            $content = $content ?? '';
         }
 
         return $content;
@@ -290,10 +289,12 @@ class StatusReportCommand extends Command
     {
         if (isset($task['serializedExecutions']) && $task['serializedExecutions'] !== '') {
             return '<info>running...</info>';
-        } elseif ($task['lastExecutionTime'] === 0) {
-            return '<error>never executed</error>';
-        } else {
-            return $task['lastExecutionTime'] < $yesterday ? '<error>scheduled > 24h</error>' : '<info>scheduled < 24h</info>';
         }
+
+        if ($task['lastExecutionTime'] === 0) {
+            return '<error>never executed</error>';
+        }
+
+        return $task['lastExecutionTime'] < $yesterday ? '<error>scheduled > 24h</error>' : '<info>scheduled < 24h</info>';
     }
 }

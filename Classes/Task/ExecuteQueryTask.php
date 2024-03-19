@@ -34,7 +34,7 @@ class ExecuteQueryTask extends AbstractTask
             }
 
             $sqlQueries = array_filter($sqlQueries);
-            if (empty($sqlQueries)) {
+            if ($sqlQueries === []) {
                 $this->addMessage('No queries for execution found');
                 return false;
             }
@@ -74,8 +74,6 @@ class ExecuteQueryTask extends AbstractTask
 
     /**
      * This method is used to add a message to the internal queue
-     *
-     * @throws \Exception
      */
     public function addMessage(string $message, ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK): void
     {

@@ -10,12 +10,8 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\LinkHandler;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\AbstractLinkBrowserController;
-use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Filelist\LinkHandler\AbstractResourceLinkHandler;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Core\View\ViewInterface;
 
 /**

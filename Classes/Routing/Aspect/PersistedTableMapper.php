@@ -48,19 +48,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguageAwareInterface, SiteAwareInterface
 {
     use SiteAccessorTrait;
+
     use SiteLanguageAccessorTrait;
 
-    protected $settings;
+    protected array $settings;
 
-    /**
-     * @var string
-     */
-    protected $tableName = '';
+    protected string $tableName = '';
 
-    /**
-     * @var string
-     */
-    protected $fieldName = '';
+    protected string $fieldName = '';
 
     public function __construct(array $settings)
     {
@@ -76,7 +71,7 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
         $value = str_replace('/', '-', $value);
 
         $storedRoute = $this->getStoredRoute($value);
-        if (empty($storedRoute)) {
+        if ($storedRoute === []) {
             $slugHelper = $this->getSlugHelper();
             $target = $slugHelper->sanitize($value);
             $this->setStoredRoute($value, $target);
@@ -90,7 +85,7 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
     public function resolve(string $value): ?string
     {
         $storedRoute = $this->getStoredRoute('', $value);
-        if (empty($storedRoute)) {
+        if ($storedRoute === []) {
             return null;
         }
 

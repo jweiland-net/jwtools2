@@ -11,31 +11,29 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\Backend\Browser;
 
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
-use JWeiland\Jwtools2\Traits\RequestArgumentsTrait;
-use TYPO3\CMS\Backend\Controller\ElementBrowserController;
+use TYPO3\CMS\Backend\ElementBrowser\AbstractElementBrowser;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Recordlist\Controller\ElementBrowserController;
 
 /**
  * Modified version of TYPO3's ElementBrowserController.
  * We have modified the templates to allow showing the upload form on top of the file/folder list
  */
-class FileBrowser extends \TYPO3\CMS\Backend\ElementBrowser\FileBrowser
+#class FileBrowser extends \TYPO3\CMS\Recordlist\Browser\FileBrowser
+class FileBrowser extends AbstractElementBrowser
 {
-    use RequestArgumentsTrait;
-
     /**
      * Only load additional JavaScript, if in file or folder context
      */
@@ -45,7 +43,7 @@ class FileBrowser extends \TYPO3\CMS\Backend\ElementBrowser\FileBrowser
         // of TYPO3's FileBrowser where additional JavaScript will be loaded. That would break the selection and
         // transfer of chosen records into the parent form. Error: file_undefined insteadof file_123.
         // JS module "TYPO3/CMS/Recordlist/BrowseFiles" should NOT be loaded, if we are not in file or folder context!!!
-        if (in_array($this->getGPValue('mode'), ['file', 'folder'])) {
+        if (in_array((string)GeneralUtility::_GP('mode'), ['file', 'folder'])) {
             parent::initialize();
         }
     }
@@ -58,10 +56,8 @@ class FileBrowser extends \TYPO3\CMS\Backend\ElementBrowser\FileBrowser
         if ($mode === 'file' || $mode === 'folder') {
             if ($this->getRequiredColumnsFromExtensionConfiguration()) {
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier(
-                    FlashMessageQueue::NOTIFICATION_QUEUE
-                );
-                $flashMessageQueue->enqueue(
+                $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+                $flashMessageQueue->addMessage(
                     GeneralUtility::makeInstance(
                         FlashMessage::class,
                         LocalizationUtility::translate(
@@ -79,7 +75,7 @@ class FileBrowser extends \TYPO3\CMS\Backend\ElementBrowser\FileBrowser
                         LocalizationUtility::translate(
                             'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:fileBrowser.flashMessage.requiredColumns.title'
                         ),
-                        ContextualFeedbackSeverity::INFO
+                        AbstractMessage::INFO
                     )
                 );
             }
@@ -146,7 +142,7 @@ class FileBrowser extends \TYPO3\CMS\Backend\ElementBrowser\FileBrowser
                 ? trim($properties[$requiredColumn])
                 : $properties[$requiredColumn];
 
-            if (empty($value)) {
+            if (!isset($value) || trim($value) === '') {
                 return false;
             }
         }

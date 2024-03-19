@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\EventListener;
 
 use Doctrine\DBAL\ArrayParameterType;
-use Doctrine\DBAL\Exception;
 use JWeiland\Jwtools2\Query\QueryGenerator;
 use JWeiland\Jwtools2\Traits\RequestArgumentsTrait;
 use TYPO3\CMS\Backend\Tree\TreeNode;
@@ -33,25 +32,13 @@ class ReduceCategoryTreeToPageTree
 {
     use RequestArgumentsTrait;
 
-    /**
-     * @var string
-     */
-    protected $categoryTableName = 'sys_category';
+    protected string $categoryTableName = 'sys_category';
 
-    /**
-     * @var int
-     */
-    protected $pageUid = 0;
+    protected int $pageUid = 0;
 
-    /**
-     * @var string
-     */
-    protected $listOfCategoryUids = '';
+    protected string $listOfCategoryUids = '';
 
-    /**
-     * @var ExtensionConfiguration
-     */
-    protected $extensionConfiguration;
+    protected ExtensionConfiguration $extensionConfiguration;
 
     public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
@@ -75,8 +62,6 @@ class ReduceCategoryTreeToPageTree
 
     /**
      * Remove all categories which are not in current page tree
-     *
-     * @param TreeNode $treeNode
      */
     protected function removePageTreeForeignCategories(TreeNode $treeNode): void
     {
@@ -105,12 +90,10 @@ class ReduceCategoryTreeToPageTree
 
     /**
      * Get current page UID
-     *
-     * @return int
      */
     protected function getPageUid(): int
     {
-        if (empty($this->pageUid)) {
+        if (!isset($this->pageUid) || $this->pageUid === 0) {
             $command = $this->getGetArguments()['command'] ?? '';
             if ($command === 'edit') {
                 $record = BackendUtility::getRecordWSOL(
@@ -136,14 +119,10 @@ class ReduceCategoryTreeToPageTree
 
     /**
      * Get comma separated list of category UIDs
-     *
-     * @param int $pageUid
-     * @return string
-     * @throws Exception
      */
     protected function getListOfAllowedCategoryUids(int $pageUid): string
     {
-        if (empty($this->listOfCategoryUids)) {
+        if ($this->listOfCategoryUids === '') {
             $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_category');
             $categories = $queryBuilder
                 ->select('uid')
@@ -160,7 +139,7 @@ class ReduceCategoryTreeToPageTree
                 ->executeQuery()
                 ->fetchAllAssociative();
 
-            if (empty($categories)) {
+            if ($categories === []) {
                 return '0';
             }
 
@@ -177,9 +156,6 @@ class ReduceCategoryTreeToPageTree
 
     /**
      * Get all page UIDs of current page tree
-     *
-     * @param int $pageUid
-     * @return array
      */
     public function getPagesOfCurrentRootPage(int $pageUid): array
     {
@@ -198,9 +174,6 @@ class ReduceCategoryTreeToPageTree
 
     /**
      * Slide up through RootLine and return UID of page which is configured with is_siteroot
-     *
-     * @param int $uid
-     * @return int
      */
     protected function getRootPageUid(int $uid): int
     {

@@ -136,7 +136,7 @@ class SysFileController
 
         // A version like 6.9.10-23
         $version = '';
-        if (!empty($string)) {
+        if (isset($string) && $string !== '') {
             [, $version] = explode('Magick', $string);
             [$version] = explode(' ', trim($version));
             [$version] = explode('-', trim($version));
