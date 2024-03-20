@@ -33,8 +33,7 @@ class AjaxSolrController
     public function clearIndexAction(ServerRequest $request): ResponseInterface
     {
         $response = new Response();
-        $postData = $request->getParsedBody();
-        $moduleData = $postData['tx_jwtools2'];
+        $moduleData = $request->getParsedBody();
 
         $rootPageUid = $this->getRootPageUidFromRequest($request);
         $configurationNames = [];
@@ -83,10 +82,11 @@ class AjaxSolrController
             $indexingConfigurationsToReIndex = $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames();
             foreach ($indexingConfigurationsToReIndex as $indexingConfigurationName) {
                 try {
-                    $indexQueue->getInitializationService()->initializeBySiteAndIndexConfiguration(
-                        $site,
-                        $indexingConfigurationName
-                    );
+                    $indexQueue->getQueueInitializationService()
+                        ->initializeBySiteAndIndexConfiguration(
+                            $site,
+                            $indexingConfigurationName
+                        );
                 } catch (ConnectionException|Exception $e) {
                 }
             }
@@ -138,8 +138,7 @@ class AjaxSolrController
 
     protected function getRootPageUidFromRequest(ServerRequest $request): int
     {
-        $postData = $request->getParsedBody();
-        $moduleData = $postData['tx_jwtools2'];
+        $moduleData = $request->getParsedBody();
         $rootPageUid = 0;
         if (array_key_exists('rootPageUid', $moduleData)) {
             $rootPageUid = (int)$moduleData['rootPageUid'];

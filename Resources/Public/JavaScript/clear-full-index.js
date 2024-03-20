@@ -15,6 +15,7 @@ import { success as showSuccessNotification } from 'TYPO3/CMS/Backend/Notificati
 
 class ClearIndex {
   constructor() {
+    alert('here');
     this.clearIndexAction = this.clearIndexAction.bind(this);
     this.clearIndexByRows = this.clearIndexByRows.bind(this);
     this.clearIndexByRow = this.clearIndexByRow.bind(this);

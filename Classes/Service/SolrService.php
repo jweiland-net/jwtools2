@@ -133,7 +133,7 @@ class SolrService
      */
     public function clearSolrIndexByType(Site $site, $type = ''): void
     {
-        $tableName = $site->getSolrConfiguration()->getIndexQueueTableNameOrFallbackToConfigurationName($type);
+        $tableName = $site->getSolrConfiguration()->getIndexQueueTypeOrFallbackToConfigurationName($type);
 
         $solrServers = GeneralUtility::makeInstance(ConnectionManager::class)
             ->getConnectionsBySite($site);

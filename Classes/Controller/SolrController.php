@@ -46,8 +46,7 @@ class SolrController extends AbstractController
         if (!$view instanceof NotFoundView) {
             parent::initializeView($view);
 
-            //$this->pageRenderer->loadJavaScriptModule('@jweiland/jwtools2/SolrBackendModule.js');
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Jwtools2/SolrIndex');
+            $this->pageRenderer->loadJavaScriptModule('@jweiland/jwtools2/solr-backend-module.js');
 
             /** @var SolrDocHeader $docHeader */
             $docHeader = GeneralUtility::makeInstance(SolrDocHeader::class, $this->request, $this->moduleTemplate);

@@ -1,1 +1,0 @@
-alert('solr module loaded!');
