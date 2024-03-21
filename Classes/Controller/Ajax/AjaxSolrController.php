@@ -34,7 +34,6 @@ class AjaxSolrController
     {
         $response = new Response();
         $moduleData = $request->getParsedBody();
-
         $rootPageUid = $this->getRootPageUidFromRequest($request);
         $configurationNames = [];
         if (array_key_exists('configurationNames', $moduleData)) {

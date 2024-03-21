@@ -202,8 +202,8 @@ class SolrController extends AbstractController
      */
     public function showClearFullIndexFormAction(): ResponseInterface
     {
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Jwtools2/ClearFullIndex');
+        $this->pageRenderer->loadJavaScriptModule('@jweiland/jwtools2/clear-full-index.js');
+        //$pageRenderer->loadRequireJsModule('TYPO3/CMS/Jwtools2/ClearFullIndex');
 
         $configurationNamesOfAllSites = [];
         $sites = $this->solrRepository->findAllAvailableSites();
@@ -213,10 +213,10 @@ class SolrController extends AbstractController
                 $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames()
             );
         }
-        $this->view->assign('sites', $sites);
-        $this->view->assign('configurationNamesOfAllSites', $configurationNamesOfAllSites);
+        $this->moduleTemplate->assign('sites', $sites);
+        $this->moduleTemplate->assign('configurationNamesOfAllSites', $configurationNamesOfAllSites);
 
-        return $this->htmlResponse();
+        return $this->moduleTemplate->renderResponse('showClearFullIndexForm');
     }
 
     protected function getIndexQueueItem(int $rootPageUid, string $configurationName, int $recordUid): ?Item

@@ -39,38 +39,22 @@ class SolrDocHeader extends AbstractDocHeader
             ->getDocHeaderComponent()
             ->getButtonBar();
 
-        $splitButtonBar = $buttonBar
-            ->makeSplitButton();
-
-        $newButton = $buttonBar
-            ->makeInputButton()
-            ->setName('module')
-            ->setValue('solr')
-            //->setOnClick()
+        $overviewButton = $buttonBar
+            ->makeLinkButton()
+            ->setHref($this->uriBuilder->reset()->uriFor('list', [], 'Solr'))
             ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
-            ->setTitle('Solr Overview')
-            ->setShowLabelText(true)
-            ->setDataAttributes([
-                'dispatch-action' => 'TYPO3.WindowManager.localOpen',
-                // JSON encoded representation of JavaScript function arguments
-                // (HTML attributes are encoded in \TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton)
-                'dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                    $this->getLinkForUrl($this->uriBuilder->reset()->uriFor('list', [], 'Solr')),
-                ], false)
-            ]);
+            ->setTitle('Overview')
+            ->setShowLabelText(true);
 
-        $splitButtonBar->addItem($newButton, true);
-
-        $newButton = $buttonBar
-            ->makeInputButton()
-            ->setName('module')
-            ->setValue('cleanUp')
-            //->setOnClick($this->getLinkForUrl($this->uriBuilder->reset()->uriFor('showClearFullIndexForm', [], 'Solr')))
+        $clearFullIndexButton = $buttonBar
+            ->makeLinkButton()
+            ->setHref($this->uriBuilder->reset()->uriFor('showClearFullIndexForm', [], 'Solr'))
             ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
             ->setTitle('Clear full index...')
             ->setShowLabelText(true);
-        $splitButtonBar->addItem($newButton);
 
-        $buttonBar->addButton($splitButtonBar);
+        $buttonBar
+            ->addButton($overviewButton)
+            ->addButton($clearFullIndexButton);
     }
 }

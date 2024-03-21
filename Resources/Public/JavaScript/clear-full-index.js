@@ -1,21 +1,11 @@
-/*
- * This file is part of the jwtools2 project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-import { getIcon } from 'TYPO3/CMS/Backend/Icons';
-import { success as showSuccessNotification } from 'TYPO3/CMS/Backend/Notification';
+import Icons from "@typo3/backend/icons.js";
+import Notification from "@typo3/backend/notification.js";
 
+/**
+ * Module: @jweiland/jwtools2/clear-full-index
+ */
 class ClearIndex {
   constructor() {
-    alert('here');
     this.clearIndexAction = this.clearIndexAction.bind(this);
     this.clearIndexByRows = this.clearIndexByRows.bind(this);
     this.clearIndexByRow = this.clearIndexByRow.bind(this);
@@ -50,11 +40,14 @@ class ClearIndex {
     this.executeAjaxRequest(TYPO3.settings.ajaxUrls['jwtools2_clearIndex'], data)
       .then(response => {
         if (response.success) {
-          getIcon("status-status-permission-granted", "small")
+          Icons.getIcon("status-status-permission-granted", Icons.sizes.small)
             .then(ok => {
               const iconSpan = row.querySelector('span.icon');
               if (iconSpan) {
-                iconSpan.parentNode.replaceChild(ok, iconSpan);
+                const newIcon = document.createElement('span');
+                newIcon.innerHTML = ok;
+                iconSpan.parentNode.replaceChild(newIcon, iconSpan);
+                this.displaySuccess('Index of all Sites has been cleared');
               }
             })
             .catch(error => {
@@ -70,21 +63,23 @@ class ClearIndex {
   }
 
   executeAjaxRequest(uri, data) {
-    const newData = { tx_jwtools2: data };
+    const formData = new URLSearchParams();
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
     return fetch(uri, {
       method: 'POST',
       cache: 'no-cache',
-      body: JSON.stringify(newData),
+      body: formData,
       headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json());
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+    }).then(response => response.json());
   }
 
   displaySuccess(label) {
     if (typeof label === 'string' && label !== '') {
-      showSuccessNotification('Success', label);
+      Notification.success('Success', label);
     }
   }
 }

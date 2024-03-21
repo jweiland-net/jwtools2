@@ -30,18 +30,14 @@ class SolrIndex {
   showSolrProgress() {
     if (this.activeRows.length > 0) {
       this.processRows('jwtools2_getSolrProgress', (row, status, data, response) => {
-        console.log(status);
         if (status === 'success') {
-          console.log(response);
           row.querySelector('.status').innerHTML = `
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" aria-valuenow="${response.progress}" aria-valuemin="0" aria-valuemax="100" style="width: ${response.progress}%;"><span>${response.progress}% Complete</span></div>
                         </div>`;
         } else if (status === 'error') {
-          console.log('Error');
           this.displayError();
         } else if (status === 'finished') {
-          console.log(response);
           this.displaySuccess('Solr Status all all Sites has been updated');
         }
       });
