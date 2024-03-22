@@ -25,7 +25,6 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -203,8 +202,6 @@ class SolrController extends AbstractController
     public function showClearFullIndexFormAction(): ResponseInterface
     {
         $this->pageRenderer->loadJavaScriptModule('@jweiland/jwtools2/clear-full-index.js');
-        //$pageRenderer->loadRequireJsModule('TYPO3/CMS/Jwtools2/ClearFullIndex');
-
         $configurationNamesOfAllSites = [];
         $sites = $this->solrRepository->findAllAvailableSites();
         foreach ($sites as $site) {

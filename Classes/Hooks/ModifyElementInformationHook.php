@@ -253,7 +253,7 @@ class ModifyElementInformationHook
                             $fileMetaUid => 'edit'
                         ]
                     ],
-                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUrl()
                 ];
                 $preview['editUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             }
@@ -507,7 +507,7 @@ class ModifyElementInformationHook
     /**
      * Get field name for specified table/column name
      */
-    protected function getLabelForTableColumn(string $tableName, string $fieldName): string
+    protected function getLabelForTableColumnByTable(string $tableName, string $fieldName): string
     {
         if (($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label'] ?? null) !== null) {
             $field = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
@@ -538,20 +538,20 @@ class ModifyElementInformationHook
                     $uid => 'edit',
                 ],
             ],
-            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUrl(),
         ];
         $actions['recordEditUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 
         // History button
         $urlParameters = [
             'element' => $table . ':' . $uid,
-            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUrl(),
         ];
         $actions['recordHistoryUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_history', $urlParameters);
 
         if ($table === 'pages') {
             // Recordlist button
-            $actions['webListUrl'] = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $uid, 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()]);
+            $actions['webListUrl'] = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $uid, 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUrl()]);
 
             // View page button
             $actions['viewOnClick'] = PreviewUriBuilder::create($uid)->buildDispatcherDataAttributes();
@@ -631,7 +631,7 @@ class ModifyElementInformationHook
                             $row['recuid'] => 'edit',
                         ],
                     ],
-                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUrl(),
                 ];
                 $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
@@ -642,13 +642,13 @@ class ModifyElementInformationHook
                 $line['parentRecord'] = $parentRecord;
                 $line['parentRecordTitle'] = $parentRecordTitle;
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']);
-                $line['labelForTableColumn'] = $this->getLabelForTableColumn($row['tablename'], $row['field']);
+                $line['labelForTableColumn'] = $this->getLabelForTableColumnByTable($row['tablename'], $row['field']);
                 $line['path'] = BackendUtility::getRecordPath($record['pid'], '', 0, 0);
                 $line['actions'] = $this->getRecordActions($row['tablename'], $row['recuid'], $request);
             } else {
                 $line['row'] = $row;
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'] ?? '') ?: $row['tablename'];
-                $line['labelForTableColumn'] = $this->getLabelForTableColumn($row['tablename'], $row['field']);
+                $line['labelForTableColumn'] = $this->getLabelForTableColumnByTable($row['tablename'], $row['field']);
             }
             $refLines[] = $line;
         }
@@ -716,13 +716,13 @@ class ModifyElementInformationHook
                 $line['record'] = $record;
                 $line['recordTitle'] = BackendUtility::getRecordTitle($row['ref_table'], $record, false, true);
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'] ?? '');
-                $line['labelForTableColumn'] = $this->getLabelForTableColumn($table, $row['field']);
+                $line['labelForTableColumn'] = $this->getLabelForTableColumnByTable($table, $row['field']);
                 $line['path'] = BackendUtility::getRecordPath($record['pid'], '', 0, 0);
                 $line['actions'] = $this->getRecordActions($row['ref_table'], $row['ref_uid'], $request);
             } else {
                 $line['row'] = $row;
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'] ?? '');
-                $line['labelForTableColumn'] = $this->getLabelForTableColumn($table, $row['field']);
+                $line['labelForTableColumn'] = $this->getLabelForTableColumnByTable($table, $row['field']);
             }
             $refFromLines[] = $line;
         }

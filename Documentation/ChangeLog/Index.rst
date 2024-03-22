@@ -17,6 +17,8 @@ Version 7.0.0
 *   [TASK] Testing Framework migrated to TYPO3 Tesing Framework
 *   [TASK] Remove support for TYPO3 11 and lower versions
 *   [TASK] Removed jwtools2:executeExtensionUpdate command line controller as it is obsolete.
+*   [TASK] Removed deprecated functions and usages
+
 
 Version 6.0.6
 =============

@@ -8,9 +8,7 @@ use JWeiland\Jwtools2\Fal\Filter\FileNameFilter;
 use JWeiland\Jwtools2\Hooks\CachingFrameworkLoggerHook;
 use JWeiland\Jwtools2\Hooks\InitializeStdWrap;
 use JWeiland\Jwtools2\Hooks\ModifyElementInformationHook;
-use JWeiland\Jwtools2\Hooks\ModifyLinkHandlerHook;
 use JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook;
-use JWeiland\Jwtools2\Provider\ReportProvider;
 use JWeiland\Jwtools2\Routing\Aspect\PersistedTableMapper;
 use JWeiland\Jwtools2\Task\ExecuteQueryTask;
 use JWeiland\Jwtools2\Task\ExecuteQueryTaskAdditionalFieldProvider;
@@ -62,22 +60,6 @@ call_user_func(static function () {
         );
     }
 
-    // @todo: Removed this Hook in TYPO3 12 it must be implemented with new ElementBrowser API or alternative
-    if (
-        ($jwToolsConfiguration['typo3RequiredColumnsForFiles'] ?? false)
-        || ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB'] ?? false)
-    ) {
-        //$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']['jwtools2_file']
-        //    = \JWeiland\Jwtools2\Backend\Browser\FileBrowser::class;
-    }
-    // @todo: Removed this Hook in TYPO3 12 moved the logic to EventListener
-    if ($jwToolsConfiguration['typo3UploadFieldsInTopOfEB'] ?? false) {
-        // For LinkHandler: overwrite TYPO3's LinkHandlers
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks']['jwtools2'] = [
-            'handler' => ModifyLinkHandlerHook::class
-        ];
-    }
-
     if ($jwToolsConfiguration['typo3ShowEditButtonInElementInformation'] ?? false) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering']['jwtools']
             = ModifyElementInformationHook::class;
@@ -101,14 +83,6 @@ call_user_func(static function () {
     if ($jwToolsConfiguration['enableCachingFrameworkLogger'] ?? false) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php']['set'][1655965501]
             = CachingFrameworkLoggerHook::class . '->analyze';
-    }
-
-    if (
-        ($jwToolsConfiguration['enableReportProvider'] ?? false)
-        && ExtensionManagementUtility::isLoaded('reports')
-    ) {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['jwtools2'][]
-            = ReportProvider::class;
     }
 
     // Retrieve stdWrap current value into sub cObj. CONTENT

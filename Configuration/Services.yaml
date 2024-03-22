@@ -7,10 +7,6 @@ services:
   JWeiland\Jwtools2\:
     resource: '../Classes/*'
 
-  # Called by makeInstance in main of ElementBrowserController
-  #JWeiland\Jwtools2\Backend\Browser\FileBrowser:
-  #  public: true
-
   # Called by makeInstance in getCallableFromTarget of Dispatcher
   JWeiland\Jwtools2\Controller\Ajax\SysFileController:
     public: true
@@ -38,9 +34,9 @@ services:
     public: true
 
   # Element Browser should be registered with tags `recordlist.elementbrowser`
-  #JWeiland\Jwtools2\Backend\Browser\FileBrowser:
-  #  tags:
-  #    - name: recordlist.elementbrowser
+  JWeiland\Jwtools2\Backend\Browser\FileBrowser:
+    tags:
+      - name: recordlist.elementbrowser
 
   JWeiland\Jwtools2\LinkHandler\FileLinkHandler:
     public: true
@@ -59,11 +55,12 @@ services:
       - name: event.listener
         identifier: 'jwtools2.events.beforeItemIsIndexedEvent'
         event: ApacheSolrForTypo3\Solr\Event\Indexing\BeforeItemIsIndexedEvent
-  JWeiland\Jwtools2\EventListener\ModifyLinkEventListener:
+
+  JWeiland\Jwtools2\EventListener\IsFileSelectableEventListener:
     tags:
       - name: event.listener
-        identifier: 'jwtools2.events.modifyLinksEventListener'
-        event: TYPO3\CMS\Backend\Controller\Event\ModifyLinkHandlersEvent
+        identifier: 'jwtools2.events.isFileSelectableEvent'
+        event: TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent
 
   # Backend Context Menu Provider
   JWeiland\Jwtools2\ContextMenu\ItemProviders\UpdateFileMetaDataProvider:
