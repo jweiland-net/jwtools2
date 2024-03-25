@@ -8,7 +8,7 @@ Upgrade
 If you upgrade EXT:jwtools2 to a newer version, please read this section carefully!
 
 Upgrade to Version 7.0.0
-=========================
+========================
 
 ..  important::
 
@@ -33,4 +33,3 @@ Deprecated and Obsolete Features
 - Remove support for TYPO3 11 and lower versions
 - Removed `jwtools2:executeExtensionUpdate` command line controller as it is obsolete.
 - Removed deprecated functions and usages
-
