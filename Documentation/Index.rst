@@ -45,6 +45,7 @@ activated first, before using. So, only activate, what you really need.
     Installation/Index
     Configuration/Index
     KnownProblems/Index
+    AdministratorManual/Index
     Contribute/Index
     ChangeLog/Index
     Links

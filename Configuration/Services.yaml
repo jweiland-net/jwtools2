@@ -33,11 +33,6 @@ services:
   JWeiland\Jwtools2\Hooks\InitializeStdWrap:
     public: true
 
-  # Element Browser should be registered with tags `recordlist.elementbrowser`
-  JWeiland\Jwtools2\Backend\Browser\FileBrowser:
-    tags:
-      - name: recordlist.elementbrowser
-
   JWeiland\Jwtools2\LinkHandler\FileLinkHandler:
     public: true
 

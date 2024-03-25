@@ -51,7 +51,7 @@ class ModifyElementInformationHook
 {
     protected string $table;
 
-    protected int $uid;
+    protected string $uid;
 
     protected string $permsClause;
 
@@ -97,6 +97,7 @@ class ModifyElementInformationHook
     public function render(string $type, ElementInformationController $elementInformationController): string
     {
         $this->init($GLOBALS['TYPO3_REQUEST']);
+
         return $this->main($GLOBALS['TYPO3_REQUEST']);
     }
 
@@ -107,9 +108,8 @@ class ModifyElementInformationHook
     protected function init(ServerRequestInterface $request): void
     {
         $queryParams = $request->getQueryParams();
-
         $this->table = $queryParams['table'] ?? null;
-        $this->uid = (int)$queryParams['uid'] ?? null;
+        $this->uid = $queryParams['uid'] ?? null;
 
         $this->permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
 
