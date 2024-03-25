@@ -22,8 +22,6 @@ services:
       command: 'jwtools2:convertpasswords'
       schedulable: false
   JWeiland\Jwtools2\Command\StatusReportCommand:
-    arguments:
-      - '@TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository'
     tags:
     - name: 'console.command'
       command: 'jwtools2:statusreport'

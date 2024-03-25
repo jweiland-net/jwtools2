@@ -13,9 +13,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\Hooks;
 use JWeiland\Jwtools2\Hooks\InitializeStdWrap;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -34,9 +32,6 @@ class InitializeStdWrapTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $schedulerTaskRepository = GeneralUtility::makeInstance(SchedulerTaskRepository::class);
-        GeneralUtility::addInstance(SchedulerTaskRepository::class, $schedulerTaskRepository);
 
         $this->extensionConfigurationMock = $this->getAccessibleMock(ExtensionConfiguration::class);
         $this->subject = new InitializeStdWrap(
@@ -147,6 +142,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
 
         $data = [
             'uid' => 123,
+            'colPos' => 1,
             'title' => 'Hello'
         ];
 

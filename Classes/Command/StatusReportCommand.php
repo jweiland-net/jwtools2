@@ -38,11 +38,11 @@ class StatusReportCommand extends Command
 
     protected SymfonyStyle $ioStyled;
 
-    public function __construct(SchedulerTaskRepository $taskRepository)
+    public function __construct()
     {
         parent::__construct();
 
-        $this->taskRepository = $taskRepository;
+        $this->taskRepository = GeneralUtility::makeInstance(SchedulerTaskRepository::class);
     }
 
     public function configure(): void
