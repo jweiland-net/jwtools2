@@ -29,8 +29,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
-use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3Fluid\Fluid\View\TemplateAwareViewInterface;
 
 #[AsController]
 class SolrController extends AbstractController
@@ -42,22 +41,11 @@ class SolrController extends AbstractController
 
     public function initializeView($view): void
     {
-        if (!$view instanceof NotFoundView) {
+        if ($view instanceof TemplateAwareViewInterface) {
             parent::initializeView($view);
-
             $this->pageRenderer->loadJavaScriptModule('@jweiland/jwtools2/solr-backend-module.js');
-
-            /** @var SolrDocHeader $docHeader */
-            $docHeader = GeneralUtility::makeInstance(SolrDocHeader::class, $this->request, $this->moduleTemplate);
-            $docHeader->renderDocHeader();
-
-            if (!$this->schedulerRepository->findSolrSchedulerTask()) {
-                $this->addFlashMessage(
-                    'No or wrong scheduler task UID configured in ExtensionManager Configuration of jwtools2',
-                    'Missing or wrong configuration',
-                    ContextualFeedbackSeverity::WARNING
-                );
-            }
+            $this->renderDocHeader();
+            $this->checkSchedulerTaskConfig();
         }
     }
 
@@ -311,5 +299,29 @@ class SolrController extends AbstractController
         }
 
         return $indexer;
+    }
+
+    protected function renderDocHeader(): void
+    {
+        /** @var SolrDocHeader $docHeader */
+        $docHeader = GeneralUtility::makeInstance(
+            SolrDocHeader::class,
+            $this->request,
+            $this->moduleTemplate,
+            $this->iconFactory,
+            $this->uriBuilder
+        );
+        $docHeader->renderDocHeader();
+    }
+
+    protected function checkSchedulerTaskConfig(): void
+    {
+        if (!$this->schedulerRepository->findSolrSchedulerTask()) {
+            $this->addFlashMessage(
+                'No or wrong scheduler task UID configured in ExtensionManager Configuration of jwtools2',
+                'Missing or wrong configuration',
+                ContextualFeedbackSeverity::WARNING
+            );
+        }
     }
 }

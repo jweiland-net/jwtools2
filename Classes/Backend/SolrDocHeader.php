@@ -10,15 +10,26 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Backend;
 
+
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
  * DocHeader for our Solr Module
  */
-class SolrDocHeader extends AbstractDocHeader
+class SolrDocHeader
 {
+    public function __construct(
+        private readonly Request $request,
+        private readonly ModuleTemplate $view,
+        private readonly IconFactory $iconFactory,
+        private readonly UriBuilder $uriBuilder
+    ) {}
+
     public function renderDocHeader(): void
     {
         // initialize UriBuilder
@@ -56,5 +67,46 @@ class SolrDocHeader extends AbstractDocHeader
         $buttonBar
             ->addButton($overviewButton)
             ->addButton($clearFullIndexButton);
+    }
+
+    protected function addShortcutButton(): void
+    {
+        $buttonBar = $this->view
+            ->getDocHeaderComponent()
+            ->getButtonBar();
+
+        $shortcutButton = $buttonBar
+            ->makeShortcutButton()
+            ->setRouteIdentifier($this->request->getPluginName())
+            ->setDisplayName('Jwtools2');
+
+        $buttonBar->addButton($shortcutButton);
+    }
+
+    protected function addCloseButton(): void
+    {
+        $buttonBar = $this->view
+            ->getDocHeaderComponent()
+            ->getButtonBar();
+
+        $uri = $this->uriBuilder
+            ->reset()
+            ->uriFor('overview', [], 'Tools');
+
+        $closeButton = $buttonBar
+            ->makeLinkButton()
+            ->setHref($uri)
+            ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL))
+            ->setTitle('Close');
+
+        $buttonBar->addButton($closeButton);
+    }
+
+    /**
+     * Get Link to create new configuration records of defined type
+     */
+    protected function getLinkForUrl(string $url): string
+    {
+        return 'window.location.href=' . GeneralUtility::quoteJSvalue($url) . '; return false;';
     }
 }

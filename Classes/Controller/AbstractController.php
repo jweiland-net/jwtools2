@@ -10,11 +10,10 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Controller;
 
-use TYPO3\CMS\Backend\Routing\UriBuilder;
+use JWeiland\Jwtools2\Traits\InjectIconFactoryTrait;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Fluid\View\TemplateView;
@@ -24,23 +23,13 @@ use TYPO3\CMS\Fluid\View\TemplateView;
  */
 abstract class AbstractController extends ActionController
 {
-    protected ModuleTemplateFactory $moduleTemplateFactory;
+    use InjectIconFactoryTrait;
 
-    protected ModuleTemplate $moduleTemplate;
+    protected ?ModuleTemplate $moduleTemplate = null;
 
-    protected ?IconFactory $iconFactory = null;
-    protected UriBuilder $backendUriBuilder;
-
-    public function injectIconFactory(IconFactory $iconFactory): void
-    {
-        $this->iconFactory = $iconFactory;
-    }
-
-    public function __construct(ModuleTemplateFactory $moduleTemplateFactory, UriBuilder $backendUriBuilder)
-    {
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->backendUriBuilder = $backendUriBuilder;
-    }
+    public function __construct(
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory
+    ) {}
 
     /**
      * Initializes the view before invoking an action method.
