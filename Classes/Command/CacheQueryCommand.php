@@ -29,10 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CacheQueryCommand extends Command
 {
-    /**
-     * @var OutputInterface
-     */
-    protected $output;
+    protected OutputInterface $output;
 
     public function configure(): void
     {
@@ -71,7 +68,9 @@ class CacheQueryCommand extends Command
         }
 
         if ($input->getOption('tag') === null && $input->getOption('entryIdentifier') === null) {
-            $output->writeln('Without specifying tag or entryIdentifier option the result is too big. Please set one of these options.');
+            $output->writeln(
+                'Without specifying tag or entryIdentifier option the result is too big. Please set one of these options.'
+            );
             return 105;
         }
 
@@ -99,7 +98,7 @@ class CacheQueryCommand extends Command
                 } elseif (is_bool($content)) {
                     $output->writeln($content ? 'TRUE' : 'FALSE');
                 } elseif (is_array($content)) {
-                    $output->writeln(json_encode($content, JSON_PRETTY_PRINT));
+                    $output->writeln(json_encode($content, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT));
                 } else {
                     $output->writeln($content);
                 }

@@ -18,7 +18,7 @@ JW Tools 2
     en
 
 :Author:
-    Stefan Froemken
+    Stefan Froemken, Hoja Mustaffa Abdul Latheef
 
 :License:
     This document is published under the
@@ -45,6 +45,7 @@ activated first, before using. So, only activate, what you really need.
     Installation/Index
     Configuration/Index
     KnownProblems/Index
+    AdministratorManual/Index
     Contribute/Index
     ChangeLog/Index
     Links

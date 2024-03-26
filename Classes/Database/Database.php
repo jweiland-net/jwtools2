@@ -16,6 +16,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -34,7 +35,7 @@ class Database
         QueryRestrictionContainerInterface $restrictionContainer = null
     ): QueryBuilder {
         if ($useRestrictionsForCurrentTypo3Mode) {
-            if (TYPO3_MODE === 'FE') {
+            if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
                 $restrictionContainer = GeneralUtility::makeInstance(FrontendRestrictionContainer::class);
             } else {
                 $restrictionContainer = GeneralUtility::makeInstance(BackendRestrictionContainer::class);

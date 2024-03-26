@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Hooks;
 
-use TYPO3\CMS\Recordlist\LinkHandler\FileLinkHandler;
-use TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHandler;
+use TYPO3\CMS\Backend\LinkHandler\FileLinkHandler;
+use TYPO3\CMS\Backend\LinkHandler\FolderLinkHandler;
 
 /**
  * Hook to modify per TSConfig registered LinkHandlers with our own implementations.

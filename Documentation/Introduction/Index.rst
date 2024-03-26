@@ -50,12 +50,6 @@ Be careful: This command does not know, if password in DB is a plain password or
 over all configured Hash Methods of TYPO3. If no Hash Method was found for current password in database, the
 password will be updated.
 
-jwtools2:executeExtensionUpdate
-*******************************
-
-With this command you can execute the update script of extensions via ``class.ext_update.php``. It only starts the
-update, but if you have something special or a wizard in this file this command will not help.
-
 Database
 --------
 

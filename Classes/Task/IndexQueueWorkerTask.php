@@ -27,15 +27,9 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInterface
 {
-    /**
-     * @var int
-     */
-    protected $documentsToIndexLimit = 50;
+    protected int $documentsToIndexLimit = 50;
 
-    /**
-     * @var int
-     */
-    protected $maxSitesPerRun = 10;
+    protected int $maxSitesPerRun = 10;
 
     /**
      * Works through the indexing queue and indexes the queued items into Solr.
@@ -51,7 +45,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
         // Wrapped the CliEnvironment to avoid defining TYPO3_PATH_WEB since this
         // should only be done in the case when running it from outside TYPO3 BE
         // @see #921 and #934 on https://github.com/TYPO3-Solr
-        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
+        if (Environment::isCli()) {
             $cliEnvironment = GeneralUtility::makeInstance(CliEnvironment::class);
             $cliEnvironment->backup();
             $cliEnvironment->initialize(Environment::getPublicPath() . '/');
@@ -82,7 +76,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
             $maxSitePosition > count($availableSites) ? 0 : $maxSitePosition
         );
 
-        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
+        if (Environment::isCli()) {
             $cliEnvironment->restore();
         }
 
@@ -92,8 +86,6 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
     /**
      * Returns some additional information about indexing progress, shown in
      * the scheduler's task overview list.
-     *
-     * @throws Exception
      */
     public function getAdditionalInformation(): string
     {
@@ -121,6 +113,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
             $message .= ' / Index queue UID: ' . $registry->get('jwtools2-solr', 'indexQueueUid');
             $message .= ' / Memory Peak: ' . (float)$registry->get('jwtools2-solr', 'memoryPeakUsage');
         }
+
         return $message;
     }
 

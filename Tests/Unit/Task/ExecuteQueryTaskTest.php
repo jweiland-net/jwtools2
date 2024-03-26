@@ -2,53 +2,45 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the package jweiland/jwtools2.
- * For the full copyright and license information, please read the
- * LICENSE file that was distributed with this source code.
- */
-
 namespace JWeiland\Jwtools2\Tests\Unit\Task;
 
 use Doctrine\DBAL\Driver\Statement;
 use JWeiland\Jwtools2\Task\ExecuteQueryTask;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Scheduler;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case.
- */
 class ExecuteQueryTaskTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ExecuteQueryTask
-     */
-    protected $subject;
+    protected ExecuteQueryTask $subject;
 
     protected function setUp(): void
     {
-        // Because of AbstractTask __construct we have to set our own Scheduler class
-        /** @var Scheduler|ObjectProphecy $schedulerProphecy */
-        $schedulerProphecy = $this->prophesize(Scheduler::class);
-        GeneralUtility::setSingletonInstance(Scheduler::class, $schedulerProphecy->reveal());
+        parent::setUp();
+
+        $GLOBALS['TYPO3_CONF_VARS'] = [
+            'SYS' => [
+                'trustedHostsPattern' => '.*',
+                'devIPmask' => '*',
+            ],
+            'DB' => [
+                'Connections' => [
+                    'Default' => [
+                        'driver' => 'pdo_sqlite',
+                        'url' => 'sqlite::memory:',
+                    ],
+                ],
+            ],
+        ];
+
+        $this->resetSingletonInstances = true;
+
+        // Mock the Scheduler class
+        GeneralUtility::setSingletonInstance(Scheduler::class, $this->createMock(Scheduler::class));
 
         $this->subject = new ExecuteQueryTask();
-    }
-
-    protected function tearDown(): void
-    {
-        unset(
-            $this->subject
-        );
-
-        parent::tearDown();
     }
 
     /**
@@ -68,27 +60,26 @@ class ExecuteQueryTaskTest extends UnitTestCase
     {
         $this->subject->setSqlQuery('UPDATE what_ever;');
 
-        /** @var Statement|ObjectProphecy $statementProphecy */
-        $statementProphecy = $this->prophesize(Statement::class);
-        $statementProphecy
-            ->execute()
-            ->shouldBeCalled()
-            ->willReturn(true);
+        $statementMock = $this->getMockBuilder(Statement::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        /** @var Connection|ObjectProphecy $connectionProphecy */
-        $connectionProphecy = $this->prophesize(Connection::class);
-        $connectionProphecy
-            ->query('UPDATE what_ever;')
-            ->shouldBeCalled()
-            ->willReturn($statementProphecy->reveal());
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->expects(self::once())
+            ->method('executeStatement')
+            ->with(
+                $this->equalTo('UPDATE what_ever;'),
+                $this->equalTo([])
+            )
+            ->willReturn($statementMock);
 
-        /** @var ConnectionPool|ObjectProphecy $connectionPoolProphecy */
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphecy
-            ->getConnectionByName('Default')
-            ->shouldBeCalled()
-            ->willReturn($connectionProphecy->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock->expects(self::once())
+            ->method('getConnectionByName')
+            ->with('Default')
+            ->willReturn($connectionMock);
+
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         self::assertTrue(
             $this->subject->execute()
@@ -100,37 +91,29 @@ class ExecuteQueryTaskTest extends UnitTestCase
      */
     public function executeWithMultipleQueriesWillReturnTrue(): void
     {
-        $this->subject->setSqlQuery("UPDATE this;\nUPDATE that;\nUPDATE else;");
+        $this->subject->setSqlQuery("UPDATE what_ever;\nUPDATE that;\nUPDATE else;");
 
-        /** @var Statement|ObjectProphecy $statementProphecy */
-        $statementProphecy = $this->prophesize(Statement::class);
-        $statementProphecy
-            ->execute()
-            ->shouldBeCalled()
-            ->willReturn(true);
+        $statementMock = $this->getMockBuilder(Statement::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        /** @var Connection|ObjectProphecy $connectionProphecy */
-        $connectionProphecy = $this->prophesize(Connection::class);
-        $connectionProphecy
-            ->query('UPDATE this')
-            ->shouldBeCalled()
-            ->willReturn($statementProphecy->reveal());
-        $connectionProphecy
-            ->query('UPDATE that')
-            ->shouldBeCalled()
-            ->willReturn($statementProphecy->reveal());
-        $connectionProphecy
-            ->query('UPDATE else;')
-            ->shouldBeCalled()
-            ->willReturn($statementProphecy->reveal());
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->expects(self::exactly(3))
+            ->method('executeStatement')
+            ->withConsecutive(
+                [$this->equalTo('UPDATE what_ever;'), $this->equalTo([])],
+                [$this->equalTo('UPDATE that;'), $this->equalTo([])],
+                [$this->equalTo('UPDATE else;'), $this->equalTo([])]
+            )
+            ->willReturn($statementMock);
 
-        /** @var ConnectionPool|ObjectProphecy $connectionPoolProphecy */
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphecy
-            ->getConnectionByName('Default')
-            ->shouldBeCalled()
-            ->willReturn($connectionProphecy->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock->expects(self::once())
+            ->method('getConnectionByName')
+            ->with('Default')
+            ->willReturn($connectionMock);
+
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         self::assertTrue(
             $this->subject->execute()

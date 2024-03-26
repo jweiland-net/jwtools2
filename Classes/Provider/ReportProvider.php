@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\Provider;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\CMS\Reports\ExtendedStatusProviderInterface;
@@ -24,25 +24,13 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
  */
 class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderInterface
 {
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
+    protected ListUtility $listUtility;
 
-    /**
-     * @var ListUtility
-     */
-    protected $listUtility;
-
-    /**
-     * @var ExtensionConfiguration
-     */
-    protected $extensionConfiguration;
+    protected ExtensionConfiguration $extensionConfiguration;
 
     public function __construct()
     {
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->listUtility = $this->objectManager->get(ListUtility::class);
+        $this->listUtility = GeneralUtility::makeInstance(ListUtility::class);
         $this->extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
     }
 
@@ -72,7 +60,7 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
         ];
     }
 
-    protected function getUpdatableExtensions(bool $renderForReportMail = false)
+    protected function getUpdatableExtensions(bool $renderForReportMail = false): Status
     {
         $extensionInformation = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
         $updatableExtensions = [];
@@ -126,7 +114,7 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
         );
     }
 
-    protected function getSeverity(bool $renderForReportMail): int
+    protected function getSeverity(bool $renderForReportMail): ContextualFeedbackSeverity
     {
         $extConfSeverity = $this->extensionConfiguration->get(
             'jwtools2',
@@ -134,6 +122,11 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
         );
 
         // There is no need to render extension updates as WARNING in reports module.
-        return $renderForReportMail && $extConfSeverity === 'warning' ? Status::WARNING : Status::INFO;
+        return $renderForReportMail && $extConfSeverity === 'warning' ? ContextualFeedbackSeverity::WARNING : ContextualFeedbackSeverity::INFO;
+    }
+
+    public function getLabel(): string
+    {
+        return '';
     }
 }

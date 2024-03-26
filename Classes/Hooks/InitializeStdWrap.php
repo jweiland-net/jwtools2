@@ -21,10 +21,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class InitializeStdWrap implements ContentObjectPostInitHookInterface
 {
-    /**
-     * @var ExtensionConfiguration
-     */
-    protected $extensionConfiguration;
+    protected ExtensionConfiguration $extensionConfiguration;
 
     public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
@@ -44,7 +41,9 @@ class InitializeStdWrap implements ContentObjectPostInitHookInterface
             && ($this->getConfiguration()['typo3TransferTypoScriptCurrent'] ?? false)
         ) {
             // Set current to value of parent current
-            $parentObject->data[$parentObject->currentValKey] = $parentObject->parentRecord['data'][$parentObject->currentValKey];
+            if (isset($parentObject->data['colPos']) && $parentObject->data['colPos'] !== 0) {
+                $parentObject->data[$parentObject->currentValKey] = $parentObject->parentRecord['data'][$parentObject->currentValKey];
+            }
         }
     }
 

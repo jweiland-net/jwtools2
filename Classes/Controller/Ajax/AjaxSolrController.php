@@ -13,25 +13,27 @@ namespace JWeiland\Jwtools2\Controller\Ajax;
 use ApacheSolrForTypo3\Solr\Domain\Index\IndexService;
 use ApacheSolrForTypo3\Solr\Domain\Site\Site;
 use ApacheSolrForTypo3\Solr\IndexQueue\Queue;
+use Doctrine\DBAL\ConnectionException;
+use Doctrine\DBAL\Exception;
 use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use JWeiland\Jwtools2\Service\SolrService;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Class AjaxSolrController
  */
 class AjaxSolrController
 {
+    /**
+     * @throws \JsonException
+     */
     public function clearIndexAction(ServerRequest $request): ResponseInterface
     {
         $response = new Response();
-        $postData = $request->getParsedBody();
-        $moduleData = $postData['tx_jwtools2'];
-
+        $moduleData = $request->getParsedBody();
         $rootPageUid = $this->getRootPageUidFromRequest($request);
         $configurationNames = [];
         if (array_key_exists('configurationNames', $moduleData)) {
@@ -44,10 +46,8 @@ class AjaxSolrController
         }
 
         if ($rootPageUid !== 0 && $configurationNames !== [] && $clear !== []) {
-            /** @var ObjectManager $objectManager */
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
             /** @var SolrService $solrService */
-            $solrService = $objectManager->get(SolrService::class);
+            $solrService = GeneralUtility::makeInstance(SolrService::class);
 
             $site = $this->getSolrSiteFromRequest($request);
 
@@ -58,7 +58,7 @@ class AjaxSolrController
                 $response->getBody()->write(
                     json_encode([
                         'success' => 1,
-                    ])
+                    ], JSON_THROW_ON_ERROR)
                 );
             }
         }
@@ -68,6 +68,8 @@ class AjaxSolrController
 
     /**
      * Create index queue entries for given site.
+     *
+     * @throws \JsonException
      */
     public function createIndexQueueAction(ServerRequest $request): ResponseInterface
     {
@@ -78,28 +80,36 @@ class AjaxSolrController
             $indexQueue = GeneralUtility::makeInstance(Queue::class);
             $indexingConfigurationsToReIndex = $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames();
             foreach ($indexingConfigurationsToReIndex as $indexingConfigurationName) {
-                $indexQueue->getInitializationService()->initializeBySiteAndIndexConfiguration(
-                    $site,
-                    $indexingConfigurationName
-                );
+                try {
+                    $indexQueue->getQueueInitializationService()
+                        ->initializeBySiteAndIndexConfiguration(
+                            $site,
+                            $indexingConfigurationName
+                        );
+                } catch (ConnectionException|Exception $e) {
+                }
             }
 
             $response->getBody()->write(
                 json_encode([
                     'success' => 1,
-                ])
+                ], JSON_THROW_ON_ERROR)
             );
         } else {
             $response->getBody()->write(
                 json_encode([
                     'success' => 0,
-                ])
+                ], JSON_THROW_ON_ERROR)
             );
         }
 
         return $response;
     }
 
+    /**
+     * @throws Exception
+     * @throws \JsonException
+     */
     public function getProgressAction(ServerRequest $request): ResponseInterface
     {
         $response = new Response();
@@ -112,13 +122,13 @@ class AjaxSolrController
                 json_encode([
                     'success' => 1,
                     'progress' => $indexService->getProgress(),
-                ])
+                ], JSON_THROW_ON_ERROR)
             );
         } else {
             $response->getBody()->write(
                 json_encode([
                     'success' => 0,
-                ])
+                ], JSON_THROW_ON_ERROR)
             );
         }
 
@@ -127,8 +137,7 @@ class AjaxSolrController
 
     protected function getRootPageUidFromRequest(ServerRequest $request): int
     {
-        $postData = $request->getParsedBody();
-        $moduleData = $postData['tx_jwtools2'];
+        $moduleData = $request->getParsedBody();
         $rootPageUid = 0;
         if (array_key_exists('rootPageUid', $moduleData)) {
             $rootPageUid = (int)$moduleData['rootPageUid'];
@@ -140,10 +149,8 @@ class AjaxSolrController
     protected function getSolrSiteFromRequest(ServerRequest $request): ?Site
     {
         $rootPageUid = $this->getRootPageUidFromRequest($request);
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var SolrRepository $solrRepository */
-        $solrRepository = $objectManager->get(SolrRepository::class);
+        $solrRepository = GeneralUtility::makeInstance(SolrRepository::class);
 
         return $solrRepository->findByRootPage($rootPageUid);
     }

@@ -30,5 +30,11 @@ nbproject
 .session
 *.log
 
+# Ignore testing stuff
+*.env
+/.Build
+/composer.json.orig
+/composer.json.testing
+
 # Ignore composer stuff
 /composer.lock

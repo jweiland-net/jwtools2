@@ -6,19 +6,19 @@ $EM_CONF[$_EXTKEY] = [
         SQL-Queries. Further there are settings to enable some features in TYPO3 like showing the Page UID in Pagetree
         with a simple click in extensionmanager.',
     'category' => 'module',
-    'author' => 'Stefan Froemken',
+    'author' => 'Stefan Froemken, Hoja Mustaffa Abdul Latheef',
     'author_email' => 'projects@jweiland.net',
     'author_company' => 'jweiland.net',
     'state' => 'stable',
-    'version' => '6.0.6',
+    'version' => '7.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.33-11.5.99',
+            'typo3' => '12.4.9-12.4.99',
         ],
         'conflicts' => [
         ],
         'suggests' => [
-            'solr' => '11.2.0-11.99.99',
+            'solr' => '12.0.0-0.0.0',
         ],
     ],
 ];

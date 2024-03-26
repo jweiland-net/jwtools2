@@ -60,12 +60,6 @@
 					var/log/.
 				</source>
 			</trans-unit>
-			<trans-unit id="enableLiveSearchPerformanceForAdmins">
-				<source>Enable LiveSearch performance: Overwrite LiveSearch class to get more performance for searchresults as
-					admin.
-				</source>
-			</trans-unit>
-
 			<trans-unit id="enableReportProvider">
 				<source>Enable provider for EXT reports: If EXT:reports is installed it will show additional information about
 					updatable extensions.

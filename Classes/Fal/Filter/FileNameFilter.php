@@ -23,7 +23,7 @@ class FileNameFilter
      *
      * @var bool
      */
-    protected static $showHiddenFilesAndFolders = false;
+    protected static bool $showHiddenFilesAndFolders = false;
 
     /**
      * Filter method that checks if a file/folder name starts with a dot (e.g. .htaccess)
@@ -38,7 +38,7 @@ class FileNameFilter
         string $parentIdentifier,
         array $additionalInformation,
         DriverInterface $driverInstance
-    ) {
+    ): bool|int {
         // Only apply the filter if hidden files should not be listed
         if (
             self::$showHiddenFilesAndFolders === false

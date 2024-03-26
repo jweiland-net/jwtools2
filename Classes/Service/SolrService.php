@@ -26,9 +26,6 @@ class SolrService
     /**
      * Instead of the Solr Statistic, this Statistic will return
      * a statistic over all sites
-     *
-     * @return QueueStatistic
-     * @throws DBALException
      */
     public function getStatistic(): QueueStatistic
     {
@@ -38,10 +35,10 @@ class SolrService
             ->from('tx_solr_indexqueue_item')
             ->groupBy('pending')
             ->addGroupBy('failed')
-            ->execute();
+            ->executeQuery();
 
         $indexQueueStats = [];
-        while ($indexQueueStat = $statement->fetch()) {
+        while ($indexQueueStat = $statement->fetchAssociative()) {
             $indexQueueStats[] = $indexQueueStat;
         }
 
@@ -136,7 +133,7 @@ class SolrService
      */
     public function clearSolrIndexByType(Site $site, $type = ''): void
     {
-        $tableName = $site->getSolrConfiguration()->getIndexQueueTableNameOrFallbackToConfigurationName($type);
+        $tableName = $site->getSolrConfiguration()->getIndexQueueTypeOrFallbackToConfigurationName($type);
 
         $solrServers = GeneralUtility::makeInstance(ConnectionManager::class)
             ->getConnectionsBySite($site);

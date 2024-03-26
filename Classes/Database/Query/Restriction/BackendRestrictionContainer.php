@@ -25,7 +25,7 @@ class BackendRestrictionContainer extends AbstractRestrictionContainer
      *
      * @var QueryRestrictionInterface[]
      */
-    protected $defaultRestrictionTypes = [
+    protected array $defaultRestrictionTypes = [
         DeletedRestriction::class,
     ];
 

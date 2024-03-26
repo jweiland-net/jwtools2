@@ -10,12 +10,19 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Controller;
 
-/**
- * Class ToolsController
- */
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Attribute\AsController;
+
+#[AsController]
 class ToolsController extends AbstractController
 {
-    public function overviewAction(): void
+    public function initializeAction(): void
     {
+        parent::initializeAction();
+    }
+
+    public function overviewAction(): ResponseInterface
+    {
+        return $this->moduleTemplate->renderResponse('Overview');
     }
 }
