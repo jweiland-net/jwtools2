@@ -25,6 +25,10 @@ class InitializeStdWrapTest extends FunctionalTestCase
 
     protected ExtensionConfiguration | MockObject $extensionConfigurationMock;
 
+    protected array $coreExtensionsToLoad = [
+        'typo3/cms-scheduler'
+    ];
+
     protected array $testExtensionsToLoad = [
         'jweiland/jwtools2',
     ];
