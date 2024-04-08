@@ -41,7 +41,7 @@ class ExecuteQueryTask extends AbstractTask
 
             foreach ($sqlQueries as $sqlQuery) {
                 // check $sqlQuery ends with a semi-colon otherwise add it
-                if (substr($sqlQuery, -1) !== ';') {
+                if (!str_ends_with($sqlQuery, ';')) {
                     $sqlQuery .= ';';
                 }
                 $connection->executeStatement($sqlQuery);

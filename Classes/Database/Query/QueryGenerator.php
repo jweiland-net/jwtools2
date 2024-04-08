@@ -24,7 +24,7 @@ class QueryGenerator
     /**
      * @throws Exception
      */
-    public function getTreeList($id, $depth, $begin = 0, $permClause = ''): float|int|string
+    public function getTreeList($id, $depth, $begin = 0, $permClause = ''): int|string
     {
         $depth = (int)$depth;
         $begin = (int)$begin;

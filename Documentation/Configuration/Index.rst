@@ -83,21 +83,6 @@ If you activate ``typo3TransferTypoScriptCurrent`` we make use of a hook in TYPO
 This option will only work for cObj types CONTENT and RECORD.
 
 
-..  _typo3UploadFieldsInTopOfEB:
-
-typo3UploadFieldsInTopOfEB
---------------------------
-
-With TYPO3 8.7.0 following UserTSconfig was removed:
-
-options.uploadFieldsInTopOfEB = 1
-
-https://review.typo3.org/c/Packages/TYPO3.CMS/+/52170
-
-After activating this Option we XClasses 3 files to show
-Upload Fields in top of ElementBrowser and LinkHandler again.
-
-
 ..  _typo3RequiredColumnsForFiles:
 
 typo3RequiredColumnsForFiles

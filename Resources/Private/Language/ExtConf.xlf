@@ -16,11 +16,6 @@
 					sub-property of renderObj.
 				</source>
 			</trans-unit>
-			<trans-unit id="typo3UploadFieldsInTopOfEB">
-				<source>Upload Fields in top of EB: The UserTSconfig option uploadFieldsInTopOfEB was removed with TYPO3 8.7.0.
-					Activate this Option to show upload fields in top of ElementBrowser and LinkHandler again.
-				</source>
-			</trans-unit>
 			<trans-unit id="typo3RequiredColumnsForFiles">
 				<source>Required columns for image files: Enter here columns of the DB tables sys_file and/or sys_file_metadata which are to be regarded as mandatory fields. Files for which these columns are not set are available in the file browser, but cannot be selected.</source>
 			</trans-unit>

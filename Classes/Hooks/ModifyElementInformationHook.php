@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Hooks;
 
+use Doctrine\DBAL\Exception;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController;
@@ -507,7 +508,7 @@ class ModifyElementInformationHook
     /**
      * Get field name for specified table/column name
      */
-    protected function getLabelForTableColumnByTable(string $tableName, string $fieldName): string
+    protected function getLabelForColumnByTable(string $tableName, string $fieldName): string
     {
         if (($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label'] ?? null) !== null) {
             $field = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
@@ -562,9 +563,10 @@ class ModifyElementInformationHook
 
     /**
      * Make reference display
-     * @throws RouteNotFoundException
+     *
+     * @throws RouteNotFoundException|Exception
      */
-    protected function makeRef(string $table, File|int $ref, ServerRequestInterface $request): array
+    protected function makeRef(string $table, File|int|string $ref, ServerRequestInterface $request): array
     {
         $refLines = [];
         $lang = $this->getLanguageService();
@@ -642,13 +644,13 @@ class ModifyElementInformationHook
                 $line['parentRecord'] = $parentRecord;
                 $line['parentRecordTitle'] = $parentRecordTitle;
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']);
-                $line['labelForTableColumn'] = $this->getLabelForTableColumnByTable($row['tablename'], $row['field']);
+                $line['labelForTableColumn'] = $this->getLabelForColumnByTable($row['tablename'], $row['field']);
                 $line['path'] = BackendUtility::getRecordPath($record['pid'], '', 0, 0);
                 $line['actions'] = $this->getRecordActions($row['tablename'], $row['recuid'], $request);
             } else {
                 $line['row'] = $row;
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'] ?? '') ?: $row['tablename'];
-                $line['labelForTableColumn'] = $this->getLabelForTableColumnByTable($row['tablename'], $row['field']);
+                $line['labelForTableColumn'] = $this->getLabelForColumnByTable($row['tablename'], $row['field']);
             }
             $refLines[] = $line;
         }
@@ -658,7 +660,7 @@ class ModifyElementInformationHook
     /**
      * Make reference display (what this elements points to)
      */
-    protected function makeRefFrom(string $table, int $ref, ServerRequestInterface $request): array
+    protected function makeRefFrom(string $table, string $ref, ServerRequestInterface $request): array
     {
         $refFromLines = [];
         $lang = $this->getLanguageService();
@@ -716,13 +718,13 @@ class ModifyElementInformationHook
                 $line['record'] = $record;
                 $line['recordTitle'] = BackendUtility::getRecordTitle($row['ref_table'], $record, false, true);
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'] ?? '');
-                $line['labelForTableColumn'] = $this->getLabelForTableColumnByTable($table, $row['field']);
+                $line['labelForTableColumn'] = $this->getLabelForColumnByTable($table, $row['field']);
                 $line['path'] = BackendUtility::getRecordPath($record['pid'], '', 0, 0);
                 $line['actions'] = $this->getRecordActions($row['ref_table'], $row['ref_uid'], $request);
             } else {
                 $line['row'] = $row;
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'] ?? '');
-                $line['labelForTableColumn'] = $this->getLabelForTableColumnByTable($table, $row['field']);
+                $line['labelForTableColumn'] = $this->getLabelForColumnByTable($table, $row['field']);
             }
             $refFromLines[] = $line;
         }

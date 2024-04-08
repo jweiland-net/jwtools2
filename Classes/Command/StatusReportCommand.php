@@ -40,9 +40,7 @@ class StatusReportCommand extends Command
 
     public function __construct()
     {
-        parent::__construct();
-
-        $this->taskRepository = GeneralUtility::makeInstance(SchedulerTaskRepository::class);
+        parent::__construct('Start Report Command');
     }
 
     public function configure(): void
@@ -90,14 +88,14 @@ class StatusReportCommand extends Command
 
     protected function checkScheduler(): void
     {
+        $yesterday = time() - (60 * 60 * 24);
         $this->ioStyled->title('Checking scheduler tasks');
 
         $lastExecution = 0;
         $recurringTasks = [];
-        $yesterday = time() - (60 * 60 * 24);
 
         $tasks = $this->getSchedulerTasks();
-        $lastExecution = $this->processTasks($tasks, $recurringTasks, $yesterday, $lastExecution);
+        $lastExecution = $this->processTasks($tasks, $recurringTasks, $lastExecution);
 
         $this->ioStyled->definitionList(
             $lastExecution < $yesterday ? '<error>The last execution was over 24 hours ago</error>' : '<info>Last execution within last 24 hours</info>',
@@ -259,11 +257,11 @@ class StatusReportCommand extends Command
         return GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
     }
 
-    protected function processTasks(array $tasks, array &$recurringTasks, int $yesterday, int $lastExecution): int
+    protected function processTasks(array $tasks, array &$recurringTasks, int $lastExecution): int
     {
         foreach ($tasks as $groups => $taskGroups) {
             foreach ($taskGroups as $taskGroup) {
-                if (is_array($taskGroup['tasks']) && count($taskGroup['tasks'])) {
+                if (is_array($taskGroup['tasks'])) {
                     foreach ($taskGroup['tasks'] as $task) {
                         if ($task['lastExecutionTime'] > $lastExecution) {
                             $lastExecution = $task['lastExecutionTime'];
@@ -276,7 +274,7 @@ class StatusReportCommand extends Command
                             $task['lastExecutionContext']
                         );
 
-                        $recurringTasks[] = [$taskTitle => $this->getTaskStatus($task, $yesterday)];
+                        $recurringTasks[] = [$taskTitle => $this->getTaskStatus($task)];
                     }
                 }
             }
@@ -285,8 +283,10 @@ class StatusReportCommand extends Command
         return $lastExecution;
     }
 
-    protected function getTaskStatus(array $task, int $yesterday): string
+    protected function getTaskStatus(array $task): string
     {
+        $yesterday = time() - (60 * 60 * 24);
+
         if (isset($task['serializedExecutions']) && $task['serializedExecutions'] !== '') {
             return '<info>running...</info>';
         }
@@ -296,5 +296,10 @@ class StatusReportCommand extends Command
         }
 
         return $task['lastExecutionTime'] < $yesterday ? '<error>scheduled > 24h</error>' : '<info>scheduled < 24h</info>';
+    }
+
+    public function setTaskRepository(SchedulerTaskRepository $taskRepository): void
+    {
+        $this->taskRepository = $taskRepository;
     }
 }

@@ -32,12 +32,6 @@ class SolrDocHeader
 
     public function renderDocHeader(): void
     {
-        // initialize UriBuilder
-        if (!($this->uriBuilder instanceof UriBuilder)) {
-            $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        }
-        $this->uriBuilder->setRequest($this->request);
-
         // Render Buttons
         $this->addShortcutButton();
         $this->addCloseButton();

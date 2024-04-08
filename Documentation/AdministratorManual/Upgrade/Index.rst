@@ -17,7 +17,7 @@ Upgrade to Version 7.0.0
 Removed Option: `typo3UploadFieldsInTopOfEB`
 --------------------------------------------
 
-In the latest version of TYPO3, the `typo3UploadFieldsInTopOfEB` option has been removed. This change was necessitated
+The `typo3UploadFieldsInTopOfEB` option has been removed from TYPO3 before 6.2 version. This change was necessitated
 by the introduction of a paginator in File Abstraction Layer (FAL). As a result, it's no longer possible to adjust the
 position of File upload or create fields above the list without Xclass.
 

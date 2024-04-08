@@ -13,7 +13,9 @@ namespace JWeiland\Jwtools2\Controller;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 
-#[AsController]
+/**
+ * ToolsController for backend module
+ */
 class ToolsController extends AbstractController
 {
     public function initializeAction(): void

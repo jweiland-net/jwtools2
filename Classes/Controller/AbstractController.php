@@ -36,7 +36,7 @@ abstract class AbstractController extends ActionController
      * Override this method to solve assign variables common for all actions
      * or prepare the view in another way before the action is called.
      */
-    protected function initializeView( TemplateView $view): void
+    protected function initializeView(TemplateView $view): void
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->moduleTemplate->assign('extConf', $this->getExtensionConfiguration());

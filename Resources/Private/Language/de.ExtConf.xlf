@@ -11,10 +11,6 @@
 				<source>Transfer TypoScript current: For each record, found by CONTENT, a new instance of ContentObjectRenderer will be created by renderObj. The data property will be filled with the values of the record. The TypoScript current value will be resetted. Activate this option if you want to transfer the parent current value into the sub-property of renderObj.</source>
 				<target>Übertrage TypoScript current: Für jeden Datensatz, der durch CONTENT gefunden wurde, wird bei der Verarbeitung durch renderObj immer eine neue Instanz vom ContentObjectRenderer erzeugt. Die data-Eigenschaft wird mit den Werten des Datensatzes gefüllt während die current-Eigenschaft geleert wird. Nach Aktivierung dieser Option wird der Wert der Eltern current-Eigenschaft mit in die Kind-Eigenschaft (renderObj) übertragen.</target>
 			</trans-unit>
-			<trans-unit id="typo3UploadFieldsInTopOfEB">
-				<source>Upload Fields in top of EB: The UserTSconfig option uploadFieldsInTopOfEB was removed with TYPO3 8.7.0. Activate this Option to show upload fields in top of ElementBrowser and LinkHandler again.</source>
-				<target>Uploadfelder oberhalb EB anzeigen: Die UserTSconfig Option uploadFieldsInTopOfEB wurde mit TYPO3 8.7.0 entfernt. Aktivieren Sie diese Option, um die Uploadfelder wieder oberhalb des ElementBrowser und des LinkHandlers anzeigen zu lassen.</target>
-			</trans-unit>
 			<trans-unit id="typo3RequiredColumnsForFiles">
 				<source>Required columns for image files: Enter here columns of the DB tables sys_file and/or sys_file_metadata which are to be regarded as mandatory fields. Files for which these columns are not set are available in the file browser, but cannot be selected.</source>
 				<target>Benötigte Spalten für Bilddateien: Tragen Sie hier Spalten der DB Tabellen sys_file und/oder sys_file_metadata ein, die als Pflichtfelder anzusehen sind. Dateien, bei denen diese Spalten nicht gesetzt sind stehen im Dateibrowser zwar zur Verfügung, können jedoch nicht ausgewählt werden.</target>

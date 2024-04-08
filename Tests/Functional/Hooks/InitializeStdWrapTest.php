@@ -33,7 +33,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->extensionConfigurationMock = $this->getAccessibleMock(ExtensionConfiguration::class);
+        $this->extensionConfigurationMock = $this->createMock(ExtensionConfiguration::class);
         $this->subject = new InitializeStdWrap(
             $this->extensionConfigurationMock
         );

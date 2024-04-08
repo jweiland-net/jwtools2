@@ -14,7 +14,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileProvider;
 
 /**
- * Adds a new entry ``Create/Update file metadata`` into context menu of filelist module to create a missing file
+ * Adds a new entry 'Create/Update file metadata' into context menu of filelist module to create a missing file
  * metadata record or to update the existing metadata record (sys_file_metadata).
  */
 class UpdateFileMetaDataProvider extends FileProvider

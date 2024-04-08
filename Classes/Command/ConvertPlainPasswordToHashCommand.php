@@ -76,7 +76,7 @@ class ConvertPlainPasswordToHashCommand extends Command
     {
         $counter = 0;
         $connection = $this->getConnectionPool()->getConnectionForTable($this->modeMapping[$mode]['table']);
-        $statement = $this->getStatementForUsers($this->modeMapping[$mode]['table']);
+        $statement = $this->getQueryResultForUsers($this->modeMapping[$mode]['table']);
         while ($user = $statement->fetch()) {
             if (!isset($user['password']) || $user['password'] === '') {
                 continue;
@@ -147,7 +147,7 @@ class ConvertPlainPasswordToHashCommand extends Command
         return $this->modeMapping[$mode]['hashInstance'];
     }
 
-    protected function getStatementForUsers(string $tableName): Result
+    protected function getQueryResultForUsers(string $tableName): Result
     {
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($tableName);
         return $queryBuilder

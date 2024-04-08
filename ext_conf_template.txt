@@ -2,12 +2,6 @@
 typo3EnableUidInPageTree = 0
 # cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3TransferTypoScriptCurrent
 typo3TransferTypoScriptCurrent = 0
-
-# @todo: rafactor this for version 12
-# cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3UploadFieldsInTopOfEB
-typo3UploadFieldsInTopOfEB = 0
-
-# @todo: rafactor this for version 12
 # cat=typo3; type=string; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3RequiredColumnsForFiles
 typo3RequiredColumnsForFiles =
 # cat=typo3; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:typo3ShowEditButtonInElementInformation
@@ -26,7 +20,6 @@ enableContextMenuToUpdateFileMetadata = 0
 enableCachingFrameworkLogger = 0
 # cat=reports; type=options[Info=info,Warning=warning]; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:sendUpdatableExtensionsWithSeverity
 sendUpdatableExtensionsWithSeverity = info
-
 # cat=solr; type=boolean; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:solrEnable
 solrEnable = 0
 # cat=solr; type=int+; label=LLL:EXT:jwtools2/Resources/Private/Language/ExtConf.xlf:solrSchedulerTaskUid
