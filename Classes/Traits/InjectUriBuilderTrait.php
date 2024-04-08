@@ -17,7 +17,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
  */
 trait InjectUriBuilderTrait
 {
-    protected ?UriBuilder $uriBuilder = null;
+    protected UriBuilder $uriBuilder;
 
     public function injectUriBuilder(UriBuilder $uriBuilder): void
     {

@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\Traits;
 
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Registry;
 
 /**
  * Trait to inject InjectPageRenderer. Mostly used in controllers.

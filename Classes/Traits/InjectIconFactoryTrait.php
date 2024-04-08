@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
  */
 trait InjectIconFactoryTrait
 {
-    protected ?IconFactory $iconFactory = null;
+    protected IconFactory $iconFactory;
 
     public function injectIconFactory(IconFactory $iconFactory): void
     {

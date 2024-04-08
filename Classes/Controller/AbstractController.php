@@ -25,7 +25,7 @@ abstract class AbstractController extends ActionController
 {
     use InjectIconFactoryTrait;
 
-    protected ?ModuleTemplate $moduleTemplate = null;
+    protected ModuleTemplate $moduleTemplate;
 
     public function __construct(
         protected readonly ModuleTemplateFactory $moduleTemplateFactory
