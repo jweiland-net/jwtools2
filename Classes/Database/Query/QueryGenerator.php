@@ -24,7 +24,7 @@ class QueryGenerator
     /**
      * @throws Exception
      */
-    public function getTreeList($id, $depth, $begin = 0, $permClause = ''): int|string
+    public function getTreeList($id, $depth, $begin = 0, $permClause = ''): string
     {
         $depth = (int)$depth;
         $begin = (int)$begin;
@@ -64,7 +64,7 @@ class QueryGenerator
                 }
             }
         }
-        return $theList;
+        return (string)$theList;
     }
 
     public static function stripLogicalOperatorPrefix(string $constraint): string
