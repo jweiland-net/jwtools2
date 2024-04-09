@@ -38,11 +38,6 @@ class StatusReportCommand extends Command
 
     protected SymfonyStyle $ioStyled;
 
-    public function __construct()
-    {
-        parent::__construct('Start Report Command');
-    }
-
     public function configure(): void
     {
         $this
