@@ -23,14 +23,6 @@
 					sub-property of renderObj.
 				</target>
       </trans-unit>
-      <trans-unit id="typo3UploadFieldsInTopOfEB">
-        <source>Upload Fields in top of EB: The UserTSconfig option uploadFieldsInTopOfEB was removed with TYPO3 8.7.0.
-					Activate this Option to show upload fields in top of ElementBrowser and LinkHandler again.
-				</source>
-        <target state="needs-translation">Upload Fields in top of EB: The UserTSconfig option uploadFieldsInTopOfEB was removed with TYPO3 8.7.0.
-					Activate this Option to show upload fields in top of ElementBrowser and LinkHandler again.
-				</target>
-      </trans-unit>
       <trans-unit id="typo3RequiredColumnsForFiles">
         <source>Required columns for image files: Enter here columns of the DB tables sys_file and/or sys_file_metadata which are to be regarded as mandatory fields. Files for which these columns are not set are available in the file browser, but cannot be selected.</source>
         <target state="needs-translation">Required columns for image files: Enter here columns of the DB tables sys_file and/or sys_file_metadata which are to be regarded as mandatory fields. Files for which these columns are not set are available in the file browser, but cannot be selected.</target>
@@ -91,14 +83,6 @@
         <target state="needs-translation">Enable Caching Framework Logger: Hooks into the TYPO3 caching framework and parses all data using
 					expression records to be created on the root page (PID: 0). If these match, a log entry is created in
 					var/log/.
-				</target>
-      </trans-unit>
-      <trans-unit id="enableLiveSearchPerformanceForAdmins">
-        <source>Enable LiveSearch performance: Overwrite LiveSearch class to get more performance for searchresults as
-					admin.
-				</source>
-        <target state="needs-translation">Enable LiveSearch performance: Overwrite LiveSearch class to get more performance for searchresults as
-					admin.
 				</target>
       </trans-unit>
       <trans-unit id="enableReportProvider">
