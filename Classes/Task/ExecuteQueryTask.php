@@ -11,9 +11,9 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\Task;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
@@ -22,10 +22,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class ExecuteQueryTask extends AbstractTask
 {
-    /**
-     * @var string
-     */
-    protected $sqlQuery = '';
+    protected string $sqlQuery = '';
 
     public function execute(): bool
     {
@@ -37,14 +34,17 @@ class ExecuteQueryTask extends AbstractTask
             }
 
             $sqlQueries = array_filter($sqlQueries);
-
-            if (empty($sqlQueries)) {
+            if ($sqlQueries === []) {
                 $this->addMessage('No queries for execution found');
                 return false;
             }
 
             foreach ($sqlQueries as $sqlQuery) {
-                $connection->query($sqlQuery)->execute();
+                // check $sqlQuery ends with a semi-colon otherwise add it
+                if (!str_ends_with($sqlQuery, ';')) {
+                    $sqlQuery .= ';';
+                }
+                $connection->executeStatement($sqlQuery);
             }
 
             $this->addMessage(
@@ -55,7 +55,7 @@ class ExecuteQueryTask extends AbstractTask
         } catch (\Exception $e) {
             $this->addMessage(
                 'Error occurred: ' . $e->getMessage(),
-                AbstractMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
 
             return false;
@@ -74,10 +74,8 @@ class ExecuteQueryTask extends AbstractTask
 
     /**
      * This method is used to add a message to the internal queue
-     *
-     * @throws \Exception
      */
-    public function addMessage(string $message, int $severity = AbstractMessage::OK): void
+    public function addMessage(string $message, ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK): void
     {
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, '', $severity);
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);

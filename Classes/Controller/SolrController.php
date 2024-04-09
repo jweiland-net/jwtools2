@@ -16,99 +16,68 @@ use ApacheSolrForTypo3\Solr\IndexQueue\Item;
 use ApacheSolrForTypo3\Solr\IndexQueue\Queue;
 use ApacheSolrForTypo3\Solr\System\Configuration\TypoScriptConfiguration;
 use JWeiland\Jwtools2\Backend\SolrDocHeader;
-use JWeiland\Jwtools2\Domain\Repository\SchedulerRepository;
-use JWeiland\Jwtools2\Domain\Repository\SolrRepository;
 use JWeiland\Jwtools2\Service\SolrService;
+use JWeiland\Jwtools2\Traits\InjectPageRendererTrait;
+use JWeiland\Jwtools2\Traits\InjectRegistryTrait;
+use JWeiland\Jwtools2\Traits\InjectSchedulerRepositoryTrait;
+use JWeiland\Jwtools2\Traits\InjectSolrRepositoryTrait;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
-use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3Fluid\Fluid\View\TemplateAwareViewInterface;
 
 /**
- * Class SolrController
+ * SolrController for backend module
  */
 class SolrController extends AbstractController
 {
-    /**
-     * @var SolrRepository
-     */
-    protected $solrRepository;
+    use InjectSolrRepositoryTrait;
+    use InjectSchedulerRepositoryTrait;
+    use InjectRegistryTrait;
+    use InjectPageRendererTrait;
 
-    /**
-     * @var SchedulerRepository
-     */
-    protected $schedulerRepository;
-
-    /**
-     * @var Registry
-     */
-    protected $registry;
-
-    public function injectSolrRepository(SolrRepository $solrRepository): void
+    public function initializeView($view): void
     {
-        $this->solrRepository = $solrRepository;
-    }
-
-    public function injectSchedulerRepository(SchedulerRepository $schedulerRepository): void
-    {
-        $this->schedulerRepository = $schedulerRepository;
-    }
-
-    public function injectRegistry(Registry $registry): void
-    {
-        $this->registry = $registry;
-    }
-
-    public function initializeView(ViewInterface $view): void
-    {
-        if (!$view instanceof NotFoundView) {
+        if ($view instanceof TemplateAwareViewInterface) {
             parent::initializeView($view);
-
-            /** @var PageRenderer $pageRenderer */
-            $pageRenderer = $this->objectManager->get(PageRenderer::class);
-            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Jwtools2/SolrIndex');
-
-            /** @var SolrDocHeader $docHeader */
-            $docHeader = $this->objectManager->get(SolrDocHeader::class, $this->request, $view);
-            $docHeader->renderDocHeader();
-
-            if (!$this->schedulerRepository->findSolrSchedulerTask()) {
-                $this->addFlashMessage(
-                    'No or wrong scheduler task UID configured in ExtensionManager Configuration of jwtools2',
-                    'Missing or wrong configuration',
-                    AbstractMessage::WARNING
-                );
-            }
+            $this->pageRenderer->loadJavaScriptModule('@jweiland/jwtools2/solr-backend-module.js');
+            $this->renderDocHeader();
+            $this->checkSchedulerTaskConfig();
         }
     }
 
-    public function listAction(): void
+    public function listAction(): ResponseInterface
     {
-        $this->view->assign('sites', $this->solrRepository->findAllAvailableSites());
-        $this->view->assign('currentRootPageUid', $this->registry->get('jwtools2-solr', 'rootPageId', 0));
+        $this->moduleTemplate->assign('sites', $this->solrRepository->findAllAvailableSites());
+        $this->moduleTemplate->assign('currentRootPageUid', $this->registry->get('jwtools2-solr', 'rootPageId', 0));
+
+        return $this->moduleTemplate->renderResponse('List');
     }
 
-    public function showAction(int $rootPageUid): void
+    public function showAction(int $rootPageUid): ResponseInterface
     {
         $site = $this->solrRepository->findByRootPage($rootPageUid);
-        $this->view->assign('site', $site);
-        $this->view->assign('memoryPeakUsage', $this->registry->get('jwtools2-solr', 'memoryPeakUsage', 0));
+        $this->moduleTemplate->assign('site', $site);
+        $this->moduleTemplate->assign('memoryPeakUsage', $this->registry->get('jwtools2-solr', 'memoryPeakUsage', 0));
+
+        return $this->moduleTemplate->renderResponse('Show');
     }
 
-    public function showIndexQueueAction(int $rootPageUid, string $configurationName): void
+    public function showIndexQueueAction(int $rootPageUid, string $configurationName): ResponseInterface
     {
         $site = $this->solrRepository->findByRootPage($rootPageUid);
         if ($site instanceof Site) {
             $solrConfiguration = $site->getSolrConfiguration()->getIndexQueueConfigurationByName($configurationName);
-            $this->view->assign('site', $site);
-            $this->view->assign('solrConfiguration', $solrConfiguration);
-            $this->view->assign('configurationName', $configurationName);
+            $this->moduleTemplate->assign('site', $site);
+            $this->moduleTemplate->assign('solrConfiguration', $solrConfiguration);
+            $this->moduleTemplate->assign('configurationName', $configurationName);
         }
+
+        return $this->moduleTemplate->renderResponse('showIndexQueue');
     }
 
     public function indexOneRecordAction(
@@ -116,12 +85,12 @@ class SolrController extends AbstractController
         string $configurationName,
         ?int $recordUid,
         int $languageUid = 0
-    ): void {
+    ): ResponseInterface {
         if ($recordUid === null) {
             $this->addFlashMessage(
                 'Please enter a record UID before submitting the form',
                 'Record UID empty',
-                AbstractMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         } else {
             $site = $this->solrRepository->findByRootPage($rootPageUid);
@@ -137,26 +106,26 @@ class SolrController extends AbstractController
                         $this->addFlashMessage(
                             'Indexing Solr Queue Item object failed. Please check logs. Record UID: ' . $recordUid,
                             'Indexing Failed',
-                            AbstractMessage::ERROR
+                            ContextualFeedbackSeverity::ERROR
                         );
                     }
                 } else {
                     $this->addFlashMessage(
                         'Solr Index Queue Item could not be found by Record UID: ' . $recordUid,
                         'Indexing Failed',
-                        AbstractMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     );
                 }
             } else {
                 $this->addFlashMessage(
                     'Solr Site object could not be retrieved by RootPageUid: ' . $rootPageUid,
                     'Indexing Failed',
-                    AbstractMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 );
             }
         }
 
-        $this->redirect(
+        return $this->redirect(
             'showIndexQueue',
             'Solr',
             'jwtools2',
@@ -168,12 +137,12 @@ class SolrController extends AbstractController
         );
     }
 
-    public function showClearIndexFormAction(int $rootPageUid): void
+    public function showClearIndexFormAction(int $rootPageUid): ResponseInterface
     {
         $site = $this->solrRepository->findByRootPage($rootPageUid);
         if ($site instanceof Site) {
-            $this->view->assign('site', $site);
-            $this->view->assign(
+            $this->moduleTemplate->assign('site', $site);
+            $this->moduleTemplate->assign(
                 'enabledConfigurationNames',
                 $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames()
             );
@@ -181,17 +150,17 @@ class SolrController extends AbstractController
             $this->addFlashMessage(
                 $rootPageUid . ' is no valid RootPage UID',
                 'Invalid RootPage UID',
-                AbstractMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             );
-            $this->redirect('list');
+            return $this->redirect('list');
         }
+
+        return $this->moduleTemplate->renderResponse('showClearIndexForm');
     }
 
-    /**
-     * @Extbase\Validate("NotEmpty", param="configurationNames")
-     * @Extbase\Validate("NotEmpty", param="clear")
-     */
-    public function clearIndexAction(int $rootPageUid, array $configurationNames, array $clear): void
+    #[Extbase\Validate(['validator' => 'NotEmpty', 'param' => 'configurationNames'])]
+    #[Extbase\Validate(['validator' => 'NotEmpty', 'param' => 'clear'])]
+    public function clearIndexAction(int $rootPageUid, array $configurationNames, array $clear): ResponseInterface
     {
         /** @var SolrService $solrService */
         $solrService = GeneralUtility::makeInstance(SolrService::class);
@@ -204,24 +173,24 @@ class SolrController extends AbstractController
                 'We successfully have cleared the index of Site: "' . $site->getTitle() . '"',
                 'Index cleared'
             );
-            $this->redirect('list');
+            return $this->redirect('list');
         } else {
             $this->addFlashMessage(
                 'We haven\'t found a Site with RootPage UID: ' . $rootPageUid,
                 'Site not found',
-                AbstractMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             );
         }
+
+        return $this->moduleTemplate->renderResponse('clearIndex');
     }
 
     /**
      * Show a form to clear full index
      */
-    public function showClearFullIndexFormAction(): void
+    public function showClearFullIndexFormAction(): ResponseInterface
     {
-        $pageRenderer = $this->objectManager->get(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Jwtools2/ClearFullIndex');
-
+        $this->pageRenderer->loadJavaScriptModule('@jweiland/jwtools2/clear-full-index.js');
         $configurationNamesOfAllSites = [];
         $sites = $this->solrRepository->findAllAvailableSites();
         foreach ($sites as $site) {
@@ -230,8 +199,10 @@ class SolrController extends AbstractController
                 $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames()
             );
         }
-        $this->view->assign('sites', $sites);
-        $this->view->assign('configurationNamesOfAllSites', $configurationNamesOfAllSites);
+        $this->moduleTemplate->assign('sites', $sites);
+        $this->moduleTemplate->assign('configurationNamesOfAllSites', $configurationNamesOfAllSites);
+
+        return $this->moduleTemplate->renderResponse('showClearFullIndexForm');
     }
 
     protected function getIndexQueueItem(int $rootPageUid, string $configurationName, int $recordUid): ?Item
@@ -244,19 +215,19 @@ class SolrController extends AbstractController
             ->where(
                 $queryBuilder->expr()->eq(
                     'root',
-                    $queryBuilder->createNamedParameter($rootPageUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($rootPageUid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'indexing_configuration',
-                    $queryBuilder->createNamedParameter($configurationName, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($configurationName)
                 ),
                 $queryBuilder->expr()->eq(
                     'item_uid',
-                    $queryBuilder->createNamedParameter($recordUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($recordUid, Connection::PARAM_INT)
                 )
             )
-            ->execute()
-            ->fetch();
+            ->executeQuery()
+            ->fetchAssociative();
 
         if ($indexQueueItem === false) {
             return null;
@@ -270,11 +241,11 @@ class SolrController extends AbstractController
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($recordUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($recordUid, Connection::PARAM_INT)
                 )
             )
-            ->execute()
-            ->fetch();
+            ->executeQuery()
+            ->fetchAssociative();
 
         if ($tableRecord === false) {
             return null;
@@ -329,5 +300,29 @@ class SolrController extends AbstractController
         }
 
         return $indexer;
+    }
+
+    protected function renderDocHeader(): void
+    {
+        /** @var SolrDocHeader $docHeader */
+        $docHeader = GeneralUtility::makeInstance(
+            SolrDocHeader::class,
+            $this->request,
+            $this->moduleTemplate,
+            $this->iconFactory,
+            $this->uriBuilder
+        );
+        $docHeader->renderDocHeader();
+    }
+
+    protected function checkSchedulerTaskConfig(): void
+    {
+        if (!$this->schedulerRepository->findSolrSchedulerTask()) {
+            $this->addFlashMessage(
+                'No or wrong scheduler task UID configured in ExtensionManager Configuration of jwtools2',
+                'Missing or wrong configuration',
+                ContextualFeedbackSeverity::WARNING
+            );
+        }
     }
 }

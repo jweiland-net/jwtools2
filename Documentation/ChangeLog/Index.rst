@@ -10,6 +10,17 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 7.0.0
+=============
+
+*   [TASK] Compatibility fix for TYPO3 12
+*   [TASK] Testing Framework migrated to TYPO3 Tesing Framework
+*   [TASK] Remove support for TYPO3 11 and lower versions
+*   [TASK] Removed jwtools2:executeExtensionUpdate command line controller as it is obsolete.
+*   [TASK] Removed typo3UploadFieldsInTopOfEB configuration as it is not possible to change upload form without Xclass.
+*   [TASK] Removed deprecated functions and usages
+
+
 Version 6.0.6
 =============
 

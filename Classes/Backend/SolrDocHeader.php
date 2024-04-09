@@ -10,20 +10,29 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Backend;
 
+
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
  * DocHeader for our Solr Module
  */
-class SolrDocHeader extends AbstractDocHeader
+class SolrDocHeader
 {
+    public function __construct(
+        private readonly Request $request,
+        private readonly ModuleTemplate $view,
+        private readonly IconFactory $iconFactory,
+        private readonly UriBuilder $uriBuilder
+    ) {}
+
     public function renderDocHeader(): void
     {
-        // initialize UriBuilder
-        $this->uriBuilder->setRequest($this->request);
-
         // Render Buttons
-        $this->addHelpButton();
         $this->addShortcutButton();
         $this->addCloseButton();
         $this->addModuleSelector();
@@ -32,33 +41,66 @@ class SolrDocHeader extends AbstractDocHeader
     protected function addModuleSelector(): void
     {
         $buttonBar = $this->view
-            ->getModuleTemplate()
             ->getDocHeaderComponent()
             ->getButtonBar();
 
-        $splitButtonBar = $buttonBar
-            ->makeSplitButton();
-
-        $newButton = $buttonBar
-            ->makeInputButton()
-            ->setName('module')
-            ->setValue('solr')
-            ->setOnClick($this->getLinkForUrl($this->uriBuilder->reset()->uriFor('list', [], 'Solr')))
+        $overviewButton = $buttonBar
+            ->makeLinkButton()
+            ->setHref($this->uriBuilder->reset()->uriFor('list', [], 'Solr'))
             ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
-            ->setTitle('Solr Overview')
+            ->setTitle('Overview')
             ->setShowLabelText(true);
-        $splitButtonBar->addItem($newButton, true);
 
-        $newButton = $buttonBar
-            ->makeInputButton()
-            ->setName('module')
-            ->setValue('cleanUp')
-            ->setOnClick($this->getLinkForUrl($this->uriBuilder->reset()->uriFor('showClearFullIndexForm', [], 'Solr')))
+        $clearFullIndexButton = $buttonBar
+            ->makeLinkButton()
+            ->setHref($this->uriBuilder->reset()->uriFor('showClearFullIndexForm', [], 'Solr'))
             ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
             ->setTitle('Clear full index...')
             ->setShowLabelText(true);
-        $splitButtonBar->addItem($newButton);
 
-        $buttonBar->addButton($splitButtonBar);
+        $buttonBar
+            ->addButton($overviewButton)
+            ->addButton($clearFullIndexButton);
+    }
+
+    protected function addShortcutButton(): void
+    {
+        $buttonBar = $this->view
+            ->getDocHeaderComponent()
+            ->getButtonBar();
+
+        $shortcutButton = $buttonBar
+            ->makeShortcutButton()
+            ->setRouteIdentifier($this->request->getPluginName())
+            ->setDisplayName('Jwtools2');
+
+        $buttonBar->addButton($shortcutButton);
+    }
+
+    protected function addCloseButton(): void
+    {
+        $buttonBar = $this->view
+            ->getDocHeaderComponent()
+            ->getButtonBar();
+
+        $uri = $this->uriBuilder
+            ->reset()
+            ->uriFor('overview', [], 'Tools');
+
+        $closeButton = $buttonBar
+            ->makeLinkButton()
+            ->setHref($uri)
+            ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL))
+            ->setTitle('Close');
+
+        $buttonBar->addButton($closeButton);
+    }
+
+    /**
+     * Get Link to create new configuration records of defined type
+     */
+    protected function getLinkForUrl(string $url): string
+    {
+        return 'window.location.href=' . GeneralUtility::quoteJSvalue($url) . '; return false;';
     }
 }

@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Command;
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,20 +28,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ConvertPlainPasswordToHashCommand extends Command
 {
-    /**
-     * @var OutputInterface
-     */
-    protected $output;
+    protected OutputInterface $output;
 
-    /**
-     * @var PasswordHashFactory
-     */
-    protected $passwordHashFactory;
+    protected PasswordHashFactory $passwordHashFactory;
 
-    /**
-     * @var array
-     */
-    protected $modeMapping = [
+    protected array $modeMapping = [
         'FE' => [
             'table' => 'fe_users',
         ],
@@ -85,9 +76,9 @@ class ConvertPlainPasswordToHashCommand extends Command
     {
         $counter = 0;
         $connection = $this->getConnectionPool()->getConnectionForTable($this->modeMapping[$mode]['table']);
-        $statement = $this->getStatementForUsers($this->modeMapping[$mode]['table']);
+        $statement = $this->getQueryResultForUsers($this->modeMapping[$mode]['table']);
         while ($user = $statement->fetch()) {
-            if (empty($user['password'])) {
+            if (!isset($user['password']) || $user['password'] === '') {
                 continue;
             }
             try {
@@ -156,13 +147,13 @@ class ConvertPlainPasswordToHashCommand extends Command
         return $this->modeMapping[$mode]['hashInstance'];
     }
 
-    protected function getStatementForUsers(string $tableName): Statement
+    protected function getQueryResultForUsers(string $tableName): Result
     {
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($tableName);
         return $queryBuilder
             ->select('uid', 'password')
             ->from($tableName)
-            ->execute();
+            ->executeQuery();
     }
 
     protected function getConnectionPool(): ConnectionPool

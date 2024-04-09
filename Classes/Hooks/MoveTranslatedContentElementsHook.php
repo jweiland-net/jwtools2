@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Hooks;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
@@ -106,13 +107,13 @@ class MoveTranslatedContentElementsHook
             ->where(
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA']['tt_content']['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT, ':pointer')
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT, ':pointer')
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         $contentRecords = [];
-        while ($contentRecord = $statement->fetch()) {
+        while ($contentRecord = $statement->fetchAssociative()) {
             $contentRecords[] = $contentRecord;
         }
 

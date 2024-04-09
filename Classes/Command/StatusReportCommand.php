@@ -21,8 +21,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\MaintenanceController;
-use TYPO3\CMS\Scheduler\Scheduler;
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 
 /**
  * A command which shows a status report about the TYPO3 system
@@ -31,21 +30,13 @@ class StatusReportCommand extends Command
 {
     private const RETURN_YES = '<info>YES</info>';
     private const RETURN_NO = '<error>NO</error>';
+    private SchedulerTaskRepository $taskRepository;
 
-    /**
-     * @var InputInterface
-     */
-    protected $input;
+    protected InputInterface $input;
 
-    /**
-     * @var OutputInterface
-     */
-    protected $output;
+    protected OutputInterface $output;
 
-    /**
-     * @var SymfonyStyle
-     */
-    protected $ioStyled;
+    protected SymfonyStyle $ioStyled;
 
     public function configure(): void
     {
@@ -92,38 +83,14 @@ class StatusReportCommand extends Command
 
     protected function checkScheduler(): void
     {
+        $yesterday = time() - (60 * 60 * 24);
         $this->ioStyled->title('Checking scheduler tasks');
 
         $lastExecution = 0;
         $recurringTasks = [];
-        $yesterday = time() - (60 * 60 * 24);
 
-        foreach ($this->getSchedulerTasks() as $taskRecord) {
-            // Do not add allowed_classes here
-            $taskObject = unserialize($taskRecord['serialized_task_object']);
-            if (
-                is_subclass_of($taskObject, AbstractTask::class)
-                && $taskObject->getType() === AbstractTask::TYPE_RECURRING
-            ) {
-                if ($taskRecord['lastexecution_time'] > $lastExecution) {
-                    $lastExecution = $taskRecord['lastexecution_time'];
-                }
-
-                $taskTitle = sprintf(
-                    '%d: %s - Context: %s',
-                    $taskRecord['uid'],
-                    $taskObject->getTaskTitle(),
-                    $taskRecord['lastexecution_context']
-                );
-                if (!empty($taskRecord['serialized_executions'])) {
-                    $recurringTasks[] = [$taskTitle => '<info>running...</info>'];
-                } elseif ($taskRecord['lastexecution_time'] === 0) {
-                    $recurringTasks[] = [$taskTitle => '<error>never executed</error>'];
-                } else {
-                    $recurringTasks[] = [$taskTitle => $taskRecord['lastexecution_time'] < $yesterday ? '<error>scheduled > 24h</error>' : '<info>scheduled < 24h</info>'];
-                }
-            }
-        }
+        $tasks = $this->getSchedulerTasks();
+        $lastExecution = $this->processTasks($tasks, $recurringTasks, $lastExecution);
 
         $this->ioStyled->definitionList(
             $lastExecution < $yesterday ? '<error>The last execution was over 24 hours ago</error>' : '<info>Last execution within last 24 hours</info>',
@@ -143,16 +110,20 @@ class StatusReportCommand extends Command
 
         $result = json_decode($json, true);
 
+        $hasSuggestions = isset($result['suggestions']) && $result['suggestions'] !== ''
+            ? '<error>YES</error>'
+            : '<info>NO</info>';
+
         $this->ioStyled->definitionList(
             'Checking database maintenance',
             ['Status' => $result['success'] ? '<info>OK</info>' : '<error>Error</error>'],
-            ['Has suggestions?' => !empty($result['suggestions']) ? '<error>YES</error>' : '<info>NO</info>']
+            ['Has suggestions?' => $hasSuggestions]
         );
     }
 
     protected function getSchedulerTasks(): array
     {
-        return GeneralUtility::makeInstance(Scheduler::class)->fetchTasksWithCondition('');
+        return $this->taskRepository->getGroupedTasks();
     }
 
     protected function checkRobotsTxt(Site $site): string
@@ -192,11 +163,8 @@ class StatusReportCommand extends Command
 
         if ($content === '' && !$this->input->hasOption('exclude-robots-txt-url-check')) {
             $base = rtrim((string)$site->getBase(), '/') . '/';
-            $content = GeneralUtility::getUrl($base . 'robots.txt');
-
-            if (empty($content)) {
-                $content = '';
-            }
+            $content = @file_get_contents($base . 'robots.txt');
+            $content = $content ?? '';
         }
 
         return $content;
@@ -282,5 +250,51 @@ class StatusReportCommand extends Command
     protected function getAllSites(): array
     {
         return GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
+    }
+
+    protected function processTasks(array $tasks, array &$recurringTasks, int $lastExecution): int
+    {
+        foreach ($tasks as $groups => $taskGroups) {
+            foreach ($taskGroups as $taskGroup) {
+                if (is_array($taskGroup['tasks'])) {
+                    foreach ($taskGroup['tasks'] as $task) {
+                        if ($task['lastExecutionTime'] > $lastExecution) {
+                            $lastExecution = $task['lastExecutionTime'];
+                        }
+
+                        $taskTitle = sprintf(
+                            '%d: %s - Context: %s',
+                            $task['uid'],
+                            $task['classTitle'],
+                            $task['lastExecutionContext']
+                        );
+
+                        $recurringTasks[] = [$taskTitle => $this->getTaskStatus($task)];
+                    }
+                }
+            }
+        }
+
+        return $lastExecution;
+    }
+
+    protected function getTaskStatus(array $task): string
+    {
+        $yesterday = time() - (60 * 60 * 24);
+
+        if (isset($task['serializedExecutions']) && $task['serializedExecutions'] !== '') {
+            return '<info>running...</info>';
+        }
+
+        if ($task['lastExecutionTime'] === 0) {
+            return '<error>never executed</error>';
+        }
+
+        return $task['lastExecutionTime'] < $yesterday ? '<error>scheduled > 24h</error>' : '<info>scheduled < 24h</info>';
+    }
+
+    public function setTaskRepository(SchedulerTaskRepository $taskRepository): void
+    {
+        $this->taskRepository = $taskRepository;
     }
 }

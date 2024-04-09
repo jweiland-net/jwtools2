@@ -1,80 +1,90 @@
 <html lang="en"
-			xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-			xmlns:t="http://typo3.org/ns/JWeiland\Jwtools2\ViewHelpers"
-			xmlns:c="http://typo3.org/ns/TYPO3\CMS\Core\ViewHelpers"
-			data-namespace-typo3-fluid="true">
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:t="http://typo3.org/ns/JWeiland/Jwtools2/ViewHelpers"
+      xmlns:c="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true">
 
-<f:layout name="Default"/>
+<f:layout name="Module"/>
 
-<f:section name="main">
-	<div class="row">
-		<h1>{f:translate(key: 'mod.solr.solrFeaturesOverview')}</h1>
-		<h2>{f:translate(key: 'mod.solr.memoryUsageSchedulerTask')}</h2>
-	</div>
+<f:section name="Content">
+    <f:flashMessages/>
 
-	<div class="row">
-		<f:alias map="{progress: '{t:solr.memoryStatus()}'}">
-			<div class="progress">
-				<div class="progress-bar" role="progressbar" aria-valuenow="{progress}" aria-valuemin="0" aria-valuemax="100"
-						 style="width: {progress}%;">
-					<span>{progress} %</span>
-				</div>
-			</div>
-		</f:alias>
-	</div>
+    <div class="row">
+        <h1>{f:translate(key: 'mod.solr.solrFeaturesOverview')}</h1>
+        <h2>{f:translate(key: 'mod.solr.memoryUsageSchedulerTask')}</h2>
+    </div>
 
-	<div class="row">
-		<h2>{f:translate(key: 'mod.solr.configuredRootPages')}</h2>
-	</div>
-	<f:if condition="{sites}">
-		<f:then>
-			<div class="row">
-				<a href="#" id="showSolrProgress" class="btn btn-default">Show Solr Progress</a>
-				<a href="#" id="createSolrIndexQueue" class="btn btn-default">Create Solr Index Queue</a>
-			</div>
-			<div class="row">
-				<table id="solrSites" class="table table-bordered">
-					<thead>
-					<tr>
-						<th>UID</th>
-						<th>Title</th>
-						<th>Actions</th>
-						<th>Status</th>
-					</tr>
-					</thead>
-					<tbody>
-					<f:for each="{sites}" as="site">
-						<tr class="{f:if(condition: '{site.rootPage.uid}=={currentRootPageUid}', then: 'bg-info')}">
-							<td class="rootPageUid" data-root-page-uid="{site.rootPage.uid}">
-								<f:link.action action="show" arguments="{rootPageUid: site.rootPage.uid}">
-									{site.rootPage.uid}
-								</f:link.action>
-							</td>
-							<td>
-								<f:link.action action="show" arguments="{rootPageUid: site.rootPage.uid}">
-									{site.rootPage.title}
-									{f:if(condition: '{site.rootPage.uid}=={currentRootPageUid}', then: '<span
-												class="badge">Indexing...</span>')}
-								</f:link.action>
-							</td>
-							<td>
-								<f:link.action action="showClearIndexForm" arguments="{rootPageUid: site.rootPage.uid}">
-									<c:icon identifier="actions-selection-delete"/>
-									Clear Index...
-								</f:link.action>
-							</td>
-							<td class="status">&nbsp;</td>
-						</tr>
-					</f:for>
-					</tbody>
-				</table>
-			</div>
-		</f:then>
-		<f:else>
-			<div class="alert alert-info" role="alert">
-				There are currently no Solr Root Pages configured
-			</div>
-		</f:else>
-	</f:if>
+    <div class="row">
+        <f:alias map="{progress: '{t:solr.memoryStatus()}'}">
+            <div class="progress">
+                <div class="progress-bar"
+                     role="progressbar"
+                     aria-valuenow="{progress}"
+                     aria-valuemin="0"
+                     aria-valuemax="100"
+                     style="width: {progress}%;">
+                    <span>{progress} %</span>
+                </div>
+            </div>
+        </f:alias>
+    </div>
+
+    <div class="row">
+        <h2>{f:translate(key: 'mod.solr.configuredRootPages')}</h2>
+    </div>
+    <f:if condition="{sites}">
+        <f:then>
+            <div class="row">
+                <a href="#" id="showSolrProgress" class="btn btn-default">Show Solr Progress</a>
+                <a href="#" id="createSolrIndexQueue" class="btn btn-default">Create Solr Index Queue</a>
+            </div>
+            <div class="row">
+                <table id="solrSites" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>UID</th>
+                        <th>Title</th>
+                        <th>Actions</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <f:for each="{sites}" as="site">
+                        <tr class="{f:if(condition: '{site.rootPageRecord.uid}=={currentRootPageUid}', then: 'bg-info')}">
+                            <td class="rootPageUid" data-root-page-uid="{site.rootPageRecord.uid}">
+                                <f:link.action action="show" arguments="{rootPageUid: site.rootPageRecord.uid}">
+                                    {site.rootPageRecord.uid}
+                                </f:link.action>
+                            </td>
+                            <td>
+                                <f:link.action action="show" arguments="{rootPageUid: site.rootPageRecord.uid}">
+                                    {site.rootPageRecord.title}
+                                    <f:if condition="{site.rootPageRecord.uid}=={currentRootPageUid}">
+                                        <span
+                                            class="badge">Indexing...
+                                        </span>
+                                    </f:if>
+                                </f:link.action>
+                            </td>
+                            <td>
+                                <f:link.action action="showClearIndexForm"
+                                               arguments="{rootPageUid: site.rootPageRecord.uid}">
+                                    <c:icon identifier="actions-selection-delete"/>
+                                    Clear Index...
+                                </f:link.action>
+                            </td>
+                            <td class="status">&nbsp;</td>
+                        </tr>
+                    </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:then>
+        <f:else>
+            <div class="alert alert-info" role="alert">
+                There are currently no Solr Root Pages configured
+            </div>
+        </f:else>
+    </f:if>
 </f:section>
 </html>
