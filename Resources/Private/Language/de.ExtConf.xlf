@@ -17,12 +17,6 @@
 				</source>
         <target state="final">Übertrage TypoScript current: Für jeden Datensatz, der durch CONTENT gefunden wurde, wird bei der Verarbeitung durch renderObj immer eine neue Instanz vom ContentObjectRenderer erzeugt. Die data-Eigenschaft wird mit den Werten des Datensatzes gefüllt während die current-Eigenschaft geleert wird. Nach Aktivierung dieser Option wird der Wert der Eltern current-Eigenschaft mit in die Kind-Eigenschaft (renderObj) übertragen.</target>
       </trans-unit>
-      <trans-unit id="typo3UploadFieldsInTopOfEB" approved="yes">
-        <source>Upload Fields in top of EB: The UserTSconfig option uploadFieldsInTopOfEB was removed with TYPO3 8.7.0.
-					Activate this Option to show upload fields in top of ElementBrowser and LinkHandler again.
-				</source>
-        <target state="final">Uploadfelder oberhalb EB anzeigen: Die UserTSconfig Option uploadFieldsInTopOfEB wurde mit TYPO3 8.7.0 entfernt. Aktivieren Sie diese Option, um die Uploadfelder wieder oberhalb des ElementBrowser und des LinkHandlers anzeigen zu lassen.</target>
-      </trans-unit>
       <trans-unit id="typo3RequiredColumnsForFiles" approved="yes">
         <source>Required columns for image files: Enter here columns of the DB tables sys_file and/or sys_file_metadata which are to be regarded as mandatory fields. Files for which these columns are not set are available in the file browser, but cannot be selected.</source>
         <target state="final">Benötigte Spalten für Bilddateien: Tragen Sie hier Spalten der DB Tabellen sys_file und/oder sys_file_metadata ein, die als Pflichtfelder anzusehen sind. Dateien, bei denen diese Spalten nicht gesetzt sind stehen im Dateibrowser zwar zur Verfügung, können jedoch nicht ausgewählt werden.</target>
@@ -69,12 +63,6 @@
 					var/log/.
 				</source>
         <target state="final">Caching Framework Logger aktivieren: Klinkt sich in das TYPO3 Caching Framework ein und analysiert alle Daten anhand von Expression Records, die auf der Root-Seite (PID: 0) zu erstellen sind. Wenn diese übereinstimmen, wird ein Protokolleintrag in var/log/ erzeugt</target>
-      </trans-unit>
-      <trans-unit id="enableLiveSearchPerformanceForAdmins" approved="yes">
-        <source>Enable LiveSearch performance: Overwrite LiveSearch class to get more performance for searchresults as
-					admin.
-				</source>
-        <target state="final">Aktivieren Sie LiveSearch Performance: Überschreiben Sie die LiveSearch-Klasse, um mehr Leistung für Suchergebnisse als Admin zu erhalten.</target>
       </trans-unit>
       <trans-unit id="enableReportProvider" approved="yes">
         <source>Enable provider for EXT reports: If EXT:reports is installed it will show additional information about
