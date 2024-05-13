@@ -154,8 +154,14 @@ class ReduceCategoryTreeToPageTree
                 ->execute()
                 ->fetchAll();
 
-            if (empty($categories)) {
-                return '0';
+            // If there are no categories we have to make sure $this->listOfCategoryUids will be filled with 0,
+            // to prevent that this method will be called again and again
+            if ($categories === []) {
+                $categories = [
+                    0 => [
+                        'uid' => 0,
+                    ],
+                ];
             }
 
             $listOfCategories = [];
