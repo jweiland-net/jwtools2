@@ -10,6 +10,11 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 7.0.1
+=============
+
+*   [PERFORMANCE] Prevent calling getListOfAllowedCategoryUids multiple times
+
 Version 7.0.0
 =============
 
