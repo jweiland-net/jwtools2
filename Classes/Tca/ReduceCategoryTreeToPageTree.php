@@ -131,13 +131,10 @@ class ReduceCategoryTreeToPageTree
 
     /**
      * Get comma separated list of category UIDs
-     *
-     * @param int $pageUid
-     * @return string
      */
     protected function getListOfAllowedCategoryUids(int $pageUid): string
     {
-        if (empty($this->listOfCategoryUids)) {
+        if ($this->listOfCategoryUids === '') {
             $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_category');
             $categories = $queryBuilder
                 ->select('uid')

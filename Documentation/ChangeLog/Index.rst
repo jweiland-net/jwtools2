@@ -10,6 +10,11 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 6.0.8
+=============
+
+*   [TASK] Replace PHP:empty with a check against empty string
+
 Version 6.0.7
 =============
 
