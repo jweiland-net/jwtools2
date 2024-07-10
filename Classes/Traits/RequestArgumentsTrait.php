@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\Traits;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -31,7 +32,7 @@ trait RequestArgumentsTrait
 
     public function getPostArguments(): array
     {
-        return $this->getServerRequestInterface()->getParsedBody();
+        return $this->getServerRequestInterface()->getParsedBody() ?? [];
     }
 
     public function getMergedPostAndGetValues(): array
@@ -43,6 +44,6 @@ trait RequestArgumentsTrait
 
     private function getServerRequestInterface(): ServerRequestInterface
     {
-        return GeneralUtility::makeInstance(ServerRequestInterface::class);
+        return $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
     }
 }

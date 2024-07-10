@@ -10,6 +10,11 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 7.0.2
+=============
+
+*   [BUGFIX] Get Server request from global TYPO3_REQUEST in CF logger
+
 Version 7.0.1
 =============
 
