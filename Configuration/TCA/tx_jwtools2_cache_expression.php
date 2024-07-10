@@ -15,10 +15,9 @@ return [
     ],
     'types' => [
         '1' => [
-            'showitem' => '
-            title, is_regexp,
-            --palette--;Exception Handling;exception,
-            expression',
+            'showitem' => 'title, is_regexp,
+                --palette--;Exception Handling;exception,
+                expression',
         ],
     ],
     'palettes' => [
