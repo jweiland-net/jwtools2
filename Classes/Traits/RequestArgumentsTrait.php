@@ -21,28 +21,28 @@ trait RequestArgumentsTrait
 {
     public function getGPValue(string $key): ?string
     {
-        $request = $this->getServerRequestInterface();
+        $request = $this->getServerRequest();
         return $request->getParsedBody()[$key] ?? $request->getQueryParams()[$key];
     }
 
     public function getGetArguments(): array
     {
-        return $this->getServerRequestInterface()->getQueryParams();
+        return $this->getServerRequest()->getQueryParams();
     }
 
     public function getPostArguments(): array
     {
-        return $this->getServerRequestInterface()->getParsedBody() ?? [];
+        return $this->getServerRequest()->getParsedBody() ?? [];
     }
 
     public function getMergedPostAndGetValues(): array
     {
-        $request = $this->getServerRequestInterface();
+        $request = $this->getServerRequest();
 
         return array_merge($request->getQueryParams(), $request->getParsedBody());
     }
 
-    private function getServerRequestInterface(): ServerRequestInterface
+    private function getServerRequest(): ServerRequestInterface
     {
         return $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
     }
