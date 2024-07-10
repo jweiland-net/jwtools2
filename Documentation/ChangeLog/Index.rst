@@ -10,6 +10,11 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 7.1.0
+=============
+
+*   [FEATURE] Throw Exception if cache expression matches to prevend inserting invalid cache entries
+
 Version 7.0.2
 =============
 

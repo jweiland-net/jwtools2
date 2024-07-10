@@ -15,10 +15,14 @@ return [
     ],
     'types' => [
         '1' => [
-            'showitem' => 'title, is_regexp, expression',
+            'showitem' => 'title, is_regexp,
+                --palette--;Exception Handling;exception,
+                expression',
         ],
     ],
-    'palettes' => [],
+    'palettes' => [
+        'exception' => ['showitem' => 'is_exception, exception_fe_only'],
+    ],
     'columns' => [
         'crdate' => [
             'label' => 'crdate',
@@ -44,7 +48,27 @@ return [
             'label' => 'Is regular expression?',
             'config' => [
                 'type' => 'check',
+                'renderType' => 'checkboxToggle',
                 'default' => 0,
+            ],
+        ],
+        'is_exception' => [
+            'label' => 'Throw exception?',
+            'description' => 'Deactivated: just protocol the match. ' .
+                'Activated: protocol the match and throws exception to prevent inserting invalid cache entries. No further caches will be analyzed.',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'default' => 0,
+            ],
+        ],
+        'exception_fe_only' => [
+            'label' => 'Throw exception in frontend only?',
+            'description' => 'If "throw exception" is activated, it may also throw exceptions in backend, because of page previews. Activate to throw exception in frontend only.',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'default' => 1,
             ],
         ],
         'expression' => [
