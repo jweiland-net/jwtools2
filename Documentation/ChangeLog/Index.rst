@@ -10,6 +10,11 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 7.1.1
+=============
+
+*   [BUGFIX] Fixed argument type casting issue when the scheduler is saved with index queue task.
+
 Version 7.1.0
 =============
 
