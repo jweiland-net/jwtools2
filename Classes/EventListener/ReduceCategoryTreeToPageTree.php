@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\EventListener;
 
 use Doctrine\DBAL\ArrayParameterType;
-use JWeiland\Jwtools2\Query\QueryGenerator;
+use JWeiland\Jwtools2\Database\Query\QueryGenerator;
 use JWeiland\Jwtools2\Traits\RequestArgumentsTrait;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
