@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -30,9 +31,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 final class IsFileSelectableEventListener
 {
-    public function __construct(protected readonly ExtensionConfiguration $extensionConfiguration)
-    {
-    }
+    public function __construct(protected readonly ExtensionConfiguration $extensionConfiguration) {}
 
     public function __invoke(IsFileSelectableEvent $event): void
     {
@@ -81,10 +80,10 @@ final class IsFileSelectableEventListener
                 FlashMessage::class,
                 $message,
                 LocalizationUtility::translate(
-                    'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:fileBrowser.flashMessage.requiredColumns.title'
+                    'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:fileBrowser.flashMessage.requiredColumns.title',
                 ),
-                ContextualFeedbackSeverity::INFO
-            )
+                ContextualFeedbackSeverity::INFO,
+            ),
         );
     }
 
@@ -97,10 +96,10 @@ final class IsFileSelectableEventListener
                 implode(
                     ', ',
                     $this->getTranslatedColumnNames(
-                        $requiredColumns
-                    )
+                        $requiredColumns,
+                    ),
                 ),
-            ]
+            ],
         );
     }
 
@@ -158,7 +157,7 @@ final class IsFileSelectableEventListener
                 $requiredColumns = GeneralUtility::trimExplode(
                     ',',
                     $this->extensionConfiguration->get('jwtools2', 'typo3RequiredColumnsForFiles'),
-                    true
+                    true,
                 );
             } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException $exception) {
             }

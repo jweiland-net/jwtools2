@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -73,7 +74,7 @@ class MoveTranslatedContentElementsHook
         $value,
         DataHandler $dataHandler,
         $pasteUpdate,
-        &$pasteDatamap
+        &$pasteDatamap,
     ): void {
         if (
             $command === 'move'
@@ -107,8 +108,8 @@ class MoveTranslatedContentElementsHook
             ->where(
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA']['tt_content']['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT, ':pointer')
-                )
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT, ':pointer'),
+                ),
             )
             ->executeQuery();
 

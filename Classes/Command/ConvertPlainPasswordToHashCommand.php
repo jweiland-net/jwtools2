@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -48,10 +49,10 @@ class ConvertPlainPasswordToHashCommand extends Command
             ->addArgument(
                 'mode',
                 InputArgument::OPTIONAL,
-                'Set to FE or BE to update hashes only for a special TYPO3 Mode'
+                'Set to FE or BE to update hashes only for a special TYPO3 Mode',
             )
             ->setHelp(
-                'This command can not differ between a plain password and a md5 value. It updates all password in DB which does not start with $'
+                'This command can not differ between a plain password and a md5 value. It updates all password in DB which does not start with $',
             );
     }
 
@@ -88,7 +89,7 @@ class ConvertPlainPasswordToHashCommand extends Command
                 }
                 $this->output->writeln(
                     'Password for User ' . $user['uid'] . ' was not updated. Password already hashed.',
-                    OutputInterface::VERBOSITY_VERBOSE
+                    OutputInterface::VERBOSITY_VERBOSE,
                 );
             } catch (InvalidPasswordHashException $e) {
                 // Perfect. No HashInstance can process this user password. Start update
@@ -99,7 +100,7 @@ class ConvertPlainPasswordToHashCommand extends Command
                     ],
                     [
                         'uid' => (int)$user['uid'],
-                    ]
+                    ],
                 );
                 if ($this->output->getVerbosity() === 32) {
                     $this->output->write('.', false, OutputInterface::VERBOSITY_QUIET);
@@ -113,8 +114,8 @@ class ConvertPlainPasswordToHashCommand extends Command
             sprintf(
                 'We have updated %d users of table: %s',
                 $counter,
-                $this->modeMapping[$mode]['table']
-            )
+                $this->modeMapping[$mode]['table'],
+            ),
         );
     }
 
@@ -125,13 +126,13 @@ class ConvertPlainPasswordToHashCommand extends Command
         $this->output->writeln(
             sprintf(
                 'Generating a new password costs: %f seconds.',
-                microtime(true) - $time
+                microtime(true) - $time,
             ),
-            OutputInterface::VERBOSITY_VERBOSE
+            OutputInterface::VERBOSITY_VERBOSE,
         );
         $this->output->writeln(
             '--> Hashed password will be stored (Hash shortened): ' . substr($newPassword, 0, 10),
-            OutputInterface::VERBOSITY_DEBUG
+            OutputInterface::VERBOSITY_DEBUG,
         );
         return $newPassword;
     }

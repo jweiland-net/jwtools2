@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -30,21 +31,21 @@ class SplitFileRefViewHelper extends AbstractViewHelper
             'file',
             'object',
             'File object',
-            true
+            true,
         );
         $this->registerArgument(
             'as',
             'string',
             'The name of the variable with file parts',
             false,
-            'fileParts'
+            'fileParts',
         );
     }
 
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
+        RenderingContextInterface $renderingContext,
     ): string {
         $templateVariableContainer = $renderingContext->getVariableProvider();
         $file = $arguments['file'];
@@ -58,7 +59,7 @@ class SplitFileRefViewHelper extends AbstractViewHelper
         if (!($file instanceof FileInterface || $file instanceof AbstractFileFolder)) {
             throw new \UnexpectedValueException(
                 'Supplied file object type ' . get_class($file) . ' must be FileInterface or AbstractFileFolder.',
-                1563891998
+                1563891998,
             );
         }
 

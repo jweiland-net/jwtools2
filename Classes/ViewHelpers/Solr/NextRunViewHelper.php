@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -36,7 +37,7 @@ class NextRunViewHelper extends AbstractViewHelper
             'site',
             Site::class,
             'Solr Site object to get the next run from',
-            true
+            true,
         );
     }
 
@@ -58,7 +59,7 @@ class NextRunViewHelper extends AbstractViewHelper
 
         try {
             $currentSite = $this->solrRepository->findByRootPage(
-                $this->registry->get('jwtools2-solr', 'rootPageId', 0)
+                $this->registry->get('jwtools2-solr', 'rootPageId', 0),
             );
             if (!$currentSite instanceof Site) {
                 return 0;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -46,10 +47,10 @@ class StatusReportCommand extends Command
                 'exclude-robots-txt-url-check',
                 'r',
                 InputOption::VALUE_NONE,
-                'By default we try to request [domain]/robots.txt if we can not find any in site configuration. Add this option to prevent that check to speed up the report check.'
+                'By default we try to request [domain]/robots.txt if we can not find any in site configuration. Add this option to prevent that check to speed up the report check.',
             )
             ->setHelp(
-                'This command checks various settings in your TYPO3 environment and shows them as a report.'
+                'This command checks various settings in your TYPO3 environment and shows them as a report.',
             );
     }
 
@@ -76,7 +77,7 @@ class StatusReportCommand extends Command
                 ['robots.txt exists?' => $this->checkRobotsTxt($site)],
                 ['robots.txt contains Sitemap?' => $this->checkSitemapOfRobotsTxt($site)],
                 ['sitemap.xml exists' => $this->checkSitemapXml($site)],
-                ['Error 404 configured' => $this->check404ErrorHandling($site)]
+                ['Error 404 configured' => $this->check404ErrorHandling($site)],
             );
         }
     }
@@ -94,7 +95,7 @@ class StatusReportCommand extends Command
 
         $this->ioStyled->definitionList(
             $lastExecution < $yesterday ? '<error>The last execution was over 24 hours ago</error>' : '<info>Last execution within last 24 hours</info>',
-            ...$recurringTasks
+            ...$recurringTasks,
         );
     }
 
@@ -117,7 +118,7 @@ class StatusReportCommand extends Command
         $this->ioStyled->definitionList(
             'Checking database maintenance',
             ['Status' => $result['success'] ? '<info>OK</info>' : '<error>Error</error>'],
-            ['Has suggestions?' => $hasSuggestions]
+            ['Has suggestions?' => $hasSuggestions],
         );
     }
 
@@ -266,7 +267,7 @@ class StatusReportCommand extends Command
                             '%d: %s - Context: %s',
                             $task['uid'],
                             $task['classTitle'],
-                            $task['lastExecutionContext']
+                            $task['lastExecutionContext'],
                         );
 
                         $recurringTasks[] = [$taskTitle => $this->getTaskStatus($task)];

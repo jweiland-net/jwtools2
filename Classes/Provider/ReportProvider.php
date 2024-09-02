@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -80,7 +81,7 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
                     $terObject->getTitle(),
                     $extensionKey,
                     $localVersion,
-                    $terVersion
+                    $terVersion,
                 );
             }
         }
@@ -110,7 +111,7 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
             'Updatable Extensions',
             $value,
             $message,
-            $this->getSeverity($renderForReportMail)
+            $this->getSeverity($renderForReportMail),
         );
     }
 
@@ -118,7 +119,7 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
     {
         $extConfSeverity = $this->extensionConfiguration->get(
             'jwtools2',
-            'sendUpdatableExtensionsWithSeverity'
+            'sendUpdatableExtensionsWithSeverity',
         );
 
         // There is no need to render extension updates as WARNING in reports module.

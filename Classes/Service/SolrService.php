@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -13,7 +14,6 @@ namespace JWeiland\Jwtools2\Service;
 use ApacheSolrForTypo3\Solr\ConnectionManager;
 use ApacheSolrForTypo3\Solr\Domain\Index\Queue\Statistic\QueueStatistic;
 use ApacheSolrForTypo3\Solr\Domain\Site\Site;
-use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -98,7 +98,7 @@ class SolrService
             ->getConnectionForTable('tx_solr_indexqueue_item')
             ->delete(
                 'tx_solr_indexqueue_item',
-                $identifier
+                $identifier,
             );
     }
 
@@ -122,7 +122,7 @@ class SolrService
                 ->getConnectionForTable('tx_solr_indexqueue_file')
                 ->delete(
                     'tx_solr_indexqueue_file',
-                    $identifier
+                    $identifier,
                 );
         }
     }

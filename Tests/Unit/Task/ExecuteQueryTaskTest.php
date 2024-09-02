@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package jweiland/jwtools2.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace JWeiland\Jwtools2\Tests\Unit\Task;
 
 use Doctrine\DBAL\Driver\Statement;
@@ -49,7 +56,7 @@ class ExecuteQueryTaskTest extends UnitTestCase
     public function executeWithEmptyQueryWillReturnFalse(): void
     {
         self::assertFalse(
-            $this->subject->execute()
+            $this->subject->execute(),
         );
     }
 
@@ -68,8 +75,8 @@ class ExecuteQueryTaskTest extends UnitTestCase
         $connectionMock->expects(self::once())
             ->method('executeStatement')
             ->with(
-                $this->equalTo('UPDATE what_ever;'),
-                $this->equalTo([])
+                self::equalTo('UPDATE what_ever;'),
+                self::equalTo([]),
             )
             ->willReturn($statementMock);
 
@@ -82,7 +89,7 @@ class ExecuteQueryTaskTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         self::assertTrue(
-            $this->subject->execute()
+            $this->subject->execute(),
         );
     }
 
@@ -101,9 +108,9 @@ class ExecuteQueryTaskTest extends UnitTestCase
         $connectionMock->expects(self::exactly(3))
             ->method('executeStatement')
             ->withConsecutive(
-                [$this->equalTo('UPDATE what_ever;'), $this->equalTo([])],
-                [$this->equalTo('UPDATE that;'), $this->equalTo([])],
-                [$this->equalTo('UPDATE else;'), $this->equalTo([])]
+                [self::equalTo('UPDATE what_ever;'), self::equalTo([])],
+                [self::equalTo('UPDATE that;'), self::equalTo([])],
+                [self::equalTo('UPDATE else;'), self::equalTo([])],
             )
             ->willReturn($statementMock);
 
@@ -116,7 +123,7 @@ class ExecuteQueryTaskTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         self::assertTrue(
-            $this->subject->execute()
+            $this->subject->execute(),
         );
     }
 }

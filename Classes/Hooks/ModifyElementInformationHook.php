@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -181,7 +182,7 @@ class ModifyElementInformationHook
         $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
         $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:jwtools2/Resources/Private/Templates/ContentElement/ElementInformation.html'
+            'EXT:jwtools2/Resources/Private/Templates/ContentElement/ElementInformation.html',
         ));
 
         $view->assign('accessAllowed', true);
@@ -192,8 +193,8 @@ class ModifyElementInformationHook
         $view->assign(
             'returnUrl',
             GeneralUtility::sanitizeLocalUrl(
-                $request->getQueryParams()['returnUrl'] ?? GeneralUtility::linkThisScript()
-            )
+                $request->getQueryParams()['returnUrl'] ?? GeneralUtility::linkThisScript(),
+            ),
         );
         $view->assign('maxTitleLength', $this->getBackendUser()->uc['titleLen'] ?? 20);
 
@@ -251,10 +252,10 @@ class ModifyElementInformationHook
                 $urlParameters = [
                     'edit' => [
                         'sys_file_metadata' => [
-                            $fileMetaUid => 'edit'
-                        ]
+                            $fileMetaUid => 'edit',
+                        ],
                     ],
-                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUrl()
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUrl(),
                 ];
                 $preview['editUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             }
@@ -584,11 +585,11 @@ class ModifyElementInformationHook
         $predicates = [
             $queryBuilder->expr()->eq(
                 'ref_table',
-                $queryBuilder->createNamedParameter($selectTable, Connection::PARAM_STR)
+                $queryBuilder->createNamedParameter($selectTable, Connection::PARAM_STR),
             ),
             $queryBuilder->expr()->eq(
                 'ref_uid',
-                $queryBuilder->createNamedParameter($selectUid, Connection::PARAM_INT)
+                $queryBuilder->createNamedParameter($selectUid, Connection::PARAM_INT),
             ),
         ];
 
@@ -597,7 +598,7 @@ class ModifyElementInformationHook
             $allowedSelectTables = GeneralUtility::trimExplode(',', $backendUser->groupData['tables_select']);
             $predicates[] = $queryBuilder->expr()->in(
                 'tablename',
-                $queryBuilder->createNamedParameter($allowedSelectTables, Connection::PARAM_STR_ARRAY)
+                $queryBuilder->createNamedParameter($allowedSelectTables, Connection::PARAM_STR_ARRAY),
             );
         }
 
@@ -671,11 +672,11 @@ class ModifyElementInformationHook
         $predicates = [
             $queryBuilder->expr()->eq(
                 'tablename',
-                $queryBuilder->createNamedParameter($table, Connection::PARAM_STR)
+                $queryBuilder->createNamedParameter($table, Connection::PARAM_STR),
             ),
             $queryBuilder->expr()->eq(
                 'recuid',
-                $queryBuilder->createNamedParameter($ref, Connection::PARAM_INT)
+                $queryBuilder->createNamedParameter($ref, Connection::PARAM_INT),
             ),
         ];
 
@@ -684,7 +685,7 @@ class ModifyElementInformationHook
             $allowedSelectTables = GeneralUtility::trimExplode(',', $backendUser->groupData['tables_select']);
             $predicates[] = $queryBuilder->expr()->in(
                 'ref_table',
-                $queryBuilder->createNamedParameter($allowedSelectTables, Connection::PARAM_STR_ARRAY)
+                $queryBuilder->createNamedParameter($allowedSelectTables, Connection::PARAM_STR_ARRAY),
             );
         }
 
@@ -745,8 +746,8 @@ class ModifyElementInformationHook
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($referenceRecord['recuid'], Connection::PARAM_INT)
-                )
+                    $queryBuilder->createNamedParameter($referenceRecord['recuid'], Connection::PARAM_INT),
+                ),
             )
             ->executeQuery()
             ->fetchAssociative();

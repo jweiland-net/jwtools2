@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -37,14 +38,14 @@ class FileNameFilter
         string $itemIdentifier,
         string $parentIdentifier,
         array $additionalInformation,
-        DriverInterface $driverInstance
+        DriverInterface $driverInstance,
     ): bool|int {
         // Only apply the filter if hidden files should not be listed
         if (
             self::$showHiddenFilesAndFolders === false
-            && strpos($itemIdentifier, '/.') !== false
-            && strpos($itemIdentifier, '/.youtube') === false
-            && strpos($itemIdentifier, '/.vimeo') === false
+            && str_contains($itemIdentifier, '/.')
+            && !str_contains($itemIdentifier, '/.youtube')
+            && !str_contains($itemIdentifier, '/.vimeo')
         ) {
             return -1;
         }

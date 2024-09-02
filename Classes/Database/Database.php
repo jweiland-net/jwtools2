@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -32,7 +33,7 @@ class Database
     public static function getQueryBuilderForTable(
         string $tableName,
         bool $useRestrictionsForCurrentTypo3Mode = true,
-        QueryRestrictionContainerInterface $restrictionContainer = null
+        QueryRestrictionContainerInterface $restrictionContainer = null,
     ): QueryBuilder {
         if ($useRestrictionsForCurrentTypo3Mode) {
             if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
@@ -48,7 +49,7 @@ class Database
             $queryBuilder = GeneralUtility::makeInstance(
                 QueryBuilder::class,
                 $connection,
-                $restrictionContainer
+                $restrictionContainer,
             );
             return $queryBuilder;
         }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -39,7 +40,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
 
         $this->extensionConfigurationMock = $this->createMock(ExtensionConfiguration::class);
         $this->subject = new InitializeStdWrap(
-            $this->extensionConfigurationMock
+            $this->extensionConfigurationMock,
         );
     }
 
@@ -50,7 +51,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
     {
         $data = [
             'uid' => 123,
-            'title' => 'Hello'
+            'title' => 'Hello',
         ];
 
         $this->extensionConfigurationMock
@@ -58,7 +59,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
             ->method('get')
             ->with('jwtools2')
             ->willReturn([
-                'typo3TransferTypoScriptCurrent' => '1'
+                'typo3TransferTypoScriptCurrent' => '1',
             ]);
 
         $contentObject = new ContentObjectRenderer();
@@ -69,7 +70,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
 
         self::assertSame(
             $data,
-            $contentObject->data
+            $contentObject->data,
         );
     }
 
@@ -80,7 +81,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
     {
         $data = [
             'uid' => 123,
-            'title' => 'Hello'
+            'title' => 'Hello',
         ];
 
         $this->extensionConfigurationMock
@@ -88,7 +89,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
             ->method('get')
             ->with('jwtools2')
             ->willReturn([
-                'typo3TransferTypoScriptCurrent' => '1'
+                'typo3TransferTypoScriptCurrent' => '1',
             ]);
 
         $contentObject = new ContentObjectRenderer();
@@ -99,7 +100,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
 
         self::assertSame(
             $data,
-            $contentObject->data
+            $contentObject->data,
         );
     }
 
@@ -112,7 +113,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
 
         $data = [
             'uid' => 123,
-            'title' => 'Hello'
+            'title' => 'Hello',
         ];
 
         $parentRecordData = $data;
@@ -123,7 +124,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
             ->method('get')
             ->with('jwtools2')
             ->willReturn([
-                'typo3TransferTypoScriptCurrent' => '0'
+                'typo3TransferTypoScriptCurrent' => '0',
             ]);
 
         $contentObject->parentRecord['data'] = $parentRecordData;
@@ -133,7 +134,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
 
         self::assertSame(
             $data,
-            $contentObject->data
+            $contentObject->data,
         );
     }
 
@@ -147,7 +148,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
         $data = [
             'uid' => 123,
             'colPos' => 1,
-            'title' => 'Hello'
+            'title' => 'Hello',
         ];
 
         $parentRecordData = $data;
@@ -158,7 +159,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
             ->method('get')
             ->with('jwtools2')
             ->willReturn([
-                'typo3TransferTypoScriptCurrent' => '1'
+                'typo3TransferTypoScriptCurrent' => '1',
             ]);
 
         $contentObject->parentRecord['data'] = $parentRecordData;
@@ -168,7 +169,7 @@ class InitializeStdWrapTest extends FunctionalTestCase
 
         self::assertSame(
             $parentRecordData,
-            $contentObject->data
+            $contentObject->data,
         );
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -38,22 +39,22 @@ class CacheQueryCommand extends Command
             ->addArgument(
                 'cacheIdentifier',
                 InputArgument::REQUIRED,
-                'Set cacheIdentifier. It is just "core", "hash", "pagesection" or any other cache identifier'
+                'Set cacheIdentifier. It is just "core", "hash", "pagesection" or any other cache identifier',
             )
             ->addOption(
                 'tag',
                 't',
                 InputOption::VALUE_OPTIONAL,
-                'Set tag to get all entryIdentifiers for cache table'
+                'Set tag to get all entryIdentifiers for cache table',
             )
             ->addOption(
                 'entryIdentifier',
                 'i',
                 InputOption::VALUE_OPTIONAL,
-                'Set exact entryIdentifier to show'
+                'Set exact entryIdentifier to show',
             )
             ->setHelp(
-                'Cache Query'
+                'Cache Query',
             );
     }
 
@@ -69,7 +70,7 @@ class CacheQueryCommand extends Command
 
         if ($input->getOption('tag') === null && $input->getOption('entryIdentifier') === null) {
             $output->writeln(
-                'Without specifying tag or entryIdentifier option the result is too big. Please set one of these options.'
+                'Without specifying tag or entryIdentifier option the result is too big. Please set one of these options.',
             );
             return 105;
         }

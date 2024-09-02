@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -73,7 +74,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
         $registry->set(
             'jwtools2-solr',
             'lastSitePosition',
-            $maxSitePosition > count($availableSites) ? 0 : $maxSitePosition
+            $maxSitePosition > count($availableSites) ? 0 : $maxSitePosition,
         );
 
         if (Environment::isCli()) {
