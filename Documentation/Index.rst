@@ -1,5 +1,6 @@
 ..  include:: /Includes.rst.txt
 
+..  _start:
 
 ==========
 JW Tools 2
@@ -56,4 +57,3 @@ activated first, before using. So, only activate, what you really need.
     :hidden:
 
     Sitemap
-    genindex
