@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -46,7 +47,7 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
             $this->logger->warning(
                 'You have activated the Caching Framework logger in jwtools2, but you ' .
                 'have not configured any expression records (or they are empty). Deactivate this feature or ' .
-                'configure some records.'
+                'configure some records.',
             );
             return;
         }
@@ -78,7 +79,7 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
                 ) {
                     throw new PreventStoringFalseCacheEntryException(
                         '[jwtools2] CF logger prevents inserting invalid cache entry',
-                        1720607181
+                        1720607181,
                     );
                 }
             }
@@ -95,7 +96,7 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
                 }
             } catch (\Exception $exception) {
                 $this->logger->error(
-                    '[jwtools2] Error occurred while analyzing cache entry: ' . $exception->getMessage()
+                    '[jwtools2] Error occurred while analyzing cache entry: ' . $exception->getMessage(),
                 );
             }
         }
@@ -132,7 +133,7 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
         // warning are not logged.
         $this->logger->error(
             '[jwtools2] Query Cache detection. A cache expression matches.',
-            $context
+            $context,
         );
     }
 
@@ -145,7 +146,7 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
                 ->select('title', 'is_regexp', 'is_exception', 'exception_fe_only', 'expression')
                 ->where(
                     $queryBuilder->expr()->neq('title', $queryBuilder->createNamedParameter('')),
-                    $queryBuilder->expr()->neq('expression', $queryBuilder->createNamedParameter(''))
+                    $queryBuilder->expr()->neq('expression', $queryBuilder->createNamedParameter('')),
                 )
                 ->from('tx_jwtools2_cache_expression')
                 ->executeQuery();
@@ -155,7 +156,7 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
             }
         } catch (\Exception $exception) {
             $this->logger->error(
-                'Error while querying table tx_jwtools2_cache_expression: ' . $exception->getMessage()
+                'Error while querying table tx_jwtools2_cache_expression: ' . $exception->getMessage(),
             );
         }
 

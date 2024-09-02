@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -58,7 +59,7 @@ class AjaxSolrController
                 $response->getBody()->write(
                     json_encode([
                         'success' => 1,
-                    ], JSON_THROW_ON_ERROR)
+                    ], JSON_THROW_ON_ERROR),
                 );
             }
         }
@@ -84,7 +85,7 @@ class AjaxSolrController
                     $indexQueue->getQueueInitializationService()
                         ->initializeBySiteAndIndexConfiguration(
                             $site,
-                            $indexingConfigurationName
+                            $indexingConfigurationName,
                         );
                 } catch (ConnectionException|Exception $e) {
                 }
@@ -93,13 +94,13 @@ class AjaxSolrController
             $response->getBody()->write(
                 json_encode([
                     'success' => 1,
-                ], JSON_THROW_ON_ERROR)
+                ], JSON_THROW_ON_ERROR),
             );
         } else {
             $response->getBody()->write(
                 json_encode([
                     'success' => 0,
-                ], JSON_THROW_ON_ERROR)
+                ], JSON_THROW_ON_ERROR),
             );
         }
 
@@ -122,13 +123,13 @@ class AjaxSolrController
                 json_encode([
                     'success' => 1,
                     'progress' => $indexService->getProgress(),
-                ], JSON_THROW_ON_ERROR)
+                ], JSON_THROW_ON_ERROR),
             );
         } else {
             $response->getBody()->write(
                 json_encode([
                     'success' => 0,
-                ], JSON_THROW_ON_ERROR)
+                ], JSON_THROW_ON_ERROR),
             );
         }
 

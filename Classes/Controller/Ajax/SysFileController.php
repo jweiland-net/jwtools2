@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -83,7 +84,7 @@ class SysFileController
                     '-colorspace RGB -quality 100', // Do not reduce quality. It's the original image
                     '', // keep default
                     ['noScale' => true], // keep default
-                    true // As width/height are the same, we have to force creating a new image
+                    true, // As width/height are the same, we have to force creating a new image
                 );
                 if (is_array($result) && is_file($result[3])) {
                     $fileObject->getStorage()->replaceFile($fileObject, $result[3]);
@@ -160,8 +161,8 @@ class SysFileController
             new Folder(
                 $fileObject->getStorage(),
                 $fileObject->getParentFolder()->getIdentifier(),
-                $fileObject->getParentFolder()->getName()
-            )
+                $fileObject->getParentFolder()->getName(),
+            ),
         );
         $fileDeletionAspect->cleanupProcessedFilesPostFileAdd($event);
     }

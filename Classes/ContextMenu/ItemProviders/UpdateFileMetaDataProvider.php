@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -72,10 +73,10 @@ class UpdateFileMetaDataProvider extends FileProvider
         return [
             'data-callback-module' => '@jweiland/jwtools2/context-menu-actions',
             'data-status-title' => $this->languageService->sL(
-                'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteTitle'
+                'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteTitle',
             ),
             'data-status-description' => $this->languageService->sL(
-                'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteDescription'
+                'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteDescription',
             ),
         ];
     }

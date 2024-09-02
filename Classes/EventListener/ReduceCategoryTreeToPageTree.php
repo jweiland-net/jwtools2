@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -75,7 +76,7 @@ class ReduceCategoryTreeToPageTree
             foreach ($backupChildNodes as $key => $childNode) {
                 if (!GeneralUtility::inList(
                     $this->getListOfAllowedCategoryUids($this->getPageUid()),
-                    $childNode->getId()
+                    $childNode->getId(),
                 )) {
                     unset($treeNode->getChildNodes()[$key]);
                 } elseif (
@@ -99,7 +100,7 @@ class ReduceCategoryTreeToPageTree
                 $record = BackendUtility::getRecordWSOL(
                     $this->getGetArguments()['tableName'] ?? '',
                     (int)$this->getGetArguments()['uid'],
-                    'pid'
+                    'pid',
                 );
                 if (empty($record)) {
                     $pid = 0;
@@ -132,9 +133,9 @@ class ReduceCategoryTreeToPageTree
                         'pid',
                         $queryBuilder->createNamedParameter(
                             $this->getPagesOfCurrentRootPage($pageUid),
-                            ArrayParameterType::INTEGER
-                        )
-                    )
+                            ArrayParameterType::INTEGER,
+                        ),
+                    ),
                 )
                 ->executeQuery()
                 ->fetchAllAssociative();
@@ -173,8 +174,8 @@ class ReduceCategoryTreeToPageTree
                 $this->getRootPageUid($pageUid),
                 10,
                 0,
-                '1=1'
-            )
+                '1=1',
+            ),
         );
     }
 

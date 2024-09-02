@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -84,13 +85,13 @@ class SolrController extends AbstractController
         int $rootPageUid,
         string $configurationName,
         ?int $recordUid,
-        int $languageUid = 0
+        int $languageUid = 0,
     ): ResponseInterface {
         if ($recordUid === null) {
             $this->addFlashMessage(
                 'Please enter a record UID before submitting the form',
                 'Record UID empty',
-                ContextualFeedbackSeverity::ERROR
+                ContextualFeedbackSeverity::ERROR,
             );
         } else {
             $site = $this->solrRepository->findByRootPage($rootPageUid);
@@ -100,27 +101,27 @@ class SolrController extends AbstractController
                     if ($this->indexItem($item, $site->getSolrConfiguration())) {
                         $this->addFlashMessage(
                             'Solr Index Queue Item was successfully indexed to Solr Server',
-                            'Item Indexed'
+                            'Item Indexed',
                         );
                     } else {
                         $this->addFlashMessage(
                             'Indexing Solr Queue Item object failed. Please check logs. Record UID: ' . $recordUid,
                             'Indexing Failed',
-                            ContextualFeedbackSeverity::ERROR
+                            ContextualFeedbackSeverity::ERROR,
                         );
                     }
                 } else {
                     $this->addFlashMessage(
                         'Solr Index Queue Item could not be found by Record UID: ' . $recordUid,
                         'Indexing Failed',
-                        ContextualFeedbackSeverity::ERROR
+                        ContextualFeedbackSeverity::ERROR,
                     );
                 }
             } else {
                 $this->addFlashMessage(
                     'Solr Site object could not be retrieved by RootPageUid: ' . $rootPageUid,
                     'Indexing Failed',
-                    ContextualFeedbackSeverity::ERROR
+                    ContextualFeedbackSeverity::ERROR,
                 );
             }
         }
@@ -133,7 +134,7 @@ class SolrController extends AbstractController
                 'rootPageUid' => $rootPageUid,
                 'configurationName' => $configurationName,
                 'languageUid' => $languageUid,
-            ]
+            ],
         );
     }
 
@@ -144,13 +145,13 @@ class SolrController extends AbstractController
             $this->moduleTemplate->assign('site', $site);
             $this->moduleTemplate->assign(
                 'enabledConfigurationNames',
-                $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames()
+                $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames(),
             );
         } else {
             $this->addFlashMessage(
                 $rootPageUid . ' is no valid RootPage UID',
                 'Invalid RootPage UID',
-                ContextualFeedbackSeverity::WARNING
+                ContextualFeedbackSeverity::WARNING,
             );
             return $this->redirect('list');
         }
@@ -171,14 +172,14 @@ class SolrController extends AbstractController
             }
             $this->addFlashMessage(
                 'We successfully have cleared the index of Site: "' . $site->getTitle() . '"',
-                'Index cleared'
+                'Index cleared',
             );
             return $this->redirect('list');
         } else {
             $this->addFlashMessage(
                 'We haven\'t found a Site with RootPage UID: ' . $rootPageUid,
                 'Site not found',
-                ContextualFeedbackSeverity::WARNING
+                ContextualFeedbackSeverity::WARNING,
             );
         }
 
@@ -196,7 +197,7 @@ class SolrController extends AbstractController
         foreach ($sites as $site) {
             ArrayUtility::mergeRecursiveWithOverrule(
                 $configurationNamesOfAllSites,
-                $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames()
+                $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames(),
             );
         }
         $this->moduleTemplate->assign('sites', $sites);
@@ -215,16 +216,16 @@ class SolrController extends AbstractController
             ->where(
                 $queryBuilder->expr()->eq(
                     'root',
-                    $queryBuilder->createNamedParameter($rootPageUid, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($rootPageUid, Connection::PARAM_INT),
                 ),
                 $queryBuilder->expr()->eq(
                     'indexing_configuration',
-                    $queryBuilder->createNamedParameter($configurationName)
+                    $queryBuilder->createNamedParameter($configurationName),
                 ),
                 $queryBuilder->expr()->eq(
                     'item_uid',
-                    $queryBuilder->createNamedParameter($recordUid, Connection::PARAM_INT)
-                )
+                    $queryBuilder->createNamedParameter($recordUid, Connection::PARAM_INT),
+                ),
             )
             ->executeQuery()
             ->fetchAssociative();
@@ -241,8 +242,8 @@ class SolrController extends AbstractController
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($recordUid, Connection::PARAM_INT)
-                )
+                    $queryBuilder->createNamedParameter($recordUid, Connection::PARAM_INT),
+                ),
             )
             ->executeQuery()
             ->fetchAssociative();
@@ -254,7 +255,7 @@ class SolrController extends AbstractController
         return GeneralUtility::makeInstance(
             Item::class,
             $indexQueueItem,
-            $tableRecord
+            $tableRecord,
         );
     }
 
@@ -288,14 +289,14 @@ class SolrController extends AbstractController
     {
         $indexerClass = $configuration->getIndexQueueIndexerByConfigurationName($indexingConfigurationName);
         $indexerConfiguration = $configuration->getIndexQueueIndexerConfigurationByConfigurationName(
-            $indexingConfigurationName
+            $indexingConfigurationName,
         );
 
         $indexer = GeneralUtility::makeInstance($indexerClass, $indexerConfiguration);
         if (!($indexer instanceof Indexer)) {
             throw new \RuntimeException(
                 'The indexer class "' . $indexerClass . '" for indexing configuration "' . $indexingConfigurationName . '" is not a valid indexer. Must be a subclass of ApacheSolrForTypo3\Solr\IndexQueue\Indexer.',
-                1260463206
+                1260463206,
             );
         }
 
@@ -310,7 +311,7 @@ class SolrController extends AbstractController
             $this->request,
             $this->moduleTemplate,
             $this->iconFactory,
-            $this->uriBuilder
+            $this->uriBuilder,
         );
         $docHeader->renderDocHeader();
     }
@@ -321,7 +322,7 @@ class SolrController extends AbstractController
             $this->addFlashMessage(
                 'No or wrong scheduler task UID configured in ExtensionManager Configuration of jwtools2',
                 'Missing or wrong configuration',
-                ContextualFeedbackSeverity::WARNING
+                ContextualFeedbackSeverity::WARNING,
             );
         }
     }

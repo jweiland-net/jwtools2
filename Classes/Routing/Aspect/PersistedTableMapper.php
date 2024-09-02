@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/jwtools2.
+ *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
@@ -103,24 +104,24 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
             ->where(
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($this->getSiteLanguage()->getLanguageId(), Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->getSiteLanguage()->getLanguageId(), Connection::PARAM_INT),
                 ),
                 $queryBuilder->expr()->eq(
                     'root_page',
-                    $queryBuilder->createNamedParameter($this->getSite()->getRootPageId(), Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->getSite()->getRootPageId(), Connection::PARAM_INT),
                 ),
                 $queryBuilder->expr()->eq(
                     'tablename',
-                    $queryBuilder->createNamedParameter($this->tableName, Connection::PARAM_STR)
+                    $queryBuilder->createNamedParameter($this->tableName, Connection::PARAM_STR),
                 ),
                 $queryBuilder->expr()->eq(
                     'fieldname',
-                    $queryBuilder->createNamedParameter($this->fieldName)
+                    $queryBuilder->createNamedParameter($this->fieldName),
                 ),
                 $queryBuilder->expr()->eq(
                     $source ? 'source' : 'target',
-                    $queryBuilder->createNamedParameter($source ?: $target)
-                )
+                    $queryBuilder->createNamedParameter($source ?: $target),
+                ),
             )
             ->executeQuery()
             ->fetchAllAssociative();
@@ -148,7 +149,7 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
                 Connection::PARAM_INT,
                 Connection::PARAM_STR,
                 Connection::PARAM_STR,
-            ]
+            ],
         );
     }
 
@@ -161,7 +162,7 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
             [
                 'fallbackCharacter' => '-',
                 'prependSlash' => false,
-            ]
+            ],
         );
     }
 
