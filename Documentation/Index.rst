@@ -1,5 +1,6 @@
 ..  include:: /Includes.rst.txt
 
+..  _start:
 
 ==========
 JW Tools 2
@@ -30,8 +31,8 @@ JW Tools 2
 
 ----
 
-`jwtools2` comes with a huge set of tools for TYPO3. Each feature you want has to be
-activated first, before using. So, only activate, what you really need.
+`jwtools2` comes with a huge set of tools for TYPO3. Each feature you want has
+to be activated first, before using. So, only activate, what you really need.
 
 ----
 
@@ -56,4 +57,3 @@ activated first, before using. So, only activate, what you really need.
     :hidden:
 
     Sitemap
-    genindex

@@ -10,6 +10,13 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 7.1.2
+=============
+
+*   [BUGFIX] Correct use statement to QueryGenerator
+*   [TASK] Update test environment
+*   [DOCS] Switch to new rendering
+
 Version 7.1.1
 =============
 
