@@ -10,7 +10,8 @@ Installation
 Extension Manager
 =================
 
-Install `jwtools2` in TYPO3 legacy installations with the help of Extension Manager:
+Install `jwtools2` in TYPO3 legacy installations with the help of
+Extension Manager:
 
 ..  rst-class:: bignums
 
