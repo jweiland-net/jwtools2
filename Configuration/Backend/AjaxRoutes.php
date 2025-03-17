@@ -6,8 +6,10 @@
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
-use JWeiland\Jwtools2\Controller\Ajax\SysFileController;
+
 use JWeiland\Jwtools2\Controller\Ajax\AjaxSolrController;
+use JWeiland\Jwtools2\Controller\Ajax\SysFileController;
+
 /**
  * Definitions for routes provided by EXT:backend
  * Contains all AJAX-based routes for entry points
