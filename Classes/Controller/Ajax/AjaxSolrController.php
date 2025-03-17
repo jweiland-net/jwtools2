@@ -56,6 +56,7 @@ class AjaxSolrController
                 foreach ($configurationNames as $configurationName) {
                     $solrService->clearIndexByType($site, $clear, $configurationName);
                 }
+
                 $response->getBody()->write(
                     json_encode([
                         'success' => 1,

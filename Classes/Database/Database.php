@@ -53,6 +53,7 @@ class Database
             );
             return $queryBuilder;
         }
+
         return self::getConnectionPool()->getQueryBuilderForTable($tableName);
     }
 

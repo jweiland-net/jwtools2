@@ -170,6 +170,7 @@ class SolrController extends AbstractController
             foreach ($configurationNames as $configurationName) {
                 $solrService->clearIndexByType($site, $clear, $configurationName);
             }
+
             $this->addFlashMessage(
                 'We successfully have cleared the index of Site: "' . $site->getTitle() . '"',
                 'Index cleared',
@@ -177,7 +178,7 @@ class SolrController extends AbstractController
             return $this->redirect('list');
         } else {
             $this->addFlashMessage(
-                'We haven\'t found a Site with RootPage UID: ' . $rootPageUid,
+                "We haven't found a Site with RootPage UID: " . $rootPageUid,
                 'Site not found',
                 ContextualFeedbackSeverity::WARNING,
             );
@@ -200,6 +201,7 @@ class SolrController extends AbstractController
                 $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames(),
             );
         }
+
         $this->moduleTemplate->assign('sites', $sites);
         $this->moduleTemplate->assign('configurationNamesOfAllSites', $configurationNamesOfAllSites);
 

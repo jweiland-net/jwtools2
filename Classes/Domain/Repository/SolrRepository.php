@@ -42,7 +42,7 @@ class SolrRepository
     {
         try {
             return GeneralUtility::makeInstance(SiteRepository::class)->getSiteByRootPageId($rootPage);
-        } catch (DBALDriverException $exception) {
+        } catch (DBALDriverException $dbalDriverException) {
             return null;
         }
     }

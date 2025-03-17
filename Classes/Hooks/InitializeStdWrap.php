@@ -35,16 +35,13 @@ class InitializeStdWrap implements ContentObjectPostInitHookInterface
     public function postProcessContentObjectInitialization(ContentObjectRenderer &$parentObject): void
     {
         // parentRecord is filled in CONTENT and RECORD context only. So no further checks needed
+        // Set current to value of parent current
         if (
             is_array($parentObject->parentRecord)
             && $parentObject->parentRecord !== []
-            && isset($parentObject->parentRecord['data'][$parentObject->currentValKey])
-            && ($this->getConfiguration()['typo3TransferTypoScriptCurrent'] ?? false)
+            && isset($parentObject->parentRecord['data'][$parentObject->currentValKey]) && ($this->getConfiguration()['typo3TransferTypoScriptCurrent'] ?? false) && (isset($parentObject->data['colPos']) && $parentObject->data['colPos'] !== 0)
         ) {
-            // Set current to value of parent current
-            if (isset($parentObject->data['colPos']) && $parentObject->data['colPos'] !== 0) {
-                $parentObject->data[$parentObject->currentValKey] = $parentObject->parentRecord['data'][$parentObject->currentValKey];
-            }
+            $parentObject->data[$parentObject->currentValKey] = $parentObject->parentRecord['data'][$parentObject->currentValKey];
         }
     }
 

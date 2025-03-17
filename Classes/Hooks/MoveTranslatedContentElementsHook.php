@@ -63,7 +63,6 @@ class MoveTranslatedContentElementsHook
      * @param string $table The table name
      * @param string|int $uid Currently string (GET-request), but maybe in future INT
      * @param array $value The values to update. Should be array (but not always)
-     * @param DataHandler $dataHandler
      * @param array|false $pasteUpdate false if uninitialized, else array of current loop
      * @param array $pasteDatamap array collecting all $pasteUpdate's. Used as datamap for sub TCE
      */

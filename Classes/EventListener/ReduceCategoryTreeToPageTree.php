@@ -102,11 +102,7 @@ class ReduceCategoryTreeToPageTree
                     (int)$this->getGetArguments()['uid'],
                     'pid',
                 );
-                if (empty($record)) {
-                    $pid = 0;
-                } else {
-                    $pid = (int)$record['pid'];
-                }
+                $pid = empty($record) ? 0 : (int)$record['pid'];
             } else {
                 // in case of command==new given uid is pid of current page
                 $pid = (int)$this->getGetArguments()['uid'];

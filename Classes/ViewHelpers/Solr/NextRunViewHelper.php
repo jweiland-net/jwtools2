@@ -64,7 +64,7 @@ class NextRunViewHelper extends AbstractViewHelper
             if (!$currentSite instanceof Site) {
                 return 0;
             }
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             return 0;
         }
 
@@ -91,7 +91,7 @@ class NextRunViewHelper extends AbstractViewHelper
         $sites = array_values($this->solrRepository->findAllAvailableSites());
         foreach ($sites as $key => $availableSite) {
             if ($availableSite->getRootPageId() === $site->getRootPageId()) {
-                return (int)$key;
+                return $key;
             }
         }
 

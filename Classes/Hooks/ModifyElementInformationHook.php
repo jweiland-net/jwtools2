@@ -77,9 +77,9 @@ class ModifyElementInformationHook
      */
     protected array $row;
 
-    protected ?File $fileObject;
+    protected ?File $fileObject = null;
 
-    protected ?Folder $folderObject;
+    protected ?Folder $folderObject = null;
 
     protected IconFactory $iconFactory;
 
@@ -143,6 +143,7 @@ class ModifyElementInformationHook
                         // Make $this->uid the uid of the versioned record, while $this->row['uid'] is live record uid
                         $this->uid = (int)$this->row['_ORIG_uid'];
                     }
+
                     $this->pageInfo = BackendUtility::readPageAccess((int)$this->row['pid'], $this->permsClause) ?: [];
                     $this->access = $this->pageInfo !== [];
                 }
@@ -231,7 +232,7 @@ class ModifyElementInformationHook
     {
         $preview = [];
         // Perhaps @todo in future: Also display preview for records - without fileObject
-        if (!$this->fileObject) {
+        if (!$this->fileObject instanceof File) {
             return $preview;
         }
 
@@ -273,6 +274,7 @@ class ModifyElementInformationHook
                 $preview['height'] = $height;
             }
         }
+
         return $preview;
     }
 
@@ -311,10 +313,11 @@ class ModifyElementInformationHook
                 continue;
             }
 
-            $isExcluded = !(!($GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] ?? false) || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name));
+            $isExcluded = ($GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] ?? false) && !$this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name);
             if ($isExcluded) {
                 continue;
             }
+
             $label = $lang->sL(BackendUtility::getItemLabel($this->table, $name));
             $label = $label ?: $name;
 
@@ -373,7 +376,7 @@ class ModifyElementInformationHook
                             continue;
                         }
 
-                        $isExcluded = !(!($GLOBALS['TCA'][$table]['columns'][$name]['exclude'] ?? false) || $this->getBackendUser()->check('non_exclude_fields', $table . ':' . $name));
+                        $isExcluded = ($GLOBALS['TCA'][$table]['columns'][$name]['exclude'] ?? false) && !$this->getBackendUser()->check('non_exclude_fields', $table . ':' . $name);
                         if ($isExcluded) {
                             continue;
                         }
@@ -461,6 +464,7 @@ class ModifyElementInformationHook
                             'isDatetime' => true,
                         ];
                     }
+
                     if ($field === 'cruser_id') {
                         $rowValue = BackendUtility::getProcessedValueExtra($this->table, $GLOBALS['TCA'][$this->table]['ctrl'][$field], $this->row[$GLOBALS['TCA'][$this->table]['ctrl'][$field]]);
                         if ($rowValue) {
@@ -480,6 +484,7 @@ class ModifyElementInformationHook
                 }
             }
         }
+
         return $keyLabelPair;
     }
 
@@ -500,9 +505,11 @@ class ModifyElementInformationHook
                 if ($this->fileObject && $this->fileObject->isIndexed()) {
                     $references['refLines'] = $this->makeRef('_FILE', $this->fileObject, $request);
                 }
+
                 break;
             }
         }
+
         return $references;
     }
 
@@ -519,6 +526,7 @@ class ModifyElementInformationHook
         } else {
             $field = $fieldName;
         }
+
         return $field;
     }
 
@@ -579,6 +587,7 @@ class ModifyElementInformationHook
             $selectTable = $table;
             $selectUid = $ref;
         }
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_refindex');
 
@@ -624,6 +633,7 @@ class ModifyElementInformationHook
                 if (!$this->canAccessPage($row['tablename'], $record)) {
                     continue;
                 }
+
                 $parentRecord = BackendUtility::getRecord('pages', $record['pid']);
                 $parentRecordTitle = is_array($parentRecord)
                     ? BackendUtility::getRecordTitle('pages', $parentRecord)
@@ -653,8 +663,10 @@ class ModifyElementInformationHook
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'] ?? '') ?: $row['tablename'];
                 $line['labelForTableColumn'] = $this->getLabelForColumnByTable($row['tablename'], $row['field']);
             }
+
             $refLines[] = $line;
         }
+
         return $refLines;
     }
 
@@ -704,6 +716,7 @@ class ModifyElementInformationHook
                 if (!$this->canAccessPage($row['ref_table'], $record)) {
                     continue;
                 }
+
                 $urlParameters = [
                     'edit' => [
                         $row['ref_table'] => [
@@ -727,8 +740,10 @@ class ModifyElementInformationHook
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'] ?? '');
                 $line['labelForTableColumn'] = $this->getLabelForColumnByTable($table, $row['field']);
             }
+
             $refFromLines[] = $line;
         }
+
         return $refFromLines;
     }
 
@@ -769,17 +784,11 @@ class ModifyElementInformationHook
             || ($recordPid === 0 && !empty($GLOBALS['TCA'][$tableName]['ctrl']['security']['ignoreRootLevelRestriction']));
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

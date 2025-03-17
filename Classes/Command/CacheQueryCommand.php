@@ -63,7 +63,7 @@ class CacheQueryCommand extends Command
         $this->output = $output;
 
         $cache = $this->getCache($input->getArgument('cacheIdentifier'));
-        if ($cache === null) {
+        if (!$cache instanceof FrontendInterface) {
             $output->writeln('Cache with given identifier was not found');
             return 101;
         }

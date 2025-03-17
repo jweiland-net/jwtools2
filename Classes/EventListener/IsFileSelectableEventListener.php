@@ -142,6 +142,7 @@ final class IsFileSelectableEventListener
                     $validColumns[] = $column;
                 }
             }
+
             $requiredColumns = $validColumns;
         }
 
@@ -192,6 +193,7 @@ final class IsFileSelectableEventListener
                 break;
             }
         }
+
         return $messageExists;
     }
 
