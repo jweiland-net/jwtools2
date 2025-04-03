@@ -24,17 +24,19 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileType;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -85,10 +87,13 @@ class ModifyElementInformationHook
 
     protected UriBuilder $uriBuilder;
 
-    public function __construct()
+    protected ViewFactoryInterface $viewFactory;
+
+    public function __construct(ViewFactoryInterface $viewFactory)
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $this->viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
     }
 
     public function isValid(string $type, ElementInformationController $elementInformationController): bool
@@ -178,14 +183,14 @@ class ModifyElementInformationHook
 
     protected function main(ServerRequestInterface $request): string
     {
+        $viewFactoryData = new ViewFactoryData(
+            partialRootPaths: GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials'),
+            layoutRootPaths: GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts'),
+            templatePathAndFilename: GeneralUtility::getFileAbsFileName('EXT:jwtools2/Resources/Private/Templates/ContentElement/ElementInformation.html'),
+            request: $request,
+        );
+        $view = $this->viewFactory->create($viewFactoryData);
         // Rendering of the output via fluid
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:jwtools2/Resources/Private/Templates/ContentElement/ElementInformation.html',
-        ));
-
         $view->assign('accessAllowed', true);
         $view->assignMultiple($this->getPageTitle());
         $view->assignMultiple($this->getPreview($request));
@@ -213,13 +218,13 @@ class ModifyElementInformationHook
         if ($this->type === 'folder') {
             $pageTitle['title'] = htmlspecialchars($this->folderObject->getName());
             $pageTitle['table'] = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:folder');
-            $pageTitle['icon'] = $this->iconFactory->getIconForResource($this->folderObject, Icon::SIZE_SMALL)->render();
+            $pageTitle['icon'] = $this->iconFactory->getIconForResource($this->folderObject, IconSize::SMALL)->render();
         } elseif ($this->type === 'file') {
             $pageTitle['table'] = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
-            $pageTitle['icon'] = $this->iconFactory->getIconForResource($this->fileObject, Icon::SIZE_SMALL)->render();
+            $pageTitle['icon'] = $this->iconFactory->getIconForResource($this->fileObject, IconSize::SMALL)->render();
         } else {
             $pageTitle['table'] = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
-            $pageTitle['icon'] = $this->iconFactory->getIconForRecord($this->table, $this->row, Icon::SIZE_SMALL);
+            $pageTitle['icon'] = $this->iconFactory->getIconForRecord($this->table, $this->row, IconSize::SMALL);
         }
 
         return $pageTitle;
@@ -346,7 +351,7 @@ class ModifyElementInformationHook
 
             if ($this->fileObject instanceof File) {
                 // show file dimensions for images
-                if ($this->fileObject->getType() === AbstractFile::FILETYPE_IMAGE) {
+                if ($this->fileObject->getType() === FileType::IMAGE->value) {
                     $propertiesForTable['fields']['width'] = [
                         'fieldValue' => $this->fileObject->getProperty('width') . 'px',
                         'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.width')),
@@ -648,7 +653,7 @@ class ModifyElementInformationHook
                 ];
                 $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
-                $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
+                $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, IconSize::SMALL)->render();
                 $line['row'] = $row;
                 $line['record'] = $record;
                 $line['recordTitle'] = BackendUtility::getRecordTitle($row['tablename'], $record, false, true);
@@ -727,7 +732,7 @@ class ModifyElementInformationHook
                 ];
                 $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
-                $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
+                $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, IconSize::SMALL)->render();
                 $line['row'] = $row;
                 $line['record'] = $record;
                 $line['recordTitle'] = BackendUtility::getRecordTitle($row['ref_table'], $record, false, true);

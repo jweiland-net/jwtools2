@@ -12,8 +12,8 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\Backend;
 
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -47,14 +47,14 @@ class SolrDocHeader
         $overviewButton = $buttonBar
             ->makeLinkButton()
             ->setHref($this->uriBuilder->reset()->uriFor('list', [], 'Solr'))
-            ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-document-new', IconSize::SMALL))
             ->setTitle('Overview')
             ->setShowLabelText(true);
 
         $clearFullIndexButton = $buttonBar
             ->makeLinkButton()
             ->setHref($this->uriBuilder->reset()->uriFor('showClearFullIndexForm', [], 'Solr'))
-            ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-document-new', IconSize::SMALL))
             ->setTitle('Clear full index...')
             ->setShowLabelText(true);
 
@@ -90,7 +90,7 @@ class SolrDocHeader
         $closeButton = $buttonBar
             ->makeLinkButton()
             ->setHref($uri)
-            ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL))
             ->setTitle('Close');
 
         $buttonBar->addButton($closeButton);

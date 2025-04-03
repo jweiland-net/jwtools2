@@ -17,6 +17,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3\CMS\Fluid\View\TemplateView;
 
 /**
@@ -37,7 +38,7 @@ abstract class AbstractController extends ActionController
      * Override this method to solve assign variables common for all actions
      * or prepare the view in another way before the action is called.
      */
-    protected function initializeView(TemplateView $view): void
+    protected function initializeAction(): void
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->moduleTemplate->assign('extConf', $this->getExtensionConfiguration());
@@ -46,6 +47,7 @@ abstract class AbstractController extends ActionController
     protected function getExtensionConfiguration(): array
     {
         $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jwtools2');
+
         return is_array($extensionConfiguration) ? $extensionConfiguration : [];
     }
 }

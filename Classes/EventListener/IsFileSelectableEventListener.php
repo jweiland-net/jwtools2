@@ -173,7 +173,7 @@ final class IsFileSelectableEventListener
         $connection = $this->getConnectionPool()->getConnectionForTable($table);
         $schemaManager = $connection->createSchemaManager();
         if (
-            $schemaManager->tablesExist($table)
+            $schemaManager->tablesExist([$table])
         ) {
             $columnExists = $schemaManager->introspectTable($table)->hasColumn($column);
             if ($columnExists === false && $table !== 'sys_file_metadata') {

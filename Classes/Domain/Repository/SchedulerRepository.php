@@ -17,6 +17,7 @@ use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExis
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Scheduler;
 
 /**
@@ -25,13 +26,18 @@ use TYPO3\CMS\Scheduler\Scheduler;
  */
 class SchedulerRepository
 {
+    public function __construct(
+        private readonly SchedulerTaskRepository $taskRepository,
+        private readonly ConnectionPool $connectionPool,
+    ) {
+    }
     /**
      * Get Solr Scheduler Task of this extension
      */
     public function findSolrSchedulerTask(): ?IndexQueueWorkerTask
     {
         try {
-            $task = $this->getScheduler()->fetchTask(
+            $task = $this->taskRepository->findByUid(
                 (int)$this->getExtensionConfiguration('solrSchedulerTaskUid'),
             );
 
