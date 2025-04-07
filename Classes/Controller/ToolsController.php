@@ -20,8 +20,7 @@ class ToolsController extends AbstractController
 {
     public function __construct(
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-    ) {
-    }
+    ) {}
 
     public function initializeAction(): void
     {

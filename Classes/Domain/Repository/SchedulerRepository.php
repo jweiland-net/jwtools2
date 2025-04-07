@@ -29,8 +29,7 @@ class SchedulerRepository
     public function __construct(
         private readonly SchedulerTaskRepository $taskRepository,
         private readonly ConnectionPool $connectionPool,
-    ) {
-    }
+    ) {}
     /**
      * Get Solr Scheduler Task of this extension
      */

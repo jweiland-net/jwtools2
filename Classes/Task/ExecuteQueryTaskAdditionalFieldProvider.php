@@ -14,9 +14,7 @@ namespace JWeiland\Jwtools2\Task;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
-use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
-use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
 /**
  * Additional field provider for the execute query task

@@ -13,7 +13,6 @@ namespace JWeiland\Jwtools2\Hooks;
 
 use Doctrine\DBAL\Exception;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
@@ -38,7 +37,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * This hook adds an edit button just right the preview button in element infomation view.
@@ -805,12 +803,12 @@ class ModifyElementInformationHook
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $queryParameters = $request->getQueryParams();
 
-        return (string) $uriBuilder->buildUriFromRoute(
+        return (string)$uriBuilder->buildUriFromRoute(
             'record_edit',
             [
                 'table' => $queryParams['table'] ?? '',
                 'uid' => (int)($queryParams['uid'] ?? 0),
-            ]
+            ],
         );
     }
 }

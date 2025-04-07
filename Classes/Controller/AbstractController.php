@@ -17,8 +17,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Fluid\View\FluidViewAdapter;
-use TYPO3\CMS\Fluid\View\TemplateView;
 
 /**
  * Class AbstractController

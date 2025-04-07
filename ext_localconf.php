@@ -13,7 +13,6 @@ if (!defined('TYPO3')) {
 
 use JWeiland\Jwtools2\Fal\Filter\FileNameFilter;
 use JWeiland\Jwtools2\Hooks\CachingFrameworkLoggerHook;
-use JWeiland\Jwtools2\Hooks\InitializeStdWrap;
 use JWeiland\Jwtools2\Hooks\ModifyElementInformationHook;
 use JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook;
 use JWeiland\Jwtools2\Routing\Aspect\PersistedTableMapper;
