@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
-use TYPO3\CMS\Scheduler\Scheduler;
 
 /**
  * Repository to find records from tx_scheduler_task table.
@@ -57,11 +56,6 @@ class SchedulerRepository
         } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException $exception) {
             return '';
         }
-    }
-
-    protected function getScheduler(): Scheduler
-    {
-        return GeneralUtility::makeInstance(Scheduler::class);
     }
 
     protected function getConnectionPool(): ConnectionPool
