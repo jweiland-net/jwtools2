@@ -14,6 +14,7 @@ namespace JWeiland\Jwtools2\Task;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
@@ -39,14 +40,13 @@ class IndexQueueWorkerTaskAdditionalFieldProvider extends AbstractAdditionalFiel
         $additionalFields = [];
 
         $currentAction = $schedulerModule->getCurrentAction();
-
         // Documents to index
-        if ($currentAction->equals(Action::ADD)) {
+        if ($currentAction->value === 'add') {
             $taskInfo['documentsToIndexLimit'] = 50;
             $taskInfo['maxSitesPerRun'] = 10;
         }
 
-        if ($currentAction->equals(Action::EDIT)) {
+        if ($currentAction->value === 'edit') {
             $taskInfo['documentsToIndexLimit'] = $task->getDocumentsToIndexLimit();
             $taskInfo['maxSitesPerRun'] = $task->getMaxSitesPerRun();
         }

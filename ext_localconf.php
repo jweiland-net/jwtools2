@@ -92,10 +92,6 @@ call_user_func(static function () {
             = CachingFrameworkLoggerHook::class . '->analyze';
     }
 
-    // Retrieve stdWrap current value into sub cObj. CONTENT
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit']['jwtools2_initStdWrap']
-        = InitializeStdWrap::class;
-
     // Register an Aspect to store source/target-mapping. Will be activated, if used in SiteConfiguration only.
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects']['PersistedTableMapper']
         = PersistedTableMapper::class;

@@ -13,6 +13,7 @@ namespace JWeiland\Jwtools2\Hooks;
 
 use Doctrine\DBAL\Exception;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
@@ -55,7 +56,7 @@ class ModifyElementInformationHook
 {
     protected string $table;
 
-    protected string $uid;
+    protected int $uid;
 
     protected string $permsClause;
 
@@ -89,7 +90,7 @@ class ModifyElementInformationHook
 
     protected ViewFactoryInterface $viewFactory;
 
-    public function __construct(ViewFactoryInterface $viewFactory)
+    public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -116,7 +117,7 @@ class ModifyElementInformationHook
     {
         $queryParams = $request->getQueryParams();
         $this->table = $queryParams['table'] ?? null;
-        $this->uid = $queryParams['uid'] ?? null;
+        $this->uid = (int)$queryParams['uid'] ?? null;
 
         $this->permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
 
@@ -184,8 +185,8 @@ class ModifyElementInformationHook
     protected function main(ServerRequestInterface $request): string
     {
         $viewFactoryData = new ViewFactoryData(
-            partialRootPaths: GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials'),
-            layoutRootPaths: GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts'),
+            partialRootPaths: [GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')],
+            layoutRootPaths: [GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')],
             templatePathAndFilename: GeneralUtility::getFileAbsFileName('EXT:jwtools2/Resources/Private/Templates/ContentElement/ElementInformation.html'),
             request: $request,
         );
@@ -199,7 +200,7 @@ class ModifyElementInformationHook
         $view->assign(
             'returnUrl',
             GeneralUtility::sanitizeLocalUrl(
-                $request->getQueryParams()['returnUrl'] ?? GeneralUtility::linkThisScript(),
+                $request->getQueryParams()['returnUrl'] ?? $this->getLinkScripts($request),
             ),
         );
         $view->assign('maxTitleLength', $this->getBackendUser()->uc['titleLen'] ?? 20);
@@ -414,7 +415,7 @@ class ModifyElementInformationHook
             'vanillaUid' => $uid,
         ];
         try {
-            $result = $formDataCompiler->compile($formDataCompilerInput);
+            $result = $formDataCompiler->compile($formDataCompilerInput, $formDataGroup);
             $fieldList = array_unique(array_values($result['columnsToProcess']));
 
             $ctrlKeysOfUnneededFields = ['origUid', 'transOrigPointerField', 'transOrigDiffSourceField'];
@@ -678,7 +679,7 @@ class ModifyElementInformationHook
     /**
      * Make reference display (what this elements points to)
      */
-    protected function makeRefFrom(string $table, string $ref, ServerRequestInterface $request): array
+    protected function makeRefFrom(string $table, int $ref, ServerRequestInterface $request): array
     {
         $refFromLines = [];
         $lang = $this->getLanguageService();
@@ -728,7 +729,7 @@ class ModifyElementInformationHook
                             $row['ref_uid'] => 'edit',
                         ],
                     ],
-                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUrl(),
                 ];
                 $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
@@ -797,5 +798,19 @@ class ModifyElementInformationHook
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    protected function getLinkScripts($request)
+    {
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $queryParameters = $request->getQueryParams();
+
+        return (string) $uriBuilder->buildUriFromRoute(
+            'record_edit',
+            [
+                'table' => $queryParams['table'] ?? '',
+                'uid' => (int)($queryParams['uid'] ?? 0),
+            ]
+        );
     }
 }
