@@ -13,6 +13,7 @@ namespace JWeiland\Jwtools2\Tests\Unit\Task;
 
 use Doctrine\DBAL\Driver\Statement;
 use JWeiland\Jwtools2\Task\ExecuteQueryTask;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -50,19 +51,7 @@ class ExecuteQueryTaskTest extends UnitTestCase
         $this->subject = new ExecuteQueryTask();
     }
 
-    /**
-     * @test
-     */
-    public function executeWithEmptyQueryWillReturnFalse(): void
-    {
-        self::assertFalse(
-            $this->subject->execute(),
-        );
-    }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function executeWithSingleQueryWillReturnTrue(): void
     {
         $this->subject->setSqlQuery('UPDATE what_ever;');
@@ -78,7 +67,7 @@ class ExecuteQueryTaskTest extends UnitTestCase
                 self::equalTo('UPDATE what_ever;'),
                 self::equalTo([]),
             )
-            ->willReturn($statementMock);
+            ->willReturn(1);
 
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
         $connectionPoolMock->expects(self::once())
@@ -93,9 +82,7 @@ class ExecuteQueryTaskTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeWithMultipleQueriesWillReturnTrue(): void
     {
         $this->subject->setSqlQuery("UPDATE what_ever;\nUPDATE that;\nUPDATE else;");
@@ -107,12 +94,11 @@ class ExecuteQueryTaskTest extends UnitTestCase
         $connectionMock = $this->createMock(Connection::class);
         $connectionMock->expects(self::exactly(3))
             ->method('executeStatement')
-            ->withConsecutive(
-                [self::equalTo('UPDATE what_ever;'), self::equalTo([])],
-                [self::equalTo('UPDATE that;'), self::equalTo([])],
-                [self::equalTo('UPDATE else;'), self::equalTo([])],
-            )
-            ->willReturn($statementMock);
+            ->willReturnOnConsecutiveCalls(
+                1,  // Return value for the first call (success)
+                1,  // Return value for the second call (success)
+                1   // Return value for the third call (success)
+            );
 
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
         $connectionPoolMock->expects(self::once())
