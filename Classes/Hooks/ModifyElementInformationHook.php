@@ -115,7 +115,7 @@ class ModifyElementInformationHook
     {
         $queryParams = $request->getQueryParams();
         $this->table = $queryParams['table'] ?? null;
-        $this->uid = (int)$queryParams['uid'] ?? null;
+        $this->uid = isset($queryParams['uid']) ? (int)$queryParams['uid'] : null;
 
         $this->permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
 

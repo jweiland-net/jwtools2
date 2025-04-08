@@ -15,13 +15,8 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 
-#[AsController]
 class ToolsController extends AbstractController
 {
-    public function __construct(
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-    ) {}
-
     public function initializeAction(): void
     {
         parent::initializeAction();

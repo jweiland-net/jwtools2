@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3Fluid\Fluid\View\TemplateAwareViewInterface;
 
-#[AsController]
 class SolrController extends AbstractController
 {
     use InjectSolrRepositoryTrait;

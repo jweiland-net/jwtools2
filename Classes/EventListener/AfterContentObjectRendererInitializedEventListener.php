@@ -25,17 +25,18 @@ use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitialized
 )]
 final class AfterContentObjectRendererInitializedEventListener
 {
-    public function __construct(protected readonly ExtensionConfiguration $extensionConfiguration) {}
+    public function __construct(private readonly ExtensionConfiguration $extensionConfiguration) {}
 
     public function __invoke(AfterContentObjectRendererInitializedEvent $event): void
     {
         $contentObjectRenderer = $event->getContentObjectRenderer();
 
         if (
-            isset($contentObjectRenderer->parentRecord['data'][$contentObjectRenderer->currentValKey], $contentObjectRenderer->data['colPos']) && is_array(
-                $contentObjectRenderer->parentRecord,
-            ) && $contentObjectRenderer->parentRecord !== [] && ($this->getConfiguration(
-            )['typo3TransferTypoScriptCurrent'] ?? false) && $contentObjectRenderer->data['colPos'] !== 0
+            isset($contentObjectRenderer->parentRecord['data'][$contentObjectRenderer->currentValKey], $contentObjectRenderer->data['colPos'])
+            && is_array($contentObjectRenderer->parentRecord)
+            && $contentObjectRenderer->parentRecord !== []
+            && ($this->getConfiguration()['typo3TransferTypoScriptCurrent'] ?? false)
+            && $contentObjectRenderer->data['colPos'] !== 0
         ) {
             $contentObjectRenderer->setCurrentVal(
                 $contentObjectRenderer->parentRecord['data'][$contentObjectRenderer->currentValKey],
