@@ -95,9 +95,9 @@ class ExecuteQueryTaskTest extends UnitTestCase
         $connectionMock->expects(self::exactly(3))
             ->method('executeStatement')
             ->willReturnOnConsecutiveCalls(
-                1,  // Return value for the first call (success)
-                1,  // Return value for the second call (success)
-                1,   // Return value for the third call (success)
+                1, // Return value for the first call (success)
+                1, // Return value for the second call (success)
+                1, // Return value for the third call (success)
             );
 
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
