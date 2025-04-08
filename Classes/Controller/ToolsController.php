@@ -12,8 +12,6 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 
 class ToolsController extends AbstractController
 {
