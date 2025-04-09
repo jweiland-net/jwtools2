@@ -13,9 +13,6 @@ namespace JWeiland\Jwtools2\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 
-/**
- * ToolsController for backend module
- */
 class ToolsController extends AbstractController
 {
     public function initializeAction(): void
@@ -25,6 +22,6 @@ class ToolsController extends AbstractController
 
     public function overviewAction(): ResponseInterface
     {
-        return $this->moduleTemplate->renderResponse('Overview');
+        return $this->moduleTemplate->renderResponse('Tools/Overview');
     }
 }

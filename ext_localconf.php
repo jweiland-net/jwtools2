@@ -13,7 +13,6 @@ if (!defined('TYPO3')) {
 
 use JWeiland\Jwtools2\Fal\Filter\FileNameFilter;
 use JWeiland\Jwtools2\Hooks\CachingFrameworkLoggerHook;
-use JWeiland\Jwtools2\Hooks\InitializeStdWrap;
 use JWeiland\Jwtools2\Hooks\ModifyElementInformationHook;
 use JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook;
 use JWeiland\Jwtools2\Routing\Aspect\PersistedTableMapper;
@@ -91,10 +90,6 @@ call_user_func(static function () {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php']['set'][1655965501]
             = CachingFrameworkLoggerHook::class . '->analyze';
     }
-
-    // Retrieve stdWrap current value into sub cObj. CONTENT
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit']['jwtools2_initStdWrap']
-        = InitializeStdWrap::class;
 
     // Register an Aspect to store source/target-mapping. Will be activated, if used in SiteConfiguration only.
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects']['PersistedTableMapper']

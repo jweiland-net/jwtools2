@@ -33,11 +33,9 @@ class QueryGenerator
         if ($id < 0) {
             $id = abs($id);
         }
-        if ($begin === 0) {
-            $theList = $id;
-        } else {
-            $theList = '';
-        }
+
+        $theList = $begin === 0 ? $id : '';
+
         if ($id && $depth > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -51,20 +49,24 @@ class QueryGenerator
             if ($permClause !== '') {
                 $queryBuilder->andWhere(self::stripLogicalOperatorPrefix($permClause));
             }
+
             $statement = $queryBuilder->executeQuery();
             while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
                     $theList .= ',' . $row['uid'];
                 }
+
                 if ($depth > 1) {
                     $theSubList = $this->getTreeList($row['uid'], $depth - 1, $begin - 1, $permClause);
-                    if (($theList !== '') && !empty($theSubList) && ($theSubList[0] !== ',')) {
+                    if (($theList !== '') && ($theSubList !== '' && $theSubList !== '0') && ($theSubList[0] !== ',')) {
                         $theList .= ',';
                     }
+
                     $theList .= $theSubList;
                 }
             }
         }
+
         return (string)$theList;
     }
 

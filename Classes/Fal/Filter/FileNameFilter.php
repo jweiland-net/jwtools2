@@ -21,8 +21,6 @@ class FileNameFilter
 {
     /**
      * Whether to also show the hidden files (don't show them by default)
-     *
-     * @var bool
      */
     protected static bool $showHiddenFilesAndFolders = false;
 
@@ -49,6 +47,7 @@ class FileNameFilter
         ) {
             return -1;
         }
+
         return true;
     }
 

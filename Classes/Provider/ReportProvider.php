@@ -102,6 +102,7 @@ class ReportProvider implements StatusProviderInterface, ExtendedStatusProviderI
                 foreach ($updatableExtensions as $updatableExtension) {
                     $message .= '<li>' . $updatableExtension . '</li>';
                 }
+
                 $message .= '</ul>';
             }
         }

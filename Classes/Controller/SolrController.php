@@ -31,9 +31,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3Fluid\Fluid\View\TemplateAwareViewInterface;
 
-/**
- * SolrController for backend module
- */
 class SolrController extends AbstractController
 {
     use InjectSolrRepositoryTrait;
@@ -44,7 +41,6 @@ class SolrController extends AbstractController
     public function initializeView($view): void
     {
         if ($view instanceof TemplateAwareViewInterface) {
-            parent::initializeView($view);
             $this->pageRenderer->loadJavaScriptModule('@jweiland/jwtools2/solr-backend-module.js');
             $this->renderDocHeader();
             $this->checkSchedulerTaskConfig();
@@ -56,7 +52,7 @@ class SolrController extends AbstractController
         $this->moduleTemplate->assign('sites', $this->solrRepository->findAllAvailableSites());
         $this->moduleTemplate->assign('currentRootPageUid', $this->registry->get('jwtools2-solr', 'rootPageId', 0));
 
-        return $this->moduleTemplate->renderResponse('List');
+        return $this->moduleTemplate->renderResponse('Solr/List');
     }
 
     public function showAction(int $rootPageUid): ResponseInterface
@@ -65,7 +61,7 @@ class SolrController extends AbstractController
         $this->moduleTemplate->assign('site', $site);
         $this->moduleTemplate->assign('memoryPeakUsage', $this->registry->get('jwtools2-solr', 'memoryPeakUsage', 0));
 
-        return $this->moduleTemplate->renderResponse('Show');
+        return $this->moduleTemplate->renderResponse('Solr/Show');
     }
 
     public function showIndexQueueAction(int $rootPageUid, string $configurationName): ResponseInterface
@@ -78,7 +74,7 @@ class SolrController extends AbstractController
             $this->moduleTemplate->assign('configurationName', $configurationName);
         }
 
-        return $this->moduleTemplate->renderResponse('showIndexQueue');
+        return $this->moduleTemplate->renderResponse('Solr/ShowIndexQueue');
     }
 
     public function indexOneRecordAction(
@@ -156,7 +152,7 @@ class SolrController extends AbstractController
             return $this->redirect('list');
         }
 
-        return $this->moduleTemplate->renderResponse('showClearIndexForm');
+        return $this->moduleTemplate->renderResponse('Solr/ShowClearIndexForm');
     }
 
     #[Extbase\Validate(['validator' => 'NotEmpty', 'param' => 'configurationNames'])]
@@ -170,6 +166,7 @@ class SolrController extends AbstractController
             foreach ($configurationNames as $configurationName) {
                 $solrService->clearIndexByType($site, $clear, $configurationName);
             }
+
             $this->addFlashMessage(
                 'We successfully have cleared the index of Site: "' . $site->getTitle() . '"',
                 'Index cleared',
@@ -177,13 +174,13 @@ class SolrController extends AbstractController
             return $this->redirect('list');
         } else {
             $this->addFlashMessage(
-                'We haven\'t found a Site with RootPage UID: ' . $rootPageUid,
+                "We haven't found a Site with RootPage UID: " . $rootPageUid,
                 'Site not found',
                 ContextualFeedbackSeverity::WARNING,
             );
         }
 
-        return $this->moduleTemplate->renderResponse('clearIndex');
+        return $this->moduleTemplate->renderResponse('Solr/ClearIndex');
     }
 
     /**
@@ -200,10 +197,11 @@ class SolrController extends AbstractController
                 $site->getSolrConfiguration()->getEnabledIndexQueueConfigurationNames(),
             );
         }
+
         $this->moduleTemplate->assign('sites', $sites);
         $this->moduleTemplate->assign('configurationNamesOfAllSites', $configurationNamesOfAllSites);
 
-        return $this->moduleTemplate->renderResponse('showClearFullIndexForm');
+        return $this->moduleTemplate->renderResponse('Solr/ShowClearFullIndexForm');
     }
 
     protected function getIndexQueueItem(int $rootPageUid, string $configurationName, int $recordUid): ?Item

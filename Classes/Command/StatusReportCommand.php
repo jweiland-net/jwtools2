@@ -30,7 +30,9 @@ use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 class StatusReportCommand extends Command
 {
     private const RETURN_YES = '<info>YES</info>';
+
     private const RETURN_NO = '<error>NO</error>';
+
     private SchedulerTaskRepository $taskRepository;
 
     protected InputInterface $input;
@@ -129,7 +131,7 @@ class StatusReportCommand extends Command
 
     protected function checkRobotsTxt(Site $site): string
     {
-        return $this->getContentOfRobotsTxt($site) ? self::RETURN_YES : self::RETURN_NO;
+        return $this->getContentOfRobotsTxt($site) !== '' && $this->getContentOfRobotsTxt($site) !== '0' ? self::RETURN_YES : self::RETURN_NO;
     }
 
     protected function checkSitemapOfRobotsTxt(Site $site): string
@@ -141,7 +143,7 @@ class StatusReportCommand extends Command
 
     protected function checkSitemapXml(Site $site): string
     {
-        return $this->getPageTypeOfSuffix('sitemap.xml', $site) ? self::RETURN_YES : self::RETURN_NO;
+        return $this->getPageTypeOfSuffix('sitemap.xml', $site) !== 0 ? self::RETURN_YES : self::RETURN_NO;
     }
 
     protected function check404ErrorHandling(Site $site): string
@@ -164,8 +166,11 @@ class StatusReportCommand extends Command
 
         if ($content === '' && !$this->input->hasOption('exclude-robots-txt-url-check')) {
             $base = rtrim((string)$site->getBase(), '/') . '/';
-            $content = @file_get_contents($base . 'robots.txt');
-            $content = $content ?? '';
+            $content = file_get_contents($base . 'robots.txt');
+
+            if ($content === false) {
+                $content = '';
+            }
         }
 
         return $content;
@@ -255,7 +260,7 @@ class StatusReportCommand extends Command
 
     protected function processTasks(array $tasks, array &$recurringTasks, int $lastExecution): int
     {
-        foreach ($tasks as $groups => $taskGroups) {
+        foreach ($tasks as $taskGroups) {
             foreach ($taskGroups as $taskGroup) {
                 if (is_array($taskGroup['tasks'])) {
                     foreach ($taskGroup['tasks'] as $task) {

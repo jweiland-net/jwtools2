@@ -82,11 +82,13 @@ class ConvertPlainPasswordToHashCommand extends Command
             if (!isset($user['password']) || $user['password'] === '') {
                 continue;
             }
+
             try {
                 $this->passwordHashFactory->get($user['password'], $mode);
                 if ($this->output->getVerbosity() === 32) {
                     $this->output->write('X');
                 }
+
                 $this->output->writeln(
                     'Password for User ' . $user['uid'] . ' was not updated. Password already hashed.',
                     OutputInterface::VERBOSITY_VERBOSE,
@@ -105,6 +107,7 @@ class ConvertPlainPasswordToHashCommand extends Command
                 if ($this->output->getVerbosity() === 32) {
                     $this->output->write('.', false, OutputInterface::VERBOSITY_QUIET);
                 }
+
                 $counter++;
             }
         }
@@ -145,6 +148,7 @@ class ConvertPlainPasswordToHashCommand extends Command
         ) {
             $this->modeMapping[$mode]['hashInstance'] = $this->passwordHashFactory->getDefaultHashInstance($mode);
         }
+
         return $this->modeMapping[$mode]['hashInstance'];
     }
 

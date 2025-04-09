@@ -7,7 +7,8 @@
  * LICENSE file that was distributed with this source code.
  */
 
-use JWeiland\Jwtools2\Controller;
+use JWeiland\Jwtools2\Controller\Ajax\AjaxSolrController;
+use JWeiland\Jwtools2\Controller\Ajax\SysFileController;
 
 /**
  * Definitions for routes provided by EXT:backend
@@ -18,18 +19,18 @@ use JWeiland\Jwtools2\Controller;
 return [
     'jwtools2_updateFileMetadata' => [
         'path' => '/jwtools2/updateFileMetadata',
-        'target' => Controller\Ajax\SysFileController::class . '::updateFileMetadataAction',
+        'target' => SysFileController::class . '::updateFileMetadataAction',
     ],
     'jwtools2_clearIndex' => [
         'path' => '/jwtools2/clearIndex',
-        'target' => Controller\Ajax\AjaxSolrController::class . '::clearIndexAction',
+        'target' => AjaxSolrController::class . '::clearIndexAction',
     ],
     'jwtools2_createSolrIndexQueue' => [
         'path' => '/jwtools2/createSolrIndexQueue',
-        'target' => Controller\Ajax\AjaxSolrController::class . '::createIndexQueueAction',
+        'target' => AjaxSolrController::class . '::createIndexQueueAction',
     ],
     'jwtools2_getSolrProgress' => [
         'path' => '/jwtools2/getSolrProgress',
-        'target' => Controller\Ajax\AjaxSolrController::class . '::getProgressAction',
+        'target' => AjaxSolrController::class . '::getProgressAction',
     ],
 ];

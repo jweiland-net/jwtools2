@@ -14,17 +14,13 @@ namespace JWeiland\Jwtools2\ViewHelpers;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Split file reference into file parts.
  */
 class SplitFileRefViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument(
@@ -42,13 +38,10 @@ class SplitFileRefViewHelper extends AbstractViewHelper
         );
     }
 
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext,
-    ): string {
+    public function render(): string
+    {
         $templateVariableContainer = $renderingContext->getVariableProvider();
-        $file = $arguments['file'];
+        $file = $this->arguments['file'];
 
         // get Resource Object (non ExtBase version)
         if (is_callable([$file, 'getOriginalResource'])) {
@@ -56,7 +49,7 @@ class SplitFileRefViewHelper extends AbstractViewHelper
             $file = $file->getOriginalResource();
         }
 
-        if (!($file instanceof FileInterface || $file instanceof AbstractFileFolder)) {
+        if (!$file instanceof FileInterface && !$file instanceof AbstractFileFolder) {
             throw new \UnexpectedValueException(
                 'Supplied file object type ' . get_class($file) . ' must be FileInterface or AbstractFileFolder.',
                 1563891998,
@@ -64,10 +57,9 @@ class SplitFileRefViewHelper extends AbstractViewHelper
         }
 
         $fileParts = GeneralUtility::split_fileref($file->getPublicUrl());
-        $templateVariableContainer->add($arguments['as'], $fileParts);
-        $content = $renderChildrenClosure();
-        $templateVariableContainer->remove($arguments['as']);
+        $templateVariableContainer->add($this->arguments['as'], $fileParts);
+        $templateVariableContainer->remove($this->arguments['as']);
 
-        return $content;
+        return $this->renderChildren();
     }
 }

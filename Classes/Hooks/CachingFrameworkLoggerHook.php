@@ -68,20 +68,20 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
                 $cacheExpressionRecord,
             );
 
-            if ($cacheExpressionRecord['is_exception']) {
-                // throw exception in FE only or also in BE, if fe_only is disabled
-                if (
+            // throw exception in FE only or also in BE, if fe_only is disabled
+            if ($cacheExpressionRecord['is_exception']
+                && (
                     $cacheExpressionRecord['exception_fe_only'] === 0
                     || (
                         $cacheExpressionRecord['exception_fe_only'] === 1
                         && ApplicationType::fromRequest($this->getServerRequest())->isFrontend()
                     )
-                ) {
-                    throw new PreventStoringFalseCacheEntryException(
-                        '[jwtools2] CF logger prevents inserting invalid cache entry',
-                        1720607181,
-                    );
-                }
+                )
+            ) {
+                throw new PreventStoringFalseCacheEntryException(
+                    '[jwtools2] CF logger prevents inserting invalid cache entry',
+                    1720607181,
+                );
             }
         }
     }

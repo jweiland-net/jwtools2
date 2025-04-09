@@ -119,7 +119,7 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
                     $queryBuilder->createNamedParameter($this->fieldName),
                 ),
                 $queryBuilder->expr()->eq(
-                    $source ? 'source' : 'target',
+                    $source !== '' && $source !== '0' ? 'source' : 'target',
                     $queryBuilder->createNamedParameter($source ?: $target),
                 ),
             )

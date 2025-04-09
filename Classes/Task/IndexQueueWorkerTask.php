@@ -39,6 +39,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
     {
         $registry = $this->getRegistry();
         $registry->set('jwtools2-solr', 'memoryPeakUsage', 0);
+
         $lastSitePosition = (int)$registry->get('jwtools2-solr', 'lastSitePosition');
         $maxSitePosition = $lastSitePosition + $this->getMaxSitesPerRun();
         $cliEnvironment = null;
@@ -59,6 +60,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
                 $counter++;
                 continue;
             }
+
             $registry->set('jwtools2-solr', 'rootPageId', $availableSite->getRootPageId());
 
             try {

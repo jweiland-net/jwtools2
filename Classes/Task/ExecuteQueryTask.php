@@ -45,6 +45,7 @@ class ExecuteQueryTask extends AbstractTask
                 if (!str_ends_with($sqlQuery, ';')) {
                     $sqlQuery .= ';';
                 }
+
                 $connection->executeStatement($sqlQuery);
             }
 
@@ -53,9 +54,9 @@ class ExecuteQueryTask extends AbstractTask
             );
 
             return true;
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             $this->addMessage(
-                'Error occurred: ' . $e->getMessage(),
+                'Error occurred: ' . $exception->getMessage(),
                 ContextualFeedbackSeverity::ERROR,
             );
 

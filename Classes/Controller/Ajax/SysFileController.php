@@ -64,7 +64,6 @@ class SysFileController
      * This is an important step for further file extractors registered in TYPO3 like EXT:solr and/or EXT:tika
      * which does not read the original image dimensions, but width/height from EXIF data instead.
      *
-     * @param FileInterface $fileObject
      * @throws IllegalFileExtensionException
      */
     protected function updateExifData(FileInterface $fileObject): void
@@ -96,9 +95,6 @@ class SysFileController
     /**
      * This method reads the original width/height of the file.
      * It does not relate to EXIF data
-     *
-     * @param FileInterface $fileObject
-     * @return array
      */
     protected function getWidthAndHeightOfFile(FileInterface $fileObject): array
     {
@@ -121,7 +117,7 @@ class SysFileController
         $files = $request->getQueryParams()['CB']['files'] ?? [];
         foreach ($files as $hash => $file) {
             [$table, $hash] = explode('|', $hash);
-            if ($table === '_FILE' && $hash === (string)substr(md5($file), 0, 10)) {
+            if ($table === '_FILE' && $hash === substr(md5($file), 0, 10)) {
                 $validatedFiles[] = $file;
             }
         }
