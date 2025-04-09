@@ -1,7 +1,7 @@
 # TYPO3 Extension `jwtools2`
 
 [![Latest Stable Version](https://poser.pugx.org/jweiland/jwtools2/v/stable.svg?style=for-the-badge)](https://packagist.org/packages/jweiland/jwtools2)
-[![TYPO3 12.4](https://img.shields.io/badge/TYPO3-12.4-green.svg?style=for-the-badge)](https://get.typo3.org/version/12)
+[![TYPO3 13.4](https://img.shields.io/badge/TYPO3-13.4-green.svg?style=for-the-badge)](https://get.typo3.org/version/13)
 [![Total Downloads](https://poser.pugx.org/jweiland/jwtools2/downloads.svg?style=for-the-badge)](https://packagist.org/packages/jweiland/jwtools2)
 [![Monthly Downloads](https://poser.pugx.org/jweiland/jwtools2/d/monthly?style=for-the-badge)](https://packagist.org/packages/jweiland/jwtools2)
 
