@@ -10,6 +10,14 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 8.0.0
+=============
+
+*   [TASK] Compatibility fix for TYPO3 13
+*   [TASK] Dropped older version compatibility
+*   [TASK] Fixed deprecations and removed obsolete API calls
+*   [TASK] Replaced removed hooks with PSR-14 Events
+
 Version 7.1.2
 =============
 
