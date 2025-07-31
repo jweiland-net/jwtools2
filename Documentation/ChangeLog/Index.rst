@@ -10,6 +10,11 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 8.0.2
+=============
+
+*   Update testing directory
+
 Version 8.0.1
 =============
 
