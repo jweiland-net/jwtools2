@@ -47,3 +47,9 @@ Download and install `jwtools2` with the extension manager module.
 
 1) Install the extension
 2) Move over to Extension Settings and activate the features you want
+
+## 3 Support
+
+Free Support is available via [GitHub Issue Tracker](https://github.com/jweiland-net/jwtools2/issues).
+
+For commercial support, please contact us at [support@jweiland.net](support@jweiland.net).
