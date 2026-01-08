@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileType;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -115,7 +116,21 @@ class ModifyElementInformationHook
     {
         $queryParams = $request->getQueryParams();
         $this->table = $queryParams['table'] ?? null;
-        $this->uid = isset($queryParams['uid']) ? (int)$queryParams['uid'] : null;
+
+        $input = (string)($queryParams['uid'] ?? null);
+        try {
+            if (ctype_digit($input)) {
+                // Case: 1 already sys_file uid
+                $this->uid = (int)$input;
+            } else {
+                $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+                $file = $resourceFactory->getFileObjectFromCombinedIdentifier($input);
+                $this->uid = $file->getUid();
+            }
+        } catch (ResourceDoesNotExistException $exception) {
+            // handle exception if needed
+            $this->uid = 0;
+        }
 
         $this->permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
 
