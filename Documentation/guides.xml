@@ -15,7 +15,7 @@
 	/>
 	<project title="JW Tools 2"
 					 release="8.0"
-					 version="8.0.2"
+					 version="8.0.3"
 					 copyright="since 2019 by jweiland.net"
 	/>
 	<inventory id="t3coreapi"
