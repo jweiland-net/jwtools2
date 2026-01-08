@@ -10,6 +10,11 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 8.0.3
+=============
+
+*   [BUGFIX] Fixed issue with Initialization method where uid is identifier in request
+
 Version 8.0.2
 =============
 
