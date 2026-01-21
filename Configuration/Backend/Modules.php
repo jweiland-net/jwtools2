@@ -19,7 +19,7 @@ return [
     'tools_ts_jwtools2' => [
         'parent' => 'tools',
         'position' => ['after' => 'web_info'],
-        'access' => 'user,group',
+        'access' => 'user',
         'workspaces' => 'live',
         'path' => '/module/tools/jwtools2',
         'labels' => 'LLL:EXT:jwtools2/Resources/Private/Language/locallang_module_tools.xlf',
