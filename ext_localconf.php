@@ -7,7 +7,6 @@ if (!defined('TYPO3')) {
 use JWeiland\Jwtools2\Fal\Filter\FileNameFilter;
 use JWeiland\Jwtools2\Hooks\CachingFrameworkLoggerHook;
 use JWeiland\Jwtools2\Hooks\InitializeStdWrap;
-use JWeiland\Jwtools2\Hooks\ModifyElementInformationHook;
 use JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook;
 use JWeiland\Jwtools2\Routing\Aspect\PersistedTableMapper;
 use JWeiland\Jwtools2\Task\ExecuteQueryTask;
@@ -58,11 +57,6 @@ call_user_func(static function () {
         ExtensionManagementUtility::addUserTSConfig(
             'options.pageTree.showPageIdWithTitle = 1'
         );
-    }
-
-    if ($jwToolsConfiguration['typo3ShowEditButtonInElementInformation'] ?? false) {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering']['jwtools']
-            = ModifyElementInformationHook::class;
     }
 
     if ($jwToolsConfiguration['typo3ExcludeVideoFilesFromFalFilter'] ?? false) {

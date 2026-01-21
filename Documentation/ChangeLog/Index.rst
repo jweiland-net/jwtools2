@@ -10,6 +10,11 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 7.2.0
+=============
+
+*   [BUGFIX] Remove ModifyElementInformationHook as it is native in TYPO3 v12
+
 Version 7.1.1
 =============
 

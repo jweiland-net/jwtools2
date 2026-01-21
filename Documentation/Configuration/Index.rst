@@ -93,16 +93,6 @@ required. If these columns are not filled for an image it is not selectable in F
 inserted into a ContentElement or record.
 
 
-..  _typo3ShowEditButtonInElementInformation:
-
-typo3ShowEditButtonInElementInformation
----------------------------------------
-
-In FileBrowser you can click on the "i" icon to show the element information view. After activation this option
-you will get an "edit" button just right after the "preview" button for faster access to the
-file metadata edit form, instead that you have to switch to "filelist" module.
-
-
 ..  _typo3ExcludeVideoFilesFromFalFilter:
 
 typo3ExcludeVideoFilesFromFalFilter
