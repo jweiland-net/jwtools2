@@ -10,7 +10,7 @@ ChangeLog
 ..  contents::
     :local:
 
-Version 8.0.4
+Version 8.1.0
 =============
 
 *   [BUGFIX] Removed ModifyElementInformationHook patch applied from v7.2
