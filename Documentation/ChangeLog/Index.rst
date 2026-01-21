@@ -10,6 +10,11 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 8.1.1
+=============
+
+*   [TASK] Simplify access restriction in Backend Module configuration
+
 Version 8.1.0
 =============
 
