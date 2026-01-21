@@ -10,6 +10,11 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 8.1.0
+=============
+
+*   [BUGFIX] Removed ModifyElementInformationHook patch applied from v7.2
+
 Version 8.0.3
 =============
 
@@ -39,6 +44,11 @@ Version 7.1.2
 *   [BUGFIX] Correct use statement to QueryGenerator
 *   [TASK] Update test environment
 *   [DOCS] Switch to new rendering
+
+Version 7.2.0
+=============
+
+*   [BUGFIX] Remove ModifyElementInformationHook as it is native in TYPO3 v12
 
 Version 7.1.1
 =============
