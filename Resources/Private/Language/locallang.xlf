@@ -1,38 +1,38 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
-		<header/>
-		<body>
-			<trans-unit id="indexqueueworker_title" xml:space="preserve" approved="yes">
-				<source>Index Queue Worker</source>
-			</trans-unit>
-			<trans-unit id="indexqueueworker_description" xml:space="preserve" approved="yes">
-				<source>Processes the items in the Index Queue and sends them to Solr.</source>
-			</trans-unit>
-			<trans-unit id="indexqueueworker_field_documentsToIndexLimit" xml:space="preserve" approved="yes">
-				<source>Number of documents to index</source>
-			</trans-unit>
-			<trans-unit id="indexqueueworker_field_maxSitesPerRun" xml:space="preserve" approved="yes">
-				<source>Max sites per run</source>
-			</trans-unit>
-			<trans-unit id="executeQueryTask.title" xml:space="preserve" approved="yes">
-				<source>Execute SQL Query</source>
-			</trans-unit>
-			<trans-unit id="executeQueryTask.description" xml:space="preserve" approved="yes">
-				<source>With this task you can write your own SQL-Statement which will be executed with each scheduler run</source>
-			</trans-unit>
-			<trans-unit id="executeQueryTask.field.sqlQuery" xml:space="preserve" approved="yes">
-				<source>SQL Query</source>
-			</trans-unit>
-			<trans-unit id="mod.solr.solrFeaturesOverview" xml:space="preserve" approved="yes">
-				<source>Module: Solr Overview</source>
-			</trans-unit>
-			<trans-unit id="mod.solr.memoryUsageSchedulerTask" xml:space="preserve" approved="yes">
-				<source>Current Memory Usage of running jwtools2 Solr Scheduler Task</source>
-			</trans-unit>
-			<trans-unit id="mod.solr.configuredRootPages" xml:space="preserve" approved="yes">
-				<source>Root Pages with Solr configuration</source>
-			</trans-unit>
-		</body>
-	</file>
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:jwtools2/Resources/Private/Language/locallang.xlf" date="2018-01-09T14:24:45Z" product-name="jwtools2">
+    <header/>
+    <body>
+      <trans-unit id="indexqueueworker_title" xml:space="preserve" approved="yes">
+        <source>Index Queue Worker</source>
+      </trans-unit>
+      <trans-unit id="indexqueueworker_description" xml:space="preserve" approved="yes">
+        <source>Processes the items in the Index Queue and sends them to Solr.</source>
+      </trans-unit>
+      <trans-unit id="indexqueueworker_field_documentsToIndexLimit" xml:space="preserve" approved="yes">
+        <source>Number of documents to index</source>
+      </trans-unit>
+      <trans-unit id="indexqueueworker_field_maxSitesPerRun" xml:space="preserve" approved="yes">
+        <source>Max sites per run</source>
+      </trans-unit>
+      <trans-unit id="executeQueryTask.title" xml:space="preserve" approved="yes">
+        <source>Execute SQL Query</source>
+      </trans-unit>
+      <trans-unit id="executeQueryTask.description" xml:space="preserve" approved="yes">
+        <source>With this task you can write your own SQL-Statement which will be executed with each scheduler run</source>
+      </trans-unit>
+      <trans-unit id="executeQueryTask.field.sqlQuery" xml:space="preserve" approved="yes">
+        <source>SQL Query</source>
+      </trans-unit>
+      <trans-unit id="mod.solr.solrFeaturesOverview" xml:space="preserve" approved="yes">
+        <source>Module: Solr Overview</source>
+      </trans-unit>
+      <trans-unit id="mod.solr.memoryUsageSchedulerTask" xml:space="preserve" approved="yes">
+        <source>Current Memory Usage of running jwtools2 Solr Scheduler Task</source>
+      </trans-unit>
+      <trans-unit id="mod.solr.configuredRootPages" xml:space="preserve" approved="yes">
+        <source>Root Pages with Solr configuration</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>
