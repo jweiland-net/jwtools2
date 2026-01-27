@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xliff version="1.0">
-  <file source-language="en" target-language="nl" datatype="plaintext" original="messages" date="2021-05-31T14:24:45Z" product-name="jwtools2">
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf" date="2021-05-31T14:24:45Z" product-name="jwtools2" target-language="nl">
     <header/>
     <body>
       <trans-unit id="statusDeleteTitle">
@@ -16,8 +16,12 @@
         <target state="needs-translation">Info about non selectable files</target>
       </trans-unit>
       <trans-unit id="fileBrowser.flashMessage.requiredColumns.description">
-        <source>For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files cannot currently be linked to content elements or other records. Please complete these mandatory fields first.</source>
-        <target state="needs-translation">For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files cannot currently be linked to content elements or other records. Please complete these mandatory fields first.</target>
+        <source>For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files
+          cannot currently be linked to content elements or other records. Please complete these mandatory fields first.
+        </source>
+        <target state="needs-translation">For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files
+          cannot currently be linked to content elements or other records. Please complete these mandatory fields first.
+        </target>
       </trans-unit>
     </body>
   </file>
