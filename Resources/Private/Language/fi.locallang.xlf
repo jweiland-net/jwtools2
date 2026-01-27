@@ -1,38 +1,38 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xliff version="1.0">
-  <file source-language="en" target-language="fi" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:jwtools2/Resources/Private/Language/locallang.xlf" date="2018-01-09T14:24:45Z" product-name="jwtools2" target-language="fi">
     <header/>
     <body>
       <trans-unit id="indexqueueworker_title" xml:space="preserve">
-				<source>Index Queue Worker</source>
-			<target state="needs-translation">Index Queue Worker</target></trans-unit>
+        <source>Index Queue Worker</source>
+      <target state="needs-translation">Index Queue Worker</target></trans-unit>
       <trans-unit id="indexqueueworker_description" xml:space="preserve">
-				<source>Processes the items in the Index Queue and sends them to Solr.</source>
-			<target state="needs-translation">Processes the items in the Index Queue and sends them to Solr.</target></trans-unit>
+        <source>Processes the items in the Index Queue and sends them to Solr.</source>
+      <target state="needs-translation">Processes the items in the Index Queue and sends them to Solr.</target></trans-unit>
       <trans-unit id="indexqueueworker_field_documentsToIndexLimit" xml:space="preserve">
-				<source>Number of documents to index</source>
-			<target state="needs-translation">Number of documents to index</target></trans-unit>
+        <source>Number of documents to index</source>
+      <target state="needs-translation">Number of documents to index</target></trans-unit>
       <trans-unit id="indexqueueworker_field_maxSitesPerRun" xml:space="preserve">
-				<source>Max sites per run</source>
-			<target state="needs-translation">Max sites per run</target></trans-unit>
+        <source>Max sites per run</source>
+      <target state="needs-translation">Max sites per run</target></trans-unit>
       <trans-unit id="executeQueryTask.title" xml:space="preserve">
-				<source>Execute SQL Query</source>
-			<target state="needs-translation">Execute SQL Query</target></trans-unit>
+        <source>Execute SQL Query</source>
+      <target state="needs-translation">Execute SQL Query</target></trans-unit>
       <trans-unit id="executeQueryTask.description" xml:space="preserve">
-				<source>With this task you can write your own SQL-Statement which will be executed with each scheduler run</source>
-			<target state="needs-translation">With this task you can write your own SQL-Statement which will be executed with each scheduler run</target></trans-unit>
+        <source>With this task you can write your own SQL-Statement which will be executed with each scheduler run</source>
+      <target state="needs-translation">With this task you can write your own SQL-Statement which will be executed with each scheduler run</target></trans-unit>
       <trans-unit id="executeQueryTask.field.sqlQuery" xml:space="preserve">
-				<source>SQL Query</source>
-			<target state="needs-translation">SQL Query</target></trans-unit>
+        <source>SQL Query</source>
+      <target state="needs-translation">SQL Query</target></trans-unit>
       <trans-unit id="mod.solr.solrFeaturesOverview" xml:space="preserve">
-				<source>Module: Solr Overview</source>
-			<target state="needs-translation">Module: Solr Overview</target></trans-unit>
+        <source>Module: Solr Overview</source>
+      <target state="needs-translation">Module: Solr Overview</target></trans-unit>
       <trans-unit id="mod.solr.memoryUsageSchedulerTask" xml:space="preserve">
-				<source>Current Memory Usage of running jwtools2 Solr Scheduler Task</source>
-			<target state="needs-translation">Current Memory Usage of running jwtools2 Solr Scheduler Task</target></trans-unit>
+        <source>Current Memory Usage of running jwtools2 Solr Scheduler Task</source>
+      <target state="needs-translation">Current Memory Usage of running jwtools2 Solr Scheduler Task</target></trans-unit>
       <trans-unit id="mod.solr.configuredRootPages" xml:space="preserve">
-				<source>Root Pages with Solr configuration</source>
-			<target state="needs-translation">Root Pages with Solr configuration</target></trans-unit>
+        <source>Root Pages with Solr configuration</source>
+      <target state="needs-translation">Root Pages with Solr configuration</target></trans-unit>
     </body>
   </file>
 </xliff>
