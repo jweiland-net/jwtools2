@@ -10,6 +10,11 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 7.2.1
+=============
+
+*   [BUGFIX] Move QueryGenerator to Database sub-namespace
+
 Version 7.2.0
 =============
 
