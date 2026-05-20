@@ -55,8 +55,8 @@ final readonly class AddMandatoryControlForFileReferencesEventListener
                     'requiredColumns',
                     '<button type="button" class="btn btn-default" title="' . $this->getMandatoryMessage($requiredColumns) . '">
                         ' . $this->iconFactory->getIcon('status-dialog-error', IconSize::SMALL)->render() . '
-                    </button>
-                ');
+                    </button>',
+                );
                 return;
             }
         }

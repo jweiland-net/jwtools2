@@ -40,7 +40,7 @@ final readonly class GalleryDataProcessor implements DataProcessorInterface
         $filesProcessedDataKey = (string)$cObj->stdWrapValue(
             'filesProcessedDataKey',
             $processorConfiguration,
-            'files'
+            'files',
         );
 
         if (isset($processedData[$filesProcessedDataKey]) && is_array($processedData[$filesProcessedDataKey])) {
