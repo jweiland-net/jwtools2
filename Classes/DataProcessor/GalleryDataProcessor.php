@@ -75,6 +75,11 @@ final readonly class GalleryDataProcessor implements DataProcessorInterface
 
     private function isValidFileObject(FileReference $fileObject, array $requiredColumns): bool
     {
+        // Only check image files here
+        if ($fileObject->getType() !== 2) {
+            return true;
+        }
+
         foreach ($requiredColumns as $requiredColumn) {
             if (!$fileObject->hasProperty($requiredColumn)) {
                 return false;

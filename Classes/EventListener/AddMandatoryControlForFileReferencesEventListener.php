@@ -35,13 +35,19 @@ final readonly class AddMandatoryControlForFileReferencesEventListener
 
     public function __invoke(ModifyFileReferenceControlsEvent $event): void
     {
+        $record = $event->getRecord();
         $requiredColumns = $this->getRequiredColumns();
         if ($requiredColumns === []) {
             return;
         }
 
+        // Only check image files here
+        if ((int)($record['type'] ?? 0) !== 2) {
+            return;
+        }
+
         foreach ($requiredColumns as $requiredColumn) {
-            $value = $this->data['databaseRow']['uid_local'][0][$requiredColumn] ?? $this->data[$requiredColumn] ?? '';
+            $value = $record['uid_local'][0][$requiredColumn] ?? $record[$requiredColumn] ?? '';
             $trimmedValue = is_string($value) ? trim($value) : $value;
 
             if ($trimmedValue === null || $trimmedValue === '') {
