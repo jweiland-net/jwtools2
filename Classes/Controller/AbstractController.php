@@ -15,7 +15,6 @@ use JWeiland\Jwtools2\Traits\InjectIconFactoryTrait;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
@@ -29,6 +28,7 @@ abstract class AbstractController extends ActionController
 
     public function __construct(
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly ExtensionConfiguration $extensionConfiguration,
     ) {}
 
     /**
@@ -44,7 +44,7 @@ abstract class AbstractController extends ActionController
 
     protected function getExtensionConfiguration(): array
     {
-        $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jwtools2');
+        $extensionConfiguration = $this->extensionConfiguration->get('jwtools2');
 
         return is_array($extensionConfiguration) ? $extensionConfiguration : [];
     }
