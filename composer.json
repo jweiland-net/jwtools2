@@ -1,9 +1,9 @@
 {
 	"name": "jweiland/jwtools2",
 	"description": "Various tools/hooks to extend/modify TYPO3",
-	"version": "9.0.0",
 	"license": "GPL-2.0-or-later",
 	"type": "typo3-cms-extension",
+	"version": "9.0.0",
 	"keywords": [
 		"typo3",
 		"TYPO3 CMS",
@@ -36,13 +36,9 @@
 	},
 	"require-dev": {
 		"ergebnis/composer-normalize": "^2.44",
-		"friendsofphp/php-cs-fixer": "^3.14",
-		"phpstan/phpdoc-parser": "^1.33",
-		"phpstan/phpstan": "^1.12",
-		"phpunit/phpunit": "^11.2.5",
-		"roave/security-advisories": "dev-latest",
+		"ssch/typo3-rector": "^3.6",
 		"typo3/coding-standards": "^0.8",
-		"typo3/testing-framework": "^10.0"
+		"typo3/testing-framework": "^9.2.0"
 	},
 	"replace": {
 		"typo3-ter/jwtools2": "self.version"
