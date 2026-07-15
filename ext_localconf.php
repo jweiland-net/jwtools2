@@ -12,7 +12,6 @@ if (!defined('TYPO3')) {
 }
 
 use JWeiland\Jwtools2\Fal\Filter\FileNameFilter;
-use JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook;
 use JWeiland\Jwtools2\Routing\Aspect\PersistedTableMapper;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;

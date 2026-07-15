@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  *
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
-
 return [
     'ctrl' => [
         'title' => 'Cache Expressions',
@@ -61,8 +62,8 @@ return [
         ],
         'is_exception' => [
             'label' => 'Throw exception?',
-            'description' => 'Deactivated: just protocol the match. ' .
-                'Activated: protocol the match and throws exception to prevent inserting invalid cache entries. No further caches will be analyzed.',
+            'description' => 'Deactivated: just protocol the match. '
+                . 'Activated: protocol the match and throws exception to prevent inserting invalid cache entries. No further caches will be analyzed.',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',

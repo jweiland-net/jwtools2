@@ -88,7 +88,7 @@ class AjaxSolrController
                             $site,
                             $indexingConfigurationName,
                         );
-                } catch (ConnectionException|Exception $e) {
+                } catch (ConnectionException|Exception) {
                 }
             }
 
@@ -140,12 +140,11 @@ class AjaxSolrController
     protected function getRootPageUidFromRequest(ServerRequest $request): int
     {
         $moduleData = $request->getParsedBody();
-        $rootPageUid = 0;
         if (array_key_exists('rootPageUid', $moduleData)) {
-            $rootPageUid = (int)$moduleData['rootPageUid'];
+            return (int)$moduleData['rootPageUid'];
         }
 
-        return $rootPageUid;
+        return 0;
     }
 
     protected function getSolrSiteFromRequest(ServerRequest $request): ?Site

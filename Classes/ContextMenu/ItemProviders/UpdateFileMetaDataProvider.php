@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\ContextMenu\ItemProviders;
 
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileType;
 use TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileProvider;
 
 /**
@@ -59,7 +60,7 @@ class UpdateFileMetaDataProvider extends FileProvider
     {
         if ($this->record instanceof File) {
             // Do not use $this->record->isImage() as this is also true for SVG and PDF
-            return $this->record->getType() === $this->record::FILETYPE_IMAGE;
+            return $this->record->getType() === FileType::IMAGE->value;
         }
 
         return false;
@@ -73,10 +74,10 @@ class UpdateFileMetaDataProvider extends FileProvider
         return [
             'data-callback-module' => '@jweiland/jwtools2/context-menu-actions',
             'data-status-title' => $this->languageService->sL(
-                'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteTitle',
+                'jwtools2.mod:statusDeleteTitle',
             ),
             'data-status-description' => $this->languageService->sL(
-                'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:statusDeleteDescription',
+                'jwtools2.mod:statusDeleteDescription',
             ),
         ];
     }

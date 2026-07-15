@@ -31,15 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SysFileController
 {
-    protected ResourceFactory $resourceFactory;
-
-    protected GraphicalFunctions $graphicalFunctions;
-
-    public function __construct(ResourceFactory $resourceFactory, GraphicalFunctions $graphicalFunctions)
-    {
-        $this->resourceFactory = $resourceFactory;
-        $this->graphicalFunctions = $graphicalFunctions;
-    }
+    public function __construct(protected ResourceFactory $resourceFactory, protected GraphicalFunctions $graphicalFunctions) {}
 
     public function updateFileMetadataAction(ServerRequestInterface $request): JsonResponse
     {

@@ -29,14 +29,14 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /**
  * Reduce category tree to categories of PIDs within current page tree
  */
-final class IsFileSelectableEventListener
+final readonly class IsFileSelectableEventListener
 {
-    public function __construct(protected readonly ExtensionConfiguration $extensionConfiguration) {}
+    public function __construct(private ExtensionConfiguration $extensionConfiguration, private FlashMessageService $flashMessageService, private ConnectionPool $connectionPool) {}
 
     public function __invoke(IsFileSelectableEvent $event): void
     {
         if ($requiredColumns = $this->getRequiredColumnsFromExtensionConfiguration()) {
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            $flashMessageService = $this->flashMessageService;
             $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $message = $this->getFlashMessageDescription($requiredColumns);
 
@@ -73,7 +73,7 @@ final class IsFileSelectableEventListener
         }
     }
 
-    protected function addFlashMessage(FlashMessageQueue $flashMessageQueue, string $message): void
+    private function addFlashMessage(FlashMessageQueue $flashMessageQueue, string $message): void
     {
         $flashMessageQueue->addMessage(
             GeneralUtility::makeInstance(
@@ -87,7 +87,7 @@ final class IsFileSelectableEventListener
         );
     }
 
-    protected function getFlashMessageDescription(array $requiredColumns): string
+    private function getFlashMessageDescription(array $requiredColumns): string
     {
         return LocalizationUtility::translate(
             'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:fileBrowser.flashMessage.requiredColumns.description',
@@ -103,7 +103,7 @@ final class IsFileSelectableEventListener
         );
     }
 
-    protected function getTranslatedColumnNames(array $requiredColumns): array
+    private function getTranslatedColumnNames(array $requiredColumns): array
     {
         if (!$this->getLanguageService() instanceof LanguageService) {
             return $requiredColumns;
@@ -114,13 +114,18 @@ final class IsFileSelectableEventListener
             if ($label === '' || $label === null) {
                 $label = BackendUtility::getItemLabel('sys_file_metadata', $requiredColumn);
             }
-
-            if ($label === '' || $label === null) {
+            if ($label === '') {
+                continue;
+            }
+            if ($label === null) {
                 continue;
             }
 
             $translatedLabel = $this->getLanguageService()->sL($label);
-            if ($translatedLabel === '' || $translatedLabel === null) {
+            if ($translatedLabel === '') {
+                continue;
+            }
+            if ($translatedLabel === null) {
                 continue;
             }
 
@@ -130,7 +135,7 @@ final class IsFileSelectableEventListener
         return $requiredColumns;
     }
 
-    protected function getRequiredColumnsForFileMetaData(): array
+    private function getRequiredColumnsForFileMetaData(): array
     {
         // Cache result, is this method will be called from within a loop
         static $requiredColumns = null;
@@ -149,7 +154,7 @@ final class IsFileSelectableEventListener
         return $requiredColumns;
     }
 
-    protected function getRequiredColumnsFromExtensionConfiguration(): array
+    private function getRequiredColumnsFromExtensionConfiguration(): array
     {
         static $requiredColumns = null;
 
@@ -160,17 +165,17 @@ final class IsFileSelectableEventListener
                     $this->extensionConfiguration->get('jwtools2', 'typo3RequiredColumnsForFiles'),
                     true,
                 );
-            } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException $exception) {
+            } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException) {
             }
         }
 
         return $requiredColumns;
     }
 
-    protected function isValidColumn(string $column, string $table = 'sys_file'): bool
+    private function isValidColumn(string $column, string $table = 'sys_file'): bool
     {
         $columnExists = false;
-        $connection = $this->getConnectionPool()->getConnectionForTable($table);
+        $connection = $this->connectionPool->getConnectionForTable($table);
         $schemaManager = $connection->createSchemaManager();
         if (
             $schemaManager->tablesExist([$table])
@@ -184,7 +189,7 @@ final class IsFileSelectableEventListener
         return $columnExists;
     }
 
-    protected function checkMessageExists(FlashMessageQueue $flashMessageQueue, string $message): bool
+    private function checkMessageExists(FlashMessageQueue $flashMessageQueue, string $message): bool
     {
         $messageExists = false;
         foreach ($flashMessageQueue as $flashMessage) {
@@ -197,13 +202,8 @@ final class IsFileSelectableEventListener
         return $messageExists;
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    protected function getConnectionPool(): ConnectionPool
-    {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }

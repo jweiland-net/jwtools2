@@ -39,12 +39,7 @@ class ReduceCategoryTreeToPageTree
 
     protected string $listOfCategoryUids = '';
 
-    protected ExtensionConfiguration $extensionConfiguration;
-
-    public function __construct(ExtensionConfiguration $extensionConfiguration)
-    {
-        $this->extensionConfiguration = $extensionConfiguration;
-    }
+    public function __construct(protected ExtensionConfiguration $extensionConfiguration, private readonly ConnectionPool $connectionPool) {}
 
     public function __invoke(ModifyTreeDataEvent $event): void
     {
@@ -57,7 +52,7 @@ class ReduceCategoryTreeToPageTree
             ) {
                 $this->removePageTreeForeignCategories($event->getTreeData());
             }
-        } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException $exception) {
+        } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException) {
         }
     }
 
@@ -166,7 +161,7 @@ class ReduceCategoryTreeToPageTree
 
         return GeneralUtility::trimExplode(
             ',',
-            (string)$queryGenerator->getTreeList(
+            $queryGenerator->getTreeList(
                 $this->getRootPageUid($pageUid),
                 10,
                 0,
@@ -204,6 +199,6 @@ class ReduceCategoryTreeToPageTree
 
     protected function getConnectionPool(): ConnectionPool
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
+        return $this->connectionPool;
     }
 }

@@ -98,7 +98,7 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_jwtools2_stored_routes');
         $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
 
-        $storedRoute = $queryBuilder
+        return $queryBuilder
             ->select('*')
             ->from('tx_jwtools2_stored_routes')
             ->where(
@@ -125,8 +125,6 @@ class PersistedTableMapper implements StaticMappableAspectInterface, SiteLanguag
             )
             ->executeQuery()
             ->fetchAllAssociative();
-
-        return $storedRoute ?: [];
     }
 
     protected function setStoredRoute(string $source = '', string $target = ''): void

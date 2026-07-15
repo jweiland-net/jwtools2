@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Jwtools2\Backend;
 
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -27,6 +28,7 @@ class SolrDocHeader
         private readonly ModuleTemplate $view,
         private readonly IconFactory $iconFactory,
         private readonly UriBuilder $uriBuilder,
+        private readonly ComponentFactory $componentFactory,
     ) {}
 
     public function renderDocHeader(): void
@@ -43,15 +45,15 @@ class SolrDocHeader
             ->getDocHeaderComponent()
             ->getButtonBar();
 
-        $overviewButton = $buttonBar
-            ->makeLinkButton()
+        $overviewButton = $this->componentFactory
+            ->createLinkButton()
             ->setHref($this->uriBuilder->reset()->uriFor('list', [], 'Solr'))
             ->setIcon($this->iconFactory->getIcon('actions-document-new', IconSize::SMALL))
             ->setTitle('Overview')
             ->setShowLabelText(true);
 
-        $clearFullIndexButton = $buttonBar
-            ->makeLinkButton()
+        $clearFullIndexButton = $this->componentFactory
+            ->createLinkButton()
             ->setHref($this->uriBuilder->reset()->uriFor('showClearFullIndexForm', [], 'Solr'))
             ->setIcon($this->iconFactory->getIcon('actions-document-new', IconSize::SMALL))
             ->setTitle('Clear full index...')
@@ -68,8 +70,8 @@ class SolrDocHeader
             ->getDocHeaderComponent()
             ->getButtonBar();
 
-        $shortcutButton = $buttonBar
-            ->makeShortcutButton()
+        $shortcutButton = $this->componentFactory
+            ->createShortcutButton()
             ->setRouteIdentifier($this->request->getPluginName())
             ->setDisplayName('Jwtools2');
 
@@ -86,13 +88,12 @@ class SolrDocHeader
             ->reset()
             ->uriFor('overview', [], 'Tools');
 
-        $closeButton = $buttonBar
-            ->makeLinkButton()
+        $closeButton = $this->componentFactory
+            ->createLinkButton()
             ->setHref($uri)
             ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL))
             ->setTitle('Close');
 
         $buttonBar->addButton($closeButton);
     }
-
 }

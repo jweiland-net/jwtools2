@@ -51,7 +51,7 @@ class SplitFileRefViewHelper extends AbstractViewHelper
 
         if (!$file instanceof FileInterface && !$file instanceof AbstractFileFolder) {
             throw new \UnexpectedValueException(
-                'Supplied file object type ' . get_class($file) . ' must be FileInterface or AbstractFileFolder.',
+                'Supplied file object type ' . $file::class . ' must be FileInterface or AbstractFileFolder.',
                 1563891998,
             );
         }

@@ -56,12 +56,12 @@ class ExecuteQueryTaskTest extends UnitTestCase
     {
         $this->subject->setSqlQuery('UPDATE what_ever;');
 
-        $statementMock = $this->getMockBuilder(Statement::class)
+        $this->getMockBuilder(Statement::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $connectionMock = $this->createMock(Connection::class);
-        $connectionMock->expects(self::once())
+        $connectionMock->expects($this->once())
             ->method('executeStatement')
             ->with(
                 self::equalTo('UPDATE what_ever;'),
@@ -70,7 +70,7 @@ class ExecuteQueryTaskTest extends UnitTestCase
             ->willReturn(1);
 
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
-        $connectionPoolMock->expects(self::once())
+        $connectionPoolMock->expects($this->once())
             ->method('getConnectionByName')
             ->with('Default')
             ->willReturn($connectionMock);
@@ -87,12 +87,12 @@ class ExecuteQueryTaskTest extends UnitTestCase
     {
         $this->subject->setSqlQuery("UPDATE what_ever;\nUPDATE that;\nUPDATE else;");
 
-        $statementMock = $this->getMockBuilder(Statement::class)
+        $this->getMockBuilder(Statement::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $connectionMock = $this->createMock(Connection::class);
-        $connectionMock->expects(self::exactly(3))
+        $connectionMock->expects($this->exactly(3))
             ->method('executeStatement')
             ->willReturnOnConsecutiveCalls(
                 1, // Return value for the first call (success)
@@ -101,7 +101,7 @@ class ExecuteQueryTaskTest extends UnitTestCase
             );
 
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
-        $connectionPoolMock->expects(self::once())
+        $connectionPoolMock->expects($this->once())
             ->method('getConnectionByName')
             ->with('Default')
             ->willReturn($connectionMock);

@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SolrService
 {
+    public function __construct(private readonly ConnectionPool $connectionPool) {}
     /**
      * Instead of the Solr Statistic, this Statistic will return
      * a statistic over all sites
@@ -146,6 +147,6 @@ class SolrService
 
     protected function getConnectionPool(): ConnectionPool
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
+        return $this->connectionPool;
     }
 }

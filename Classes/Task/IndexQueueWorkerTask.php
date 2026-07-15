@@ -67,7 +67,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
                 $indexService = GeneralUtility::makeInstance(IndexService::class, $availableSite);
                 $indexService->indexItems($this->documentsToIndexLimit);
                 $counter++;
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // jump to next site
                 continue;
             }

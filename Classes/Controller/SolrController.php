@@ -18,6 +18,7 @@ use ApacheSolrForTypo3\Solr\IndexQueue\Queue;
 use ApacheSolrForTypo3\Solr\System\Configuration\TypoScriptConfiguration;
 use JWeiland\Jwtools2\Backend\SolrDocHeader;
 use JWeiland\Jwtools2\Service\SolrService;
+use JWeiland\Jwtools2\Task\IndexQueueWorkerTask;
 use JWeiland\Jwtools2\Traits\InjectPageRendererTrait;
 use JWeiland\Jwtools2\Traits\InjectRegistryTrait;
 use JWeiland\Jwtools2\Traits\InjectSchedulerRepositoryTrait;
@@ -37,6 +38,10 @@ class SolrController extends AbstractController
     use InjectSchedulerRepositoryTrait;
     use InjectRegistryTrait;
     use InjectPageRendererTrait;
+    public function __construct(protected readonly \TYPO3\CMS\Backend\Template\ModuleTemplateFactory $moduleTemplateFactory, protected readonly \TYPO3\CMS\Core\Configuration\ExtensionConfiguration $extensionConfiguration, private readonly ConnectionPool $connectionPool)
+    {
+        parent::__construct($moduleTemplateFactory, $extensionConfiguration);
+    }
 
     public function initializeView($view): void
     {
@@ -172,13 +177,12 @@ class SolrController extends AbstractController
                 'Index cleared',
             );
             return $this->redirect('list');
-        } else {
-            $this->addFlashMessage(
-                "We haven't found a Site with RootPage UID: " . $rootPageUid,
-                'Site not found',
-                ContextualFeedbackSeverity::WARNING,
-            );
         }
+        $this->addFlashMessage(
+            "We haven't found a Site with RootPage UID: " . $rootPageUid,
+            'Site not found',
+            ContextualFeedbackSeverity::WARNING,
+        );
 
         return $this->moduleTemplate->renderResponse('Solr/ClearIndex');
     }
@@ -206,7 +210,7 @@ class SolrController extends AbstractController
 
     protected function getIndexQueueItem(int $rootPageUid, string $configurationName, int $recordUid): ?Item
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $connectionPool = $this->connectionPool;
         $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_solr_indexqueue_item');
         $indexQueueItem = $queryBuilder
             ->select('*')
@@ -232,7 +236,7 @@ class SolrController extends AbstractController
             return null;
         }
 
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $connectionPool = $this->connectionPool;
         $queryBuilder = $connectionPool->getQueryBuilderForTable($indexQueueItem['item_type']);
         $tableRecord = $queryBuilder
             ->select('*')
@@ -316,7 +320,7 @@ class SolrController extends AbstractController
 
     protected function checkSchedulerTaskConfig(): void
     {
-        if (!$this->schedulerRepository->findSolrSchedulerTask()) {
+        if (!$this->schedulerRepository->findSolrSchedulerTask() instanceof IndexQueueWorkerTask) {
             $this->addFlashMessage(
                 'No or wrong scheduler task UID configured in ExtensionManager Configuration of jwtools2',
                 'Missing or wrong configuration',

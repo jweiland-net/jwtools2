@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\ViewHelpers\Solr;
 
 use ApacheSolrForTypo3\Solr\Domain\Site\Site;
+use JWeiland\Jwtools2\Task\IndexQueueWorkerTask;
 use JWeiland\Jwtools2\Traits\InjectRegistryTrait;
 use JWeiland\Jwtools2\Traits\InjectSchedulerRepositoryTrait;
 use JWeiland\Jwtools2\Traits\InjectSolrRepositoryTrait;
@@ -50,7 +51,7 @@ class NextRunViewHelper extends AbstractViewHelper
 
         // getExecution() returns a incomplete class it the task was never executed so we check for it.
         if (
-            !$task
+            !$task instanceof IndexQueueWorkerTask
             || $task->getExecution() instanceof \__PHP_Incomplete_Class
             || empty($task->getExecution()->getInterval())
         ) {
@@ -64,7 +65,7 @@ class NextRunViewHelper extends AbstractViewHelper
             if (!$currentSite instanceof Site) {
                 return 0;
             }
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             return 0;
         }
 

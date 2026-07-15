@@ -42,7 +42,7 @@ class SchedulerRepository
             if (!$task instanceof IndexQueueWorkerTask) {
                 return null;
             }
-        } catch (\OutOfBoundsException $outOfBoundsException) {
+        } catch (\OutOfBoundsException) {
             return null;
         }
 
@@ -53,13 +53,13 @@ class SchedulerRepository
     {
         try {
             return (string)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jwtools2', $path);
-        } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException $exception) {
+        } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException) {
             return '';
         }
     }
 
     protected function getConnectionPool(): ConnectionPool
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
+        return $this->connectionPool;
     }
 }

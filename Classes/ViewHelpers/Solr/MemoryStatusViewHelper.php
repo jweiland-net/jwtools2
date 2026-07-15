@@ -20,15 +20,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class MemoryStatusViewHelper extends AbstractViewHelper
 {
-    /**
-     * @var Registry
-     */
-    protected $registry;
-
-    public function __construct(Registry $registry)
-    {
-        $this->registry = $registry;
-    }
+    public function __construct(protected Registry $registry) {}
 
     /**
      * Show percentage memory usage

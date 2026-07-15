@@ -20,9 +20,9 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\BeforeLoadedUserTsConfigEvent;
 #[AsEventListener(
     identifier: 'jwtools2/beforeLoadedUserTsConfig',
 )]
-final class BeforeLoadedUserTsConfigEventListener
+final readonly class BeforeLoadedUserTsConfigEventListener
 {
-    public function __construct(private readonly ExtensionConfiguration $extensionConfiguration) {}
+    public function __construct(private ExtensionConfiguration $extensionConfiguration) {}
 
     public function __invoke(BeforeLoadedUserTsConfigEvent $event): void
     {
