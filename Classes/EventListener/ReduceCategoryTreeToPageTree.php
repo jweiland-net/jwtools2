@@ -50,8 +50,8 @@ class ReduceCategoryTreeToPageTree
     {
         try {
             if (
-                (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend())
-                && $this->extensionConfiguration->get('jwtools2', 'reduceCategoriesToPageTree') === '1'
+                $this->extensionConfiguration->get('jwtools2', 'reduceCategoriesToPageTree') === '1'
+                && (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend())
                 && !$this->getBackendUserAuthentication()->isAdmin()
                 && $event->getProvider()->getTableName() === $this->categoryTableName
             ) {
