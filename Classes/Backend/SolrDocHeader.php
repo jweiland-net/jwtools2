@@ -14,7 +14,6 @@ namespace JWeiland\Jwtools2\Backend;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
@@ -96,11 +95,4 @@ class SolrDocHeader
         $buttonBar->addButton($closeButton);
     }
 
-    /**
-     * Get Link to create new configuration records of defined type
-     */
-    protected function getLinkForUrl(string $url): string
-    {
-        return 'window.location.href=' . GeneralUtility::quoteJSvalue($url) . '; return false;';
-    }
 }

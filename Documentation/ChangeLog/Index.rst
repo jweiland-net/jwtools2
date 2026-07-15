@@ -10,6 +10,16 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 9.0.0
+=============
+
+*   [TASK] Compatibility for TYPO3 14.4 LTS
+*   [TASK] Replace removed ExtensionManagementUtility::addUserTSConfig() with BeforeLoadedUserTsConfigEvent listener
+*   [TASK] Remove SC_OPTIONS CachingFrameworkLoggerHook registration (hook removed from TYPO3 core long ago)
+*   [BUGFIX] Remove dead getLinkForUrl() method in SolrDocHeader using removed GeneralUtility::quoteJSvalue()
+*   [BUGFIX] Fix undefined variable $renderingContext in SplitFileRefViewHelper (changed to $this->renderingContext)
+*   [REFACTOR] Inject ExtensionConfiguration via constructor in AbstractController instead of GeneralUtility::makeInstance
+
 Version 8.1.1
 =============
 

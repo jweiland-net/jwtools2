@@ -31,16 +31,6 @@ services:
       command: 'jwtools2:statusreport'
       schedulable: false
 
-  # Called by makeInstance in start() of ContentObjectRenderer
-  JWeiland\Jwtools2\Hooks\InitializeStdWrap:
-    public: true
-
-  JWeiland\Jwtools2\LinkHandler\FileLinkHandler:
-    public: true
-
-  JWeiland\Jwtools2\LinkHandler\FolderLinkHandler:
-    public: true
-
   # Event Listeners
   JWeiland\Jwtools2\EventListener\ReduceCategoryTreeToPageTree:
     tags:

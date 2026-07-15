@@ -40,7 +40,7 @@ class SplitFileRefViewHelper extends AbstractViewHelper
 
     public function render(): string
     {
-        $templateVariableContainer = $renderingContext->getVariableProvider();
+        $templateVariableContainer = $this->renderingContext->getVariableProvider();
         $file = $this->arguments['file'];
 
         // get Resource Object (non ExtBase version)
