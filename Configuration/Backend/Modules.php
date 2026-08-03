@@ -9,6 +9,7 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
+use JWeiland\Jwtools2\Controller\FileMetaDataController;
 use JWeiland\Jwtools2\Controller\SolrController;
 use JWeiland\Jwtools2\Controller\ToolsController;
 
@@ -31,6 +32,9 @@ return [
             ],
             SolrController::class => [
                 'list', 'show', 'showIndexQueue', 'indexOneRecord', 'showClearIndexForm', 'clearIndex', 'showClearFullIndexForm',
+            ],
+            FileMetaDataController::class => [
+                'list',
             ],
         ],
     ],
