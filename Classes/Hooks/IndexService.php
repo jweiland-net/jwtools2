@@ -14,13 +14,12 @@ namespace JWeiland\Jwtools2\Hooks;
 use ApacheSolrForTypo3\Solr\IndexQueue\Item;
 use ApacheSolrForTypo3\Solr\Task\IndexQueueWorkerTask;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class IndexService
- */
-class IndexService
+readonly class IndexService
 {
+    public function __construct(private Registry $registry)
+    {}
+
     /**
      * Save current Item ID in sys_registry for debugging
      *
@@ -29,8 +28,7 @@ class IndexService
      */
     public function beforeIndexItem(Item $item, ?IndexQueueWorkerTask $task, string $uniqueId = ''): void
     {
-        $registry = GeneralUtility::makeInstance(Registry::class);
-        $registry->set('jwtools2-solr', 'indexQueueUid', $item->getIndexQueueUid());
-        $registry->set('jwtools2-solr', 'memoryPeakUsage', memory_get_peak_usage(true));
+        $this->registry->set('jwtools2-solr', 'indexQueueUid', $item->getIndexQueueUid());
+        $this->registry->set('jwtools2-solr', 'memoryPeakUsage', memory_get_peak_usage(true));
     }
 }
