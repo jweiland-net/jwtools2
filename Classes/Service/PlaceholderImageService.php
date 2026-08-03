@@ -27,9 +27,9 @@ final class PlaceholderImageService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    private const string FALLBACK_FILE_NAME = 'placeholder_fallback.png';
+    private const FALLBACK_FILE_NAME = 'placeholder_fallback.png';
 
-    private const array PLACEHOLDER_FILE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
+    private const PLACEHOLDER_FILE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
 
     public function __construct(
         private readonly ExtensionConfiguration $extensionConfiguration,

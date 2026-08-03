@@ -29,9 +29,9 @@ use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
  */
 class StatusReportCommand extends Command
 {
-    private const string RETURN_YES = '<info>YES</info>';
+    private const RETURN_YES = '<info>YES</info>';
 
-    private const string RETURN_NO = '<error>NO</error>';
+    private const RETURN_NO = '<error>NO</error>';
 
     private SchedulerTaskRepository $taskRepository;
 

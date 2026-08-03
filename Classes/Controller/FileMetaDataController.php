@@ -28,9 +28,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class FileMetaDataController extends AbstractController
 {
-    private const int ITEMS_PER_PAGE = 50;
+    private const ITEMS_PER_PAGE = 50;
 
-    private const int CANDIDATE_LIMIT = 1000;
+    private const CANDIDATE_LIMIT = 1000;
 
     public function __construct(
         ModuleTemplateFactory $moduleTemplateFactory,

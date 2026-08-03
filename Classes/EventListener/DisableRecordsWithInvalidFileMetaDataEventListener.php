@@ -37,7 +37,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 final readonly class DisableRecordsWithInvalidFileMetaDataEventListener
 {
-    private const string REGISTRY_NAMESPACE = 'jwtools2';
+    private const REGISTRY_NAMESPACE = 'jwtools2';
 
     public function __construct(
         private ExtensionConfiguration $extensionConfiguration,

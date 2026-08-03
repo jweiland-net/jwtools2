@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Resource\FileType;
 
 final readonly class ReplaceInvalidMetaDataImageEventListener
 {
-    private const string PLACEHOLDER_FILE_NAME_PREFIX = 'placeholder_';
+    private const PLACEHOLDER_FILE_NAME_PREFIX = 'placeholder_';
 
     public function __construct(
         private ExtensionConfiguration $extensionConfiguration,
