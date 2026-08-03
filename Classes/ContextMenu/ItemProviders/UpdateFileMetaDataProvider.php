@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Jwtools2\ContextMenu\ItemProviders;
 
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileType;
 use TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileProvider;
 
 /**
@@ -59,7 +60,7 @@ class UpdateFileMetaDataProvider extends FileProvider
     {
         if ($this->record instanceof File) {
             // Do not use $this->record->isImage() as this is also true for SVG and PDF
-            return $this->record->getType() === $this->record::FILETYPE_IMAGE;
+            return $this->record->getType() === FileType::IMAGE->value;
         }
 
         return false;
