@@ -39,12 +39,10 @@ class ReduceCategoryTreeToPageTree
 
     protected string $listOfCategoryUids = '';
 
-    protected ExtensionConfiguration $extensionConfiguration;
-
-    public function __construct(ExtensionConfiguration $extensionConfiguration)
-    {
-        $this->extensionConfiguration = $extensionConfiguration;
-    }
+    public function __construct(
+        protected ExtensionConfiguration $extensionConfiguration,
+        private readonly ConnectionPool $connectionPool,
+    ) {}
 
     public function __invoke(ModifyTreeDataEvent $event): void
     {
@@ -57,7 +55,7 @@ class ReduceCategoryTreeToPageTree
             ) {
                 $this->removePageTreeForeignCategories($event->getTreeData());
             }
-        } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException $exception) {
+        } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException) {
         }
     }
 
@@ -120,7 +118,7 @@ class ReduceCategoryTreeToPageTree
     protected function getListOfAllowedCategoryUids(int $pageUid): string
     {
         if ($this->listOfCategoryUids === '') {
-            $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_category');
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_category');
             $categories = $queryBuilder
                 ->select('uid')
                 ->from('sys_category')
@@ -200,10 +198,5 @@ class ReduceCategoryTreeToPageTree
     protected function getQueryGenerator(): QueryGenerator
     {
         return GeneralUtility::makeInstance(QueryGenerator::class);
-    }
-
-    protected function getConnectionPool(): ConnectionPool
-    {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }
