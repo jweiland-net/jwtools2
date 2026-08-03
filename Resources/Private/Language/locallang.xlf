@@ -1,38 +1,147 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="EXT:jwtools2/Resources/Private/Language/locallang.xlf" date="2018-01-09T14:24:45Z" product-name="jwtools2">
-    <header/>
-    <body>
-      <trans-unit id="indexqueueworker_title" xml:space="preserve" approved="yes">
-        <source>Index Queue Worker</source>
-      </trans-unit>
-      <trans-unit id="indexqueueworker_description" xml:space="preserve" approved="yes">
-        <source>Processes the items in the Index Queue and sends them to Solr.</source>
-      </trans-unit>
-      <trans-unit id="indexqueueworker_field_documentsToIndexLimit" xml:space="preserve" approved="yes">
-        <source>Number of documents to index</source>
-      </trans-unit>
-      <trans-unit id="indexqueueworker_field_maxSitesPerRun" xml:space="preserve" approved="yes">
-        <source>Max sites per run</source>
-      </trans-unit>
-      <trans-unit id="executeQueryTask.title" xml:space="preserve" approved="yes">
-        <source>Execute SQL Query</source>
-      </trans-unit>
-      <trans-unit id="executeQueryTask.description" xml:space="preserve" approved="yes">
-        <source>With this task you can write your own SQL-Statement which will be executed with each scheduler run</source>
-      </trans-unit>
-      <trans-unit id="executeQueryTask.field.sqlQuery" xml:space="preserve" approved="yes">
-        <source>SQL Query</source>
-      </trans-unit>
-      <trans-unit id="mod.solr.solrFeaturesOverview" xml:space="preserve" approved="yes">
-        <source>Module: Solr Overview</source>
-      </trans-unit>
-      <trans-unit id="mod.solr.memoryUsageSchedulerTask" xml:space="preserve" approved="yes">
-        <source>Current Memory Usage of running jwtools2 Solr Scheduler Task</source>
-      </trans-unit>
-      <trans-unit id="mod.solr.configuredRootPages" xml:space="preserve" approved="yes">
-        <source>Root Pages with Solr configuration</source>
-      </trans-unit>
-    </body>
-  </file>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
+		<header/>
+		<body>
+			<trans-unit id="indexqueueworker_title" xml:space="preserve" approved="yes">
+				<source>Index Queue Worker</source>
+			</trans-unit>
+			<trans-unit id="indexqueueworker_description" xml:space="preserve" approved="yes">
+				<source>Processes the items in the Index Queue and sends them to Solr.</source>
+			</trans-unit>
+			<trans-unit id="indexqueueworker_field_documentsToIndexLimit" xml:space="preserve" approved="yes">
+				<source>Number of documents to index</source>
+			</trans-unit>
+			<trans-unit id="indexqueueworker_field_maxSitesPerRun" xml:space="preserve" approved="yes">
+				<source>Max sites per run</source>
+			</trans-unit>
+			<trans-unit id="executeQueryTask.title" xml:space="preserve" approved="yes">
+				<source>Execute SQL Query</source>
+			</trans-unit>
+			<trans-unit id="executeQueryTask.description" xml:space="preserve" approved="yes">
+				<source>With this task you can write your own SQL-Statement which will be executed with each scheduler run</source>
+			</trans-unit>
+			<trans-unit id="executeQueryTask.field.sqlQuery" xml:space="preserve" approved="yes">
+				<source>SQL Query</source>
+			</trans-unit>
+			<trans-unit id="mod.solr.solrFeaturesOverview" xml:space="preserve" approved="yes">
+				<source>Module: Solr Overview</source>
+			</trans-unit>
+			<trans-unit id="mod.solr.memoryUsageSchedulerTask" xml:space="preserve" approved="yes">
+				<source>Current Memory Usage of running jwtools2 Solr Scheduler Task</source>
+			</trans-unit>
+			<trans-unit id="mod.solr.configuredRootPages" xml:space="preserve" approved="yes">
+				<source>Root Pages with Solr configuration</source>
+			</trans-unit>
+
+			<trans-unit id="fileMetaData.title">
+				<source>File metadata overview</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.description">
+				<source>Lists images, their metadata status and where they are referenced (content elements and other extension records).</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.truncatedWarning">
+				<source>This filter combination had to be evaluated in PHP and was capped at the first %s matching images. Narrow the filter (e.g. by storage or extension) for a complete result on very large installations.</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.status">
+				<source>Metadata status</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.status.all">
+				<source>All</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.status.valid">
+				<source>Valid</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.status.partial">
+				<source>Partially filled</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.status.missing">
+				<source>Not filled at all</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.missingColumn">
+				<source>Missing column</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.any">
+				<source>Any</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.referenceScope">
+				<source>Referenced by</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.referenceScope.all">
+				<source>All</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.referenceScope.ttContent">
+				<source>Content elements only</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.referenceScope.other">
+				<source>Other extension records only</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.referenceScope.both">
+				<source>Content elements and other records</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.referenceScope.orphaned">
+				<source>Not referenced anywhere</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.storage">
+				<source>Storage</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.extension">
+				<source>File extension</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.search">
+				<source>Search filename</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.apply">
+				<source>Apply filter</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.resultCount">
+				<source>%s image(s) found</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.table.thumbnail">
+				<source>Preview</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.table.name">
+				<source>File</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.table.status">
+				<source>Status</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.table.missingColumns">
+				<source>Missing columns</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.table.references">
+				<source>Referenced by</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.table.actions">
+				<source>Actions</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.status.valid">
+				<source>Valid</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.status.partial">
+				<source>Partial</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.status.missing">
+				<source>Missing</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.references.none">
+				<source>Not referenced anywhere</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.actions.editMetadata">
+				<source>Edit metadata</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.noResults">
+				<source>No images match the current filter.</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.pagination.previous">
+				<source>Previous</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.pagination.next">
+				<source>Next</source>
+			</trans-unit>
+			<trans-unit id="fileMetaData.pagination.pageOf">
+				<source>Page %s of %s</source>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>
