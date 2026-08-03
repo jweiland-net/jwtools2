@@ -23,6 +23,7 @@ use JWeiland\Jwtools2\Traits\InjectRegistryTrait;
 use JWeiland\Jwtools2\Traits\InjectSchedulerRepositoryTrait;
 use JWeiland\Jwtools2\Traits\InjectSolrRepositoryTrait;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -37,6 +38,13 @@ class SolrController extends AbstractController
     use InjectSchedulerRepositoryTrait;
     use InjectRegistryTrait;
     use InjectPageRendererTrait;
+
+    public function __construct(
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly ConnectionPool $connectionPool
+    ) {
+        parent::__construct($moduleTemplateFactory);
+    }
 
     public function initializeView($view): void
     {
@@ -206,8 +214,7 @@ class SolrController extends AbstractController
 
     protected function getIndexQueueItem(int $rootPageUid, string $configurationName, int $recordUid): ?Item
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_solr_indexqueue_item');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_solr_indexqueue_item');
         $indexQueueItem = $queryBuilder
             ->select('*')
             ->from('tx_solr_indexqueue_item')
@@ -232,8 +239,7 @@ class SolrController extends AbstractController
             return null;
         }
 
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($indexQueueItem['item_type']);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($indexQueueItem['item_type']);
         $tableRecord = $queryBuilder
             ->select('*')
             ->from($indexQueueItem['item_type'])
