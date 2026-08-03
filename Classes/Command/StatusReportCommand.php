@@ -29,9 +29,9 @@ use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
  */
 class StatusReportCommand extends Command
 {
-    private const RETURN_YES = '<info>YES</info>';
+    private const string RETURN_YES = '<info>YES</info>';
 
-    private const RETURN_NO = '<error>NO</error>';
+    private const string RETURN_NO = '<error>NO</error>';
 
     private SchedulerTaskRepository $taskRepository;
 
@@ -111,7 +111,7 @@ class StatusReportCommand extends Command
         $response->getBody()->rewind();
         $json = $response->getBody()->getContents();
 
-        $result = json_decode($json, true);
+        $result = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
         $hasSuggestions = isset($result['suggestions']) && $result['suggestions'] !== ''
             ? '<error>YES</error>'
