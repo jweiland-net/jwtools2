@@ -23,9 +23,9 @@ use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitialized
 #[AsEventListener(
     identifier: 'jwtools2/afterContentObjectRendererInitialized',
 )]
-final class AfterContentObjectRendererInitializedEventListener
+final readonly class AfterContentObjectRendererInitializedEventListener
 {
-    public function __construct(private readonly ExtensionConfiguration $extensionConfiguration) {}
+    public function __construct(private ExtensionConfiguration $extensionConfiguration) {}
 
     public function __invoke(AfterContentObjectRendererInitializedEvent $event): void
     {
@@ -48,7 +48,7 @@ final class AfterContentObjectRendererInitializedEventListener
     {
         try {
             return $this->extensionConfiguration->get('jwtools2');
-        } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException $exception) {
+        } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException) {
             return [];
         }
     }
