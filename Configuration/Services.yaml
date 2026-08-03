@@ -35,6 +35,18 @@ services:
   JWeiland\Jwtools2\Hooks\InitializeStdWrap:
     public: true
 
+  # Called by makeInstance in processCmdmapClass hook of DataHandler
+  JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook:
+    public: true
+
+  # Called by makeInstance in the "set" hook of VariableFrontend (Caching Framework)
+  JWeiland\Jwtools2\Hooks\CachingFrameworkLoggerHook:
+    public: true
+
+  # Called by makeInstance in processDatamapClass hook of DataHandler
+  JWeiland\Jwtools2\Hooks\ValidateFileMetaDataOnSaveHook:
+    public: true
+
   JWeiland\Jwtools2\LinkHandler\FileLinkHandler:
     public: true
 
@@ -58,6 +70,23 @@ services:
       - name: event.listener
         identifier: 'jwtools2.events.isFileSelectableEvent'
         event: TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent
+
+  JWeiland\Jwtools2\EventListener\ReplaceInvalidMetaDataImageEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'jwtools2.events.beforeFileProcessingEvent'
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFileProcessingEvent
+
+  JWeiland\Jwtools2\EventListener\DisableRecordsWithInvalidFileMetaDataEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'jwtools2.events.afterFileMetaDataUpdatedEvent'
+        event: TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataUpdatedEvent
+        method: 'onMetaDataUpdated'
+      - name: event.listener
+        identifier: 'jwtools2.events.afterFileMetaDataCreatedEvent'
+        event: TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataCreatedEvent
+        method: 'onMetaDataCreated'
 
   # Backend Context Menu Provider
   JWeiland\Jwtools2\ContextMenu\ItemProviders\UpdateFileMetaDataProvider:
