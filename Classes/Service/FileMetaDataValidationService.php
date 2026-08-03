@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-final class FileMetaDataValidationService
+class FileMetaDataValidationService
 {
     private ?array $requiredColumnsCache = null;
 
@@ -51,7 +51,11 @@ final class FileMetaDataValidationService
         }
 
         $missingColumns = [];
-        $properties = $file->getProperties();
+        // Most enforceable columns (e.g. "creator", "copyright") live exclusively in
+        // sys_file_metadata and are never part of File::getProperties() (which only reflects
+        // the sys_file row). Merge in the metadata aspect so both kinds of columns are covered;
+        // metadata wins on overlap since it is the authoritative source for these fields.
+        $properties = array_merge($file->getProperties(), $file->getMetaData()->get());
 
         foreach ($this->getRequiredColumns() as $requiredColumn) {
             // Do not use isset() as "null" values have to be tested, too.

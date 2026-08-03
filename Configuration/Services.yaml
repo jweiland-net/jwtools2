@@ -47,6 +47,14 @@ services:
   JWeiland\Jwtools2\Hooks\ValidateFileMetaDataOnSaveHook:
     public: true
 
+  # Called by makeInstance in saveTask()/editTaskAction() of SchedulerModuleController
+  JWeiland\Jwtools2\Task\ExecuteQueryTask:
+    public: true
+
+  # Called by makeInstance in saveTask()/editTaskAction() of SchedulerModuleController
+  JWeiland\Jwtools2\Task\IndexQueueWorkerTask:
+    public: true
+
   JWeiland\Jwtools2\LinkHandler\FileLinkHandler:
     public: true
 

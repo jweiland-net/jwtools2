@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-final class PlaceholderImageService implements LoggerAwareInterface
+class PlaceholderImageService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

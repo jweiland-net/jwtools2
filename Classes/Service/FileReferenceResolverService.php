@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-final readonly class FileReferenceResolverService
+readonly class FileReferenceResolverService
 {
     public function __construct(private ConnectionPool $connectionPool) {}
 
