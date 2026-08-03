@@ -28,6 +28,9 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
     use LoggerAwareTrait;
     use RequestArgumentsTrait;
 
+    public function __construct(private readonly ConnectionPool $connectionPool)
+    {}
+
     /**
      * Analyze the data. If it matches create a new log entry
      *
@@ -57,7 +60,7 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
         // I know nothing about the datatype, structure or whatever in $variable.
         // IMO a string representation is a good start for analyzing: preg_match, strpos, ...
         if (!is_string($variable)) {
-            $variable = json_encode($variable);
+            $variable = json_encode($variable, JSON_THROW_ON_ERROR);
         }
 
         $matchingExpressionRecords = $this->getExpressionRecordsMatchingVariable($variable, $cacheExpressionRecords);
@@ -110,7 +113,7 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
             if (preg_match('/' . preg_quote($cacheExpressionRecord['expression'], '/') . '/', $variable)) {
                 return true;
             }
-        } elseif (mb_strpos($variable, $cacheExpressionRecord['expression']) !== false) {
+        } elseif (str_contains($variable, $cacheExpressionRecord['expression'])) {
             return true;
         }
 
@@ -165,6 +168,6 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
 
     protected function getConnectionPool(): ConnectionPool
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
+        return $this->connectionPool;
     }
 }
