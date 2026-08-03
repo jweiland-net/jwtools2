@@ -16,8 +16,7 @@ use TYPO3\CMS\Core\Registry;
 
 readonly class IndexServiceEventListener
 {
-    public function __construct(private Registry $registry)
-    {}
+    public function __construct(private Registry $registry) {}
 
     public function __invoke(BeforeItemIsIndexedEvent $event): void
     {

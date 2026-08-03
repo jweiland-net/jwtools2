@@ -22,9 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class QueryGenerator
 {
-    public function __construct(private readonly ConnectionPool $connectionPool)
-    {
-    }
+    public function __construct(private readonly ConnectionPool $connectionPool) {}
 
     /**
      * @throws Exception

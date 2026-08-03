@@ -17,8 +17,7 @@ use TYPO3\CMS\Core\Registry;
 
 readonly class IndexService
 {
-    public function __construct(private Registry $registry)
-    {}
+    public function __construct(private Registry $registry) {}
 
     /**
      * Save current Item ID in sys_registry for debugging

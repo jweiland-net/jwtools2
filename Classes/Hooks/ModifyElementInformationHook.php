@@ -91,7 +91,7 @@ class ModifyElementInformationHook
         private readonly ResourceFactory $resourceFactory,
         private readonly RendererRegistry $rendererRegistry,
         private readonly ConnectionPool $connectionPool,
-        protected UriBuilder $uriBuilder
+        protected UriBuilder $uriBuilder,
     ) {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -312,7 +312,7 @@ class ModifyElementInformationHook
         $fieldList = $this->getFieldList($this->table, (int)($this->row['uid'] ?? 0));
 
         foreach ($fieldList as $name) {
-            $name = trim((string) $name);
+            $name = trim((string)$name);
             $uid = $this->row['uid'] ?? 0;
 
             if (!isset($GLOBALS['TCA'][$this->table]['columns'][$name])) {

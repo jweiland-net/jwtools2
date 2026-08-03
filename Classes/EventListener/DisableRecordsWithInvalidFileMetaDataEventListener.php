@@ -96,7 +96,7 @@ final readonly class DisableRecordsWithInvalidFileMetaDataEventListener
             $this->registry->set(
                 self::REGISTRY_NAMESPACE,
                 $this->getRegistryKey($file->getUid()),
-                $disabledRecords
+                $disabledRecords,
             );
             $this->flushPageCache();
         }
@@ -160,7 +160,7 @@ final readonly class DisableRecordsWithInvalidFileMetaDataEventListener
         $this->connectionPool->getConnectionForTable($table)->update(
             $table,
             [$enableColumn => 0],
-            ['uid' => $uid]
+            ['uid' => $uid],
         );
 
         $this->addMessage(
@@ -207,7 +207,7 @@ final readonly class DisableRecordsWithInvalidFileMetaDataEventListener
                 SystemLogDatabaseAction::UPDATE,
                 null,
                 SystemLogErrorClassification::WARNING,
-                $message
+                $message,
             );
         }
 
@@ -248,7 +248,7 @@ final readonly class DisableRecordsWithInvalidFileMetaDataEventListener
         try {
             return (bool)$this->extensionConfiguration->get(
                 'jwtools2',
-                'typo3DisableRecordsOnInvalidFileMetaData'
+                'typo3DisableRecordsOnInvalidFileMetaData',
             );
         } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException) {
             return false;
@@ -258,7 +258,7 @@ final readonly class DisableRecordsWithInvalidFileMetaDataEventListener
     private function translate(string $key): string
     {
         return LocalizationUtility::translate(
-            'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:' . $key
+            'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:' . $key,
         ) ?? $key;
     }
 }

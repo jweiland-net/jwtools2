@@ -28,8 +28,7 @@ class CachingFrameworkLoggerHook implements LoggerAwareInterface
     use LoggerAwareTrait;
     use RequestArgumentsTrait;
 
-    public function __construct(private readonly ConnectionPool $connectionPool)
-    {}
+    public function __construct(private readonly ConnectionPool $connectionPool) {}
 
     /**
      * Analyze the data. If it matches create a new log entry

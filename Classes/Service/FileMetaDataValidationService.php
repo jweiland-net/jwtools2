@@ -25,7 +25,7 @@ final class FileMetaDataValidationService
 
     public function __construct(
         private readonly ExtensionConfiguration $extensionConfiguration,
-        private readonly ConnectionPool $connectionPool
+        private readonly ConnectionPool $connectionPool,
     ) {}
 
     public function getRequiredColumns(): array

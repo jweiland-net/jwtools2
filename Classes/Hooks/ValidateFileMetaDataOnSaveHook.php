@@ -143,7 +143,7 @@ readonly class ValidateFileMetaDataOnSaveHook
     protected function translate(string $key): string
     {
         return LocalizationUtility::translate(
-            'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:' . $key
+            'LLL:EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf:' . $key,
         ) ?? $key;
     }
 }

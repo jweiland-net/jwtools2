@@ -41,7 +41,7 @@ class SolrController extends AbstractController
 
     public function __construct(
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        private readonly ConnectionPool $connectionPool
+        private readonly ConnectionPool $connectionPool,
     ) {
         parent::__construct($moduleTemplateFactory);
     }

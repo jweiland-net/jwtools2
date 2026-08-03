@@ -33,11 +33,9 @@ final class PlaceholderImageService implements LoggerAwareInterface
 
     public function __construct(
         private readonly ExtensionConfiguration $extensionConfiguration,
-        private readonly RequestFactory         $requestFactory,
-        private readonly ResourceFactory        $resourceFactory,
-    )
-    {
-    }
+        private readonly RequestFactory $requestFactory,
+        private readonly ResourceFactory $resourceFactory,
+    ) {}
 
     public function getPlaceholderFile(int $width, int $height): ?File
     {

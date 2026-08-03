@@ -134,7 +134,7 @@ class ConvertPlainPasswordToHashCommand extends Command
             OutputInterface::VERBOSITY_VERBOSE,
         );
         $this->output->writeln(
-            '--> Hashed password will be stored (Hash shortened): ' . substr((string) $newPassword, 0, 10),
+            '--> Hashed password will be stored (Hash shortened): ' . substr((string)$newPassword, 0, 10),
             OutputInterface::VERBOSITY_DEBUG,
         );
         return $newPassword;

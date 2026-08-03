@@ -27,9 +27,8 @@ class ExecuteQueryTask extends AbstractTask
 
     public function __construct(
         private readonly FlashMessageService $flashMessageService,
-        private readonly ConnectionPool $connectionPool
-    )
-    {
+        private readonly ConnectionPool $connectionPool,
+    ) {
         parent::__construct();
     }
 

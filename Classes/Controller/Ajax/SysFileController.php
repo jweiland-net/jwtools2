@@ -33,7 +33,7 @@ class SysFileController
 {
     public function __construct(
         protected ResourceFactory $resourceFactory,
-        protected GraphicalFunctions $graphicalFunctions
+        protected GraphicalFunctions $graphicalFunctions,
     ) {}
 
     public function updateFileMetadataAction(ServerRequestInterface $request): JsonResponse
@@ -111,8 +111,8 @@ class SysFileController
         $validatedFiles = [];
         $files = $request->getQueryParams()['CB']['files'] ?? [];
         foreach ($files as $hash => $file) {
-            [$table, $hash] = explode('|', (string) $hash);
-            if ($table === '_FILE' && $hash === substr(md5((string) $file), 0, 10)) {
+            [$table, $hash] = explode('|', (string)$hash);
+            if ($table === '_FILE' && $hash === substr(md5((string)$file), 0, 10)) {
                 $validatedFiles[] = $file;
             }
         }
@@ -129,7 +129,7 @@ class SysFileController
         // A version like 6.9.10-23
         $version = '';
         if (isset($string) && $string !== '') {
-            [, $version] = explode('Magick', (string) $string);
+            [, $version] = explode('Magick', (string)$string);
             [$version] = explode(' ', trim($version));
             [$version] = explode('-', trim($version));
             $version = trim($version);

@@ -24,8 +24,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class MoveTranslatedContentElementsHook
 {
-    public function __construct(private readonly ConnectionPool $connectionPool)
-    {}
+    public function __construct(private readonly ConnectionPool $connectionPool) {}
 
     public function processDatamap_beforeStart(DataHandler $dataHandler): void
     {
