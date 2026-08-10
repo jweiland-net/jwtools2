@@ -5,23 +5,21 @@
     <body>
       <trans-unit id="statusDeleteTitle">
         <source>File metadata updated</source>
-        <target state="needs-translation">File metadata updated</target>
+        <target state="translated">A fájlmetaadatok frissítve</target>
       </trans-unit>
       <trans-unit id="statusDeleteDescription">
         <source>Successfully created/updated file metadata and deleted related processed files.</source>
-        <target state="needs-translation">Successfully created/updated file metadata and deleted related processed files.</target>
+        <target state="translated">A fájlmetaadatok sikeresen létrehozva/frissítve, a kapcsolódó feldolgozott fájlok törölve.</target>
       </trans-unit>
       <trans-unit id="fileBrowser.flashMessage.requiredColumns.title">
         <source>Info about non selectable files</source>
-        <target state="needs-translation">Info about non selectable files</target>
+        <target state="translated">Információ a nem kiválasztható fájlokról</target>
       </trans-unit>
       <trans-unit id="fileBrowser.flashMessage.requiredColumns.description">
         <source>For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files
           cannot currently be linked to content elements or other records. Please complete these mandatory fields first.
         </source>
-        <target state="needs-translation">For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files
-          cannot currently be linked to content elements or other records. Please complete these mandatory fields first.
-        </target>
+        <target state="translated">Bizonyos fájloknál ki kell tölteni a megadott kötelező mezőket (%s). Ha ez nem történik meg, ezek a fájlok jelenleg nem kapcsolhatók tartalomelemekhez vagy más rekordokhoz. Kérjük, először töltse ki ezeket a kötelező mezőket.</target>
       </trans-unit>
     </body>
   </file>
