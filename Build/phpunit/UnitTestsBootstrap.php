@@ -56,7 +56,7 @@ use TYPO3\TestingFramework\Core\Testbase;
 
     // We can use the "typo3/cms-composer-installers" constant "TYPO3_COMPOSER_MODE" to determine composer mode.
     // This should be always true except for TYPO3 mono repository.
-    $composerMode = defined('TYPO3_COMPOSER_MODE') && TYPO3_COMPOSER_MODE === true;
+    $composerMode = defined('TYPO3_COMPOSER_MODE') && TYPO3_COMPOSER_MODE;
 
     // @todo: Remove else branch when dropping support for v12
     $hasConsolidatedHttpEntryPoint = class_exists(CoreHttpApplication::class);

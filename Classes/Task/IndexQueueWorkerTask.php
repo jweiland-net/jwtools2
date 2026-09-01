@@ -32,15 +32,19 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
 
     protected int $maxSitesPerRun = 10;
 
+    public function __construct(private readonly Registry $registry)
+    {
+        parent::__construct();
+    }
+
     /**
      * Works through the indexing queue and indexes the queued items into Solr.
      */
     public function execute(): bool
     {
-        $registry = $this->getRegistry();
-        $registry->set('jwtools2-solr', 'memoryPeakUsage', 0);
+        $this->registry->set('jwtools2-solr', 'memoryPeakUsage', 0);
 
-        $lastSitePosition = (int)$registry->get('jwtools2-solr', 'lastSitePosition');
+        $lastSitePosition = (int)$this->registry->get('jwtools2-solr', 'lastSitePosition');
         $maxSitePosition = $lastSitePosition + $this->getMaxSitesPerRun();
         $cliEnvironment = null;
 
@@ -61,19 +65,19 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
                 continue;
             }
 
-            $registry->set('jwtools2-solr', 'rootPageId', $availableSite->getRootPageId());
+            $this->registry->set('jwtools2-solr', 'rootPageId', $availableSite->getRootPageId());
 
             try {
                 $indexService = GeneralUtility::makeInstance(IndexService::class, $availableSite);
                 $indexService->indexItems($this->documentsToIndexLimit);
                 $counter++;
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // jump to next site
                 continue;
             }
         }
 
-        $registry->set(
+        $this->registry->set(
             'jwtools2-solr',
             'lastSitePosition',
             $maxSitePosition > count($availableSites) ? 0 : $maxSitePosition,
@@ -92,8 +96,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
      */
     public function getAdditionalInformation(): string
     {
-        $registry = $this->getRegistry();
-        $rootPageId = (int)$registry->get('jwtools2-solr', 'rootPageId');
+        $rootPageId = (int)$this->registry->get('jwtools2-solr', 'rootPageId');
         $message = 'Please execute this task first to retrieve site information';
         if ($rootPageId === 0) {
             return $message;
@@ -113,8 +116,8 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
                 $message .= ' Failures: ' . $failedItemsCount;
             }
 
-            $message .= ' / Index queue UID: ' . $registry->get('jwtools2-solr', 'indexQueueUid');
-            $message .= ' / Memory Peak: ' . (float)$registry->get('jwtools2-solr', 'memoryPeakUsage');
+            $message .= ' / Index queue UID: ' . $this->registry->get('jwtools2-solr', 'indexQueueUid');
+            $message .= ' / Memory Peak: ' . (float)$this->registry->get('jwtools2-solr', 'memoryPeakUsage');
         }
 
         return $message;
@@ -169,10 +172,5 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
     public function setMaxSitesPerRun(int $maxSitesPerRun): void
     {
         $this->maxSitesPerRun = $maxSitesPerRun;
-    }
-
-    protected function getRegistry(): Registry
-    {
-        return GeneralUtility::makeInstance(Registry::class);
     }
 }

@@ -25,6 +25,13 @@ class ExecuteQueryTask extends AbstractTask
 {
     protected string $sqlQuery = '';
 
+    public function __construct(
+        private readonly FlashMessageService $flashMessageService,
+        private readonly ConnectionPool $connectionPool,
+    ) {
+        parent::__construct();
+    }
+
     public function execute(): bool
     {
         try {
@@ -80,13 +87,13 @@ class ExecuteQueryTask extends AbstractTask
     public function addMessage(string $message, ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK): void
     {
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, '', $severity);
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        $flashMessageService = $this->flashMessageService;
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
     }
 
     protected function getConnectionPool(): ConnectionPool
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
+        return $this->connectionPool;
     }
 }

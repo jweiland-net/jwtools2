@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/jwtools2.
  *
@@ -18,7 +20,7 @@ $EM_CONF[$_EXTKEY] = [
     'version' => '8.1.1',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.0-13.4.99',
+            'typo3' => '13.4.24-13.4.99',
         ],
         'conflicts' => [
         ],

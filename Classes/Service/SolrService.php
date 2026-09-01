@@ -23,13 +23,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SolrService
 {
+    public function __construct(private readonly ConnectionPool $connectionPool) {}
+
     /**
      * Instead of the Solr Statistic, this Statistic will return
      * a statistic over all sites
      */
     public function getStatistic(): QueueStatistic
     {
-        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_solr_indexqueue_item');
+        $queryBuilder = $this->$this->connectionPool->getQueryBuilderForTable('tx_solr_indexqueue_item');
         $statement = $queryBuilder
             ->selectLiteral('indexed < changed as pending, (errors not like "") as failed, COUNT(*) as count')
             ->from('tx_solr_indexqueue_item')
@@ -94,7 +96,7 @@ class SolrService
         }
 
         $this
-            ->getConnectionPool()
+            ->$this->connectionPool
             ->getConnectionForTable('tx_solr_indexqueue_item')
             ->delete(
                 'tx_solr_indexqueue_item',
@@ -118,7 +120,7 @@ class SolrService
             }
 
             $this
-                ->getConnectionPool()
+                ->$this->connectionPool
                 ->getConnectionForTable('tx_solr_indexqueue_file')
                 ->delete(
                     'tx_solr_indexqueue_file',
@@ -142,10 +144,5 @@ class SolrService
             $solrServer->getWriteService()->deleteByType($tableName); // Document
             $solrServer->getWriteService()->deleteByQuery('fileReferenceType:' . $tableName); // tx_solr_file
         }
-    }
-
-    protected function getConnectionPool(): ConnectionPool
-    {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }

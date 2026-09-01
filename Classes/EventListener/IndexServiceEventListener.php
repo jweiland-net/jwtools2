@@ -13,16 +13,16 @@ namespace JWeiland\Jwtools2\EventListener;
 
 use ApacheSolrForTypo3\Solr\Event\Indexing\BeforeItemIsIndexedEvent;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class IndexServiceEventListener
+readonly class IndexServiceEventListener
 {
+    public function __construct(private Registry $registry) {}
+
     public function __invoke(BeforeItemIsIndexedEvent $event): void
     {
         $item = $event->getItem();
 
-        $registry = GeneralUtility::makeInstance(Registry::class);
-        $registry->set('jwtools2-solr', 'indexQueueUid', $item->getIndexQueueUid());
-        $registry->set('jwtools2-solr', 'memoryPeakUsage', memory_get_peak_usage(true));
+        $this->registry->set('jwtools2-solr', 'indexQueueUid', $item->getIndexQueueUid());
+        $this->registry->set('jwtools2-solr', 'memoryPeakUsage', memory_get_peak_usage(true));
     }
 }

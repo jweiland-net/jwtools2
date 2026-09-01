@@ -78,7 +78,7 @@ class ConvertPlainPasswordToHashCommand extends Command
         $counter = 0;
         $connection = $this->getConnectionPool()->getConnectionForTable($this->modeMapping[$mode]['table']);
         $statement = $this->getQueryResultForUsers($this->modeMapping[$mode]['table']);
-        while ($user = $statement->fetch()) {
+        while ($user = $statement->fetchAssociative()) {
             if (!isset($user['password']) || $user['password'] === '') {
                 continue;
             }
@@ -93,7 +93,7 @@ class ConvertPlainPasswordToHashCommand extends Command
                     'Password for User ' . $user['uid'] . ' was not updated. Password already hashed.',
                     OutputInterface::VERBOSITY_VERBOSE,
                 );
-            } catch (InvalidPasswordHashException $e) {
+            } catch (InvalidPasswordHashException) {
                 // Perfect. No HashInstance can process this user password. Start update
                 $connection->update(
                     $this->modeMapping[$mode]['table'],
@@ -134,7 +134,7 @@ class ConvertPlainPasswordToHashCommand extends Command
             OutputInterface::VERBOSITY_VERBOSE,
         );
         $this->output->writeln(
-            '--> Hashed password will be stored (Hash shortened): ' . substr($newPassword, 0, 10),
+            '--> Hashed password will be stored (Hash shortened): ' . substr((string)$newPassword, 0, 10),
             OutputInterface::VERBOSITY_DEBUG,
         );
         return $newPassword;

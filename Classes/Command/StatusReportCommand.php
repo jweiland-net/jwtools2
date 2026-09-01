@@ -111,7 +111,7 @@ class StatusReportCommand extends Command
         $response->getBody()->rewind();
         $json = $response->getBody()->getContents();
 
-        $result = json_decode($json, true);
+        $result = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
         $hasSuggestions = isset($result['suggestions']) && $result['suggestions'] !== ''
             ? '<error>YES</error>'

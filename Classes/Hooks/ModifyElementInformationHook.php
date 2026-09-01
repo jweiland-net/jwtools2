@@ -85,12 +85,14 @@ class ModifyElementInformationHook
 
     protected IconFactory $iconFactory;
 
-    protected UriBuilder $uriBuilder;
-
     protected ViewFactoryInterface $viewFactory;
 
-    public function __construct()
-    {
+    public function __construct(
+        private readonly ResourceFactory $resourceFactory,
+        private readonly RendererRegistry $rendererRegistry,
+        private readonly ConnectionPool $connectionPool,
+        protected UriBuilder $uriBuilder,
+    ) {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
@@ -123,11 +125,11 @@ class ModifyElementInformationHook
                 // Case: 1 already sys_file uid
                 $this->uid = (int)$input;
             } else {
-                $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+                $resourceFactory = $this->resourceFactory;
                 $file = $resourceFactory->getFileObjectFromCombinedIdentifier($input);
                 $this->uid = $file->getUid();
             }
-        } catch (ResourceDoesNotExistException $exception) {
+        } catch (ResourceDoesNotExistException) {
             // handle exception if needed
             $this->uid = 0;
         }
@@ -136,7 +138,7 @@ class ModifyElementInformationHook
 
         if (isset($GLOBALS['TCA'][$this->table])) {
             $this->initDatabaseRecord();
-        } elseif ($this->table === '_FILE' || $this->table === '_FOLDER' || $this->table === 'sys_file') {
+        } elseif (in_array($this->table, ['_FILE', '_FOLDER', 'sys_file'], true)) {
             $this->initFileOrFolderRecord();
         }
     }
@@ -175,7 +177,7 @@ class ModifyElementInformationHook
      */
     protected function initFileOrFolderRecord(): void
     {
-        $fileOrFolderObject = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($this->uid);
+        $fileOrFolderObject = $this->resourceFactory->retrieveFileOrFolderObject($this->uid);
         if ($fileOrFolderObject instanceof Folder) {
             $this->folderObject = $fileOrFolderObject;
             $this->access = $this->folderObject->checkActionPermission('read');
@@ -189,7 +191,7 @@ class ModifyElementInformationHook
 
             try {
                 $this->row = BackendUtility::getRecordWSOL($this->table, $fileOrFolderObject->getUid());
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 $this->row = [];
             }
         }
@@ -259,9 +261,9 @@ class ModifyElementInformationHook
         if ($this->fileObject->isMissing()) {
             $preview['missingFile'] = $this->fileObject->getName();
         } else {
-            $rendererRegistry = GeneralUtility::makeInstance(RendererRegistry::class);
+            $rendererRegistry = $this->rendererRegistry;
             $fileRenderer = $rendererRegistry->getRenderer($this->fileObject);
-            $preview['url'] = $this->fileObject->getPublicUrl(true) ?? '';
+            $preview['url'] = $this->fileObject->getPublicUrl() ?? '';
             $preview['editUrl'] = '';
 
             if (
@@ -310,7 +312,7 @@ class ModifyElementInformationHook
         $fieldList = $this->getFieldList($this->table, (int)($this->row['uid'] ?? 0));
 
         foreach ($fieldList as $name) {
-            $name = trim($name);
+            $name = trim((string)$name);
             $uid = $this->row['uid'] ?? 0;
 
             if (!isset($GLOBALS['TCA'][$this->table]['columns'][$name])) {
@@ -437,7 +439,7 @@ class ModifyElementInformationHook
                     unset($fieldList[$key]);
                 }
             }
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             $fieldList = [];
         }
 
@@ -607,7 +609,7 @@ class ModifyElementInformationHook
             $selectUid = $ref;
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('sys_refindex');
 
         $predicates = [
@@ -697,7 +699,7 @@ class ModifyElementInformationHook
         $refFromLines = [];
         $lang = $this->getLanguageService();
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('sys_refindex');
 
         $predicates = [
@@ -771,7 +773,7 @@ class ModifyElementInformationHook
      */
     protected function transformFileReferenceToRecordReference(array $referenceRecord): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('sys_file_reference');
         $queryBuilder->getRestrictions()->removeAll();
         $fileReference = $queryBuilder
@@ -813,9 +815,9 @@ class ModifyElementInformationHook
         return $GLOBALS['BE_USER'];
     }
 
-    protected function getLinkScripts($request)
+    protected function getLinkScripts($request): string
     {
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uriBuilder = $this->uriBuilder;
         $queryParameters = $request->getQueryParams();
 
         return (string)$uriBuilder->buildUriFromRoute(
