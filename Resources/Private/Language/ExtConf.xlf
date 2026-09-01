@@ -16,9 +16,9 @@
         </source>
       </trans-unit>
       <trans-unit id="typo3RequiredColumnsForFiles" approved="yes">
-        <source>Required columns for image files: Enter here columns of the DB tables sys_file and/or sys_file_metadata
-          which are to be regarded as mandatory fields. Files for which these columns are not set are available in the
-          file browser, but cannot be selected.
+        <source>Required columns for image files: Enter columns of the DB tables sys_file and/or sys_file_metadata
+          that should be treated as mandatory fields. Image files for which these columns are not set will not be
+          displayed in the frontend.
         </source>
       </trans-unit>
       <trans-unit id="typo3ExcludeVideoFilesFromFalFilter" approved="yes">

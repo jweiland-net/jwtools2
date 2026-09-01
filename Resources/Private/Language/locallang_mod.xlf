@@ -9,14 +9,8 @@
       <trans-unit id="statusDeleteDescription" approved="yes">
         <source>Successfully created/updated file metadata and deleted related processed files.</source>
       </trans-unit>
-
-      <trans-unit id="fileBrowser.flashMessage.requiredColumns.title" approved="yes">
-        <source>Info about non selectable files</source>
-      </trans-unit>
-      <trans-unit id="fileBrowser.flashMessage.requiredColumns.description" approved="yes">
-        <source>For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files
-          cannot currently be linked to content elements or other records. Please complete these mandatory fields first.
-        </source>
+      <trans-unit id="warning.requiredColumns" approved="yes">
+        <source>For some image files, certain mandatory fields (%s) are missing. These images will not be displayed in the frontend until the required fields have been completed.</source>
       </trans-unit>
     </body>
   </file>

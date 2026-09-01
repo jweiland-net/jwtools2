@@ -7,29 +7,54 @@ services:
   JWeiland\Jwtools2\:
     resource: '../Classes/*'
 
-  # Called by makeInstance in getCallableFromTarget of Dispatcher
-  JWeiland\Jwtools2\Controller\Ajax\SysFileController:
-    public: true
-
   JWeiland\Jwtools2\Command\CacheQueryCommand:
     tags:
-    - name: 'console.command'
-      command: 'jwtools2:cacheQuery'
-      schedulable: false
+      - name: 'console.command'
+        command: 'jwtools2:cacheQuery'
+        schedulable: false
+
   JWeiland\Jwtools2\Command\ConvertPlainPasswordToHashCommand:
     tags:
-    - name: 'console.command'
-      command: 'jwtools2:convertpasswords'
-      schedulable: false
+      - name: 'console.command'
+        command: 'jwtools2:convertpasswords'
+        schedulable: false
+
   JWeiland\Jwtools2\Command\StatusReportCommand:
     calls:
       - method: setTaskRepository
         arguments:
           - '@TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository'
     tags:
-    - name: 'console.command'
-      command: 'jwtools2:statusreport'
-      schedulable: false
+      - name: 'console.command'
+        command: 'jwtools2:statusreport'
+        schedulable: false
+
+  # Backend Context Menu Provider
+  JWeiland\Jwtools2\ContextMenu\ItemProviders\UpdateFileMetaDataProvider:
+    tags:
+      - name: backend.contextmenu.itemprovider
+        identifier: 'jwtools2.contextmenu.itemproviders.updatefilemetadata'
+
+  # Called by makeInstance in getCallableFromTarget of Dispatcher
+  JWeiland\Jwtools2\Controller\Ajax\SysFileController:
+    public: true
+
+  JWeiland\Jwtools2\DataProcessor\GalleryDataProcessor:
+    shared: false
+    tags:
+      - { name: 'data.processor', identifier: 'gallery' }
+
+  # Event Listeners
+  JWeiland\Jwtools2\EventListener\ReduceCategoryTreeToPageTree:
+    tags:
+      - name: event.listener
+        event: TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent
+
+  JWeiland\Jwtools2\EventListener\IndexServiceEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'jwtools2.events.beforeItemIsIndexedEvent'
+        event: ApacheSolrForTypo3\Solr\Event\Indexing\BeforeItemIsIndexedEvent
 
   # Called by makeInstance in start() of ContentObjectRenderer
   JWeiland\Jwtools2\Hooks\InitializeStdWrap:
@@ -40,27 +65,3 @@ services:
 
   JWeiland\Jwtools2\LinkHandler\FolderLinkHandler:
     public: true
-
-  # Event Listeners
-  JWeiland\Jwtools2\EventListener\ReduceCategoryTreeToPageTree:
-    tags:
-    - name: event.listener
-      event: TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent
-
-  JWeiland\Jwtools2\EventListener\IndexServiceEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'jwtools2.events.beforeItemIsIndexedEvent'
-        event: ApacheSolrForTypo3\Solr\Event\Indexing\BeforeItemIsIndexedEvent
-
-  JWeiland\Jwtools2\EventListener\IsFileSelectableEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'jwtools2.events.isFileSelectableEvent'
-        event: TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent
-
-  # Backend Context Menu Provider
-  JWeiland\Jwtools2\ContextMenu\ItemProviders\UpdateFileMetaDataProvider:
-      tags:
-      - name: backend.contextmenu.itemprovider
-        identifier: 'jwtools2.contextmenu.itemproviders.updatefilemetadata'

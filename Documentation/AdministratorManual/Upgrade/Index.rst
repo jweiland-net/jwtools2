@@ -8,6 +8,23 @@ Upgrade
 If you upgrade EXT:jwtools2 to a newer version, please read this section
 carefully!
 
+Upgrade to Version 8.1.2
+========================
+
+The IsFileSelectableEventListener class has been removed completely. This is a
+breaking change. However, since the previous implementation required patching the
+TYPO3 Core to make this feature work, removing this class should not cause
+additional issues in practice.
+
+The configuration option `typo3RequiredColumnsForFiles` is still available, but
+the feature has been reimplemented in a different way. Once enabled, the TYPO3
+GalleryProcessor is overridden and all files that do not have the required column
+values assigned are removed from the processed output.
+
+In addition, a new control icon is added to each `sys_file_reference` record in
+backend forms where file references are configured. When hovering over this icon,
+editors can see which required columns still need to be completed.
+
 Upgrade to Version 7.0.0
 ========================
 

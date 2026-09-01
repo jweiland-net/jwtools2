@@ -91,8 +91,9 @@ typo3RequiredColumnsForFiles
 
 Add a comma separated list of column names of table ``sys_file`` or
 ``sys_file_metadata`` to set these columns as required. If these columns are not
-filled for an image it is not selectable in FileBrowser. It can not be inserted
-into a ContentElement or record.
+filled for an image, the image will not be displayed in the frontend until the
+required fields have been completed.
+
 
 ..  _typo3ExcludeVideoFilesFromFalFilter:
 
