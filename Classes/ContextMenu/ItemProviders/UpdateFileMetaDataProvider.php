@@ -36,6 +36,7 @@ class UpdateFileMetaDataProvider extends FileProvider
      * Priority must be higher than and different from 100 (FileProvider/AbstractProvider).
      * We don't want to replace FileProvider, we want to add further items to FileProvider.
      */
+    #[\Override]
     public function getPriority(): int
     {
         return 101;
@@ -44,6 +45,7 @@ class UpdateFileMetaDataProvider extends FileProvider
     /**
      * Checks whether certain item can be rendered (e.g. check for disabled items or permissions)
      */
+    #[\Override]
     protected function canRender(string $itemName, string $type): bool
     {
         if (in_array($itemName, $this->disabledItems, true)) {
@@ -69,6 +71,7 @@ class UpdateFileMetaDataProvider extends FileProvider
     /**
      * As we can't extend ContextMenuActions.js of TYPO3 Core we have to use our own JS module.
      */
+    #[\Override]
     protected function getAdditionalAttributes(string $itemName): array
     {
         return [
