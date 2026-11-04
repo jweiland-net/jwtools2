@@ -21,11 +21,14 @@ services:
     - name: 'console.command'
       command: 'jwtools2:convertpasswords'
       schedulable: false
+  # "scheduler" is not a hard dependency of jwtools2 (see ext_emconf.php), so this reference
+  # must stay optional ("@?") - otherwise the DI container fails to compile entirely whenever
+  # EXT:scheduler is not loaded/active (e.g. in a minimal functional test bootstrap).
   JWeiland\Jwtools2\Command\StatusReportCommand:
     calls:
       - method: setTaskRepository
         arguments:
-          - '@TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository'
+          - '@?TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository'
     tags:
     - name: 'console.command'
       command: 'jwtools2:statusreport'
