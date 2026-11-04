@@ -59,10 +59,7 @@ class FileMetaDataControllerTest extends UnitTestCase
 
     protected function invokeProtectedMethod(string $method, array $arguments = []): mixed
     {
-        $reflectionMethod = new \ReflectionMethod($this->subject, $method);
-        $reflectionMethod->setAccessible(true);
-
-        return $reflectionMethod->invokeArgs($this->subject, $arguments);
+        return (new \ReflectionMethod($this->subject, $method))->invokeArgs($this->subject, $arguments);
     }
 
     // -- getStatus() -------------------------------------------------------------------
