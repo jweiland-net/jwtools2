@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="EXT:jwtools2/Resources/Private/Language/locallang_mod.xlf" date="2021-05-31T14:24:45Z" product-name="jwtools2" target-language="es-ES">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" target-language="es-ES" datatype="plaintext" original="messages" date="2021-05-31T14:24:45Z" product-name="jwtools2">
     <header/>
     <body>
       <trans-unit id="statusDeleteTitle">
@@ -16,12 +16,28 @@
         <target state="needs-translation">Info about non selectable files</target>
       </trans-unit>
       <trans-unit id="fileBrowser.flashMessage.requiredColumns.description">
-        <source>For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files
-          cannot currently be linked to content elements or other records. Please complete these mandatory fields first.
-        </source>
-        <target state="needs-translation">For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files
-          cannot currently be linked to content elements or other records. Please complete these mandatory fields first.
-        </target>
+        <source>For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files cannot currently be linked to content elements or other records. Please complete these mandatory fields first.</source>
+        <target state="needs-translation">For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files cannot currently be linked to content elements or other records. Please complete these mandatory fields first.</target>
+      </trans-unit>
+      <trans-unit id="fileBrowser.notification.notSelectable.title">
+        <source>File cannot be selected</source>
+        <target state="needs-translation">File cannot be selected</target>
+      </trans-unit>
+      <trans-unit id="fileBrowser.notification.notSelectable.message">
+        <source>The mandatory metadata of "%s" is incomplete. Please complete the metadata in the file list first.</source>
+        <target state="needs-translation">The mandatory metadata of "%s" is incomplete. Please complete the metadata in the file list first.</target>
+      </trans-unit>
+      <trans-unit id="dataHandler.log.invalidFileMetaData">
+        <source>This file can be only activated after the meta data is filled.</source>
+        <target state="needs-translation">This file can be only activated after the meta data is filled.</target>
+      </trans-unit>
+      <trans-unit id="metaData.log.recordDisabled">
+        <source>This record has been hidden automatically because it uses the file "{fileName}" whose required metadata is not filled in. Please complete the metadata and re-enable this record.</source>
+        <target state="needs-translation">This record has been hidden automatically because it uses the file "{fileName}" whose required metadata is not filled in. Please complete the metadata and re-enable this record.</target>
+      </trans-unit>
+      <trans-unit id="metaData.log.fileReferenceReenabled">
+        <source>The file relation to "{fileName}" was automatically re-enabled because its required metadata is now filled in.</source>
+        <target state="needs-translation">The file relation to "{fileName}" was automatically re-enabled because its required metadata is now filled in.</target>
       </trans-unit>
     </body>
   </file>
