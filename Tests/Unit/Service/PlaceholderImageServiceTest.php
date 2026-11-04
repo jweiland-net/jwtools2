@@ -95,7 +95,6 @@ class PlaceholderImageServiceTest extends UnitTestCase
     protected function invokeProtectedMethod(string $method, array $arguments = []): mixed
     {
         $reflectionMethod = new \ReflectionMethod($this->subject, $method);
-        $reflectionMethod->setAccessible(true);
 
         return $reflectionMethod->invokeArgs($this->subject, $arguments);
     }
@@ -520,12 +519,6 @@ class PlaceholderImageServiceTest extends UnitTestCase
     #[Test]
     public function getPlaceholderFileReturnsNullWhenNothingIsCachedApiIsNotConfiguredAndBundledAssetCannotBeResolved(): void
     {
-        // GeneralUtility::getFileAbsFileName('EXT:jwtools2/...') can only resolve to a real path
-        // when the extension is registered as an active package - that is only guaranteed in a
-        // Functional test (see Tests/Functional/Service/PlaceholderImageServiceTest.php, which
-        // covers the successful "bundled asset" path end-to-end). In this Unit test context the
-        // package is not registered, so resolution fails and getFallbackFile() must degrade to
-        // null rather than throwing.
         $folderMock = $this->createMock(Folder::class);
         $storageMock = $this->createMock(ResourceStorage::class);
         $storageMock->method('hasFolder')->willReturn(true);
