@@ -1,38 +1,182 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="EXT:jwtools2/Resources/Private/Language/locallang.xlf" date="2018-01-09T14:24:45Z" product-name="jwtools2" target-language="en">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" target-language="en" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
     <header/>
     <body>
       <trans-unit id="indexqueueworker_title" xml:space="preserve">
-        <source>Index Queue Worker</source>
-      <target state="needs-translation">Index Queue Worker</target></trans-unit>
+				<source>Index Queue Worker</source>
+			<target state="needs-translation">Index Queue Worker</target></trans-unit>
       <trans-unit id="indexqueueworker_description" xml:space="preserve">
-        <source>Processes the items in the Index Queue and sends them to Solr.</source>
-      <target state="needs-translation">Processes the items in the Index Queue and sends them to Solr.</target></trans-unit>
+				<source>Processes the items in the Index Queue and sends them to Solr.</source>
+			<target state="needs-translation">Processes the items in the Index Queue and sends them to Solr.</target></trans-unit>
       <trans-unit id="indexqueueworker_field_documentsToIndexLimit" xml:space="preserve">
-        <source>Number of documents to index</source>
-      <target state="needs-translation">Number of documents to index</target></trans-unit>
+				<source>Number of documents to index</source>
+			<target state="needs-translation">Number of documents to index</target></trans-unit>
       <trans-unit id="indexqueueworker_field_maxSitesPerRun" xml:space="preserve">
-        <source>Max sites per run</source>
-      <target state="needs-translation">Max sites per run</target></trans-unit>
+				<source>Max sites per run</source>
+			<target state="needs-translation">Max sites per run</target></trans-unit>
       <trans-unit id="executeQueryTask.title" xml:space="preserve">
-        <source>Execute SQL Query</source>
-      <target state="needs-translation">Execute SQL Query</target></trans-unit>
+				<source>Execute SQL Query</source>
+			<target state="needs-translation">Execute SQL Query</target></trans-unit>
       <trans-unit id="executeQueryTask.description" xml:space="preserve">
-        <source>With this task you can write your own SQL-Statement which will be executed with each scheduler run</source>
-      <target state="needs-translation">With this task you can write your own SQL-Statement which will be executed with each scheduler run</target></trans-unit>
+				<source>With this task you can write your own SQL-Statement which will be executed with each scheduler run</source>
+			<target state="needs-translation">With this task you can write your own SQL-Statement which will be executed with each scheduler run</target></trans-unit>
       <trans-unit id="executeQueryTask.field.sqlQuery" xml:space="preserve">
-        <source>SQL Query</source>
-      <target state="needs-translation">SQL Query</target></trans-unit>
+				<source>SQL Query</source>
+			<target state="needs-translation">SQL Query</target></trans-unit>
       <trans-unit id="mod.solr.solrFeaturesOverview" xml:space="preserve">
-        <source>Module: Solr Overview</source>
-      <target state="needs-translation">Module: Solr Overview</target></trans-unit>
+				<source>Module: Solr Overview</source>
+			<target state="needs-translation">Module: Solr Overview</target></trans-unit>
       <trans-unit id="mod.solr.memoryUsageSchedulerTask" xml:space="preserve">
-        <source>Current Memory Usage of running jwtools2 Solr Scheduler Task</source>
-      <target state="needs-translation">Current Memory Usage of running jwtools2 Solr Scheduler Task</target></trans-unit>
+				<source>Current Memory Usage of running jwtools2 Solr Scheduler Task</source>
+			<target state="needs-translation">Current Memory Usage of running jwtools2 Solr Scheduler Task</target></trans-unit>
       <trans-unit id="mod.solr.configuredRootPages" xml:space="preserve">
-        <source>Root Pages with Solr configuration</source>
-      <target state="needs-translation">Root Pages with Solr configuration</target></trans-unit>
+				<source>Root Pages with Solr configuration</source>
+			<target state="needs-translation">Root Pages with Solr configuration</target></trans-unit>
+      <trans-unit id="fileMetaData.title">
+        <source>File metadata overview</source>
+        <target state="needs-translation">File metadata overview</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.description">
+        <source>Lists images, their metadata status and where they are referenced (content elements and other extension records).</source>
+        <target state="needs-translation">Lists images, their metadata status and where they are referenced (content elements and other extension records).</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.truncatedWarning">
+        <source>This filter combination had to be evaluated in PHP and was capped at the first %s matching images. Narrow the filter (e.g. by storage or extension) for a complete result on very large installations.</source>
+        <target state="needs-translation">This filter combination had to be evaluated in PHP and was capped at the first %s matching images. Narrow the filter (e.g. by storage or extension) for a complete result on very large installations.</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.status">
+        <source>Metadata status</source>
+        <target state="needs-translation">Metadata status</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.status.all">
+        <source>All</source>
+        <target state="needs-translation">All</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.status.valid">
+        <source>Valid</source>
+        <target state="needs-translation">Valid</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.status.partial">
+        <source>Partially filled</source>
+        <target state="needs-translation">Partially filled</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.status.missing">
+        <source>Not filled at all</source>
+        <target state="needs-translation">Not filled at all</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.missingColumn">
+        <source>Missing column</source>
+        <target state="needs-translation">Missing column</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.any">
+        <source>Any</source>
+        <target state="needs-translation">Any</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.referenceScope">
+        <source>Referenced by</source>
+        <target state="needs-translation">Referenced by</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.referenceScope.all">
+        <source>All</source>
+        <target state="needs-translation">All</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.referenceScope.ttContent">
+        <source>Content elements only</source>
+        <target state="needs-translation">Content elements only</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.referenceScope.other">
+        <source>Other extension records only</source>
+        <target state="needs-translation">Other extension records only</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.referenceScope.both">
+        <source>Content elements and other records</source>
+        <target state="needs-translation">Content elements and other records</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.referenceScope.orphaned">
+        <source>Not referenced anywhere</source>
+        <target state="needs-translation">Not referenced anywhere</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.storage">
+        <source>Storage</source>
+        <target state="needs-translation">Storage</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.extension">
+        <source>File extension</source>
+        <target state="needs-translation">File extension</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.search">
+        <source>Search filename</source>
+        <target state="needs-translation">Search filename</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.apply">
+        <source>Apply filter</source>
+        <target state="needs-translation">Apply filter</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.resultCount">
+        <source>%s image(s) found</source>
+        <target state="needs-translation">%s image(s) found</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.table.thumbnail">
+        <source>Preview</source>
+        <target state="needs-translation">Preview</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.table.name">
+        <source>File</source>
+        <target state="needs-translation">File</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.table.status">
+        <source>Status</source>
+        <target state="needs-translation">Status</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.table.missingColumns">
+        <source>Missing columns</source>
+        <target state="needs-translation">Missing columns</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.table.references">
+        <source>Referenced by</source>
+        <target state="needs-translation">Referenced by</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.table.actions">
+        <source>Actions</source>
+        <target state="needs-translation">Actions</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.status.valid">
+        <source>Valid</source>
+        <target state="needs-translation">Valid</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.status.partial">
+        <source>Partial</source>
+        <target state="needs-translation">Partial</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.status.missing">
+        <source>Missing</source>
+        <target state="needs-translation">Missing</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.references.none">
+        <source>Not referenced anywhere</source>
+        <target state="needs-translation">Not referenced anywhere</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.actions.editMetadata">
+        <source>Edit metadata</source>
+        <target state="needs-translation">Edit metadata</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.noResults">
+        <source>No images match the current filter.</source>
+        <target state="needs-translation">No images match the current filter.</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.pagination.previous">
+        <source>Previous</source>
+        <target state="needs-translation">Previous</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.pagination.next">
+        <source>Next</source>
+        <target state="needs-translation">Next</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.pagination.pageOf">
+        <source>Page %s of %s</source>
+        <target state="needs-translation">Page %s of %s</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
