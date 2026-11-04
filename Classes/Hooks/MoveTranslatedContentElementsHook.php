@@ -24,13 +24,15 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class MoveTranslatedContentElementsHook
 {
+    public function __construct(private readonly ConnectionPool $connectionPool) {}
+
     public function processDatamap_beforeStart(DataHandler $dataHandler): void
     {
         // For "move"-cmd both cmdmap and datamap has to be filled
         if (
             isset($dataHandler->cmdmap['tt_content'], $dataHandler->datamap['tt_content'])
-            && !empty($dataHandler->cmdmap['tt_content'])
-            && !empty($dataHandler->datamap['tt_content'])
+            && (isset($dataHandler->cmdmap['tt_content']) && $dataHandler->cmdmap['tt_content'] !== [])
+            && (isset($dataHandler->datamap['tt_content']) && $dataHandler->datamap['tt_content'] !== [])
         ) {
             foreach ($dataHandler->cmdmap['tt_content'] as $uid => $cmdRecordInDefaultLanguage) {
                 // sys_language_uid
@@ -96,7 +98,7 @@ class MoveTranslatedContentElementsHook
 
     protected function getOverlayRecords($uid, DataHandler $dataHandler): array
     {
-        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tt_content');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
@@ -118,10 +120,5 @@ class MoveTranslatedContentElementsHook
         }
 
         return $contentRecords;
-    }
-
-    protected function getConnectionPool(): ConnectionPool
-    {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }

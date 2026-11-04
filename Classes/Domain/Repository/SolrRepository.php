@@ -30,7 +30,7 @@ class SolrRepository
     {
         try {
             return GeneralUtility::makeInstance(SiteRepository::class)->getAvailableSites($stopOnInvalidSite);
-        } catch (DBALDriverException | \Throwable $exception) {
+        } catch (DBALDriverException | \Throwable) {
             return [];
         }
     }
@@ -42,7 +42,7 @@ class SolrRepository
     {
         try {
             return GeneralUtility::makeInstance(SiteRepository::class)->getSiteByRootPageId($rootPage);
-        } catch (DBALDriverException $dbalDriverException) {
+        } catch (DBALDriverException) {
             return null;
         }
     }

@@ -15,7 +15,6 @@ use JWeiland\Jwtools2\Task\IndexQueueWorkerTask;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 
@@ -27,8 +26,8 @@ class SchedulerRepository
 {
     public function __construct(
         private readonly SchedulerTaskRepository $taskRepository,
-        private readonly ConnectionPool $connectionPool,
     ) {}
+
     /**
      * Get Solr Scheduler Task of this extension
      */
@@ -42,7 +41,7 @@ class SchedulerRepository
             if (!$task instanceof IndexQueueWorkerTask) {
                 return null;
             }
-        } catch (\OutOfBoundsException $outOfBoundsException) {
+        } catch (\OutOfBoundsException) {
             return null;
         }
 
@@ -53,13 +52,8 @@ class SchedulerRepository
     {
         try {
             return (string)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jwtools2', $path);
-        } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException $exception) {
+        } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException) {
             return '';
         }
-    }
-
-    protected function getConnectionPool(): ConnectionPool
-    {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }

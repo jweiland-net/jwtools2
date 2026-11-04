@@ -11,6 +11,11 @@
 			<f:if condition="{extConf.solrEnable}">
 				<f:link.action action="list" controller="Solr" class="list-group-item">Solr</f:link.action>
 			</f:if>
+			<f:if condition="{extConf.enableFileMetaDataOverviewModule}">
+				<f:link.action action="list" controller="FileMetaData" class="list-group-item">
+					{f:translate(key: 'fileMetaData.title')}
+				</f:link.action>
+			</f:if>
 		</div>
 </f:section>
 </html>

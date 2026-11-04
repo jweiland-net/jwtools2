@@ -1,0 +1,172 @@
+<html lang="en"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<f:layout name="Module"/>
+
+<f:section name="Content">
+    <f:flashMessages/>
+
+    <h1>{f:translate(key: 'fileMetaData.title')}</h1>
+    <p>{f:translate(key: 'fileMetaData.description')}</p>
+
+    <f:if condition="{truncated}">
+        <div class="alert alert-warning" role="alert">
+            <f:translate key="fileMetaData.truncatedWarning" arguments="{0: candidateLimit}"/>
+        </div>
+    </f:if>
+
+    <f:form action="list" name="filters" class="form-inline mb-3">
+        <div class="row">
+            <div class="col-md-2">
+                <label for="filter-status">{f:translate(key: 'fileMetaData.filter.status')}</label>
+                <f:form.select id="filter-status" property="status" class="form-select" value="{filters.status}"
+                                options="{
+                                    all: '{f:translate(key: \'fileMetaData.filter.status.all\')}',
+                                    valid: '{f:translate(key: \'fileMetaData.filter.status.valid\')}',
+                                    partial: '{f:translate(key: \'fileMetaData.filter.status.partial\')}',
+                                    missing: '{f:translate(key: \'fileMetaData.filter.status.missing\')}'
+                                }"/>
+            </div>
+            <div class="col-md-2">
+                <label for="filter-missingColumn">{f:translate(key: 'fileMetaData.filter.missingColumn')}</label>
+                <f:form.select id="filter-missingColumn" property="missingColumn" class="form-select"
+                                value="{filters.missingColumn}" options="{requiredColumnOptions}"
+                                prependOptionLabel="{f:translate(key: 'fileMetaData.filter.any')}"
+                                prependOptionValue=""/>
+            </div>
+            <div class="col-md-2">
+                <label for="filter-referenceScope">{f:translate(key: 'fileMetaData.filter.referenceScope')}</label>
+                <f:form.select id="filter-referenceScope" property="referenceScope" class="form-select"
+                                value="{filters.referenceScope}"
+                                options="{
+                                    all: '{f:translate(key: \'fileMetaData.filter.referenceScope.all\')}',
+                                    tt_content: '{f:translate(key: \'fileMetaData.filter.referenceScope.ttContent\')}',
+                                    other: '{f:translate(key: \'fileMetaData.filter.referenceScope.other\')}',
+                                    both: '{f:translate(key: \'fileMetaData.filter.referenceScope.both\')}',
+                                    orphaned: '{f:translate(key: \'fileMetaData.filter.referenceScope.orphaned\')}'
+                                }"/>
+            </div>
+            <div class="col-md-2">
+                <label for="filter-storage">{f:translate(key: 'fileMetaData.filter.storage')}</label>
+                <f:form.select id="filter-storage" property="storage" class="form-select" value="{filters.storage}"
+                                options="{storageOptions}" optionValueField="uid" optionLabelField="name"
+                                prependOptionLabel="{f:translate(key: 'fileMetaData.filter.any')}"
+                                prependOptionValue=""/>
+            </div>
+            <div class="col-md-2">
+                <label for="filter-extension">{f:translate(key: 'fileMetaData.filter.extension')}</label>
+                <f:form.select id="filter-extension" property="extension" class="form-select" value="{filters.extension}"
+                                options="{extensionOptions}"
+                                prependOptionLabel="{f:translate(key: 'fileMetaData.filter.any')}"
+                                prependOptionValue=""/>
+            </div>
+            <div class="col-md-2">
+                <label for="filter-search">{f:translate(key: 'fileMetaData.filter.search')}</label>
+                <f:form.textfield id="filter-search" property="search" class="form-control" value="{filters.search}"/>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-2">
+                <f:form.submit value="{f:translate(key: 'fileMetaData.filter.apply')}" class="btn btn-primary"/>
+            </div>
+        </div>
+    </f:form>
+
+    <p>
+        <f:translate key="fileMetaData.resultCount" arguments="{0: totalCount}"/>
+    </p>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>{f:translate(key: 'fileMetaData.table.thumbnail')}</th>
+            <th>{f:translate(key: 'fileMetaData.table.name')}</th>
+            <th>{f:translate(key: 'fileMetaData.table.status')}</th>
+            <th>{f:translate(key: 'fileMetaData.table.missingColumns')}</th>
+            <th>{f:translate(key: 'fileMetaData.table.references')}</th>
+            <th>{f:translate(key: 'fileMetaData.table.actions')}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <f:for each="{rows}" as="row">
+            <tr>
+                <td>
+                    <f:image image="{row.file}" width="60" height="60c" alt="{row.file.name}" absolute="1"/>
+                </td>
+                <td>
+                    {row.file.name}<br/>
+                    <small class="text-muted">{row.file.storage.name} - {row.file.extension}</small>
+                </td>
+                <td>
+                    <f:switch expression="{row.status}">
+                        <f:case value="valid"><span class="badge bg-success">{f:translate(key: 'fileMetaData.status.valid')}</span></f:case>
+                        <f:case value="partial"><span class="badge bg-warning">{f:translate(key: 'fileMetaData.status.partial')}</span></f:case>
+                        <f:case value="missing"><span class="badge bg-danger">{f:translate(key: 'fileMetaData.status.missing')}</span></f:case>
+                    </f:switch>
+                </td>
+                <td>
+                    <f:for each="{row.missingColumns}" as="missingColumn" iteration="iterator">
+                        {missingColumn}<f:if condition="{iterator.isLast}"><f:else>, </f:else></f:if>
+                    </f:for>
+                </td>
+                <td>
+                    <f:if condition="{row.references}">
+                        <f:then>
+                            <ul class="list-unstyled mb-0">
+                                <f:for each="{row.references}" as="reference">
+                                    <li>
+                                        <be:link.editRecord uid="{reference.recuid}" table="{reference.tablename}">
+                                            {reference.tablename}:{reference.recuid} ({reference.field})
+                                        </be:link.editRecord>
+                                    </li>
+                                </f:for>
+                            </ul>
+                        </f:then>
+                        <f:else>
+                            <em>{f:translate(key: 'fileMetaData.references.none')}</em>
+                        </f:else>
+                    </f:if>
+                </td>
+                <td>
+                    <f:if condition="{row.file.properties.metadata_uid}">
+                        <be:link.editRecord uid="{row.file.properties.metadata_uid}" table="sys_file_metadata"
+                                             class="btn btn-default btn-sm">
+                            {f:translate(key: 'fileMetaData.actions.editMetadata')}
+                        </be:link.editRecord>
+                    </f:if>
+                </td>
+            </tr>
+        </f:for>
+        <f:if condition="{rows}">
+            <f:else>
+                <tr>
+                    <td colspan="6">{f:translate(key: 'fileMetaData.noResults')}</td>
+                </tr>
+            </f:else>
+        </f:if>
+        </tbody>
+    </table>
+
+    <nav>
+        <ul class="pagination">
+            <li class="page-item {f:if(condition: '{currentPage} <= 1', then: 'disabled')}">
+                <f:link.action action="list" arguments="{filters: previousPageFilters}" class="page-link">
+                    {f:translate(key: 'fileMetaData.pagination.previous')}
+                </f:link.action>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">
+                    <f:translate key="fileMetaData.pagination.pageOf" arguments="{0: currentPage, 1: totalPages}"/>
+                </span>
+            </li>
+            <li class="page-item {f:if(condition: '{currentPage} >= {totalPages}', then: 'disabled')}">
+                <f:link.action action="list" arguments="{filters: nextPageFilters}" class="page-link">
+                    {f:translate(key: 'fileMetaData.pagination.next')}
+                </f:link.action>
+            </li>
+        </ul>
+    </nav>
+</f:section>
+</html>

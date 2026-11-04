@@ -116,7 +116,7 @@ class CacheQueryCommand extends Command
     {
         try {
             $cache = $this->getCacheManager()->getCache($cacheIdentifier);
-        } catch (NoSuchCacheException $noSuchCacheException) {
+        } catch (NoSuchCacheException) {
             return null;
         }
 

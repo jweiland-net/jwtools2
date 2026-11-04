@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
+		<header/>
+		<body>
+			<trans-unit id="indexqueueworker_title" xml:space="preserve" approved="yes">
+				<source>Index Queue Worker</source>
+				<target>Index Queue Worker</target>
+			</trans-unit>
+			<trans-unit id="indexqueueworker_description" xml:space="preserve" approved="yes">
+				<source>Processes the items in the Index Queue and sends them to Solr.</source>
+				<target>Verarbeitet einen Item in der Index Queue und sendet ihn an den Solr Server.</target>
+			</trans-unit>
+			<trans-unit id="indexqueueworker_field_documentsToIndexLimit" xml:space="preserve" approved="yes">
+				<source>Number of documents to index</source>
+				<target>Anzahl der zu indexierenden Dokumente</target>
+			</trans-unit>
+			<trans-unit id="indexqueueworker_field_maxSitesPerRun" xml:space="preserve" approved="yes">
+				<source>Max sites per run</source>
+				<target>Maximale Anzahl der zu indexierenden Seiten pro Durchlauf</target>
+			</trans-unit>
+			<trans-unit id="executeQueryTask.title" xml:space="preserve" approved="yes">
+				<source>Execute SQL Query</source>
+				<target>SQL Abfrage ausführen</target>
+			</trans-unit>
+			<trans-unit id="executeQueryTask.description" xml:space="preserve" approved="yes">
+				<source>With this task you can write your own SQL-Statement which will be executed with each scheduler run</source>
+				<target>Mit diesem Task kannst Du eine beliebige SQL-Abfrage wiederkehrend ausführen lassen.</target>
+			</trans-unit>
+			<trans-unit id="executeQueryTask.field.sqlQuery" xml:space="preserve" approved="yes">
+				<source>SQL Query</source>
+				<target>SQL Abfrage</target>
+			</trans-unit>
+			<trans-unit id="mod.solr.solrFeaturesOverview" xml:space="preserve" approved="yes">
+				<source>Module: Solr Overview</source>
+				<target>Modul: Solr Übersicht</target>
+			</trans-unit>
+			<trans-unit id="mod.solr.memoryUsageSchedulerTask" xml:space="preserve" approved="yes">
+				<source>Current Memory Usage of running jwtools2 Solr Scheduler Task</source>
+				<target>Aktueller RAM-Verbrauch des Solr Scheduler Tasks der jwtools2</target>
+			</trans-unit>
+			<trans-unit id="mod.solr.configuredRootPages" xml:space="preserve" approved="yes">
+				<source>Root Pages with Solr configuration</source>
+				<target>Root-Seiten mit Solr-Konfiguration</target>
+			</trans-unit>
+
+			<trans-unit id="fileMetaData.title">
+				<source>File metadata overview</source>
+				<target>Übersicht Datei-Metadaten</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.description">
+				<source>Lists images, their metadata status and where they are referenced (content elements and other extension records).</source>
+				<target>Listet Bilder, deren Metadaten-Status und deren Verwendung (Inhaltselemente und andere Extension-Datensätze) auf.</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.truncatedWarning">
+				<source>This filter combination had to be evaluated in PHP and was capped at the first %s matching images. Narrow the filter (e.g. by storage or extension) for a complete result on very large installations.</source>
+				<target>Diese Filterkombination musste in PHP ausgewertet werden und wurde auf die ersten %s passenden Bilder begrenzt. Schränken Sie den Filter (z.B. nach Storage oder Dateiendung) ein, um bei sehr großen Installationen ein vollständiges Ergebnis zu erhalten.</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.status">
+				<source>Metadata status</source>
+				<target>Metadaten-Status</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.status.all">
+				<source>All</source>
+				<target>Alle</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.status.valid">
+				<source>Valid</source>
+				<target>Gültig</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.status.partial">
+				<source>Partially filled</source>
+				<target>Teilweise ausgefüllt</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.status.missing">
+				<source>Not filled at all</source>
+				<target>Gar nicht ausgefüllt</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.missingColumn">
+				<source>Missing column</source>
+				<target>Fehlende Spalte</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.any">
+				<source>Any</source>
+				<target>Beliebig</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.referenceScope">
+				<source>Referenced by</source>
+				<target>Verwendet von</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.referenceScope.all">
+				<source>All</source>
+				<target>Alle</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.referenceScope.ttContent">
+				<source>Content elements only</source>
+				<target>Nur Inhaltselemente</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.referenceScope.other">
+				<source>Other extension records only</source>
+				<target>Nur andere Extension-Datensätze</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.referenceScope.both">
+				<source>Content elements and other records</source>
+				<target>Inhaltselemente und andere Datensätze</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.referenceScope.orphaned">
+				<source>Not referenced anywhere</source>
+				<target>Nirgends verwendet</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.storage">
+				<source>Storage</source>
+				<target>Storage</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.extension">
+				<source>File extension</source>
+				<target>Dateiendung</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.search">
+				<source>Search filename</source>
+				<target>Dateiname suchen</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.filter.apply">
+				<source>Apply filter</source>
+				<target>Filter anwenden</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.resultCount">
+				<source>%s image(s) found</source>
+				<target>%s Bild(er) gefunden</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.table.thumbnail">
+				<source>Preview</source>
+				<target>Vorschau</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.table.name">
+				<source>File</source>
+				<target>Datei</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.table.status">
+				<source>Status</source>
+				<target>Status</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.table.missingColumns">
+				<source>Missing columns</source>
+				<target>Fehlende Spalten</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.table.references">
+				<source>Referenced by</source>
+				<target>Verwendet von</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.table.actions">
+				<source>Actions</source>
+				<target>Aktionen</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.status.valid">
+				<source>Valid</source>
+				<target>Gültig</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.status.partial">
+				<source>Partial</source>
+				<target>Teilweise</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.status.missing">
+				<source>Missing</source>
+				<target>Fehlend</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.references.none">
+				<source>Not referenced anywhere</source>
+				<target>Nirgends verwendet</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.actions.editMetadata">
+				<source>Edit metadata</source>
+				<target>Metadaten bearbeiten</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.noResults">
+				<source>No images match the current filter.</source>
+				<target>Keine Bilder entsprechen dem aktuellen Filter.</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.pagination.previous">
+				<source>Previous</source>
+				<target>Zurück</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.pagination.next">
+				<source>Next</source>
+				<target>Weiter</target>
+			</trans-unit>
+			<trans-unit id="fileMetaData.pagination.pageOf">
+				<source>Page %s of %s</source>
+				<target>Seite %s von %s</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

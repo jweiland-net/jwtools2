@@ -41,9 +41,6 @@ class NextRunViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * Calculate next run for given site
-     */
     public function render(): float
     {
         $task = $this->schedulerRepository->findSolrSchedulerTask();
@@ -64,7 +61,7 @@ class NextRunViewHelper extends AbstractViewHelper
             if (!$currentSite instanceof Site) {
                 return 0;
             }
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             return 0;
         }
 

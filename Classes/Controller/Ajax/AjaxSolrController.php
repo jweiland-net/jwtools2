@@ -88,7 +88,7 @@ class AjaxSolrController
                             $site,
                             $indexingConfigurationName,
                         );
-                } catch (ConnectionException|Exception $e) {
+                } catch (ConnectionException|Exception) {
                 }
             }
 

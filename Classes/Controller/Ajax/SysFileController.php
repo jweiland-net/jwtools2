@@ -31,15 +31,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SysFileController
 {
-    protected ResourceFactory $resourceFactory;
-
-    protected GraphicalFunctions $graphicalFunctions;
-
-    public function __construct(ResourceFactory $resourceFactory, GraphicalFunctions $graphicalFunctions)
-    {
-        $this->resourceFactory = $resourceFactory;
-        $this->graphicalFunctions = $graphicalFunctions;
-    }
+    public function __construct(
+        protected ResourceFactory $resourceFactory,
+        protected GraphicalFunctions $graphicalFunctions,
+    ) {}
 
     public function updateFileMetadataAction(ServerRequestInterface $request): JsonResponse
     {
@@ -116,8 +111,8 @@ class SysFileController
         $validatedFiles = [];
         $files = $request->getQueryParams()['CB']['files'] ?? [];
         foreach ($files as $hash => $file) {
-            [$table, $hash] = explode('|', $hash);
-            if ($table === '_FILE' && $hash === substr(md5($file), 0, 10)) {
+            [$table, $hash] = explode('|', (string)$hash);
+            if ($table === '_FILE' && $hash === substr(md5((string)$file), 0, 10)) {
                 $validatedFiles[] = $file;
             }
         }
@@ -134,7 +129,7 @@ class SysFileController
         // A version like 6.9.10-23
         $version = '';
         if (isset($string) && $string !== '') {
-            [, $version] = explode('Magick', $string);
+            [, $version] = explode('Magick', (string)$string);
             [$version] = explode(' ', trim($version));
             [$version] = explode('-', trim($version));
             $version = trim($version);

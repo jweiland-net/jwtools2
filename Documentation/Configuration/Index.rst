@@ -31,6 +31,8 @@ Yes, it's the same settings like:
 
 options.pageTree.showPageIdWithTitle = 1
 
+As user TSconfig is cached, please flush all caches after changing this setting.
+
 
 ..  _typo3TransferTypoScriptCurrent:
 
@@ -93,6 +95,112 @@ Add a comma separated list of column names of table ``sys_file`` or
 ``sys_file_metadata`` to set these columns as required. If these columns are not
 filled for an image it is not selectable in FileBrowser. It can not be inserted
 into a ContentElement or record.
+
+Example: ``creator, copyright``
+
+This setting only applies to images. It has the following effects:
+
+*   An info message in the file browser lists the required columns.
+*   Images with missing values can neither be selected with the checkbox and
+    select button nor with a click on the file name. A click on the file name
+    shows a notification instead.
+*   Columns of ``sys_file_metadata`` are marked as required in the metadata
+    form of images. Please flush all caches after changing this setting, as
+    this is part of the cached TCA.
+
+Files uploaded directly into a file field of a record (drag & drop, "Add media
+by URL") do not pass the file browser. Activate
+:ref:`typo3PreventSavingContentWithInvalidFileMetaData` to cover these, too.
+
+
+..  _typo3PreventSavingContentWithInvalidFileMetaData:
+
+typo3PreventSavingContentWithInvalidFileMetaData
+------------------------------------------------
+
+**Default**: 0
+
+Only valid, if :ref:`typo3RequiredColumnsForFiles` is configured.
+
+On creating or updating any record (regardless of table or field) all its file
+relations to images with missing required columns will be disabled (hidden).
+The rest of the record is saved as usual and a message explaining why is shown
+in the backend.
+
+
+..  _typo3DisableRecordsOnInvalidFileMetaData:
+
+typo3DisableRecordsOnInvalidFileMetaData
+----------------------------------------
+
+**Default**: 0
+
+Only valid, if :ref:`typo3RequiredColumnsForFiles` is configured.
+
+If the metadata of a file which is already in use gets edited and a required
+column becomes empty, all records referencing this file will be disabled
+(hidden). A message explaining why is shown in the backend. Once the metadata
+is completed again, the affected records will be re-enabled automatically.
+
+
+..  _typo3ReplaceFrontendImagesWithInvalidMetaData:
+
+typo3ReplaceFrontendImagesWithInvalidMetaData
+---------------------------------------------
+
+**Default**: 0
+
+Only valid, if :ref:`typo3RequiredColumnsForFiles` is configured.
+
+Images with missing required columns will be replaced by a placeholder image in
+frontend. The backend still shows the original image, so editors can find and
+fix it.
+
+
+..  _typo3PlaceholderImageApiUrl:
+
+typo3PlaceholderImageApiUrl
+---------------------------
+
+**Default**: https://placehold.co/{width}x{height}/eeeeee/999999.png?text=Metadata+missing
+
+Only valid, if :ref:`typo3ReplaceFrontendImagesWithInvalidMetaData` is
+activated.
+
+URL template to fetch the placeholder image. ``{width}`` and ``{height}`` will
+be replaced with the requested processing dimensions. Leave empty to use the
+placeholder image shipped with jwtools2 instead of an external API.
+
+
+..  _typo3PlaceholderImageStorageFolder:
+
+typo3PlaceholderImageStorageFolder
+----------------------------------
+
+**Default**: 1:/placeholder_images/jwtools2/
+
+Only valid, if :ref:`typo3PlaceholderImageApiUrl` is set.
+
+Combined identifier of the FAL folder used to cache placeholder images
+downloaded from the API, so it is not called on every request.
+
+..  attention::
+
+    Do not use a path containing a folder named ``_temp_`` or ``_recycler_``.
+    Most TYPO3 installations block direct web access to these folders, which
+    results in broken placeholder images in frontend.
+
+
+..  _enableFileMetaDataOverviewModule:
+
+enableFileMetaDataOverviewModule
+--------------------------------
+
+**Default**: 0
+
+Adds a file metadata overview to the jwtools2 backend module. It lists images,
+their metadata status and where they are referenced (content elements and
+records of other extensions), with filters for missing metadata.
 
 ..  _typo3ExcludeVideoFilesFromFalFilter:
 

@@ -29,11 +29,11 @@ use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
  */
 class StatusReportCommand extends Command
 {
-    private const RETURN_YES = '<info>YES</info>';
+    private const string RETURN_YES = '<info>YES</info>';
 
-    private const RETURN_NO = '<error>NO</error>';
+    private const string RETURN_NO = '<error>NO</error>';
 
-    private SchedulerTaskRepository $taskRepository;
+    private ?SchedulerTaskRepository $taskRepository = null;
 
     protected InputInterface $input;
 
@@ -86,9 +86,15 @@ class StatusReportCommand extends Command
 
     protected function checkScheduler(): void
     {
-        $yesterday = time() - (60 * 60 * 24);
         $this->ioStyled->title('Checking scheduler tasks');
 
+        if (!$this->taskRepository instanceof SchedulerTaskRepository) {
+            $this->ioStyled->warning('EXT:scheduler is not installed/active - skipping scheduler task check.');
+
+            return;
+        }
+
+        $yesterday = time() - (60 * 60 * 24);
         $lastExecution = 0;
         $recurringTasks = [];
 
@@ -111,7 +117,7 @@ class StatusReportCommand extends Command
         $response->getBody()->rewind();
         $json = $response->getBody()->getContents();
 
-        $result = json_decode($json, true);
+        $result = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
         $hasSuggestions = isset($result['suggestions']) && $result['suggestions'] !== ''
             ? '<error>YES</error>'
@@ -299,7 +305,7 @@ class StatusReportCommand extends Command
         return $task['lastExecutionTime'] < $yesterday ? '<error>scheduled > 24h</error>' : '<info>scheduled < 24h</info>';
     }
 
-    public function setTaskRepository(SchedulerTaskRepository $taskRepository): void
+    public function setTaskRepository(?SchedulerTaskRepository $taskRepository): void
     {
         $this->taskRepository = $taskRepository;
     }

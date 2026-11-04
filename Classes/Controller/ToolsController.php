@@ -15,6 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class ToolsController extends AbstractController
 {
+    #[\Override]
     public function initializeAction(): void
     {
         parent::initializeAction();

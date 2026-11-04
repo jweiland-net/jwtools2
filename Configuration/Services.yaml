@@ -21,11 +21,14 @@ services:
     - name: 'console.command'
       command: 'jwtools2:convertpasswords'
       schedulable: false
+  # "scheduler" is not a hard dependency of jwtools2 (see ext_emconf.php), so this reference
+  # must stay optional ("@?") - otherwise the DI container fails to compile entirely whenever
+  # EXT:scheduler is not loaded/active (e.g. in a minimal functional test bootstrap).
   JWeiland\Jwtools2\Command\StatusReportCommand:
     calls:
       - method: setTaskRepository
         arguments:
-          - '@TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository'
+          - '@?TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository'
     tags:
     - name: 'console.command'
       command: 'jwtools2:statusreport'
@@ -33,6 +36,26 @@ services:
 
   # Called by makeInstance in start() of ContentObjectRenderer
   JWeiland\Jwtools2\Hooks\InitializeStdWrap:
+    public: true
+
+  # Called by makeInstance in processCmdmapClass hook of DataHandler
+  JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook:
+    public: true
+
+  # Called by makeInstance in the "set" hook of VariableFrontend (Caching Framework)
+  JWeiland\Jwtools2\Hooks\CachingFrameworkLoggerHook:
+    public: true
+
+  # Called by makeInstance in processDatamapClass hook of DataHandler
+  JWeiland\Jwtools2\Hooks\ValidateFileMetaDataOnSaveHook:
+    public: true
+
+  # Called by makeInstance in saveTask()/editTaskAction() of SchedulerModuleController
+  JWeiland\Jwtools2\Task\ExecuteQueryTask:
+    public: true
+
+  # Called by makeInstance in saveTask()/editTaskAction() of SchedulerModuleController
+  JWeiland\Jwtools2\Task\IndexQueueWorkerTask:
     public: true
 
   JWeiland\Jwtools2\LinkHandler\FileLinkHandler:
@@ -58,6 +81,29 @@ services:
       - name: event.listener
         identifier: 'jwtools2.events.isFileSelectableEvent'
         event: TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent
+
+  JWeiland\Jwtools2\EventListener\AddPageIdInPageTreeEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'jwtools2.events.addPageIdInPageTree'
+        event: TYPO3\CMS\Core\TypoScript\IncludeTree\Event\BeforeLoadedUserTsConfigEvent
+
+  JWeiland\Jwtools2\EventListener\ReplaceInvalidMetaDataImageEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'jwtools2.events.beforeFileProcessingEvent'
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFileProcessingEvent
+
+  JWeiland\Jwtools2\EventListener\DisableRecordsWithInvalidFileMetaDataEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'jwtools2.events.afterFileMetaDataUpdatedEvent'
+        event: TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataUpdatedEvent
+        method: 'onMetaDataUpdated'
+      - name: event.listener
+        identifier: 'jwtools2.events.afterFileMetaDataCreatedEvent'
+        event: TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataCreatedEvent
+        method: 'onMetaDataCreated'
 
   # Backend Context Menu Provider
   JWeiland\Jwtools2\ContextMenu\ItemProviders\UpdateFileMetaDataProvider:
