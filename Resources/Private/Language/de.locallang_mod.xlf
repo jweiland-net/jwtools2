@@ -20,6 +20,14 @@
 				<source>For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files cannot currently be linked to content elements or other records. Please complete these mandatory fields first.</source>
 				<target>Für einige Dateien müssen bestimmte Pflichtfelder (%s) ausgefüllt sein. Sollte dies nicht der Fall sein, können diese Dateien derzeit nicht mit Inhaltselementen oder anderen Datensätzen verknüpft werden. Bitte ergänzen Sie zunächst diese Pflichtfelder.</target>
 			</trans-unit>
+			<trans-unit id="fileBrowser.notification.notSelectable.title">
+				<source>File cannot be selected</source>
+				<target>Datei kann nicht ausgewählt werden</target>
+			</trans-unit>
+			<trans-unit id="fileBrowser.notification.notSelectable.message">
+				<source>The mandatory metadata of "%s" is incomplete. Please complete the metadata in the file list first.</source>
+				<target>Die Pflicht-Metadaten von "%s" sind unvollständig. Bitte ergänzen Sie zunächst die Metadaten in der Dateiliste.</target>
+			</trans-unit>
 
 			<trans-unit id="dataHandler.log.invalidFileMetaData">
 				<source>This file can be only activated after the meta data is filled.</source>
