@@ -10,6 +10,23 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 8.2.0
+=============
+
+*   [FEATURE] Prevent selecting files with incomplete required metadata via the
+    file name in the element browser
+*   [FEATURE] Mark required metadata columns as mandatory in the metadata form
+    of images
+*   [FEATURE] Disable file relations with invalid metadata on save of any record
+*   [FEATURE] Disable referencing records when required metadata of a used file
+    gets removed and re-enable them once it is completed again
+*   [FEATURE] Replace frontend images with invalid metadata by a placeholder image
+*   [FEATURE] Add backend module to list images with their metadata status and
+    references
+*   [TASK] Require PHP 8.3 and TYPO3 13.4.24 or higher
+*   [TASK] Use constructor injection and strict typing across the extension
+*   [TASK] Add GitHub Actions workflow for TER releases
+
 Version 8.1.1
 =============
 

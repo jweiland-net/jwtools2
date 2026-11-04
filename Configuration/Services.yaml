@@ -82,6 +82,12 @@ services:
         identifier: 'jwtools2.events.isFileSelectableEvent'
         event: TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent
 
+  JWeiland\Jwtools2\EventListener\AddPageIdInPageTreeEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'jwtools2.events.addPageIdInPageTree'
+        event: TYPO3\CMS\Core\TypoScript\IncludeTree\Event\BeforeLoadedUserTsConfigEvent
+
   JWeiland\Jwtools2\EventListener\ReplaceInvalidMetaDataImageEventListener:
     tags:
       - name: event.listener
