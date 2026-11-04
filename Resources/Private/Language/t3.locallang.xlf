@@ -1,38 +1,182 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="EXT:jwtools2/Resources/Private/Language/locallang.xlf" date="2018-01-09T14:24:45Z" product-name="jwtools2" target-language="t3">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" target-language="t3" datatype="plaintext" original="messages" date="2018-01-09T14:24:45Z" product-name="jwtools2">
     <header/>
     <body>
       <trans-unit id="indexqueueworker_title" xml:space="preserve">
-        <source>Index Queue Worker</source>
-      <target>crwdns390802:0crwdne390802:0</target></trans-unit>
+				<source>Index Queue Worker</source>
+			<target>crwdns418785:0crwdne418785:0</target></trans-unit>
       <trans-unit id="indexqueueworker_description" xml:space="preserve">
-        <source>Processes the items in the Index Queue and sends them to Solr.</source>
-      <target>crwdns390804:0crwdne390804:0</target></trans-unit>
+				<source>Processes the items in the Index Queue and sends them to Solr.</source>
+			<target>crwdns418787:0crwdne418787:0</target></trans-unit>
       <trans-unit id="indexqueueworker_field_documentsToIndexLimit" xml:space="preserve">
-        <source>Number of documents to index</source>
-      <target>crwdns390806:0crwdne390806:0</target></trans-unit>
+				<source>Number of documents to index</source>
+			<target>crwdns418789:0crwdne418789:0</target></trans-unit>
       <trans-unit id="indexqueueworker_field_maxSitesPerRun" xml:space="preserve">
-        <source>Max sites per run</source>
-      <target>crwdns390808:0crwdne390808:0</target></trans-unit>
+				<source>Max sites per run</source>
+			<target>crwdns418791:0crwdne418791:0</target></trans-unit>
       <trans-unit id="executeQueryTask.title" xml:space="preserve">
-        <source>Execute SQL Query</source>
-      <target>crwdns390810:0crwdne390810:0</target></trans-unit>
+				<source>Execute SQL Query</source>
+			<target>crwdns418793:0crwdne418793:0</target></trans-unit>
       <trans-unit id="executeQueryTask.description" xml:space="preserve">
-        <source>With this task you can write your own SQL-Statement which will be executed with each scheduler run</source>
-      <target>crwdns390812:0crwdne390812:0</target></trans-unit>
+				<source>With this task you can write your own SQL-Statement which will be executed with each scheduler run</source>
+			<target>crwdns418795:0crwdne418795:0</target></trans-unit>
       <trans-unit id="executeQueryTask.field.sqlQuery" xml:space="preserve">
-        <source>SQL Query</source>
-      <target>crwdns390814:0crwdne390814:0</target></trans-unit>
+				<source>SQL Query</source>
+			<target>crwdns418797:0crwdne418797:0</target></trans-unit>
       <trans-unit id="mod.solr.solrFeaturesOverview" xml:space="preserve">
-        <source>Module: Solr Overview</source>
-      <target>crwdns390816:0crwdne390816:0</target></trans-unit>
+				<source>Module: Solr Overview</source>
+			<target>crwdns418799:0crwdne418799:0</target></trans-unit>
       <trans-unit id="mod.solr.memoryUsageSchedulerTask" xml:space="preserve">
-        <source>Current Memory Usage of running jwtools2 Solr Scheduler Task</source>
-      <target>crwdns390818:0crwdne390818:0</target></trans-unit>
+				<source>Current Memory Usage of running jwtools2 Solr Scheduler Task</source>
+			<target>crwdns418801:0crwdne418801:0</target></trans-unit>
       <trans-unit id="mod.solr.configuredRootPages" xml:space="preserve">
-        <source>Root Pages with Solr configuration</source>
-      <target>crwdns390820:0crwdne390820:0</target></trans-unit>
+				<source>Root Pages with Solr configuration</source>
+			<target>crwdns418803:0crwdne418803:0</target></trans-unit>
+      <trans-unit id="fileMetaData.title">
+        <source>File metadata overview</source>
+        <target>crwdns418805:0crwdne418805:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.description">
+        <source>Lists images, their metadata status and where they are referenced (content elements and other extension records).</source>
+        <target>crwdns418807:0crwdne418807:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.truncatedWarning">
+        <source>This filter combination had to be evaluated in PHP and was capped at the first %s matching images. Narrow the filter (e.g. by storage or extension) for a complete result on very large installations.</source>
+        <target>crwdns418809:0%scrwdne418809:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.status">
+        <source>Metadata status</source>
+        <target>crwdns418811:0crwdne418811:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.status.all">
+        <source>All</source>
+        <target>crwdns418813:0crwdne418813:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.status.valid">
+        <source>Valid</source>
+        <target>crwdns418815:0crwdne418815:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.status.partial">
+        <source>Partially filled</source>
+        <target>crwdns418817:0crwdne418817:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.status.missing">
+        <source>Not filled at all</source>
+        <target>crwdns418819:0crwdne418819:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.missingColumn">
+        <source>Missing column</source>
+        <target>crwdns418821:0crwdne418821:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.any">
+        <source>Any</source>
+        <target>crwdns418823:0crwdne418823:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.referenceScope">
+        <source>Referenced by</source>
+        <target>crwdns418825:0crwdne418825:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.referenceScope.all">
+        <source>All</source>
+        <target>crwdns418827:0crwdne418827:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.referenceScope.ttContent">
+        <source>Content elements only</source>
+        <target>crwdns418829:0crwdne418829:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.referenceScope.other">
+        <source>Other extension records only</source>
+        <target>crwdns418831:0crwdne418831:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.referenceScope.both">
+        <source>Content elements and other records</source>
+        <target>crwdns418833:0crwdne418833:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.referenceScope.orphaned">
+        <source>Not referenced anywhere</source>
+        <target>crwdns418835:0crwdne418835:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.storage">
+        <source>Storage</source>
+        <target>crwdns418837:0crwdne418837:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.extension">
+        <source>File extension</source>
+        <target>crwdns418839:0crwdne418839:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.search">
+        <source>Search filename</source>
+        <target>crwdns418841:0crwdne418841:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.filter.apply">
+        <source>Apply filter</source>
+        <target>crwdns418843:0crwdne418843:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.resultCount">
+        <source>%s image(s) found</source>
+        <target>crwdns418845:0%scrwdne418845:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.table.thumbnail">
+        <source>Preview</source>
+        <target>crwdns418847:0crwdne418847:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.table.name">
+        <source>File</source>
+        <target>crwdns418849:0crwdne418849:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.table.status">
+        <source>Status</source>
+        <target>crwdns418851:0crwdne418851:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.table.missingColumns">
+        <source>Missing columns</source>
+        <target>crwdns418853:0crwdne418853:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.table.references">
+        <source>Referenced by</source>
+        <target>crwdns418855:0crwdne418855:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.table.actions">
+        <source>Actions</source>
+        <target>crwdns418857:0crwdne418857:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.status.valid">
+        <source>Valid</source>
+        <target>crwdns418859:0crwdne418859:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.status.partial">
+        <source>Partial</source>
+        <target>crwdns418861:0crwdne418861:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.status.missing">
+        <source>Missing</source>
+        <target>crwdns418863:0crwdne418863:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.references.none">
+        <source>Not referenced anywhere</source>
+        <target>crwdns418865:0crwdne418865:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.actions.editMetadata">
+        <source>Edit metadata</source>
+        <target>crwdns418867:0crwdne418867:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.noResults">
+        <source>No images match the current filter.</source>
+        <target>crwdns418869:0crwdne418869:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.pagination.previous">
+        <source>Previous</source>
+        <target>crwdns418871:0crwdne418871:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.pagination.next">
+        <source>Next</source>
+        <target>crwdns418873:0crwdne418873:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaData.pagination.pageOf">
+        <source>Page %s of %s</source>
+        <target>crwdns418875:0%scrwdnd418875:0%scrwdne418875:0</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
