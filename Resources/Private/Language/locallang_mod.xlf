@@ -16,6 +16,12 @@
 			<trans-unit id="fileBrowser.flashMessage.requiredColumns.description">
 				<source>For some files, certain mandatory fields (%s) must be filled in. If this is not the case, these files cannot currently be linked to content elements or other records. Please complete these mandatory fields first.</source>
 			</trans-unit>
+			<trans-unit id="fileBrowser.notification.notSelectable.title">
+				<source>File cannot be selected</source>
+			</trans-unit>
+			<trans-unit id="fileBrowser.notification.notSelectable.message">
+				<source>The mandatory metadata of "%s" is incomplete. Please complete the metadata in the file list first.</source>
+			</trans-unit>
 
 			<trans-unit id="dataHandler.log.invalidFileMetaData">
 				<source>This file can be only activated after the meta data is filled.</source>
