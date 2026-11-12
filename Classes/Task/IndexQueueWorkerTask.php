@@ -32,19 +32,14 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
 
     protected int $maxSitesPerRun = 10;
 
-    public function __construct(private readonly Registry $registry)
-    {
-        parent::__construct();
-    }
-
     /**
      * Works through the indexing queue and indexes the queued items into Solr.
      */
     public function execute(): bool
     {
-        $this->registry->set('jwtools2-solr', 'memoryPeakUsage', 0);
+        $this->getRegistry()->set('jwtools2-solr', 'memoryPeakUsage', 0);
 
-        $lastSitePosition = (int)$this->registry->get('jwtools2-solr', 'lastSitePosition');
+        $lastSitePosition = (int)$this->getRegistry()->get('jwtools2-solr', 'lastSitePosition');
         $maxSitePosition = $lastSitePosition + $this->getMaxSitesPerRun();
         $cliEnvironment = null;
 
@@ -65,7 +60,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
                 continue;
             }
 
-            $this->registry->set('jwtools2-solr', 'rootPageId', $availableSite->getRootPageId());
+            $this->getRegistry()->set('jwtools2-solr', 'rootPageId', $availableSite->getRootPageId());
 
             try {
                 $indexService = GeneralUtility::makeInstance(IndexService::class, $availableSite);
@@ -77,7 +72,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
             }
         }
 
-        $this->registry->set(
+        $this->getRegistry()->set(
             'jwtools2-solr',
             'lastSitePosition',
             $maxSitePosition > count($availableSites) ? 0 : $maxSitePosition,
@@ -96,7 +91,7 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
      */
     public function getAdditionalInformation(): string
     {
-        $rootPageId = (int)$this->registry->get('jwtools2-solr', 'rootPageId');
+        $rootPageId = (int)$this->getRegistry()->get('jwtools2-solr', 'rootPageId');
         $message = 'Please execute this task first to retrieve site information';
         if ($rootPageId === 0) {
             return $message;
@@ -116,8 +111,8 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
                 $message .= ' Failures: ' . $failedItemsCount;
             }
 
-            $message .= ' / Index queue UID: ' . $this->registry->get('jwtools2-solr', 'indexQueueUid');
-            $message .= ' / Memory Peak: ' . (float)$this->registry->get('jwtools2-solr', 'memoryPeakUsage');
+            $message .= ' / Index queue UID: ' . $this->getRegistry()->get('jwtools2-solr', 'indexQueueUid');
+            $message .= ' / Memory Peak: ' . (float)$this->getRegistry()->get('jwtools2-solr', 'memoryPeakUsage');
         }
 
         return $message;
@@ -152,6 +147,17 @@ class IndexQueueWorkerTask extends AbstractTask implements ProgressProviderInter
     protected function getInitializedIndexServiceForSite(Site $site): IndexService
     {
         return GeneralUtility::makeInstance(IndexService::class, $site);
+    }
+
+    /**
+     * Scheduler tasks are stored serialized in the database and restored via unserialize(),
+     * which does not call the constructor. Constructor injection would serialize the injected
+     * services into the task record (stale state) and break tasks saved by older versions
+     * (uninitialized typed properties). So dependencies have to be fetched at runtime.
+     */
+    private function getRegistry(): Registry
+    {
+        return GeneralUtility::makeInstance(Registry::class);
     }
 
     public function getDocumentsToIndexLimit(): int

@@ -25,13 +25,6 @@ class ExecuteQueryTask extends AbstractTask
 {
     protected string $sqlQuery = '';
 
-    public function __construct(
-        private readonly FlashMessageService $flashMessageService,
-        private readonly ConnectionPool $connectionPool,
-    ) {
-        parent::__construct();
-    }
-
     public function execute(): bool
     {
         try {
@@ -87,13 +80,19 @@ class ExecuteQueryTask extends AbstractTask
     public function addMessage(string $message, ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK): void
     {
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, '', $severity);
-        $flashMessageService = $this->flashMessageService;
-        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-        $defaultFlashMessageQueue->enqueue($flashMessage);
+        GeneralUtility::makeInstance(FlashMessageService::class)
+            ->getMessageQueueByIdentifier()
+            ->enqueue($flashMessage);
     }
 
+    /**
+     * Scheduler tasks are stored serialized in the database and restored via unserialize(),
+     * which does not call the constructor. Constructor injection would serialize the injected
+     * services into the task record (stale state) and break tasks saved by older versions
+     * (uninitialized typed properties). So dependencies have to be fetched at runtime.
+     */
     protected function getConnectionPool(): ConnectionPool
     {
-        return $this->connectionPool;
+        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }
