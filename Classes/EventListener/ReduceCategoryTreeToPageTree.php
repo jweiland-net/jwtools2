@@ -42,6 +42,7 @@ class ReduceCategoryTreeToPageTree
     public function __construct(
         protected ExtensionConfiguration $extensionConfiguration,
         private readonly ConnectionPool $connectionPool,
+        private readonly QueryGenerator $queryGenerator,
     ) {}
 
     public function __invoke(ModifyTreeDataEvent $event): void
@@ -197,6 +198,6 @@ class ReduceCategoryTreeToPageTree
 
     protected function getQueryGenerator(): QueryGenerator
     {
-        return GeneralUtility::makeInstance(QueryGenerator::class);
+        return $this->queryGenerator;
     }
 }

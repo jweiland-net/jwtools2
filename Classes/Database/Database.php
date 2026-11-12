@@ -33,7 +33,7 @@ class Database
     public static function getQueryBuilderForTable(
         string $tableName,
         bool $useRestrictionsForCurrentTypo3Mode = true,
-        QueryRestrictionContainerInterface $restrictionContainer = null,
+        ?QueryRestrictionContainerInterface $restrictionContainer = null,
     ): QueryBuilder {
         if ($useRestrictionsForCurrentTypo3Mode) {
             if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {

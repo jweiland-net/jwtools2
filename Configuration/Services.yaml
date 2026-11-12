@@ -34,10 +34,6 @@ services:
       command: 'jwtools2:statusreport'
       schedulable: false
 
-  # Called by makeInstance in start() of ContentObjectRenderer
-  JWeiland\Jwtools2\Hooks\InitializeStdWrap:
-    public: true
-
   # Called by makeInstance in processCmdmapClass hook of DataHandler
   JWeiland\Jwtools2\Hooks\MoveTranslatedContentElementsHook:
     public: true
@@ -58,10 +54,8 @@ services:
   JWeiland\Jwtools2\Task\IndexQueueWorkerTask:
     public: true
 
-  JWeiland\Jwtools2\LinkHandler\FileLinkHandler:
-    public: true
-
-  JWeiland\Jwtools2\LinkHandler\FolderLinkHandler:
+  # Called by makeInstance in IndexQueueWorkerTask, SolrController and AjaxSolrController
+  JWeiland\Jwtools2\Service\SolrService:
     public: true
 
   # Event Listeners

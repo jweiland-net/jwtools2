@@ -42,3 +42,6 @@ jobs:
 
       - name: 'Execute unit tests'
         run: Build/Scripts/runTests.sh -b podman -p ${{ matrix.php }} -s unit
+
+      - name: 'Execute functional tests'
+        run: Build/Scripts/runTests.sh -b podman -p ${{ matrix.php }} -s functional

@@ -10,6 +10,25 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 8.2.1
+=============
+
+*   [BUGFIX] Fix "Too few arguments" error in the Solr scheduler task
+    ("IndexQueueWorkerTask") by making SolrService public for
+    GeneralUtility::makeInstance()
+*   [BUGFIX] Fix broken ConnectionPool property access in SolrService
+*   [BUGFIX] Fix "Too few arguments" error in the category tree by injecting
+    QueryGenerator into ReduceCategoryTreeToPageTree
+*   [BUGFIX] Remove constructor injection from scheduler tasks
+    ("IndexQueueWorkerTask", "ExecuteQueryTask"), as tasks are restored via
+    unserialize(). Tasks saved with older versions crashed and flash messages
+    of "ExecuteQueryTask" were not displayed
+*   [TASK] Remove stale service definitions of no longer existing classes
+*   [TASK] Use explicit nullable type in Database::getQueryBuilderForTable()
+    for PHP 8.4 compatibility
+*   [TASK] Add functional tests for scheduler tasks and services and execute
+    them in CI
+
 Version 8.2.0
 =============
 

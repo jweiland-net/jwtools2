@@ -31,7 +31,7 @@ class SolrService
      */
     public function getStatistic(): QueueStatistic
     {
-        $queryBuilder = $this->$this->connectionPool->getQueryBuilderForTable('tx_solr_indexqueue_item');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_solr_indexqueue_item');
         $statement = $queryBuilder
             ->selectLiteral('indexed < changed as pending, (errors not like "") as failed, COUNT(*) as count')
             ->from('tx_solr_indexqueue_item')
@@ -95,8 +95,7 @@ class SolrService
             $identifier['indexing_configuration'] = $type;
         }
 
-        $this
-            ->$this->connectionPool
+        $this->connectionPool
             ->getConnectionForTable('tx_solr_indexqueue_item')
             ->delete(
                 'tx_solr_indexqueue_item',
@@ -119,8 +118,7 @@ class SolrService
                 $identifier['context_record_indexing_configuration'] = $type;
             }
 
-            $this
-                ->$this->connectionPool
+            $this->connectionPool
                 ->getConnectionForTable('tx_solr_indexqueue_file')
                 ->delete(
                     'tx_solr_indexqueue_file',

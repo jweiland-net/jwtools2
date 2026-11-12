@@ -1,0 +1,7 @@
+"tx_solr_indexqueue_item"
+,"uid","root","item_type","item_uid","indexing_configuration","changed","indexed","errors"
+,1,1,"pages",1,"pages",100,200,""
+,2,1,"pages",2,"pages",100,200,""
+,3,1,"tx_news_domain_model_news",1,"news",300,200,""
+,4,1,"tx_news_domain_model_news",2,"news",100,200,"Solr server not reachable"
+,5,2,"pages",10,"pages",100,200,""
