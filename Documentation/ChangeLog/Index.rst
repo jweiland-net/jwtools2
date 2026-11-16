@@ -10,6 +10,14 @@ ChangeLog
 ..  contents::
     :local:
 
+Version 8.2.2
+=============
+
+*   [BUGFIX] Fix "Cannot modify readonly property" error when opening the
+    Solr backend module
+*   [TASK] Add functional test to build all backend controllers via the DI
+    container
+
 Version 8.2.1
 =============
 
