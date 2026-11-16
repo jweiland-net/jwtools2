@@ -40,7 +40,7 @@ class SolrController extends AbstractController
     use InjectPageRendererTrait;
 
     public function __construct(
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        ModuleTemplateFactory $moduleTemplateFactory,
         private readonly ConnectionPool $connectionPool,
     ) {
         parent::__construct($moduleTemplateFactory);
